@@ -18,7 +18,7 @@ export default function Contact() {
           </label>
           <button type="submit">Send</button>
         </form>
-        <p>Email: info@kfquare.com</p>
+        <p>Email: info@kfsquare.com</p>
         <p>Phone:(215)-279-2887</p>
       </section>
     </main>
