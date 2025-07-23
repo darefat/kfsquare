@@ -2,7 +2,7 @@ export default function Services() {
   return (
     <main>
       <section>
-        <h2>Our Services</h2>
+        <h2>Services</h2>
         <ul>
           <li>Custom Predictive Analytics Solutions</li>
           <li>LLM Model Training & Deployment</li>
