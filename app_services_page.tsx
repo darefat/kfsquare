@@ -4,7 +4,7 @@ export default function Services() {
       <section>
         <h2>Services</h2>
         <ul>
-       <li> Acquire datasets that align with business needs<li/>
+       <li> Acquire datasets that align with business needs</li>
        <li>Develop algorithms to transform data into useful, actionable information</li>
        <li>Build, test, and maintain database pipeline architectures</li>
        <li>Collaborate with management to understand company objectives</li>
