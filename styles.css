@@ -1,0 +1,98 @@
+body {
+  font-family: 'Segoe UI', Arial, sans-serif;
+  margin: 0;
+  background: #f9fafc;
+  color: #222;
+}
+
+header {
+  background: linear-gradient(90deg, #01326d 60%, #6ec1e4 100%);
+  color: #fff;
+  padding: 1em 2em;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.logo {
+  display: flex;
+  align-items: center;
+}
+.logo img {
+  height: 60px;
+  margin-right: 1em;
+}
+.logo h1 {
+  font-size: 2em;
+  font-weight: bold;
+}
+
+nav a {
+  color: #fff;
+  margin: 0 1em;
+  text-decoration: none;
+  font-weight: 500;
+  transition: color 0.2s;
+}
+nav a:hover {
+  color: #ffe066;
+}
+
+.section {
+  padding: 3em 2em;
+  max-width: 800px;
+  margin: auto;
+  background: #fff;
+  border-radius: 12px;
+  box-shadow: 0 2px 12px rgba(0,0,0,0.04);
+  margin-bottom: 2em;
+}
+
+.home .hero-image {
+  width: 220px;
+  display: block;
+  margin: 2em auto 0 auto;
+  filter: drop-shadow(0 4px 16px #6ec1e4);
+}
+
+.services ul {
+  list-style: square inside;
+  margin-top: 1em;
+}
+
+form {
+  display: flex;
+  flex-direction: column;
+  gap: 1em;
+  max-width: 400px;
+}
+
+input, textarea {
+  padding: 0.6em;
+  border: 1px solid #01326d;
+  border-radius: 6px;
+  font-size: 1em;
+}
+
+button {
+  background: #01326d;
+  color: #fff;
+  border: none;
+  border-radius: 6px;
+  padding: 0.7em 1.5em;
+  font-size: 1em;
+  cursor: pointer;
+  font-weight: bold;
+  transition: background 0.2s;
+}
+button:hover {
+  background: #6ec1e4;
+  color: #01326d;
+}
+
+footer {
+  background: #01326d;
+  color: #fff;
+  text-align: center;
+  padding: 1em 0;
+}
