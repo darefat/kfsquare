@@ -2,7 +2,7 @@ export default function Contact() {
   return (
     <main>
       <section>
-        <h2>Contact Us</h2>
+        <h2>Contact</h2>
         <form className="contact-form">
           <label>
             Name:
@@ -19,7 +19,7 @@ export default function Contact() {
           <button type="submit">Send</button>
         </form>
         <p>Email: info@kfquare.com</p>
-        <p>Phone: +123-456-7890</p>
+        <p>Phone:(215)-279-2887</p>
       </section>
     </main>
   );
