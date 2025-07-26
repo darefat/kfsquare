@@ -1,4 +1,13 @@
 {
+  "name": "kfsquare",
+  "version": "1.0.0",
+  "description": "KFSQUARE - Data Analytics & Predictive Modeling website",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js",
+    "dev": "node server.js",
+    "serve": "python3 -m http.server 8000"
+  },
   "dependencies": {
     "@sendgrid/mail": "^8.1.5",
     "body-parser": "^2.2.0",
