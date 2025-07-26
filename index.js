@@ -13,10 +13,10 @@ document.addEventListener('DOMContentLoaded', function() {
     const body = `Name: ${name}\nEmail: ${email}\nMessage:\n${message}`;
 
     // Construct the mailto link
-    // const mailtoLink = `mailto:info@kfsquare.com?subject=Contact Form Submission&body=${encodeURIComponent(body)}`;
+     const mailtoLink = `mailto:info@kfsquare.com?subject=Contact Form Submission&body=${encodeURIComponent(body)}`;
 
     // Open the email client
-    // window.location.href = mailtoLink;
+     window.location.href = mailtoLink;
 
     const sgMail = require('@sendgrid/mail');
     sgMail.setApiKey(process.env.SENDGRID_API_KEY);
