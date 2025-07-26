@@ -18,24 +18,10 @@ document.addEventListener('DOMContentLoaded', function() {
     // Open the email client
      window.location.href = mailtoLink;
 
-    const sgMail = require('@sendgrid/mail');
-    sgMail.setApiKey(process.env.SENDGRID_API_KEY);
-    // sgMail.setDataResidency('eu');
-    // uncomment the above line if you are sending mail using a regional EU subuser
+     // Email sending logic should be handled server-side
+     // This client-side code will not work
+     // Consider using an API endpoint to send emails
 
-    const msg = {
-      to: 'info@kfsquare.com', // Change to your recipient
-      from: email, // Change to your verified sender
-      subject: 'Info from kfsquare.com site',
-      text: message,
-      html: message,
-    };
-
-    try {
-      await sgMail.send(msg);
-      console.log('Email sent');
-    } catch (error) {
-      console.error(error);
-    }
+     alert('Form submitted. Email functionality is not enabled in this demo.');
   });
 });
