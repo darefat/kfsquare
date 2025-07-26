@@ -44,10 +44,11 @@ app.post('/send-email', validate, (req, res) => {
 
   const msg = {
     to: recipientEmail,
-    from: email, // Use the sender's email for reply-to. Consider using a dedicated "no-reply" address and setting `replyTo` to the user's email.
+    from: 'noreply@kfsquare.com', // Use a no-reply address and set replyTo to user's email
+    replyTo: email,
     subject: 'Contact Form Submission from KFSquare',
     text: `Name: ${name}\nEmail: ${email}\nMessage:\n${message}`,
-    html: `<p>Name: ${name}</p><p>Email: ${email}</p><p>Message:</p><p>${message}</p>`, // HTML version
+    html: `<p><strong>Name:</strong> ${name}</p><p><strong>Email:</strong> ${email}</p><p><strong>Message:</strong></p><p>${message.replace(/\n/g, '<br>')}</p>`,
   };
 
   sgMail
