@@ -101,4 +101,4 @@ Contributions are welcome! Please submit a pull request with your changes.
 
 ## License
 
-[Specify the license here, e.g.,
+© 2025 KFSQUARE. All rights reserved.
