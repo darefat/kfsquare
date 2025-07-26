@@ -22,6 +22,6 @@ document.addEventListener('DOMContentLoaded', function() {
      // This client-side code will not work
      // Consider using an API endpoint to send emails
 
-     alert('Form submitted. Email functionality is not enabled in this demo.');
+    
   });
 });
