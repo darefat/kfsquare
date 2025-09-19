@@ -3,73 +3,558 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="format-detection" content="telephone=no">
+  <meta name="mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="theme-color" content="#00d4ff">
+  <meta name="msapplication-TileColor" content="#00d4ff">
+  <meta name="msapplication-navbutton-color" content="#00d4ff">
   <title>kfsquare - Data Analytics & Predictive Modeling</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" crossorigin="anonymous">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="anonymous">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="styles.css" />
-  <script src="index.js"></script>
+  <script src="index.js" defer></script>
+  <!-- Removed platform-specific preload -->
 </head>
 <body>
+  <div class="scroll-indicator"></div>
   <header>
     <div class="logo">
       <h1>KFSQUARE</h1>
     </div>
     <nav>
-      <a href="#home">Home</a>
       <a href="#about">About</a>
       <a href="#services">Services</a>
       <a href="#contact">Contact</a>
     </nav>
   </header>
 
-  <section id="home" class="section home">
-    <h2>KFSQUARE</h2>
-    <p>
-      A data engineering/analytics company leveraging cutting-edge Large Language Models (LLM) to deliver predictive analysis and transformative insights for your business.
-    </p>
+  <section id="about" class="section about">
+    <div class="about-content">
+      <h2>About KFSQUARE</h2>
+      <div class="about-grid">
+        <div class="about-main">
+          <p class="about-intro">
+            At KFSQUARE, we are pioneers in the data analytics and artificial intelligence landscape, transforming how organizations harness the power of their data to drive strategic decision-making and sustainable growth.
+          </p>
+          
+          <div class="mission-vision">
+            <div class="mission">
+              <h3>Our Mission</h3>
+              <p>To empower enterprises with cutting-edge data engineering solutions and predictive analytics that unlock hidden insights, optimize operations, and accelerate business transformation in the digital age.</p>
+            </div>
+            
+            <div class="vision">
+              <h3>Our Vision</h3>
+              <p>To be the global leader in AI-driven analytics solutions, setting new standards for innovation, reliability, and business impact across industries.</p>
+            </div>
+          </div>
+        </div>
+        
+        <div class="about-highlights">
+          <div class="highlight-card">
+            <h4>Expertise</h4>
+            <p>Deep specialization in Large Language Models (LLM), machine learning, and advanced statistical modeling techniques.</p>
+          </div>
+          
+          <div class="highlight-card">
+            <h4>Innovation</h4>
+            <p>Leveraging cutting-edge AI technologies to solve complex business challenges and create competitive advantages.</p>
+          </div>
+          
+          <div class="highlight-card">
+            <h4>Partnership</h4>
+            <p>Collaborative approach ensuring solutions align perfectly with your strategic objectives and operational requirements.</p>
+          </div>
+        </div>
+      </div>
+      
+      <div class="company-values">
+        <h3>Why Choose KFSQUARE</h3>
+        <div class="values-grid">
+          <div class="value-item">
+            <span class="value-icon">🎯</span>
+            <h4>Strategic Focus</h4>
+            <p>Every solution is designed with your business objectives at the forefront</p>
+          </div>
+          <div class="value-item">
+            <span class="value-icon">⚡</span>
+            <h4>Rapid Deployment</h4>
+            <p>Accelerated implementation timelines without compromising quality</p>
+          </div>
+          <div class="value-item">
+            <span class="value-icon">🔒</span>
+            <h4>Enterprise Security</h4>
+            <p>Industry-leading security standards and compliance frameworks</p>
+          </div>
+          <div class="value-item">
+            <span class="value-icon">📈</span>
+            <h4>Measurable ROI</h4>
+            <p>Proven track record of delivering quantifiable business value</p>
+          </div>
+        </div>
+      </div>
+    </div>
   </section>
 
-  <section id="about" class="section about">
-    <h2>About</h2>
-    <p>
-      At KFSQUARE, our mission is to empower organizations with actionable data-driven solutions. Our team specializes in training advanced AI models, enabling clients to make smarter, faster decisions.
-    </p>
-  </section>
 
   <section id="services" class="section services">
-    <h2>Services</h2>
-    <ul>
-       <li> Acquire datasets that align with business needs</li>
-       <li>Develop algorithms to transform data into useful, actionable information</li>
-       <li>Build, test, and maintain database pipeline architectures</li>
-       <li>Collaborate with management to understand company objectives</li>
-       <li>Create new data validation methods and data analysis tools</li>
-       <li>Ensure compliance with data governance and security policies</li>
-       <li>Custom Predictive Analytics Solutions</li>
-       <li>LLM Model Training & Deployment</li>
-       <li>Business Intelligence & Reporting</li>
-       <li>Data Visualization & Dashboarding</li>
-       <li>AI-powered Consulting</li>
-    </ul>
+    <h2>Our Services</h2>
+    <p class="section-intro">Comprehensive data solutions designed to accelerate your business transformation</p>
+    
+    <div class="services-grid">
+      <div class="service-card">
+        <h3>Data Engineering</h3>
+        <p>Build robust data pipelines and infrastructure for scalable analytics solutions.</p>
+      </div>
+      <div class="service-card">
+        <h3>Predictive Analytics</h3>
+        <p>Leverage machine learning to forecast trends and optimize business decisions.</p>
+      </div>
+      <div class="service-card">
+        <h3>LLM Integration</h3>
+        <p>Deploy cutting-edge language models for intelligent automation and insights.</p>
+      </div>
+      <div class="service-card">
+        <h3>Business Intelligence</h3>
+        <p>Transform raw data into actionable insights with advanced reporting solutions.</p>
+      </div>
+      <div class="service-card">
+        <h3>Data Governance</h3>
+        <p>Ensure compliance and security with comprehensive data governance frameworks.</p>
+      </div>
+      <div class="service-card">
+        <h3>Strategic Consulting</h3>
+        <p>Expert guidance for AI strategy and digital transformation initiatives.</p>
+      </div>
+    </div>
+
+    <div class="detailed-services">
+      <h3>Complete Service Portfolio</h3>
+      <p class="portfolio-intro">Explore our comprehensive range of specialized data services designed to meet your unique business requirements</p>
+      
+      <!-- Portfolio Controls -->
+      <div class="portfolio-controls">
+        <div class="search-container">
+          <input type="text" id="portfolio-search" placeholder="Search services..." class="portfolio-search">
+          <span class="search-icon">🔍</span>
+        </div>
+        
+        <div class="filter-tabs">
+          <button class="filter-btn active" data-filter="all">All Services</button>
+          <button class="filter-btn" data-filter="foundation">Data Foundation</button>
+          <button class="filter-btn" data-filter="analytics">Analytics & BI</button>
+          <button class="filter-btn" data-filter="ai">AI & Innovation</button>
+          <button class="filter-btn" data-filter="governance">Governance</button>
+        </div>
+        
+        <div class="sort-controls">
+          <select id="portfolio-sort" class="portfolio-sort">
+            <option value="default">Default Order</option>
+            <option value="popularity">Most Popular</option>
+            <option value="availability">Available First</option>
+            <option value="alphabetical">A-Z</option>
+          </select>
+        </div>
+      </div>
+
+      <!-- Service Statistics -->
+      <div class="portfolio-stats">
+        <div class="stat-item">
+          <span class="stat-number" id="total-services">12</span>
+          <span class="stat-label">Total Services</span>
+        </div>
+        <div class="stat-item">
+          <span class="stat-number" id="active-services">10</span>
+          <span class="stat-label">Available Now</span>
+        </div>
+        <div class="stat-item">
+          <span class="stat-number" id="filtered-count">12</span>
+          <span class="stat-label">Showing</span>
+        </div>
+      </div>
+      
+      <div class="services-portfolio-grid" id="portfolio-grid">
+        <div class="portfolio-category" data-category="foundation">
+          <h4>Data Foundation</h4>
+          <div class="category-progress">
+            <div class="progress-bar">
+              <div class="progress-fill" style="width: 85%"></div>
+            </div>
+            <span class="progress-text">85% Complete</span>
+          </div>
+          <div class="category-services">
+            <div class="portfolio-service-link active" data-service="datasets" data-popularity="9" data-availability="available">
+              <span class="service-icon">📊</span>
+              <div class="service-info">
+                <strong>Dataset Acquisition</strong>
+                <p>Acquire datasets that align with business needs</p>
+                <div class="service-meta">
+                  <span class="availability available">Available</span>
+                  <span class="popularity">★ 4.9</span>
+                </div>
+              </div>
+              <div class="service-tooltip">
+                <h5>Dataset Acquisition</h5>
+                <p>Professional data sourcing and acquisition services including market research data, industry benchmarks, and custom dataset creation.</p>
+                <ul>
+                  <li>Market research datasets</li>
+                  <li>Industry-specific data</li>
+                  <li>Custom data collection</li>
+                  <li>Data quality assurance</li>
+                </ul>
+              </div>
+            </div>
+            <div class="portfolio-service-link active" data-service="pipelines" data-popularity="8" data-availability="available">
+              <span class="service-icon">🔗</span>
+              <div class="service-info">
+                <strong>Pipeline Architecture</strong>
+                <p>Build, test, and maintain database pipeline architectures</p>
+                <div class="service-meta">
+                  <span class="availability available">Available</span>
+                  <span class="popularity">★ 4.8</span>
+                </div>
+              </div>
+              <div class="service-tooltip">
+                <h5>Pipeline Architecture</h5>
+                <p>End-to-end data pipeline design and implementation for scalable data processing and automation.</p>
+                <ul>
+                  <li>ETL/ELT pipeline design</li>
+                  <li>Real-time data processing</li>
+                  <li>Cloud-native architectures</li>
+                  <li>Performance optimization</li>
+                </ul>
+              </div>
+            </div>
+            <div class="portfolio-service-link coming-soon" data-service="validation" data-popularity="7" data-availability="coming-soon">
+              <span class="service-icon">✅</span>
+              <div class="service-info">
+                <strong>Data Validation</strong>
+                <p>Create new data validation methods and analysis tools</p>
+                <div class="service-meta">
+                  <span class="availability coming-soon">Coming Soon</span>
+                  <span class="popularity">★ 4.7</span>
+                </div>
+              </div>
+              <div class="service-tooltip">
+                <h5>Data Validation</h5>
+                <p>Comprehensive data quality assurance and validation frameworks to ensure data integrity and reliability.</p>
+                <ul>
+                  <li>Automated data quality checks</li>
+                  <li>Custom validation rules</li>
+                  <li>Data lineage tracking</li>
+                  <li>Quality reporting dashboards</li>
+                </ul>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="portfolio-category" data-category="analytics">
+          <h4>Analytics & Intelligence</h4>
+          <div class="category-progress">
+            <div class="progress-bar">
+              <div class="progress-fill" style="width: 95%"></div>
+            </div>
+            <span class="progress-text">95% Complete</span>
+          </div>
+          <div class="category-services">
+            <div class="portfolio-service-link active" data-service="algorithms" data-popularity="10" data-availability="available">
+              <span class="service-icon">🧮</span>
+              <div class="service-info">
+                <strong>Algorithm Development</strong>
+                <p>Develop algorithms to transform data into actionable information</p>
+                <div class="service-meta">
+                  <span class="availability available">Available</span>
+                  <span class="popularity">★ 5.0</span>
+                </div>
+              </div>
+              <div class="service-tooltip">
+                <h5>Algorithm Development</h5>
+                <p>Custom algorithm design and implementation for complex data processing and business intelligence.</p>
+                <ul>
+                  <li>Machine learning algorithms</li>
+                  <li>Statistical modeling</li>
+                  <li>Optimization algorithms</li>
+                  <li>Performance tuning</li>
+                </ul>
+              </div>
+            </div>
+            <div class="portfolio-service-link active" data-service="predictive" data-popularity="9" data-availability="available">
+              <span class="service-icon">📈</span>
+              <div class="service-info">
+                <strong>Predictive Analytics</strong>
+                <p>Custom Predictive Analytics Solutions</p>
+                <div class="service-meta">
+                  <span class="availability available">Available</span>
+                  <span class="popularity">★ 4.9</span>
+                </div>
+              </div>
+              <div class="service-tooltip">
+                <h5>Predictive Analytics</h5>
+                <p>Advanced predictive modeling solutions to forecast trends and support strategic decision-making.</p>
+                <ul>
+                  <li>Time series forecasting</li>
+                  <li>Risk assessment models</li>
+                  <li>Customer behavior prediction</li>
+                  <li>Market trend analysis</li>
+                </ul>
+              </div>
+            </div>
+            <div class="portfolio-service-link active" data-service="business-intelligence" data-popularity="8" data-availability="available">
+              <span class="service-icon">📋</span>
+              <div class="service-info">
+                <strong>Business Intelligence</strong>
+                <p>Business Intelligence & Reporting</p>
+                <div class="service-meta">
+                  <span class="availability available">Available</span>
+                  <span class="popularity">★ 4.8</span>
+                </div>
+              </div>
+              <div class="service-tooltip">
+                <h5>Business Intelligence</h5>
+                <p>Comprehensive BI solutions including reporting, analytics, and performance monitoring systems.</p>
+                <ul>
+                  <li>Executive dashboards</li>
+                  <li>KPI tracking systems</li>
+                  <li>Automated reporting</li>
+                  <li>Performance analytics</li>
+                </ul>
+              </div>
+            </div>
+            <div class="portfolio-service-link active" data-service="visualization" data-popularity="7" data-availability="available">
+              <span class="service-icon">📊</span>
+              <div class="service-info">
+                <strong>Data Visualization</strong>
+                <p>Data Visualization & Dashboarding</p>
+                <div class="service-meta">
+                  <span class="availability available">Available</span>
+                  <span class="popularity">★ 4.7</span>
+                </div>
+              </div>
+              <div class="service-tooltip">
+                <h5>Data Visualization</h5>
+                <p>Interactive data visualization and dashboard creation to make complex data accessible and actionable.</p>
+                <ul>
+                  <li>Interactive dashboards</li>
+                  <li>Custom visualizations</li>
+                  <li>Real-time monitoring</li>
+                  <li>Mobile-responsive design</li>
+                </ul>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="portfolio-category" data-category="ai">
+          <h4>AI & Innovation</h4>
+          <div class="category-progress">
+            <div class="progress-bar">
+              <div class="progress-fill" style="width: 75%"></div>
+            </div>
+            <span class="progress-text">75% Complete</span>
+          </div>
+          <div class="category-services">
+            <div class="portfolio-service-link active" data-service="llm" data-popularity="9" data-availability="available">
+              <span class="service-icon">🤖</span>
+              <div class="service-info">
+                <strong>LLM Integration</strong>
+                <p>LLM Model Training & Deployment</p>
+                <div class="service-meta">
+                  <span class="availability available">Available</span>
+                  <span class="popularity">★ 4.9</span>
+                </div>
+              </div>
+              <div class="service-tooltip">
+                <h5>LLM Integration</h5>
+                <p>Large Language Model integration, fine-tuning, and deployment for enterprise applications.</p>
+                <ul>
+                  <li>Model fine-tuning</li>
+                  <li>API integration</li>
+                  <li>Performance optimization</li>
+                  <li>Scalable deployment</li>
+                </ul>
+              </div>
+            </div>
+            <div class="portfolio-service-link active" data-service="ai-consulting" data-popularity="8" data-availability="available">
+              <span class="service-icon">💡</span>
+              <div class="service-info">
+                <strong>AI Consulting</strong>
+                <p>AI-powered strategic consulting and implementation</p>
+                <div class="service-meta">
+                  <span class="availability available">Available</span>
+                  <span class="popularity">★ 4.8</span>
+                </div>
+              </div>
+              <div class="service-tooltip">
+                <h5>AI Consulting</h5>
+                <p>Strategic AI consulting to help organizations identify and implement AI solutions for competitive advantage.</p>
+                <ul>
+                  <li>AI strategy development</li>
+                  <li>Technology assessment</li>
+                  <li>Implementation planning</li>
+                  <li>Change management</li>
+                </ul>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="portfolio-category" data-category="governance">
+          <h4>Governance & Strategy</h4>
+          <div class="category-progress">
+            <div class="progress-bar">
+              <div class="progress-fill" style="width: 60%"></div>
+            </div>
+            <span class="progress-text">60% Complete</span>
+          </div>
+          <div class="category-services">
+            <div class="portfolio-service-link active" data-service="governance" data-popularity="7" data-availability="available">
+              <span class="service-icon">🔒</span>
+              <div class="service-info">
+                <strong>Data Governance</strong>
+                <p>Ensure compliance with data governance and security policies</p>
+                <div class="service-meta">
+                  <span class="availability available">Available</span>
+                  <span class="popularity">★ 4.7</span>
+                </div>
+              </div>
+              <div class="service-tooltip">
+                <h5>Data Governance</h5>
+                <p>Comprehensive data governance frameworks to ensure compliance, security, and quality across your organization.</p>
+                <ul>
+                  <li>Compliance frameworks</li>
+                  <li>Data security policies</li>
+                  <li>Access control systems</li>
+                  <li>Audit and monitoring</li>
+                </ul>
+              </div>
+            </div>
+            <div class="portfolio-service-link coming-soon" data-service="collaboration" data-popularity="6" data-availability="coming-soon">
+              <span class="service-icon">🤝</span>
+              <div class="service-info">
+                <strong>Strategic Collaboration</strong>
+                <p>Collaborate with management to understand company objectives</p>
+                <div class="service-meta">
+                  <span class="availability coming-soon">Coming Soon</span>
+                  <span class="popularity">★ 4.6</span>
+                </div>
+              </div>
+              <div class="service-tooltip">
+                <h5>Strategic Collaboration</h5>
+                <p>Executive-level strategic collaboration to align data initiatives with business objectives and drive organizational transformation.</p>
+                <ul>
+                  <li>Executive workshops</li>
+                  <li>Strategic planning</li>
+                  <li>Stakeholder alignment</li>
+                  <li>ROI optimization</li>
+                </ul>
+              </div>
+            </div>
+          </div>
+      </div>
+
+      <div class="portfolio-cta">
+        <p>Need a custom solution? We create tailored data strategies for unique business challenges.</p>
+        <a href="#contact" class="portfolio-btn">Discuss Your Project</a>
+      </div>
+
+      <!-- Service Details Modal -->
+      <div id="service-modal" class="service-modal">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h3 id="modal-title"></h3>
+            <button class="modal-close">&times;</button>
+          </div>
+          <div class="modal-body">
+            <div class="service-overview">
+              <div class="service-icon-large" id="modal-icon"></div>
+              <div class="service-details">
+                <p id="modal-description"></p>
+                <div class="service-features" id="modal-features"></div>
+              </div>
+            </div>
+            <div class="service-pricing">
+              <h4>Investment Range</h4>
+              <div class="pricing-tiers" id="modal-pricing"></div>
+            </div>
+            <div class="service-timeline">
+              <h4>Typical Timeline</h4>
+              <div class="timeline-info" id="modal-timeline"></div>
+            </div>
+          </div>
+          <div class="modal-footer">
+            <button class="secondary-btn modal-close">Close</button>
+            <a href="#contact" class="primary-btn">Get Started</a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+   <section id="home" class="section home">
+    <div class="hero-content">
+      <h1>KFSQUARE</h1>
+      <h2 class="tagline">Data Analytics & Predictive Modeling Excellence</h2>
+      <p class="hero-description">
+        A leading data engineering and analytics company leveraging cutting-edge Large Language Models (LLM) to deliver predictive analysis and transformative insights that drive business success.
+      </p>
+      <div class="hero-stats">
+        <div class="stat">
+          <span class="stat-number">500+</span>
+          <span class="stat-label">Projects Delivered</span>
+        </div>
+        <div class="stat">
+          <span class="stat-number">98%</span>
+          <span class="stat-label">Client Satisfaction</span>
+        </div>
+        <div class="stat">
+          <span class="stat-number">24/7</span>
+          <span class="stat-label">Support Available</span>
+        </div>
+      </div>
+      <div class="hero-cta">
+        <a href="#contact" class="primary-btn">Get Started Today</a>
+        <a href="#services" class="secondary-btn">Explore Services</a>
+      </div>
+    </div>
   </section>
   <section id="contact" class="section contact">
     <h2>Contact</h2>
-<!--     <form id="contact-form">
-      <label>
-        Name:
-        <input type="text" name="name" required />
-      </label>
-      <label>
-        Email:
-        <input type="email" name="email" required />
-      </label>
-      <label>
-        Message:
-        <textarea name="message" required></textarea>
-      </label>
-      <button type="submit">Send</button>
-    </form> -->
-    <p>Email: customersupport@kfsquare.com</p>
-
-    <p>Phone: 215-279-2887</p>
+    <form id="contact-form" class="contact-form">
+      <div class="form-group">
+        <label for="name">Name:</label>
+        <input type="text" id="name" name="name" required />
+      </div>
+      <div class="form-group">
+        <label for="email">Email:</label>
+        <input type="email" id="email" name="email" required />
+      </div>
+      <div class="form-group">
+        <label for="message">Message:</label>
+        <textarea id="message" name="message" rows="5" required></textarea>
+      </div>
+      <button type="submit" class="primary-btn">Send Message</button>
+    </form>
+    
+    <div class="contact-info">
+      <div class="contact-item">
+        <span class="contact-icon">📧</span>
+        <div>
+          <h4>Email</h4>
+          <p><a href="mailto:customersupport@kfsquare.com">customersupport@kfsquare.com</a></p>
+        </div>
+      </div>
+      <div class="contact-item">
+        <span class="contact-icon">📞</span>
+        <div>
+          <h4>Phone</h4>
+          <p><a href="tel:+12152792887">215-279-2887</a></p>
+        </div>
+      </div>
+    </div>
   </section>
 
   <footer>
