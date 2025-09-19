@@ -74,27 +74,417 @@
       
       <div class="company-values">
         <h3>Why Choose KFSQUARE</h3>
-        <div class="values-grid">
-          <div class="value-item">
-            <span class="value-icon">🎯</span>
-            <h4>Strategic Focus</h4>
-            <p>Every solution is designed with your business objectives at the forefront</p>
+        <p class="values-intro">Discover the competitive advantages that make KFSQUARE the trusted partner for data transformation</p>
+        
+        <!-- Values Portfolio Controls -->
+        <div class="values-controls">
+          <div class="search-container">
+            <input type="text" id="values-search" placeholder="Search advantages..." class="portfolio-search">
+            <span class="search-icon">🔍</span>
           </div>
-          <div class="value-item">
-            <span class="value-icon">⚡</span>
-            <h4>Rapid Deployment</h4>
-            <p>Accelerated implementation timelines without compromising quality</p>
+          
+          <div class="filter-tabs">
+            <button class="filter-btn active" data-filter="all">All Benefits</button>
+            <button class="filter-btn" data-filter="strategic">Strategic</button>
+            <button class="filter-btn" data-filter="operational">Operational</button>
+            <button class="filter-btn" data-filter="technical">Technical</button>
           </div>
-          <div class="value-item">
-            <span class="value-icon">🔒</span>
-            <h4>Enterprise Security</h4>
-            <p>Industry-leading security standards and compliance frameworks</p>
+          
+          <div class="sort-controls">
+            <select id="values-sort" class="portfolio-sort">
+              <option value="default">Default Order</option>
+              <option value="impact">Highest Impact</option>
+              <option value="popularity">Most Valued</option>
+              <option value="alphabetical">A-Z</option>
+            </select>
           </div>
-          <div class="value-item">
-            <span class="value-icon">📈</span>
-            <h4>Measurable ROI</h4>
-            <p>Proven track record of delivering quantifiable business value</p>
+        </div>
+
+        <!-- Values Statistics -->
+        <div class="values-stats">
+          <div class="stat-item">
+            <span class="stat-number" id="total-values">8</span>
+            <span class="stat-label">Key Advantages</span>
           </div>
+          <div class="stat-item">
+            <span class="stat-number" id="client-satisfaction">98%</span>
+            <span class="stat-label">Client Satisfaction</span>
+          </div>
+          <div class="stat-item">
+            <span class="stat-number" id="filtered-values">8</span>
+            <span class="stat-label">Showing</span>
+          </div>
+        </div>
+        
+        <div class="values-portfolio-grid" id="values-grid">
+          <div class="values-category" data-category="strategic">
+            <h4>Strategic Excellence</h4>
+            <div class="category-progress">
+              <div class="progress-bar">
+                <div class="progress-fill" style="width: 95%"></div>
+              </div>
+              <span class="progress-text">95% Excellence</span>
+            </div>
+            
+            <!-- Category Performance Metrics -->
+            <div class="category-metrics">
+              <div class="metric-item">
+                <span class="metric-icon">🎯</span>
+                <span class="metric-value">500+</span>
+                <span class="metric-label">Projects</span>
+              </div>
+              <div class="metric-item">
+                <span class="metric-icon">⭐</span>
+                <span class="metric-value">4.9</span>
+                <span class="metric-label">Rating</span>
+              </div>
+              <div class="metric-item">
+                <span class="metric-icon">🏆</span>
+                <span class="metric-value">95%</span>
+                <span class="metric-label">Success Rate</span>
+              </div>
+            </div>
+            
+            <div class="category-services">
+              <div class="portfolio-service-link active strategic featured" data-value="strategic-focus" data-impact="10" data-category="strategic">
+                <span class="service-icon">🎯</span>
+                <div class="service-info">
+                  <strong>Strategic Focus</strong>
+                  <p>Every solution is designed with your business objectives at the forefront</p>
+                  <div class="service-meta">
+                    <span class="availability available">Core Strength</span>
+                    <span class="popularity">★ 4.9</span>
+                    <span class="service-tag featured">Most Valued</span>
+                  </div>
+                  <div class="service-stats">
+                    <span class="stat-chip">500+ Strategic Plans</span>
+                    <span class="stat-chip">95% Goal Achievement</span>
+                  </div>
+                </div>
+                <div class="service-tooltip">
+                  <h5>Strategic Focus</h5>
+                  <p>Our strategic approach ensures every data solution directly contributes to your business objectives and long-term success.</p>
+                  <div class="tooltip-highlights">
+                    <div class="highlight-item">
+                      <strong>Client Success:</strong>
+                      <p>Helped Fortune 500 client achieve 40% revenue growth through strategic data initiatives alignment</p>
+                    </div>
+                  </div>
+                  <ul>
+                    <li>Business objective alignment</li>
+                    <li>Strategic roadmap development</li>
+                    <li>ROI-focused solutions</li>
+                    <li>Executive stakeholder engagement</li>
+                    <li>Long-term partnership approach</li>
+                    <li>Competitive advantage creation</li>
+                  </ul>
+                  <div class="tooltip-footer">
+                    <span class="delivery-time">⏱️ Immediate Impact</span>
+                    <span class="complexity">🎯 Strategic</span>
+                  </div>
+                </div>
+              </div>
+
+              <div class="portfolio-service-link active strategic" data-value="measurable-roi" data-impact="9" data-category="strategic">
+                <span class="service-icon">📈</span>
+                <div class="service-info">
+                  <strong>Measurable ROI</strong>
+                  <p>Proven track record of delivering quantifiable business value</p>
+                  <div class="service-meta">
+                    <span class="availability available">Guaranteed</span>
+                    <span class="popularity">★ 4.8</span>
+                    <span class="service-tag roi">ROI Focused</span>
+                  </div>
+                  <div class="service-stats">
+                    <span class="stat-chip">Average 300% ROI</span>
+                    <span class="stat-chip">100% Transparency</span>
+                  </div>
+                </div>
+                <div class="service-tooltip">
+                  <h5>Measurable ROI</h5>
+                  <p>Every project includes clear metrics and KPIs to demonstrate tangible business value and return on investment.</p>
+                  <div class="tooltip-highlights">
+                    <div class="highlight-item">
+                      <strong>Proven Results:</strong>
+                      <p>Average client sees 300% ROI within 18 months of implementation</p>
+                    </div>
+                  </div>
+                  <ul>
+                    <li>ROI measurement frameworks</li>
+                    <li>Performance tracking dashboards</li>
+                    <li>Business impact reporting</li>
+                    <li>Cost-benefit analysis</li>
+                    <li>Value realization planning</li>
+                    <li>Continuous optimization</li>
+                  </ul>
+                  <div class="tooltip-footer">
+                    <span class="delivery-time">⏱️ 3-6 months</span>
+                    <span class="complexity">🎯 Strategic</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="values-category" data-category="operational">
+            <h4>Operational Excellence</h4>
+            <div class="category-progress">
+              <div class="progress-bar">
+                <div class="progress-fill" style="width: 90%"></div>
+              </div>
+              <span class="progress-text">90% Excellence</span>
+            </div>
+            
+            <div class="category-metrics">
+              <div class="metric-item">
+                <span class="metric-icon">⚡</span>
+                <span class="metric-value">50%</span>
+                <span class="metric-label">Faster Deploy</span>
+              </div>
+              <div class="metric-item">
+                <span class="metric-icon">🚀</span>
+                <span class="metric-value">24/7</span>
+                <span class="metric-label">Support</span>
+              </div>
+              <div class="metric-item">
+                <span class="metric-icon">📊</span>
+                <span class="metric-value">99.9%</span>
+                <span class="metric-label">Uptime</span>
+              </div>
+            </div>
+            
+            <div class="category-services">
+              <div class="portfolio-service-link active operational trending" data-value="rapid-deployment" data-impact="9" data-category="operational">
+                <span class="service-icon">⚡</span>
+                <div class="service-info">
+                  <strong>Rapid Deployment</strong>
+                  <p>Accelerated implementation timelines without compromising quality</p>
+                  <div class="service-meta">
+                    <span class="availability available">Ready Now</span>
+                    <span class="popularity">★ 4.9</span>
+                    <span class="service-tag trending">Fast Track</span>
+                  </div>
+                  <div class="service-stats">
+                    <span class="stat-chip">50% Faster Setup</span>
+                    <span class="stat-chip">Zero Downtime</span>
+                  </div>
+                </div>
+                <div class="service-tooltip">
+                  <h5>Rapid Deployment</h5>
+                  <p>Our streamlined processes and pre-built frameworks enable faster time-to-value without sacrificing solution quality.</p>
+                  <div class="tooltip-highlights">
+                    <div class="highlight-item">
+                      <strong>Speed Record:</strong>
+                      <p>Deployed enterprise analytics platform in just 6 weeks vs industry standard 16 weeks</p>
+                    </div>
+                  </div>
+                  <ul>
+                    <li>Pre-built solution accelerators</li>
+                    <li>Agile deployment methodology</li>
+                    <li>Parallel implementation streams</li>
+                    <li>Automated deployment pipelines</li>
+                    <li>Quick-start templates</li>
+                    <li>Rapid prototyping</li>
+                  </ul>
+                  <div class="tooltip-footer">
+                    <span class="delivery-time">⏱️ 2-6 weeks</span>
+                    <span class="complexity">🎯 Optimized</span>
+                  </div>
+                </div>
+              </div>
+
+              <div class="portfolio-service-link active operational reliable" data-value="support-excellence" data-impact="8" data-category="operational">
+                <span class="service-icon">🎧</span>
+                <div class="service-info">
+                  <strong>24/7 Expert Support</strong>
+                  <p>Round-the-clock technical support and maintenance services</p>
+                  <div class="service-meta">
+                    <span class="availability available">Always On</span>
+                    <span class="popularity">★ 4.8</span>
+                    <span class="service-tag reliable">Reliable</span>
+                  </div>
+                  <div class="service-stats">
+                    <span class="stat-chip">99.9% Uptime</span>
+                    <span class="stat-chip">5min Response</span>
+                  </div>
+                </div>
+                <div class="service-tooltip">
+                  <h5>24/7 Expert Support</h5>
+                  <p>Our dedicated support team ensures your systems run smoothly with proactive monitoring and rapid issue resolution.</p>
+                  <div class="tooltip-highlights">
+                    <div class="highlight-item">
+                      <strong>Support Excellence:</strong>
+                      <p>Maintained 99.9% uptime for critical client systems over 3 consecutive years</p>
+                    </div>
+                  </div>
+                  <ul>
+                    <li>24/7 technical support</li>
+                    <li>Proactive system monitoring</li>
+                    <li>Rapid incident response</li>
+                    <li>Expert troubleshooting</li>
+                    <li>Preventive maintenance</li>
+                    <li>Knowledge base access</li>
+                  </ul>
+                  <div class="tooltip-footer">
+                    <span class="delivery-time">⏱️ Instant</span>
+                    <span class="complexity">🎯 Expert</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="values-category" data-category="technical">
+            <h4>Technical Innovation</h4>
+            <div class="category-progress">
+              <div class="progress-bar">
+                <div class="progress-fill" style="width: 98%"></div>
+              </div>
+              <span class="progress-text">98% Excellence</span>
+            </div>
+            
+            <div class="category-metrics">
+              <div class="metric-item">
+                <span class="metric-icon">🔒</span>
+                <span class="metric-value">100%</span>
+                <span class="metric-label">Secure</span>
+              </div>
+              <div class="metric-item">
+                <span class="metric-icon">🤖</span>
+                <span class="metric-value">AI</span>
+                <span class="metric-label">Powered</span>
+              </div>
+              <div class="metric-item">
+                <span class="metric-icon">⚡</span>
+                <span class="metric-value">10x</span>
+                <span class="metric-label">Performance</span>
+              </div>
+            </div>
+            
+            <div class="category-services">
+              <div class="portfolio-service-link active technical security" data-value="enterprise-security" data-impact="10" data-category="technical">
+                <span class="service-icon">🔒</span>
+                <div class="service-info">
+                  <strong>Enterprise Security</strong>
+                  <p>Industry-leading security standards and compliance frameworks</p>
+                  <div class="service-meta">
+                    <span class="availability available">Certified</span>
+                    <span class="popularity">★ 5.0</span>
+                    <span class="service-tag security">Security First</span>
+                  </div>
+                  <div class="service-stats">
+                    <span class="stat-chip">SOC 2 Certified</span>
+                    <span class="stat-chip">Zero Breaches</span>
+                  </div>
+                </div>
+                <div class="service-tooltip">
+                  <h5>Enterprise Security</h5>
+                  <p>Comprehensive security framework ensuring your data is protected with military-grade encryption and compliance standards.</p>
+                  <div class="tooltip-highlights">
+                    <div class="highlight-item">
+                      <strong>Security Record:</strong>
+                      <p>Zero security incidents across 500+ enterprise implementations over 5 years</p>
+                    </div>
+                  </div>
+                  <ul>
+                    <li>SOC 2 Type II compliance</li>
+                    <li>End-to-end encryption</li>
+                    <li>Multi-factor authentication</li>
+                    <li>Regular security audits</li>
+                    <li>GDPR & HIPAA compliance</li>
+                    <li>Zero-trust architecture</li>
+                  </ul>
+                  <div class="tooltip-footer">
+                    <span class="delivery-time">⏱️ Built-in</span>
+                    <span class="complexity">🎯 Military-grade</span>
+                  </div>
+                </div>
+              </div>
+
+              <div class="portfolio-service-link active technical innovation" data-value="cutting-edge-tech" data-impact="9" data-category="technical">
+                <span class="service-icon">�</span>
+                <div class="service-info">
+                  <strong>Cutting-Edge Technology</strong>
+                  <p>Latest AI/ML technologies and innovative solution architectures</p>
+                  <div class="service-meta">
+                    <span class="availability available">Innovation Lab</span>
+                    <span class="popularity">★ 4.9</span>
+                    <span class="service-tag innovation">Next-Gen</span>
+                  </div>
+                  <div class="service-stats">
+                    <span class="stat-chip">Latest AI/ML</span>
+                    <span class="stat-chip">Innovation Labs</span>
+                  </div>
+                </div>
+                <div class="service-tooltip">
+                  <h5>Cutting-Edge Technology</h5>
+                  <p>Stay ahead of the competition with our advanced AI/ML implementations and innovative technology solutions.</p>
+                  <div class="tooltip-highlights">
+                    <div class="highlight-item">
+                      <strong>Tech Leadership:</strong>
+                      <p>First to market with GPT-4 enterprise integrations, leading industry innovation</p>
+                    </div>
+                  </div>
+                  <ul>
+                    <li>Latest LLM technologies</li>
+                    <li>Advanced machine learning</li>
+                    <li>Quantum-ready algorithms</li>
+                    <li>Edge computing solutions</li>
+                    <li>Cloud-native architectures</li>
+                    <li>Research & development lab</li>
+                  </ul>
+                  <div class="tooltip-footer">
+                    <span class="delivery-time">⏱️ Continuous</span>
+                    <span class="complexity">🎯 Revolutionary</span>
+                  </div>
+                </div>
+              </div>
+
+              <div class="portfolio-service-link active technical premium" data-value="scalable-performance" data-impact="8" data-category="technical">
+                <span class="service-icon">📊</span>
+                <div class="service-info">
+                  <strong>Scalable Performance</strong>
+                  <p>High-performance solutions that scale with your business growth</p>
+                  <div class="service-meta">
+                    <span class="availability available">Enterprise Scale</span>
+                    <span class="popularity">★ 4.8</span>
+                    <span class="service-tag premium">Performance</span>
+                  </div>
+                  <div class="service-stats">
+                    <span class="stat-chip">10x Performance</span>
+                    <span class="stat-chip">Auto-scaling</span>
+                  </div>
+                </div>
+                <div class="service-tooltip">
+                  <h5>Scalable Performance</h5>
+                  <p>Solutions designed to handle massive data volumes and scale seamlessly as your business grows.</p>
+                  <div class="tooltip-highlights">
+                    <div class="highlight-item">
+                      <strong>Performance Boost:</strong>
+                      <p>Improved client's data processing speed by 10x while reducing infrastructure costs by 40%</p>
+                    </div>
+                  </div>
+                  <ul>
+                    <li>Auto-scaling infrastructure</li>
+                    <li>High-performance computing</li>
+                    <li>Load balancing systems</li>
+                    <li>Performance optimization</li>
+                    <li>Real-time processing</li>
+                    <li>Cost-efficient scaling</li>
+                  </ul>
+                  <div class="tooltip-footer">
+                    <span class="delivery-time">⏱️ As needed</span>
+                    <span class="complexity">🎯 Enterprise</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="values-cta">
+          <p>Experience the KFSQUARE advantage and transform your data into competitive success.</p>
+          <a href="#contact" class="portfolio-btn">Start Your Transformation</a>
         </div>
       </div>
     </div>
@@ -261,8 +651,28 @@
             </div>
             <span class="progress-text">95% Complete</span>
           </div>
+          
+          <!-- Category Performance Metrics -->
+          <div class="category-metrics">
+            <div class="metric-item">
+              <span class="metric-icon">📊</span>
+              <span class="metric-value">4</span>
+              <span class="metric-label">Active Services</span>
+            </div>
+            <div class="metric-item">
+              <span class="metric-icon">⭐</span>
+              <span class="metric-value">4.8</span>
+              <span class="metric-label">Avg Rating</span>
+            </div>
+            <div class="metric-item">
+              <span class="metric-icon">🚀</span>
+              <span class="metric-value">150+</span>
+              <span class="metric-label">Projects</span>
+            </div>
+          </div>
+          
           <div class="category-services">
-            <div class="portfolio-service-link active" data-service="algorithms" data-popularity="10" data-availability="available">
+            <div class="portfolio-service-link active featured" data-service="algorithms" data-popularity="10" data-availability="available">
               <span class="service-icon">🧮</span>
               <div class="service-info">
                 <strong>Algorithm Development</strong>
@@ -270,20 +680,37 @@
                 <div class="service-meta">
                   <span class="availability available">Available</span>
                   <span class="popularity">★ 5.0</span>
+                  <span class="service-tag featured">Most Popular</span>
+                </div>
+                <div class="service-stats">
+                  <span class="stat-chip">40+ Algorithms Built</span>
+                  <span class="stat-chip">99.2% Accuracy</span>
                 </div>
               </div>
               <div class="service-tooltip">
                 <h5>Algorithm Development</h5>
                 <p>Custom algorithm design and implementation for complex data processing and business intelligence.</p>
+                <div class="tooltip-highlights">
+                  <div class="highlight-item">
+                    <strong>Recent Success:</strong>
+                    <p>Improved client's operational efficiency by 35% using custom optimization algorithms</p>
+                  </div>
+                </div>
                 <ul>
                   <li>Machine learning algorithms</li>
                   <li>Statistical modeling</li>
                   <li>Optimization algorithms</li>
                   <li>Performance tuning</li>
+                  <li>Real-time processing</li>
+                  <li>Scalable architecture</li>
                 </ul>
+                <div class="tooltip-footer">
+                  <span class="delivery-time">⏱️ 6-12 weeks</span>
+                  <span class="complexity">🎯 Advanced</span>
+                </div>
               </div>
             </div>
-            <div class="portfolio-service-link active" data-service="predictive" data-popularity="9" data-availability="available">
+            <div class="portfolio-service-link active trending" data-service="predictive" data-popularity="9" data-availability="available">
               <span class="service-icon">📈</span>
               <div class="service-info">
                 <strong>Predictive Analytics</strong>
@@ -291,17 +718,34 @@
                 <div class="service-meta">
                   <span class="availability available">Available</span>
                   <span class="popularity">★ 4.9</span>
+                  <span class="service-tag trending">Trending</span>
+                </div>
+                <div class="service-stats">
+                  <span class="stat-chip">85% Forecast Accuracy</span>
+                  <span class="stat-chip">50+ Models Built</span>
                 </div>
               </div>
               <div class="service-tooltip">
                 <h5>Predictive Analytics</h5>
                 <p>Advanced predictive modeling solutions to forecast trends and support strategic decision-making.</p>
+                <div class="tooltip-highlights">
+                  <div class="highlight-item">
+                    <strong>Case Study:</strong>
+                    <p>Helped retail client increase sales by 28% through demand forecasting models</p>
+                  </div>
+                </div>
                 <ul>
                   <li>Time series forecasting</li>
                   <li>Risk assessment models</li>
                   <li>Customer behavior prediction</li>
                   <li>Market trend analysis</li>
+                  <li>Churn prediction</li>
+                  <li>Revenue optimization</li>
                 </ul>
+                <div class="tooltip-footer">
+                  <span class="delivery-time">⏱️ 8-16 weeks</span>
+                  <span class="complexity">🎯 Expert</span>
+                </div>
               </div>
             </div>
             <div class="portfolio-service-link active" data-service="business-intelligence" data-popularity="8" data-availability="available">
@@ -312,20 +756,37 @@
                 <div class="service-meta">
                   <span class="availability available">Available</span>
                   <span class="popularity">★ 4.8</span>
+                  <span class="service-tag reliable">Enterprise Ready</span>
+                </div>
+                <div class="service-stats">
+                  <span class="stat-chip">200+ Dashboards</span>
+                  <span class="stat-chip">24/7 Monitoring</span>
                 </div>
               </div>
               <div class="service-tooltip">
                 <h5>Business Intelligence</h5>
                 <p>Comprehensive BI solutions including reporting, analytics, and performance monitoring systems.</p>
+                <div class="tooltip-highlights">
+                  <div class="highlight-item">
+                    <strong>Client Impact:</strong>
+                    <p>Reduced reporting time by 75% for Fortune 500 client with automated BI solutions</p>
+                  </div>
+                </div>
                 <ul>
                   <li>Executive dashboards</li>
                   <li>KPI tracking systems</li>
                   <li>Automated reporting</li>
                   <li>Performance analytics</li>
+                  <li>Data warehousing</li>
+                  <li>Self-service BI</li>
                 </ul>
+                <div class="tooltip-footer">
+                  <span class="delivery-time">⏱️ 6-10 weeks</span>
+                  <span class="complexity">🎯 Intermediate</span>
+                </div>
               </div>
             </div>
-            <div class="portfolio-service-link active" data-service="visualization" data-popularity="7" data-availability="available">
+            <div class="portfolio-service-link active creative" data-service="visualization" data-popularity="7" data-availability="available">
               <span class="service-icon">📊</span>
               <div class="service-info">
                 <strong>Data Visualization</strong>
@@ -333,17 +794,34 @@
                 <div class="service-meta">
                   <span class="availability available">Available</span>
                   <span class="popularity">★ 4.7</span>
+                  <span class="service-tag creative">Creative</span>
+                </div>
+                <div class="service-stats">
+                  <span class="stat-chip">300+ Charts Built</span>
+                  <span class="stat-chip">Interactive Design</span>
                 </div>
               </div>
               <div class="service-tooltip">
                 <h5>Data Visualization</h5>
                 <p>Interactive data visualization and dashboard creation to make complex data accessible and actionable.</p>
+                <div class="tooltip-highlights">
+                  <div class="highlight-item">
+                    <strong>Innovation:</strong>
+                    <p>Created award-winning interactive dashboards that increased user engagement by 60%</p>
+                  </div>
+                </div>
                 <ul>
                   <li>Interactive dashboards</li>
                   <li>Custom visualizations</li>
                   <li>Real-time monitoring</li>
                   <li>Mobile-responsive design</li>
+                  <li>3D data visualization</li>
+                  <li>Storytelling with data</li>
                 </ul>
+                <div class="tooltip-footer">
+                  <span class="delivery-time">⏱️ 4-8 weeks</span>
+                  <span class="complexity">🎯 Intermediate</span>
+                </div>
               </div>
             </div>
           </div>
@@ -407,12 +885,37 @@
           <h4>Governance & Strategy</h4>
           <div class="category-progress">
             <div class="progress-bar">
-              <div class="progress-fill" style="width: 60%"></div>
+              <div class="progress-fill" style="width: 85%"></div>
             </div>
-            <span class="progress-text">60% Complete</span>
+            <span class="progress-text">85% Complete</span>
           </div>
+          
+          <!-- Category Performance Metrics -->
+          <div class="category-metrics">
+            <div class="metric-item">
+              <span class="metric-icon">🛡️</span>
+              <span class="metric-value">6</span>
+              <span class="metric-label">Total Services</span>
+            </div>
+            <div class="metric-item">
+              <span class="metric-icon">⭐</span>
+              <span class="metric-value">4.8</span>
+              <span class="metric-label">Avg Rating</span>
+            </div>
+            <div class="metric-item">
+              <span class="metric-icon">🏢</span>
+              <span class="metric-value">150+</span>
+              <span class="metric-label">Enterprises</span>
+            </div>
+            <div class="metric-item">
+              <span class="metric-icon">📊</span>
+              <span class="metric-value">98%</span>
+              <span class="metric-label">Success Rate</span>
+            </div>
+          </div>
+          
           <div class="category-services">
-            <div class="portfolio-service-link active" data-service="governance" data-popularity="7" data-availability="available">
+            <div class="portfolio-service-link active enterprise" data-service="governance" data-popularity="7" data-availability="available">
               <span class="service-icon">🔒</span>
               <div class="service-info">
                 <strong>Data Governance</strong>
@@ -420,20 +923,38 @@
                 <div class="service-meta">
                   <span class="availability available">Available</span>
                   <span class="popularity">★ 4.7</span>
+                  <span class="service-tag enterprise">Enterprise Focus</span>
+                </div>
+                <div class="service-stats">
+                  <span class="stat-chip">100% Compliance</span>
+                  <span class="stat-chip">SOC 2 Certified</span>
                 </div>
               </div>
               <div class="service-tooltip">
                 <h5>Data Governance</h5>
                 <p>Comprehensive data governance frameworks to ensure compliance, security, and quality across your organization.</p>
+                <div class="tooltip-highlights">
+                  <div class="highlight-item">
+                    <strong>Enterprise Success:</strong>
+                    <p>Achieved 100% regulatory compliance for Fortune 500 client within 6 months</p>
+                  </div>
+                </div>
                 <ul>
-                  <li>Compliance frameworks</li>
+                  <li>Compliance frameworks (GDPR, HIPAA, SOX)</li>
                   <li>Data security policies</li>
                   <li>Access control systems</li>
                   <li>Audit and monitoring</li>
+                  <li>Risk assessment & mitigation</li>
+                  <li>Privacy impact assessments</li>
                 </ul>
+                <div class="tooltip-footer">
+                  <span class="delivery-time">⏱️ 8-16 weeks</span>
+                  <span class="complexity">🎯 Expert</span>
+                </div>
               </div>
             </div>
-            <div class="portfolio-service-link coming-soon" data-service="collaboration" data-popularity="6" data-availability="coming-soon">
+            
+            <div class="portfolio-service-link premium coming-soon" data-service="collaboration" data-popularity="6" data-availability="coming-soon">
               <span class="service-icon">🤝</span>
               <div class="service-info">
                 <strong>Strategic Collaboration</strong>
@@ -441,20 +962,156 @@
                 <div class="service-meta">
                   <span class="availability coming-soon">Coming Soon</span>
                   <span class="popularity">★ 4.6</span>
+                  <span class="service-tag premium">Executive Level</span>
+                </div>
+                <div class="service-stats">
+                  <span class="stat-chip">C-Suite Focused</span>
+                  <span class="stat-chip">ROI Guaranteed</span>
                 </div>
               </div>
               <div class="service-tooltip">
                 <h5>Strategic Collaboration</h5>
                 <p>Executive-level strategic collaboration to align data initiatives with business objectives and drive organizational transformation.</p>
+                <div class="tooltip-highlights">
+                  <div class="highlight-item">
+                    <strong>Coming Q3 2026:</strong>
+                    <p>Exclusive executive advisory services with guaranteed ROI improvements of 25%+</p>
+                  </div>
+                </div>
                 <ul>
                   <li>Executive workshops</li>
                   <li>Strategic planning</li>
                   <li>Stakeholder alignment</li>
                   <li>ROI optimization</li>
+                  <li>Digital transformation roadmaps</li>
+                  <li>Change management support</li>
                 </ul>
+                <div class="tooltip-footer">
+                  <span class="delivery-time">⏱️ 12-24 weeks</span>
+                  <span class="complexity">🎯 Strategic</span>
+                </div>
+              </div>
+            </div>
+
+            <!-- New Services -->
+            <div class="portfolio-service-link active security" data-service="compliance" data-popularity="8" data-availability="available">
+              <span class="service-icon">📋</span>
+              <div class="service-info">
+                <strong>Compliance Management</strong>
+                <p>Comprehensive regulatory compliance and risk management solutions</p>
+                <div class="service-meta">
+                  <span class="availability available">Available</span>
+                  <span class="popularity">★ 4.8</span>
+                  <span class="service-tag security">Security First</span>
+                </div>
+                <div class="service-stats">
+                  <span class="stat-chip">Multi-Regulatory</span>
+                  <span class="stat-chip">Real-time Monitoring</span>
+                </div>
+              </div>
+              <div class="service-tooltip">
+                <h5>Compliance Management</h5>
+                <p>End-to-end compliance management covering multiple regulatory frameworks with automated monitoring and reporting.</p>
+                <div class="tooltip-highlights">
+                  <div class="highlight-item">
+                    <strong>Regulatory Expertise:</strong>
+                    <p>Successfully navigated complex multi-jurisdictional compliance requirements for global enterprise</p>
+                  </div>
+                </div>
+                <ul>
+                  <li>GDPR & CCPA compliance</li>
+                  <li>HIPAA & healthcare regulations</li>
+                  <li>SOX financial compliance</li>
+                  <li>Industry-specific standards</li>
+                  <li>Automated compliance monitoring</li>
+                  <li>Audit trail management</li>
+                </ul>
+                <div class="tooltip-footer">
+                  <span class="delivery-time">⏱️ 6-12 weeks</span>
+                  <span class="complexity">🎯 Expert</span>
+                </div>
+              </div>
+            </div>
+
+            <div class="portfolio-service-link active strategic" data-service="risk-management" data-popularity="7" data-availability="available">
+              <span class="service-icon">⚠️</span>
+              <div class="service-info">
+                <strong>Risk Management</strong>
+                <p>Data risk assessment, mitigation strategies, and continuous monitoring</p>
+                <div class="service-meta">
+                  <span class="availability available">Available</span>
+                  <span class="popularity">★ 4.7</span>
+                  <span class="service-tag strategic">Risk Focus</span>
+                </div>
+                <div class="service-stats">
+                  <span class="stat-chip">Predictive Analysis</span>
+                  <span class="stat-chip">24/7 Monitoring</span>
+                </div>
+              </div>
+              <div class="service-tooltip">
+                <h5>Risk Management</h5>
+                <p>Comprehensive data risk management including threat assessment, vulnerability analysis, and mitigation strategies.</p>
+                <div class="tooltip-highlights">
+                  <div class="highlight-item">
+                    <strong>Risk Reduction:</strong>
+                    <p>Reduced client's data security risks by 85% through proactive risk management framework</p>
+                  </div>
+                </div>
+                <ul>
+                  <li>Risk assessment & analysis</li>
+                  <li>Threat modeling</li>
+                  <li>Vulnerability management</li>
+                  <li>Incident response planning</li>
+                  <li>Business continuity planning</li>
+                  <li>Insurance & liability management</li>
+                </ul>
+                <div class="tooltip-footer">
+                  <span class="delivery-time">⏱️ 4-10 weeks</span>
+                  <span class="complexity">🎯 Advanced</span>
+                </div>
+              </div>
+            </div>
+
+            <div class="portfolio-service-link beta coming-soon" data-service="ai-governance" data-popularity="9" data-availability="coming-soon">
+              <span class="service-icon">🤖</span>
+              <div class="service-info">
+                <strong>AI Governance</strong>
+                <p>Ethical AI implementation and algorithmic accountability frameworks</p>
+                <div class="service-meta">
+                  <span class="availability coming-soon">Beta Q1 2026</span>
+                  <span class="popularity">★ 4.9</span>
+                  <span class="service-tag beta">Next-Gen</span>
+                </div>
+                <div class="service-stats">
+                  <span class="stat-chip">Ethical AI</span>
+                  <span class="stat-chip">Bias Detection</span>
+                </div>
+              </div>
+              <div class="service-tooltip">
+                <h5>AI Governance</h5>
+                <p>Cutting-edge AI governance frameworks ensuring ethical, transparent, and accountable artificial intelligence implementations.</p>
+                <div class="tooltip-highlights">
+                  <div class="highlight-item">
+                    <strong>Innovation Leader:</strong>
+                    <p>First-to-market comprehensive AI governance solution with built-in bias detection and ethical monitoring</p>
+                  </div>
+                </div>
+                <ul>
+                  <li>Algorithmic accountability</li>
+                  <li>Bias detection & mitigation</li>
+                  <li>Ethical AI frameworks</li>
+                  <li>AI explainability tools</li>
+                  <li>Regulatory compliance for AI</li>
+                  <li>AI risk assessment</li>
+                </ul>
+                <div class="tooltip-footer">
+                  <span class="delivery-time">⏱️ 10-20 weeks</span>
+                  <span class="complexity">🎯 Revolutionary</span>
+                </div>
               </div>
             </div>
           </div>
+        </div>
       </div>
 
       <div class="portfolio-cta">
@@ -560,5 +1217,98 @@
   <footer>
     <p>&copy; 2025 KFSQUARE. All rights reserved.</p>
   </footer>
+
+  <!-- Chat Assistant Widget -->
+  <div id="chat-widget" class="chat-widget">
+    <div class="chat-toggle" id="chat-toggle">
+      <div class="chat-icon">
+        <span class="chat-bubble">💬</span>
+        <span class="chat-text">Need Help?</span>
+      </div>
+      <div class="notification-badge" id="chat-notification"></div>
+    </div>
+    
+    <div class="chat-container" id="chat-container">
+      <div class="chat-header">
+        <div class="chat-agent-info">
+          <div class="agent-avatar">🤖</div>
+          <div class="agent-details">
+            <div class="agent-name">KF Assistant</div>
+            <div class="agent-status">
+              <span class="status-dot online"></span>
+              Online - Ready to help
+            </div>
+          </div>
+        </div>
+        <div class="chat-actions">
+          <button class="minimize-btn" id="chat-minimize">−</button>
+          <button class="close-btn" id="chat-close">×</button>
+        </div>
+      </div>
+      
+      <div class="chat-messages" id="chat-messages">
+        <div class="welcome-message">
+          <div class="message bot-message">
+            <div class="message-avatar">🤖</div>
+            <div class="message-content">
+              <div class="message-text">
+                Hello! I'm KF Assistant, your AI-powered guide to KFSQUARE's data analytics services. How can I help you today?
+              </div>
+              <div class="message-time">Just now</div>
+            </div>
+          </div>
+          
+          <div class="quick-actions">
+            <div class="quick-action-label">Quick Actions:</div>
+            <div class="quick-buttons">
+              <button class="quick-btn" data-action="services">Our Services</button>
+              <button class="quick-btn" data-action="pricing">Get Pricing</button>
+              <button class="quick-btn" data-action="demo">Request Demo</button>
+              <button class="quick-btn" data-action="contact">Contact Sales</button>
+            </div>
+          </div>
+        </div>
+      </div>
+      
+      <div class="chat-input-container">
+        <div class="typing-indicator" id="typing-indicator" style="display: none;">
+          <div class="typing-dots">
+            <span></span><span></span><span></span>
+          </div>
+          <span class="typing-text">KF Assistant is typing...</span>
+        </div>
+        
+        <div class="chat-input-wrapper">
+          <input type="text" id="chat-input" class="chat-input" placeholder="Type your message..." maxlength="500">
+          <div class="input-actions">
+            <button class="emoji-btn" id="emoji-btn">😊</button>
+            <button class="send-btn" id="send-btn">
+              <span class="send-icon">➤</span>
+            </button>
+          </div>
+        </div>
+        
+        <div class="chat-footer">
+          <div class="powered-by">
+            Powered by KFSQUARE AI • <a href="#privacy" class="privacy-link">Privacy Policy</a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Chat Emoji Picker -->
+  <div id="emoji-picker" class="emoji-picker" style="display: none;">
+    <div class="emoji-grid">
+      <span class="emoji-option">😊</span>
+      <span class="emoji-option">👍</span>
+      <span class="emoji-option">❤️</span>
+      <span class="emoji-option">🎉</span>
+      <span class="emoji-option">💡</span>
+      <span class="emoji-option">🚀</span>
+      <span class="emoji-option">📊</span>
+      <span class="emoji-option">💰</span>
+    </div>
+  </div>
 </body>
 </html>
