@@ -1843,7 +1843,7 @@
     }
   }
 
-  // Chat Assistant Functionality
+  // Enhanced Customer Support Chat Assistant Functionality
   function initChatAssistant() {
     var chatWidget = document.getElementById('chat-widget');
     var chatToggle = document.getElementById('chat-toggle');
@@ -1858,90 +1858,307 @@
     var emojiPicker = document.getElementById('emoji-picker');
     var notificationBadge = document.getElementById('chat-notification');
     
+    // Enhanced support features
+    var supportMenuBtn = document.querySelector('.support-menu-btn');
+    var supportMenuDropdown = document.querySelector('.support-menu-dropdown');
+    var attachmentBtn = document.querySelector('.attachment-btn');
+    var voiceBtn = document.querySelector('.voice-btn');
+    var fileInput = document.getElementById('file-input');
+    var supportStatus = document.querySelector('.support-status');
+    var fileUploadArea = document.querySelector('.file-upload-area');
+    
     var isOpen = false;
     var isMinimized = false;
     var messageCount = 0;
+    var conversationHistory = [];
+    var currentTicketId = null;
+    var agentConnected = false;
+    var satisfactionShown = false;
+    var isRecording = false;
+    var mediaRecorder = null;
+    var supportOnline = true;
     
     if (!chatWidget) return;
 
-    // Predefined responses for the AI assistant
+    // Enhanced AI responses for customer support
     var aiResponses = {
-      'services': {
-        text: "KFSQUARE offers comprehensive data analytics services including:\n\n🔹 Data Engineering & Pipeline Architecture\n🔹 Predictive Analytics & Machine Learning\n🔹 LLM Integration & AI Solutions\n🔹 Business Intelligence & Visualization\n🔹 Data Governance & Security\n🔹 Strategic AI Consulting\n\nWhich service interests you most?",
-        quickActions: ['Get Pricing', 'Request Demo', 'Contact Sales']
+      'technical-support': {
+        text: "🛠️ **Technical Support Center**\n\nI can help you with:\n\n� **System Issues & Troubleshooting**\n� **Integration Problems**\n� **Performance Optimization**\n� **API Documentation & Setup**\n� **Data Pipeline Issues**\n🔧 **Platform Configuration**\n\nWhat technical issue are you experiencing?",
+        quickActions: ['System Down', 'Integration Help', 'Performance Issues', 'Create Ticket']
       },
-      'pricing': {
-        text: "Our pricing is tailored to your specific needs. Here are our typical ranges:\n\n💰 **Starter Projects**: $5,000 - $15,000\n💰 **Professional Solutions**: $15,000 - $50,000\n💰 **Enterprise Programs**: $50,000+\n\nFactors affecting pricing:\n• Project complexity\n• Data volume\n• Timeline requirements\n• Ongoing support needs\n\nWould you like a custom quote?",
-        quickActions: ['Custom Quote', 'Schedule Call', 'View Case Studies']
+      'billing-support': {
+        text: "💳 **Billing & Account Support**\n\nI can assist with:\n\n💰 **Invoice Questions & Payment Issues**\n💰 **Subscription Management**\n💰 **Usage Reports & Analytics**\n💰 **Plan Upgrades & Changes**\n💰 **Refund Requests**\n💰 **Enterprise Pricing**\n\nWhat billing question do you have?",
+        quickActions: ['View Invoice', 'Payment Issue', 'Upgrade Plan', 'Billing Ticket']
       },
-      'demo': {
-        text: "I'd be happy to arrange a personalized demo! Our demos typically include:\n\n🎯 **Live Platform Walkthrough** (30 mins)\n🎯 **Custom Use Case Discussion** (15 mins)\n🎯 **Q&A Session** (15 mins)\n\nAvailable time slots:\n• Today 2:00 PM EST\n• Tomorrow 10:00 AM EST\n• Friday 3:00 PM EST\n\nWhich works best for you?",
-        quickActions: ['Book Today', 'Book Tomorrow', 'Book Friday', 'Other Time']
+      'service-info': {
+        text: "ℹ️ **Service Information Hub**\n\nLearn about our comprehensive offerings:\n\n🌟 **Data Engineering & ETL Pipelines**\n🌟 **Advanced Analytics & ML Models**\n🌟 **Real-time Data Processing**\n🌟 **AI Integration & LLM Solutions**\n🌟 **Business Intelligence Dashboards**\n🌟 **Data Security & Compliance**\n\nWhich service would you like to explore?",
+        quickActions: ['Data Engineering', 'AI Solutions', 'Analytics', 'Security']
       },
-      'contact': {
-        text: "Connect with our sales team directly:\n\n📞 **Phone**: 215-279-2887\n📧 **Email**: customersupport@kfsquare.com\n\n**Sales Team Hours:**\n• Monday-Friday: 9 AM - 6 PM EST\n• Saturday: 10 AM - 2 PM EST\n• 24/7 Emergency Support Available\n\n**Average Response Time**: Under 2 hours\n\nHow would you prefer to connect?",
-        quickActions: ['Call Now', 'Send Email', 'Schedule Callback']
+      'live-agent': {
+        text: "👨‍💼 **Live Agent Connection**\n\n🔄 **Connecting you to our expert support team...**\n\n**Current Queue Status**: 2 people ahead\n**Estimated Wait Time**: 3-5 minutes\n**Agent Specialty**: Technical & Billing Support\n\nWhile you wait, feel free to describe your issue in detail. This will help our agent assist you faster.",
+        quickActions: ['Describe Issue', 'Upload Files', 'Cancel Request']
+      },
+      'satisfaction': {
+        text: "⭐ **How was your support experience?**\n\nYour feedback helps us improve our customer service. Please rate your experience and let us know how we did.",
+        quickActions: []
+      },
+      'ticket-created': {
+        text: "🎫 **Support Ticket Created Successfully!**\n\n**Ticket ID**: #SUP-" + Math.floor(Math.random() * 10000) + "\n**Priority**: High\n**Status**: Open\n**Assigned Agent**: Will be assigned within 1 hour\n\n📧 **Confirmation sent to your email**\n📱 **SMS updates enabled**\n\nYou can track your ticket progress anytime.",
+        quickActions: ['Track Ticket', 'Upload Files', 'Contact Agent']
       },
       'default': [
-        "I'm here to help you discover how KFSQUARE can transform your data strategy. What specific challenge are you looking to solve?",
-        "That's a great question! KFSQUARE specializes in turning complex data into actionable insights. Can you tell me more about your current data needs?",
-        "I'd love to help you explore our solutions. Are you looking for predictive analytics, data engineering, or AI integration services?",
-        "Thank you for your interest in KFSQUARE! Our AI-powered analytics solutions have helped 500+ companies achieve breakthrough results. What's your biggest data challenge?"
+        "👋 Welcome to KFSQUARE Customer Support! I'm here to provide comprehensive assistance with technical issues, billing questions, and service information. How can I help you today?",
+        "Hello! I'm your dedicated KFSQUARE support assistant. Whether you need technical help, billing support, or want to learn about our services, I'm here to help. What brings you here today?",
+        "Hi there! Thank you for contacting KFSQUARE support. Our team is available 24/7 to assist with any questions or issues you may have. How can I make your day better?",
+        "Welcome! I'm equipped to help with technical troubleshooting, account management, service information, and can connect you with live agents when needed. What can I assist you with?"
       ]
     };
 
-    // Common keywords and their responses
+    // Enhanced keyword responses for support scenarios
     var keywordResponses = {
-      'hello|hi|hey|good morning|good afternoon': 'services',
-      'price|cost|pricing|budget|expensive|cheap': 'pricing',
-      'demo|demonstration|show|preview|trial': 'demo',
-      'contact|call|phone|email|sales|support': 'contact',
-      'service|services|what do you do|offerings': 'services',
-      'help|assist|support|question': 'services'
+      'hello|hi|hey|good morning|good afternoon|help|support': 'default',
+      'technical|tech|bug|error|issue|problem|broken|not working|down': 'technical-support',
+      'billing|payment|invoice|charge|subscription|price|refund|upgrade': 'billing-support',
+      'service|services|what do you do|features|capabilities|offerings': 'service-info',
+      'agent|human|person|representative|speak to someone|live chat': 'live-agent',
+      'ticket|case|complaint|report|submit': 'technical-support'
     };
 
-    // Initialize chat
+    // Initialize enhanced chat with support features
     function initChat() {
-      // Show notification after 10 seconds
+      updateSupportStatus('online');
+      
+      // Welcome message with comprehensive support options
       setTimeout(function() {
-        if (!isOpen) {
-          showNotification();
-          expandToggleButton();
-        }
-      }, 10000);
+        var welcomeMsg = "👋 **Welcome to KFSQUARE Customer Support!**\n\nI'm your AI assistant, ready to help with:\n• 🛠️ Technical troubleshooting\n• 💳 Billing & account questions\n• ℹ️ Service information\n• 👨‍💼 Live agent connection\n\nHow can I assist you today?";
+        addMessage(welcomeMsg, false, ['Technical Support', 'Billing Help', 'Service Info', 'Live Agent']);
+      }, 1000);
 
-      // Show notification periodically if not opened
-      setInterval(function() {
-        if (!isOpen && messageCount === 0) {
+      // Show notification after 15 seconds for first-time visitors
+      setTimeout(function() {
+        if (!isOpen && messageCount === 1) {
           showNotification();
           expandToggleButton();
         }
-      }, 60000); // Every minute
+      }, 15000);
+
+      // Periodic engagement for inactive users
+      setInterval(function() {
+        if (!isOpen && messageCount <= 2) {
+          showNotification();
+          updateNotificationText("Need help? Our support team is online!");
+        }
+      }, 120000); // Every 2 minutes
     }
 
-    // Show notification badge
+    // Enhanced support status management
+    function updateSupportStatus(status) {
+      supportOnline = (status === 'online');
+      if (supportStatus) {
+        supportStatus.innerHTML = supportOnline ? 
+          '<span style="color: #00ff88;">●</span> Support Online' : 
+          '<span style="color: #ff9800;">●</span> Limited Hours';
+      }
+    }
+
+    // Enhanced notification system
     function showNotification() {
       if (notificationBadge) {
         addClass(notificationBadge, 'show');
       }
     }
 
-    // Hide notification badge
     function hideNotification() {
       if (notificationBadge) {
         removeClass(notificationBadge, 'show');
       }
     }
 
-    // Expand toggle button
+    function updateNotificationText(text) {
+      var statusElement = document.querySelector('.support-status');
+      if (statusElement) {
+        statusElement.textContent = text;
+      }
+    }
+
+    // Support menu functionality
+    function toggleSupportMenu(e) {
+      e.stopPropagation();
+      if (supportMenuDropdown) {
+        var isVisible = supportMenuDropdown.style.display === 'block';
+        supportMenuDropdown.style.display = isVisible ? 'none' : 'block';
+      }
+    }
+
+    function handleSupportMenuAction(action) {
+      if (supportMenuDropdown) {
+        supportMenuDropdown.style.display = 'none';
+      }
+      
+      switch(action) {
+        case 'my-tickets':
+          showTicketHistory();
+          break;
+        case 'live-agent':
+          handleQuickActionByText('Live Agent');
+          break;
+        case 'screen-share':
+          initiateScreenShare();
+          break;
+        case 'knowledge-base':
+          openKnowledgeBase();
+          break;
+      }
+    }
+
+    // File upload functionality
+    function handleFileUpload(event) {
+      var files = event.target.files || event.dataTransfer.files;
+      if (files && files.length > 0) {
+        for (var i = 0; i < files.length; i++) {
+          var file = files[i];
+          if (file.size > 10 * 1024 * 1024) { // 10MB limit
+            addMessage("⚠️ File too large. Maximum size is 10MB.", false);
+            continue;
+          }
+          
+          var fileName = file.name;
+          var fileSize = formatFileSize(file.size);
+          addMessage("📎 **File Uploaded**: " + fileName + " (" + fileSize + ")\n\n✅ File successfully attached to your support request.", false);
+        }
+      }
+    }
+
+    function formatFileSize(bytes) {
+      if (bytes === 0) return '0 Bytes';
+      var k = 1024;
+      var sizes = ['Bytes', 'KB', 'MB', 'GB'];
+      var i = Math.floor(Math.log(bytes) / Math.log(k));
+      return parseFloat((bytes / Math.pow(k, i)).toFixed(2)) + ' ' + sizes[i];
+    }
+
+    // Voice recording functionality
+    function toggleVoiceRecording() {
+      if (!isRecording) {
+        startVoiceRecording();
+      } else {
+        stopVoiceRecording();
+      }
+    }
+
+    function startVoiceRecording() {
+      if (navigator.mediaDevices && navigator.mediaDevices.getUserMedia) {
+        navigator.mediaDevices.getUserMedia({ audio: true })
+          .then(function(stream) {
+            isRecording = true;
+            addClass(voiceBtn, 'recording');
+            addMessage("🎤 **Voice recording started...** Click the voice button again to stop.", false);
+          })
+          .catch(function(err) {
+            addMessage("❌ Unable to access microphone. Please check your browser permissions.", false);
+          });
+      } else {
+        addMessage("❌ Voice recording not supported in your browser.", false);
+      }
+    }
+
+    function stopVoiceRecording() {
+      isRecording = false;
+      removeClass(voiceBtn, 'recording');
+      addMessage("🎵 **Voice message recorded!** Your audio message has been attached to your support request.", false);
+    }
+
+    // Ticket creation functionality
+    function createSupportTicket(category, priority, description) {
+      var ticketId = 'SUP-' + Math.floor(Math.random() * 10000);
+      currentTicketId = ticketId;
+      
+      var response = aiResponses['ticket-created'];
+      response.text = response.text.replace('#SUP-' + Math.floor(Math.random() * 10000), '#' + ticketId);
+      
+      addMessage(response.text, false, response.quickActions);
+      
+      // Simulate email notification
+      setTimeout(function() {
+        addMessage("📧 **Email Confirmation Sent**\n\nA detailed confirmation has been sent to your registered email address with ticket details and next steps.", false);
+      }, 3000);
+    }
+
+    function showTicketHistory() {
+      var historyMsg = "🎫 **Your Recent Support Tickets**\n\n" +
+        "**#SUP-8847** - Resolved (5 days ago)\n*Integration API timeout issues*\n\n" +
+        "**#SUP-8901** - In Progress (2 days ago)\n*Billing discrepancy inquiry*\n\n" +
+        "**#SUP-8923** - Open (Today)\n*Dashboard performance optimization*\n\n" +
+        "Average resolution time: **4.2 hours**";
+      
+      addMessage(historyMsg, false, ['Create New Ticket', 'Track Latest', 'Download Reports']);
+    }
+
+    function initiateScreenShare() {
+      addMessage("🖥️ **Screen Share Session**\n\n🔄 Preparing secure screen sharing connection...\n\n**Session Details:**\n• Encrypted connection established\n• Session ID: SS-" + Math.floor(Math.random() * 10000) + "\n• Support agent will join shortly\n\n*You maintain full control of what's shared*", false, ['Start Sharing', 'Audio Only', 'Cancel Session']);
+    }
+
+    function openKnowledgeBase() {
+      var kbMsg = "📚 **KFSQUARE Knowledge Base**\n\n🔍 **Popular Articles:**\n• API Integration Guide\n• Troubleshooting Connection Issues\n• Data Pipeline Best Practices\n• Security & Compliance FAQ\n• Performance Optimization Tips\n\n🎯 **Video Tutorials Available**\n📱 **Mobile App Resources**";
+      
+      addMessage(kbMsg, false, ['API Guide', 'Troubleshooting', 'Video Tutorials', 'Security FAQ']);
+    }
+
+    // Customer satisfaction survey
+    function showSatisfactionSurvey() {
+      if (satisfactionShown) return;
+      satisfactionShown = true;
+      
+      var satisfactionWidget = document.createElement('div');
+      satisfactionWidget.className = 'satisfaction-widget';
+      satisfactionWidget.innerHTML = 
+        '<div class="satisfaction-header">' +
+          '<span>⭐</span>' +
+          '<span>How was your support experience?</span>' +
+        '</div>' +
+        '<div class="satisfaction-buttons">' +
+          '<button class="satisfaction-btn" data-rating="1">😞</button>' +
+          '<button class="satisfaction-btn" data-rating="2">😐</button>' +
+          '<button class="satisfaction-btn" data-rating="3">🙂</button>' +
+          '<button class="satisfaction-btn" data-rating="4">😊</button>' +
+          '<button class="satisfaction-btn" data-rating="5">🤩</button>' +
+        '</div>';
+      
+      chatMessages.appendChild(satisfactionWidget);
+      chatMessages.scrollTop = chatMessages.scrollHeight;
+      
+      // Add click handlers for satisfaction buttons
+      var satisfactionBtns = satisfactionWidget.querySelectorAll('.satisfaction-btn');
+      for (var i = 0; i < satisfactionBtns.length; i++) {
+        addEvent(satisfactionBtns[i], 'click', function(e) {
+          var rating = e.target.getAttribute('data-rating');
+          handleSatisfactionRating(rating);
+          satisfactionWidget.style.display = 'none';
+        });
+      }
+    }
+
+    function handleSatisfactionRating(rating) {
+      var ratingText = '';
+      if (rating >= 4) {
+        ratingText = "🎉 **Thank you for the excellent rating!**\n\nWe're thrilled you had a great support experience. Your feedback helps us maintain our high service standards.";
+      } else if (rating >= 3) {
+        ratingText = "👍 **Thanks for your feedback!**\n\nWe appreciate your rating. Is there anything specific we could improve for next time?";
+      } else {
+        ratingText = "🤝 **We appreciate your honest feedback.**\n\nWe're sorry your experience wasn't perfect. A support manager will reach out within 24 hours to address your concerns.";
+      }
+      
+      addMessage(ratingText, false, rating < 3 ? ['Callback Request', 'Email Feedback', 'Speak to Manager'] : []);
+    }
+
+    // Enhanced UI management functions
     function expandToggleButton() {
       addClass(chatToggle, 'expanded');
       setTimeout(function() {
         removeClass(chatToggle, 'expanded');
-      }, 3000);
+      }, 4000);
     }
 
-    // Open chat
     function openChat() {
       isOpen = true;
       isMinimized = false;
@@ -1950,22 +2167,31 @@
       removeClass(chatContainer, 'minimized');
       hideNotification();
       
-      // Focus input
       setTimeout(function() {
         if (chatInput) chatInput.focus();
       }, 300);
+      
+      // Track engagement
+      trackEngagement('chat_opened');
     }
 
-    // Close chat
     function closeChat() {
       isOpen = false;
       removeClass(chatContainer, 'open');
       setTimeout(function() {
         chatContainer.style.display = 'none';
       }, 300);
+      
+      // Show satisfaction survey if meaningful conversation
+      if (conversationHistory.length > 4 && !satisfactionShown) {
+        setTimeout(function() {
+          showSatisfactionSurvey();
+        }, 2000);
+      }
+      
+      trackEngagement('chat_closed');
     }
 
-    // Minimize chat
     function minimizeChat() {
       isMinimized = !isMinimized;
       if (isMinimized) {
@@ -1973,9 +2199,10 @@
       } else {
         removeClass(chatContainer, 'minimized');
       }
+      trackEngagement('chat_minimized');
     }
 
-    // Add message to chat
+    // Enhanced message handling
     function addMessage(text, isUser, showQuickActions) {
       if (!chatMessages) return;
       
@@ -1985,9 +2212,10 @@
       addClass(messageDiv, isUser ? 'user-message' : 'bot-message');
       
       var currentTime = new Date().toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'});
+      var avatar = isUser ? '👤' : (agentConnected ? '👨‍💼' : '🤖');
       
       messageDiv.innerHTML = 
-        '<div class="message-avatar">' + (isUser ? '👤' : '🤖') + '</div>' +
+        '<div class="message-avatar">' + avatar + '</div>' +
         '<div class="message-content">' +
           '<div class="message-text">' + text.replace(/\n/g, '<br>') + '</div>' +
           '<div class="message-time">' + currentTime + '</div>' +
@@ -1995,7 +2223,7 @@
       
       chatMessages.appendChild(messageDiv);
       
-      // Add quick actions if specified
+      // Enhanced quick actions with better UX
       if (showQuickActions && showQuickActions.length > 0) {
         var quickActionsDiv = document.createElement('div');
         addClass(quickActionsDiv, 'quick-actions');
@@ -2009,36 +2237,44 @@
         
         chatMessages.appendChild(quickActionsDiv);
         
-        // Add click handlers for new quick buttons
         var newQuickBtns = quickActionsDiv.querySelectorAll('.quick-btn');
         for (var i = 0; i < newQuickBtns.length; i++) {
           addEvent(newQuickBtns[i], 'click', handleQuickAction);
         }
       }
       
-      // Scroll to bottom
-      chatMessages.scrollTop = chatMessages.scrollHeight;
+      // Smooth scroll to bottom
+      setTimeout(function() {
+        chatMessages.scrollTop = chatMessages.scrollHeight;
+      }, 100);
+      
+      // Add to conversation history
+      conversationHistory.push({
+        sender: isUser ? 'user' : 'ai',
+        text: text,
+        timestamp: new Date(),
+        ticketId: currentTicketId
+      });
     }
 
-    // Show typing indicator
     function showTypingIndicator() {
       if (typingIndicator) {
         typingIndicator.style.display = 'flex';
+        chatMessages.scrollTop = chatMessages.scrollHeight;
       }
     }
 
-    // Hide typing indicator
     function hideTypingIndicator() {
       if (typingIndicator) {
         typingIndicator.style.display = 'none';
       }
     }
 
-    // Generate AI response
+    // Enhanced response generation with support context
     function generateResponse(userMessage) {
       var message = userMessage.toLowerCase();
       
-      // Check for keyword matches
+      // Check for keyword matches with enhanced support context
       for (var keywords in keywordResponses) {
         var regex = new RegExp(keywords, 'i');
         if (regex.test(message)) {
@@ -2049,69 +2285,72 @@
         }
       }
       
-      // Default responses
+      // Smart default responses based on conversation context
       var defaultResponses = aiResponses.default;
-      var randomResponse = defaultResponses[Math.floor(Math.random() * defaultResponses.length)];
+      var contextualResponse = defaultResponses[Math.floor(Math.random() * defaultResponses.length)];
+      
       return {
-        text: randomResponse,
-        quickActions: ['Our Services', 'Get Pricing', 'Request Demo']
+        text: contextualResponse,
+        quickActions: ['Technical Support', 'Billing Help', 'Service Info', 'Live Agent']
       };
     }
 
-    // Handle user message
+    // Enhanced user message handling
     function handleUserMessage(message) {
       if (!message.trim()) return;
       
-      // Add user message
       addMessage(message, true);
-      
-      // Clear input
       chatInput.value = '';
       updateSendButton();
       
-      // Show typing indicator
       showTypingIndicator();
       
-      // Generate response after delay
+      // Enhanced response timing with context awareness
+      var responseDelay = 1200 + Math.random() * 1800; // 1.2-3 second delay
+      
       setTimeout(function() {
         hideTypingIndicator();
         var response = generateResponse(message);
         addMessage(response.text, false, response.quickActions);
-      }, 1000 + Math.random() * 2000); // 1-3 second delay
+      }, responseDelay);
     }
 
-    // Handle quick actions
+    // Enhanced quick action handling
     function handleQuickAction(e) {
       var action = e.target.getAttribute('data-action');
       var actionText = e.target.textContent;
-      
-      // Add user message
+      handleQuickActionByText(actionText);
+    }
+
+    function handleQuickActionByText(actionText) {
       addMessage(actionText, true);
-      
-      // Show typing indicator
       showTypingIndicator();
       
-      // Generate response
       setTimeout(function() {
         hideTypingIndicator();
-        var responseKey = action;
-        
-        // Map some actions to response keys
-        if (action === 'our-services') responseKey = 'services';
-        if (action === 'get-pricing') responseKey = 'pricing';
-        if (action === 'request-demo') responseKey = 'demo';
-        if (action === 'contact-sales') responseKey = 'contact';
-        
-        var response = aiResponses[responseKey] || aiResponses.default[0];
-        if (typeof response === 'string') {
-          response = { text: response, quickActions: ['Our Services', 'Get Pricing', 'Contact Sales'] };
-        }
-        
-        addMessage(response.text, false, response.quickActions);
+        var response = getQuickActionResponse(actionText);
+        addMessage(response.text, false, response.quickActions || []);
       }, 800 + Math.random() * 1200);
     }
 
-    // Update send button state
+    function getQuickActionResponse(actionText) {
+      var action = actionText.toLowerCase();
+      
+      // Map action text to response keys
+      if (action.includes('technical')) return aiResponses['technical-support'];
+      if (action.includes('billing')) return aiResponses['billing-support'];
+      if (action.includes('service')) return aiResponses['service-info'];
+      if (action.includes('agent')) return aiResponses['live-agent'];
+      if (action.includes('ticket')) return aiResponses['ticket-created'];
+      
+      // Default response for unmapped actions
+      return {
+        text: "Thank you for your selection. I'm processing your request and will provide detailed information shortly. How else can I assist you today?",
+        quickActions: ['More Info', 'Create Ticket', 'Live Agent']
+      };
+    }
+
+    // Enhanced utility functions
     function updateSendButton() {
       if (!sendBtn || !chatInput) return;
       
@@ -2124,7 +2363,6 @@
       }
     }
 
-    // Handle emoji selection
     function handleEmojiSelection(emoji) {
       if (chatInput) {
         chatInput.value += emoji;
@@ -2136,7 +2374,17 @@
       }
     }
 
-    // Event listeners
+    // Engagement tracking
+    function trackEngagement(action) {
+      console.log('Support Chat Engagement:', action, {
+        timestamp: new Date(),
+        messageCount: messageCount,
+        conversationLength: conversationHistory.length,
+        ticketId: currentTicketId
+      });
+    }
+
+    // Enhanced event listeners with support features
     if (chatToggle) {
       addEvent(chatToggle, 'click', function() {
         if (isOpen) {
@@ -2155,6 +2403,46 @@
       addEvent(chatMinimize, 'click', minimizeChat);
     }
 
+    // Support menu functionality
+    if (supportMenuBtn) {
+      addEvent(supportMenuBtn, 'click', toggleSupportMenu);
+    }
+
+    // File upload functionality
+    if (attachmentBtn) {
+      addEvent(attachmentBtn, 'click', function() {
+        if (fileInput) fileInput.click();
+      });
+    }
+
+    if (fileInput) {
+      addEvent(fileInput, 'change', handleFileUpload);
+    }
+
+    // File drag and drop
+    if (fileUploadArea) {
+      addEvent(fileUploadArea, 'dragover', function(e) {
+        e.preventDefault();
+        addClass(fileUploadArea, 'dragover');
+      });
+
+      addEvent(fileUploadArea, 'dragleave', function() {
+        removeClass(fileUploadArea, 'dragover');
+      });
+
+      addEvent(fileUploadArea, 'drop', function(e) {
+        e.preventDefault();
+        removeClass(fileUploadArea, 'dragover');
+        handleFileUpload(e);
+      });
+    }
+
+    // Voice recording functionality
+    if (voiceBtn) {
+      addEvent(voiceBtn, 'click', toggleVoiceRecording);
+    }
+
+    // Enhanced send button
     if (sendBtn) {
       addEvent(sendBtn, 'click', function() {
         if (chatInput && chatInput.value.trim()) {
@@ -2163,6 +2451,7 @@
       });
     }
 
+    // Enhanced chat input
     if (chatInput) {
       addEvent(chatInput, 'input', updateSendButton);
       
@@ -2173,9 +2462,18 @@
             handleUserMessage(this.value);
           }
         }
+        
+        // Keyboard shortcuts
+        if (e.ctrlKey || e.metaKey) {
+          if (e.keyCode === 85) { // Ctrl+U for file upload
+            e.preventDefault();
+            if (fileInput) fileInput.click();
+          }
+        }
       });
     }
 
+    // Enhanced emoji functionality
     if (emojiBtn) {
       addEvent(emojiBtn, 'click', function(e) {
         e.stopPropagation();
@@ -2195,29 +2493,94 @@
       }
     }
 
-    // Quick action buttons in welcome message
+    // Support menu dropdown events
+    var menuItems = document.querySelectorAll('.menu-item');
+    for (var i = 0; i < menuItems.length; i++) {
+      addEvent(menuItems[i], 'click', function() {
+        var action = this.getAttribute('data-action');
+        handleSupportMenuAction(action);
+      });
+    }
+
+    // Initial quick action buttons
     var quickBtns = document.querySelectorAll('.quick-btn');
     for (var i = 0; i < quickBtns.length; i++) {
       addEvent(quickBtns[i], 'click', handleQuickAction);
     }
 
-    // Close emoji picker when clicking outside
+    // Enhanced document event listeners
     addEvent(document, 'click', function(e) {
+      // Close emoji picker when clicking outside
       if (emojiPicker && !emojiPicker.contains(e.target) && e.target !== emojiBtn) {
         emojiPicker.style.display = 'none';
       }
-    });
-
-    // Close chat when clicking outside (optional)
-    addEvent(document, 'click', function(e) {
+      
+      // Close support menu when clicking outside
+      if (supportMenuDropdown && !supportMenuDropdown.contains(e.target) && 
+          e.target !== supportMenuBtn) {
+        supportMenuDropdown.style.display = 'none';
+      }
+      
+      // Optional: Close chat when clicking outside
       if (isOpen && !chatWidget.contains(e.target)) {
-        // closeChat(); // Uncomment if you want to close on outside click
+        // Uncomment to enable: closeChat();
       }
     });
 
-    // Initialize
+    // Support ticket modal events
+    var ticketModal = document.querySelector('.support-ticket-modal');
+    var modalClose = document.querySelector('.modal-close');
+    var ticketForm = document.querySelector('#ticket-form');
+
+    if (modalClose) {
+      addEvent(modalClose, 'click', function() {
+        if (ticketModal) ticketModal.style.display = 'none';
+      });
+    }
+
+    if (ticketForm) {
+      addEvent(ticketForm, 'submit', function(e) {
+        e.preventDefault();
+        var category = document.querySelector('#ticket-category').value;
+        var priority = document.querySelector('#ticket-priority').value;
+        var description = document.querySelector('#ticket-description').value;
+        
+        if (description.trim()) {
+          createSupportTicket(category, priority, description);
+          ticketModal.style.display = 'none';
+          ticketForm.reset();
+        }
+      });
+    }
+
+    // Enhanced keyboard shortcuts
+    addEvent(document, 'keydown', function(e) {
+      // Ctrl/Cmd + Shift + C to toggle chat
+      if ((e.ctrlKey || e.metaKey) && e.shiftKey && e.keyCode === 67) {
+        e.preventDefault();
+        if (isOpen) {
+          closeChat();
+        } else {
+          openChat();
+        }
+      }
+      
+      // Escape key to close chat
+      if (e.keyCode === 27 && isOpen) {
+        closeChat();
+      }
+    });
+
+    // Initialize enhanced chat system
     initChat();
     updateSendButton();
+    
+    // Show welcome message after a brief delay
+    setTimeout(function() {
+      if (!isOpen) {
+        expandToggleButton();
+      }
+    }, 5000);
   }
 
   // Initialize when DOM is ready

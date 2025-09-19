@@ -4,16 +4,58 @@
   "description": "KFSQUARE - Data Analytics & Predictive Modeling website",
   "main": "server.js",
   "scripts": {
-    "start": "node server.js",
-    "dev": "node server.js",
-    "serve": "python3 -m http.server 8000"
+    "start": "cross-env NODE_ENV=production node server.js",
+    "dev": "cross-env NODE_ENV=development node server.js",
+    "serve": "python3 -m http.server 8080 || python -m http.server 8080",
+    "serve:win": "python -m http.server 8080",
+    "serve:py3": "python3 -m http.server 8080",
+    "build": "echo 'No build process needed - static files ready'",
+    "test": "echo 'Tests not implemented yet'",
+    "prestart": "echo 'Starting KFSQUARE server...'",
+    "postinstall": "echo 'Dependencies installed successfully'",
+    "setup": "bash setup-cross-platform.sh || setup-cross-platform.sh",
+    "setup:py": "python setup.py --setup || python3 setup.py --setup",
+    "deploy": "bash deploy-universal.sh || deploy-universal.sh",
+    "deploy:local": "bash deploy-universal.sh --local",
+    "deploy:docker": "bash deploy-universal.sh --docker",
+    "deploy:heroku": "bash deploy-universal.sh --cloud heroku",
+    "deploy:vercel": "bash deploy-universal.sh --cloud vercel",
+    "health": "curl -f http://localhost:3000/health || python setup.py --health",
+    "install:python": "pip install -r requirements-minimal.txt || pip3 install -r requirements-minimal.txt",
+    "docker:build": "docker build -t kfsquare:latest .",
+    "docker:run": "docker run -p 3000:3000 kfsquare:latest",
+    "docker:compose": "docker-compose up -d",
+    "platform:detect": "bash setup-cross-platform.sh | grep 'Detected OS'",
+    "platform:info": "node -e \"console.log('OS:', process.platform, 'Arch:', process.arch, 'Node:', process.version)\""
   },
   "dependencies": {
     "@sendgrid/mail": "^8.1.5",
     "body-parser": "^2.2.0",
+    "compression": "^1.7.4",
     "cors": "^2.8.5",
+    "cross-env": "^7.0.3",
     "dotenv": "^17.2.1",
     "express": "^5.1.0",
-    "express-validator": "^7.2.1"
-  }
+    "express-rate-limit": "^7.4.1",
+    "express-validator": "^7.2.1",
+    "helmet": "^8.0.0"
+  },
+  "engines": {
+    "node": ">=18.0.0",
+    "npm": ">=8.0.0"
+  },
+  "keywords": [
+    "data-analytics",
+    "predictive-modeling",
+    "machine-learning",
+    "business-intelligence",
+    "kfsquare"
+  ],
+  "author": "KFSQUARE",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/kfsquare/kfsquare-site.git"
+  },
+  "homepage": "https://kfsquare.com"
 }

@@ -1,0 +1,42 @@
+# KFSQUARE Docker Compose - Cross-Platform Deployment
+version: '3.8'
+
+services:
+  kfsquare-web:
+    build: 
+      context: .
+      dockerfile: Dockerfile
+      platforms:
+        - linux/amd64
+        - linux/arm64
+    container_name: kfsquare-production
+    restart: unless-stopped
+    ports:
+      - "3000:3000"
+    environment:
+      - NODE_ENV=production
+      - PORT=3000
+    env_file:
+      - .env
+    volumes:
+      - ./logs:/app/logs
+    networks:
+      - kfsquare-network
+    healthcheck:
+      test: ["CMD", "node", "-e", "require('http').get('http://localhost:3000/health', (res) => { process.exit(res.statusCode === 200 ? 0 : 1) })"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 40s
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.kfsquare.rule=Host(`kfsquare.com`)"
+      - "traefik.http.routers.kfsquare.tls=true"
+      - "traefik.http.routers.kfsquare.tls.certresolver=letsencrypt"
+
+networks:
+  kfsquare-network:
+    driver: bridge
+
+volumes:
+  logs:
