@@ -1,0 +1,31 @@
+# KFSQUARE Python Requirements
+# For fallback HTTP server and development utilities
+
+# Web server (fallback option)
+# Note: Python's built-in http.server module is used, no additional packages needed
+
+# Optional development and deployment utilities
+requests>=2.31.0          # HTTP library for API testing and health checks
+python-dotenv>=1.0.0      # Environment variable management (optional)
+jinja2>=3.1.2             # Template engine (for future enhancements)
+click>=8.1.0              # Command-line interface creation
+colorama>=0.4.6           # Cross-platform colored terminal text
+psutil>=5.9.0             # System and process monitoring
+watchdog>=3.0.0           # File system event monitoring (development)
+
+# Development and testing (optional)
+pytest>=7.4.0             # Testing framework
+black>=23.0.0             # Code formatter
+flake8>=6.0.0             # Linting tool
+mypy>=1.5.0               # Type checking
+
+# Documentation (optional)
+mkdocs>=1.5.0             # Documentation generator
+mkdocs-material>=9.2.0    # Material theme for MkDocs
+
+# Security scanning (optional)
+bandit>=1.7.0             # Security linter
+safety>=2.3.0             # Dependency vulnerability scanner
+
+# Cross-platform compatibility
+pathlib2>=2.3.7; python_version < "3.6"  # Backport for older Python versions

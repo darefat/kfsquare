@@ -1,0 +1,10 @@
+# KFSQUARE Minimal Python Requirements
+# Essential packages only for basic functionality
+
+# Core utilities
+requests>=2.31.0          # HTTP requests for health checks and API testing
+python-dotenv>=1.0.0      # Environment variable management
+colorama>=0.4.6           # Cross-platform colored output
+
+# Note: Python's built-in http.server module is used for the fallback web server
+# No additional web server packages are required for basic functionality
