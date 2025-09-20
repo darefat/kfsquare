@@ -1,0 +1,635 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>Portfolio - KFSQUARE | Our Work & Success Stories</title>
+    <meta name="description" content="Explore KFSQUARE's portfolio of successful data analytics, AI, and machine learning projects across various industries.">
+    <link rel="stylesheet" href="styles.css">
+    <link rel="icon" href="favicon.ico" type="image/x-icon">
+</head>
+<body>
+    <!-- Navigation -->
+    <nav class="navbar">
+        <div class="nav-container">
+            <div class="nav-logo">
+                <a href="index.html">KFSQUARE</a>
+            </div>
+            <ul class="nav-menu" id="nav-menu">
+                <li class="nav-item">
+                    <a href="index.html" class="nav-link">Home</a>
+                </li>
+                <li class="nav-item">
+                    <a href="about.html" class="nav-link">About</a>
+                </li>
+                <li class="nav-item">
+                    <a href="services.html" class="nav-link">Services</a>
+                </li>
+                <li class="nav-item">
+                    <a href="portfolio.html" class="nav-link active">Portfolio</a>
+                </li>
+                <li class="nav-item">
+                    <a href="team.html" class="nav-link">Team</a>
+                </li>
+                <li class="nav-item">
+                    <a href="contact.html" class="nav-link">Contact</a>
+                </li>
+            </ul>
+            <div class="hamburger" id="hamburger">
+                <span class="bar"></span>
+                <span class="bar"></span>
+                <span class="bar"></span>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Page Header -->
+    <section class="page-header">
+        <div class="container">
+            <h1>Our Portfolio</h1>
+            <p>Showcasing successful data transformations and AI implementations</p>
+            <nav aria-label="breadcrumb">
+                <ol class="breadcrumb">
+                    <li><a href="index.html">Home</a></li>
+                    <li class="active">Portfolio</li>
+                </ol>
+            </nav>
+        </div>
+    </section>
+
+    <!-- Portfolio Content -->
+    <main class="main-content">
+        <!-- Portfolio Stats -->
+        <section class="portfolio-stats">
+            <div class="container">
+                <div class="stats-grid">
+                    <div class="stat-item">
+                        <div class="stat-number">500+</div>
+                        <div class="stat-label">Projects Completed</div>
+                    </div>
+                    <div class="stat-item">
+                        <div class="stat-number">95%</div>
+                        <div class="stat-label">Client Satisfaction</div>
+                    </div>
+                    <div class="stat-item">
+                        <div class="stat-number">40+</div>
+                        <div class="stat-label">Industries Served</div>
+                    </div>
+                    <div class="stat-item">
+                        <div class="stat-number">$50M+</div>
+                        <div class="stat-label">Value Generated</div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Portfolio Filter -->
+        <section class="portfolio-filter">
+            <div class="container">
+                <div class="filter-buttons">
+                    <button class="filter-btn active" data-filter="all">All Projects</button>
+                    <button class="filter-btn" data-filter="analytics">Data Analytics</button>
+                    <button class="filter-btn" data-filter="ml">Machine Learning</button>
+                    <button class="filter-btn" data-filter="ai">AI Integration</button>
+                    <button class="filter-btn" data-filter="bi">Business Intelligence</button>
+                </div>
+            </div>
+        </section>
+
+        <!-- Featured Projects -->
+        <section class="featured-projects">
+            <div class="container">
+                <h2 class="section-title">Featured Projects</h2>
+                <div class="projects-grid">
+                    <!-- Healthcare Analytics Project -->
+                    <div class="project-card featured" data-category="analytics ml">
+                        <div class="project-image">
+                            <div class="image-placeholder">
+                                <div class="placeholder-content">
+                                    <i class="project-icon">🏥</i>
+                                    <span class="project-type">Healthcare Analytics</span>
+                                </div>
+                            </div>
+                            <div class="project-overlay">
+                                <button class="view-project-btn" data-project="healthcare-analytics">View Details</button>
+                            </div>
+                        </div>
+                        <div class="project-info">
+                            <div class="project-category">Healthcare • Machine Learning</div>
+                            <h3>Predictive Patient Outcomes Platform</h3>
+                            <p>Developed an AI-powered system that reduced readmission rates by 35% through predictive analytics and early intervention recommendations.</p>
+                            <div class="project-metrics">
+                                <div class="metric">
+                                    <span class="metric-value">35%</span>
+                                    <span class="metric-label">Readmission Reduction</span>
+                                </div>
+                                <div class="metric">
+                                    <span class="metric-value">$2.5M</span>
+                                    <span class="metric-label">Annual Savings</span>
+                                </div>
+                            </div>
+                            <div class="project-tags">
+                                <span class="tag">Python</span>
+                                <span class="tag">TensorFlow</span>
+                                <span class="tag">AWS</span>
+                                <span class="tag">HIPAA Compliant</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Financial Fraud Detection -->
+                    <div class="project-card featured" data-category="ml ai">
+                        <div class="project-image">
+                            <div class="image-placeholder">
+                                <div class="placeholder-content">
+                                    <i class="project-icon">🏦</i>
+                                    <span class="project-type">Financial AI</span>
+                                </div>
+                            </div>
+                            <div class="project-overlay">
+                                <button class="view-project-btn" data-project="fraud-detection">View Details</button>
+                            </div>
+                        </div>
+                        <div class="project-info">
+                            <div class="project-category">Finance • AI Integration</div>
+                            <h3>Real-time Fraud Detection System</h3>
+                            <p>Implemented machine learning algorithms that detect fraudulent transactions with 99.2% accuracy, processing 10M+ transactions daily.</p>
+                            <div class="project-metrics">
+                                <div class="metric">
+                                    <span class="metric-value">99.2%</span>
+                                    <span class="metric-label">Detection Accuracy</span>
+                                </div>
+                                <div class="metric">
+                                    <span class="metric-value">10M+</span>
+                                    <span class="metric-label">Daily Transactions</span>
+                                </div>
+                            </div>
+                            <div class="project-tags">
+                                <span class="tag">Real-time ML</span>
+                                <span class="tag">Kafka</span>
+                                <span class="tag">Spark</span>
+                                <span class="tag">Azure</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Retail Analytics Dashboard -->
+                    <div class="project-card" data-category="bi analytics">
+                        <div class="project-image">
+                            <div class="image-placeholder">
+                                <div class="placeholder-content">
+                                    <i class="project-icon">🛒</i>
+                                    <span class="project-type">Retail BI</span>
+                                </div>
+                            </div>
+                            <div class="project-overlay">
+                                <button class="view-project-btn" data-project="retail-dashboard">View Details</button>
+                            </div>
+                        </div>
+                        <div class="project-info">
+                            <div class="project-category">Retail • Business Intelligence</div>
+                            <h3>Omnichannel Analytics Platform</h3>
+                            <p>Built comprehensive dashboards providing 360-degree customer view, increasing sales conversion by 28% and customer retention by 22%.</p>
+                            <div class="project-metrics">
+                                <div class="metric">
+                                    <span class="metric-value">28%</span>
+                                    <span class="metric-label">Sales Increase</span>
+                                </div>
+                                <div class="metric">
+                                    <span class="metric-value">22%</span>
+                                    <span class="metric-label">Retention Boost</span>
+                                </div>
+                            </div>
+                            <div class="project-tags">
+                                <span class="tag">Tableau</span>
+                                <span class="tag">Snowflake</span>
+                                <span class="tag">dbt</span>
+                                <span class="tag">Real-time</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Manufacturing IoT Analytics -->
+                    <div class="project-card" data-category="analytics ai">
+                        <div class="project-image">
+                            <div class="image-placeholder">
+                                <div class="placeholder-content">
+                                    <i class="project-icon">🏭</i>
+                                    <span class="project-type">Manufacturing IoT</span>
+                                </div>
+                            </div>
+                            <div class="project-overlay">
+                                <button class="view-project-btn" data-project="iot-analytics">View Details</button>
+                            </div>
+                        </div>
+                        <div class="project-info">
+                            <div class="project-category">Manufacturing • IoT Analytics</div>
+                            <h3>Predictive Maintenance System</h3>
+                            <p>IoT-powered predictive maintenance solution reducing equipment downtime by 45% and maintenance costs by 30% across 15 manufacturing plants.</p>
+                            <div class="project-metrics">
+                                <div class="metric">
+                                    <span class="metric-value">45%</span>
+                                    <span class="metric-label">Downtime Reduction</span>
+                                </div>
+                                <div class="metric">
+                                    <span class="metric-value">30%</span>
+                                    <span class="metric-label">Cost Savings</span>
+                                </div>
+                            </div>
+                            <div class="project-tags">
+                                <span class="tag">IoT</span>
+                                <span class="tag">Time Series</span>
+                                <span class="tag">Edge Computing</span>
+                                <span class="tag">Docker</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- E-commerce Recommendation Engine -->
+                    <div class="project-card" data-category="ml ai">
+                        <div class="project-image">
+                            <div class="image-placeholder">
+                                <div class="placeholder-content">
+                                    <i class="project-icon">🎯</i>
+                                    <span class="project-type">Recommendation AI</span>
+                                </div>
+                            </div>
+                            <div class="project-overlay">
+                                <button class="view-project-btn" data-project="recommendation-engine">View Details</button>
+                            </div>
+                        </div>
+                        <div class="project-info">
+                            <div class="project-category">E-commerce • Machine Learning</div>
+                            <h3>Personalized Recommendation Engine</h3>
+                            <p>Advanced ML recommendation system increasing average order value by 42% and customer engagement by 65% for major e-commerce platform.</p>
+                            <div class="project-metrics">
+                                <div class="metric">
+                                    <span class="metric-value">42%</span>
+                                    <span class="metric-label">AOV Increase</span>
+                                </div>
+                                <div class="metric">
+                                    <span class="metric-value">65%</span>
+                                    <span class="metric-label">Engagement Boost</span>
+                                </div>
+                            </div>
+                            <div class="project-tags">
+                                <span class="tag">Collaborative Filtering</span>
+                                <span class="tag">Deep Learning</span>
+                                <span class="tag">A/B Testing</span>
+                                <span class="tag">Redis</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Supply Chain Optimization -->
+                    <div class="project-card" data-category="analytics ai">
+                        <div class="project-image">
+                            <div class="image-placeholder">
+                                <div class="placeholder-content">
+                                    <i class="project-icon">🚛</i>
+                                    <span class="project-type">Supply Chain AI</span>
+                                </div>
+                            </div>
+                            <div class="project-overlay">
+                                <button class="view-project-btn" data-project="supply-chain">View Details</button>
+                            </div>
+                        </div>
+                        <div class="project-info">
+                            <div class="project-category">Logistics • AI Optimization</div>
+                            <h3>AI-Powered Supply Chain Optimization</h3>
+                            <p>Intelligent demand forecasting and route optimization system reducing logistics costs by 25% and improving delivery times by 18%.</p>
+                            <div class="project-metrics">
+                                <div class="metric">
+                                    <span class="metric-value">25%</span>
+                                    <span class="metric-label">Cost Reduction</span>
+                                </div>
+                                <div class="metric">
+                                    <span class="metric-value">18%</span>
+                                    <span class="metric-label">Faster Delivery</span>
+                                </div>
+                            </div>
+                            <div class="project-tags">
+                                <span class="tag">Optimization</span>
+                                <span class="tag">Forecasting</span>
+                                <span class="tag">Graph Theory</span>
+                                <span class="tag">Kubernetes</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Project Detail Modal -->
+        <div id="project-modal" class="project-modal" style="display: none;">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h2 id="project-modal-title">Project Details</h2>
+                    <button class="modal-close">&times;</button>
+                </div>
+                <div class="modal-body" id="project-modal-body">
+                    <!-- Project details will be loaded here -->
+                </div>
+                <div class="modal-footer">
+                    <button class="btn btn-secondary modal-close">Close</button>
+                    <button class="btn btn-primary" onclick="openChat('I\'d like to discuss a similar project')">Discuss Similar Project</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Client Testimonials -->
+        <section class="testimonials-section">
+            <div class="container">
+                <h2 class="section-title">What Our Clients Say</h2>
+                <div class="testimonials-grid">
+                    <div class="testimonial-card">
+                        <div class="testimonial-content">
+                            <div class="quote-icon">"</div>
+                            <p>"KFSQUARE's predictive analytics solution transformed our patient care approach. The 35% reduction in readmissions has been game-changing for our hospital system."</p>
+                        </div>
+                        <div class="testimonial-author">
+                            <div class="author-info">
+                                <h4>Dr. Sarah Johnson</h4>
+                                <span>Chief Medical Officer</span>
+                                <span>Metro Health System</span>
+                            </div>
+                            <div class="testimonial-rating">
+                                ⭐⭐⭐⭐⭐
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="testimonial-card">
+                        <div class="testimonial-content">
+                            <div class="quote-icon">"</div>
+                            <p>"The fraud detection system has been incredibly effective. We've seen a dramatic reduction in false positives while catching more actual fraud attempts."</p>
+                        </div>
+                        <div class="testimonial-author">
+                            <div class="author-info">
+                                <h4>Michael Chen</h4>
+                                <span>VP of Risk Management</span>
+                                <span>Global Finance Corp</span>
+                            </div>
+                            <div class="testimonial-rating">
+                                ⭐⭐⭐⭐⭐
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="testimonial-card">
+                        <div class="testimonial-content">
+                            <div class="quote-icon">"</div>
+                            <p>"The omnichannel analytics platform gave us insights we never had before. Our sales and customer retention numbers speak for themselves."</p>
+                        </div>
+                        <div class="testimonial-author">
+                            <div class="author-info">
+                                <h4>Lisa Rodriguez</h4>
+                                <span>VP of Marketing</span>
+                                <span>Premium Retail Co</span>
+                            </div>
+                            <div class="testimonial-rating">
+                                ⭐⭐⭐⭐⭐
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Technologies Used -->
+        <section class="technologies-section">
+            <div class="container">
+                <h2 class="section-title">Technologies We Master</h2>
+                <div class="tech-categories">
+                    <div class="tech-category">
+                        <h3>Programming Languages</h3>
+                        <div class="tech-tags">
+                            <span class="tech-tag">Python</span>
+                            <span class="tech-tag">R</span>
+                            <span class="tech-tag">SQL</span>
+                            <span class="tech-tag">JavaScript</span>
+                            <span class="tech-tag">Scala</span>
+                            <span class="tech-tag">Java</span>
+                        </div>
+                    </div>
+
+                    <div class="tech-category">
+                        <h3>ML/AI Frameworks</h3>
+                        <div class="tech-tags">
+                            <span class="tech-tag">TensorFlow</span>
+                            <span class="tech-tag">PyTorch</span>
+                            <span class="tech-tag">Scikit-learn</span>
+                            <span class="tech-tag">Keras</span>
+                            <span class="tech-tag">XGBoost</span>
+                            <span class="tech-tag">Hugging Face</span>
+                        </div>
+                    </div>
+
+                    <div class="tech-category">
+                        <h3>Cloud Platforms</h3>
+                        <div class="tech-tags">
+                            <span class="tech-tag">AWS</span>
+                            <span class="tech-tag">Azure</span>
+                            <span class="tech-tag">Google Cloud</span>
+                            <span class="tech-tag">Snowflake</span>
+                            <span class="tech-tag">Databricks</span>
+                        </div>
+                    </div>
+
+                    <div class="tech-category">
+                        <h3>Visualization Tools</h3>
+                        <div class="tech-tags">
+                            <span class="tech-tag">Tableau</span>
+                            <span class="tech-tag">Power BI</span>
+                            <span class="tech-tag">D3.js</span>
+                            <span class="tech-tag">Plotly</span>
+                            <span class="tech-tag">Grafana</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Call to Action -->
+        <section class="cta-section">
+            <div class="container">
+                <div class="cta-content">
+                    <h2>Ready to Start Your Next Project?</h2>
+                    <p>Let's discuss how we can help you achieve similar results with data-driven solutions.</p>
+                    <div class="cta-buttons">
+                        <a href="contact.html" class="btn btn-primary">Start Your Project</a>
+                        <button class="btn btn-secondary" onclick="openChat('I\'d like to discuss a project similar to your portfolio examples')">Chat About Your Needs</button>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-section">
+                    <h3>KFSQUARE</h3>
+                    <p>Transforming businesses through intelligent data solutions and advanced analytics.</p>
+                    <div class="social-links">
+                        <a href="#" aria-label="LinkedIn">📧</a>
+                        <a href="#" aria-label="Twitter">📱</a>
+                        <a href="#" aria-label="GitHub">💻</a>
+                    </div>
+                </div>
+                <div class="footer-section">
+                    <h4>Services</h4>
+                    <ul>
+                        <li><a href="services.html">Data Analytics</a></li>
+                        <li><a href="services.html">Machine Learning</a></li>
+                        <li><a href="services.html">AI Integration</a></li>
+                        <li><a href="services.html">Business Intelligence</a></li>
+                    </ul>
+                </div>
+                <div class="footer-section">
+                    <h4>Company</h4>
+                    <ul>
+                        <li><a href="about.html">About Us</a></li>
+                        <li><a href="team.html">Our Team</a></li>
+                        <li><a href="portfolio.html">Portfolio</a></li>
+                        <li><a href="contact.html">Contact</a></li>
+                    </ul>
+                </div>
+                <div class="footer-section">
+                    <h4>Contact Info</h4>
+                    <div class="contact-info">
+                        <p>📞 215-279-2887</p>
+                        <p>📧 customersupport@kfsquare.com</p>
+                        <p>🏢 Small Business & Veteran Owned</p>
+                    </div>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2024 KFSQUARE. All rights reserved. | <a href="privacy.html">Privacy Policy</a> | <a href="terms.html">Terms of Service</a></p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Enhanced Customer Support Chat Widget -->
+    <div id="chat-widget" class="chat-widget">
+        <div id="chat-toggle" class="chat-toggle">
+            <div class="chat-icon">
+                <span class="chat-bubble">💬</span>
+                <span class="chat-text">Support</span>
+            </div>
+            <div class="support-status">
+                <span style="color: #00ff88;">●</span> Online
+            </div>
+            <div id="chat-notification" class="notification-badge">1</div>
+        </div>
+
+        <div id="chat-container" class="chat-container">
+            <div class="chat-header">
+                <div class="chat-title">
+                    <span class="ai-indicator"></span>
+                    Customer Support
+                </div>
+                <div class="chat-actions">
+                    <button class="support-menu-btn" title="Support Menu">⚙️</button>
+                    <button id="chat-minimize" class="minimize-btn" title="Minimize">−</button>
+                    <button id="chat-close" class="close-btn" title="Close">×</button>
+                </div>
+            </div>
+
+            <!-- Support Menu Dropdown -->
+            <div class="support-menu-dropdown" style="display: none;">
+                <div class="menu-item" data-action="my-tickets">
+                    <span class="menu-icon">🎫</span>
+                    <span>My Tickets</span>
+                </div>
+                <div class="menu-item" data-action="live-agent">
+                    <span class="menu-icon">👨‍💼</span>
+                    <span>Live Agent</span>
+                </div>
+                <div class="menu-item" data-action="screen-share">
+                    <span class="menu-icon">🖥️</span>
+                    <span>Screen Share</span>
+                </div>
+                <div class="menu-item" data-action="knowledge-base">
+                    <span class="menu-icon">📚</span>
+                    <span>Knowledge Base</span>
+                </div>
+            </div>
+
+            <div id="chat-messages" class="chat-messages">
+                <!-- Messages will be dynamically added here -->
+            </div>
+
+            <div id="typing-indicator" class="typing-indicator" style="display: none;">
+                <div class="typing-dots">
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                </div>
+                <span>Support is typing...</span>
+            </div>
+
+            <!-- Enhanced Chat Input with File Upload and Voice -->
+            <div class="chat-input-container">
+                <!-- File Upload Area -->
+                <div class="file-upload-area" style="display: none;">
+                    <div class="upload-content">
+                        <div class="upload-icon">📎</div>
+                        <div class="upload-text">Drop files here or click to upload</div>
+                        <div class="upload-actions">
+                            <button class="upload-cancel-btn">Cancel</button>
+                        </div>
+                    </div>
+                    <input type="file" id="file-input" multiple accept=".jpg,.jpeg,.png,.pdf,.doc,.docx,.txt">
+                </div>
+
+                <!-- Agent Transfer Notification -->
+                <div class="agent-transfer-notification" style="display: none;">
+                    <div class="transfer-content">
+                        <div class="transfer-icon">🔄</div>
+                        <span>Connecting you to a live agent...</span>
+                    </div>
+                </div>
+
+                <div class="chat-input-wrapper">
+                    <input type="text" id="chat-input" placeholder="Type your message..." maxlength="500">
+                    <div class="input-actions">
+                        <button class="attachment-btn" title="Attach File">📎</button>
+                        <button class="voice-btn" title="Voice Message">🎤</button>
+                        <button class="emoji-btn" title="Emojis">😊</button>
+                        <button id="send-btn" class="send-btn" title="Send Message">📤</button>
+                    </div>
+                </div>
+
+                <!-- Emoji Picker -->
+                <div id="emoji-picker" class="emoji-picker" style="display: none;">
+                    <div class="emoji-grid">
+                        <span class="emoji-option">😊</span>
+                        <span class="emoji-option">👍</span>
+                        <span class="emoji-option">❤️</span>
+                        <span class="emoji-option">😂</span>
+                        <span class="emoji-option">🎉</span>
+                        <span class="emoji-option">🤔</span>
+                        <span class="emoji-option">👏</span>
+                        <span class="emoji-option">🙏</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Enhanced Footer with Support Info -->
+            <div class="chat-footer">
+                <div class="support-info">
+                    <div class="response-time">⚡ Avg. response time: 2 minutes</div>
+                    <div class="powered-by">
+                        Powered by KFSQUARE AI • <a href="privacy.html" class="privacy-link">Privacy</a> • <a href="contact.html" class="support-center-link">Support Center</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="index.js"></script>
+</body>
+</html>

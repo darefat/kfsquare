@@ -1,0 +1,566 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>Services - KFSQUARE | Data Analytics & AI Solutions</title>
+    <meta name="description" content="Explore KFSQUARE's comprehensive data analytics, machine learning, and AI services designed to transform your business.">
+    <link rel="stylesheet" href="styles.css">
+    <link rel="icon" href="favicon.ico" type="image/x-icon">
+</head>
+<body>
+    <!-- Navigation -->
+    <nav class="navbar">
+        <div class="nav-container">
+            <div class="nav-logo">
+                <a href="index.html">KFSQUARE</a>
+            </div>
+            <ul class="nav-menu" id="nav-menu">
+                <li class="nav-item">
+                    <a href="index.html" class="nav-link">Home</a>
+                </li>
+                <li class="nav-item">
+                    <a href="about.html" class="nav-link">About</a>
+                </li>
+                <li class="nav-item">
+                    <a href="services.html" class="nav-link active">Services</a>
+                </li>
+                <li class="nav-item">
+                    <a href="portfolio.html" class="nav-link">Portfolio</a>
+                </li>
+                <li class="nav-item">
+                    <a href="team.html" class="nav-link">Team</a>
+                </li>
+                <li class="nav-item">
+                    <a href="contact.html" class="nav-link">Contact</a>
+                </li>
+            </ul>
+            <div class="hamburger" id="hamburger">
+                <span class="bar"></span>
+                <span class="bar"></span>
+                <span class="bar"></span>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Page Header -->
+    <section class="page-header">
+        <div class="container">
+            <h1>Our Services</h1>
+            <p>Comprehensive data analytics and AI solutions tailored for your business</p>
+            <nav aria-label="breadcrumb">
+                <ol class="breadcrumb">
+                    <li><a href="index.html">Home</a></li>
+                    <li class="active">Services</li>
+                </ol>
+            </nav>
+        </div>
+    </section>
+
+    <!-- Services Overview -->
+    <main class="main-content">
+        <section class="services-intro">
+            <div class="container">
+                <div class="intro-content">
+                    <h2>Transforming Data into Strategic Advantage</h2>
+                    <p class="lead">Our comprehensive suite of data analytics and AI services helps businesses unlock the full potential of their data, drive innovation, and achieve measurable results.</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Core Services Grid -->
+        <section class="services-grid-section">
+            <div class="container">
+                <h2 class="section-title">Core Services</h2>
+                <div class="services-grid">
+                    <!-- Data Analytics Service -->
+                    <div class="service-card featured">
+                        <div class="service-icon">📊</div>
+                        <h3>Data Analytics</h3>
+                        <p>Transform raw data into actionable insights with our comprehensive analytics solutions.</p>
+                        <ul class="service-features">
+                            <li>✓ Descriptive Analytics</li>
+                            <li>✓ Predictive Modeling</li>
+                            <li>✓ Statistical Analysis</li>
+                            <li>✓ Data Visualization</li>
+                        </ul>
+                        <div class="service-pricing">
+                            <span class="price">Starting at $5,000</span>
+                            <span class="price-note">/project</span>
+                        </div>
+                        <div class="service-actions">
+                            <button class="btn btn-primary service-btn" data-service="data-analytics">Learn More</button>
+                            <button class="btn btn-secondary" onclick="openChat('I\'m interested in Data Analytics services')">Get Quote</button>
+                        </div>
+                    </div>
+
+                    <!-- Machine Learning Service -->
+                    <div class="service-card featured">
+                        <div class="service-icon">🤖</div>
+                        <h3>Machine Learning</h3>
+                        <p>Leverage AI and ML algorithms to automate processes and predict future outcomes.</p>
+                        <ul class="service-features">
+                            <li>✓ Custom ML Models</li>
+                            <li>✓ Natural Language Processing</li>
+                            <li>✓ Computer Vision</li>
+                            <li>✓ Recommendation Systems</li>
+                        </ul>
+                        <div class="service-pricing">
+                            <span class="price">Starting at $10,000</span>
+                            <span class="price-note">/project</span>
+                        </div>
+                        <div class="service-actions">
+                            <button class="btn btn-primary service-btn" data-service="machine-learning">Learn More</button>
+                            <button class="btn btn-secondary" onclick="openChat('I\'m interested in Machine Learning services')">Get Quote</button>
+                        </div>
+                    </div>
+
+                    <!-- Business Intelligence Service -->
+                    <div class="service-card">
+                        <div class="service-icon">📈</div>
+                        <h3>Business Intelligence</h3>
+                        <p>Create comprehensive dashboards and reporting solutions for data-driven decisions.</p>
+                        <ul class="service-features">
+                            <li>✓ Interactive Dashboards</li>
+                            <li>✓ Real-time Monitoring</li>
+                            <li>✓ KPI Tracking</li>
+                            <li>✓ Executive Reporting</li>
+                        </ul>
+                        <div class="service-pricing">
+                            <span class="price">Starting at $3,000</span>
+                            <span class="price-note">/month</span>
+                        </div>
+                        <div class="service-actions">
+                            <button class="btn btn-primary service-btn" data-service="business-intelligence">Learn More</button>
+                            <button class="btn btn-secondary" onclick="openChat('I\'m interested in Business Intelligence services')">Get Quote</button>
+                        </div>
+                    </div>
+
+                    <!-- Data Engineering Service -->
+                    <div class="service-card">
+                        <div class="service-icon">⚙️</div>
+                        <h3>Data Engineering</h3>
+                        <p>Build robust data pipelines and infrastructure for scalable analytics solutions.</p>
+                        <ul class="service-features">
+                            <li>✓ ETL/ELT Pipelines</li>
+                            <li>✓ Data Warehousing</li>
+                            <li>✓ Cloud Architecture</li>
+                            <li>✓ Data Quality Assurance</li>
+                        </ul>
+                        <div class="service-pricing">
+                            <span class="price">Starting at $8,000</span>
+                            <span class="price-note">/project</span>
+                        </div>
+                        <div class="service-actions">
+                            <button class="btn btn-primary service-btn" data-service="data-engineering">Learn More</button>
+                            <button class="btn btn-secondary" onclick="openChat('I\'m interested in Data Engineering services')">Get Quote</button>
+                        </div>
+                    </div>
+
+                    <!-- AI Integration Service -->
+                    <div class="service-card">
+                        <div class="service-icon">🧠</div>
+                        <h3>AI Integration</h3>
+                        <p>Seamlessly integrate AI capabilities into your existing business processes and systems.</p>
+                        <ul class="service-features">
+                            <li>✓ Large Language Models</li>
+                            <li>✓ Generative AI Solutions</li>
+                            <li>✓ API Integration</li>
+                            <li>✓ Custom AI Workflows</li>
+                        </ul>
+                        <div class="service-pricing">
+                            <span class="price">Starting at $15,000</span>
+                            <span class="price-note">/project</span>
+                        </div>
+                        <div class="service-actions">
+                            <button class="btn btn-primary service-btn" data-service="ai-integration">Learn More</button>
+                            <button class="btn btn-secondary" onclick="openChat('I\'m interested in AI Integration services')">Get Quote</button>
+                        </div>
+                    </div>
+
+                    <!-- Consulting Service -->
+                    <div class="service-card">
+                        <div class="service-icon">💼</div>
+                        <h3>Data Strategy Consulting</h3>
+                        <p>Expert guidance to develop and execute your data strategy and analytics roadmap.</p>
+                        <ul class="service-features">
+                            <li>✓ Data Maturity Assessment</li>
+                            <li>✓ Strategic Roadmap</li>
+                            <li>✓ Technology Selection</li>
+                            <li>✓ Change Management</li>
+                        </ul>
+                        <div class="service-pricing">
+                            <span class="price">Starting at $2,500</span>
+                            <span class="price-note">/day</span>
+                        </div>
+                        <div class="service-actions">
+                            <button class="btn btn-primary service-btn" data-service="consulting">Learn More</button>
+                            <button class="btn btn-secondary" onclick="openChat('I\'m interested in Consulting services')">Get Quote</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Service Details Modal -->
+        <div id="service-modal" class="service-modal" style="display: none;">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h2 id="modal-title">Service Details</h2>
+                    <button class="modal-close">&times;</button>
+                </div>
+                <div class="modal-body" id="modal-body">
+                    <!-- Service details will be loaded here -->
+                </div>
+                <div class="modal-footer">
+                    <button class="btn btn-secondary modal-close">Close</button>
+                    <button class="btn btn-primary" onclick="openChat('I\'d like to discuss this service in detail')">Contact Us</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Industry Solutions -->
+        <section class="industry-solutions">
+            <div class="container">
+                <h2 class="section-title">Industry Solutions</h2>
+                <div class="industry-grid">
+                    <div class="industry-card">
+                        <div class="industry-icon">🏥</div>
+                        <h3>Healthcare</h3>
+                        <p>HIPAA-compliant analytics for patient outcomes, operational efficiency, and predictive health insights.</p>
+                        <div class="industry-features">
+                            <span class="feature-tag">EHR Integration</span>
+                            <span class="feature-tag">Predictive Analytics</span>
+                            <span class="feature-tag">Population Health</span>
+                        </div>
+                    </div>
+
+                    <div class="industry-card">
+                        <div class="industry-icon">🏦</div>
+                        <h3>Financial Services</h3>
+                        <p>Risk management, fraud detection, and algorithmic trading solutions for financial institutions.</p>
+                        <div class="industry-features">
+                            <span class="feature-tag">Risk Analytics</span>
+                            <span class="feature-tag">Fraud Detection</span>
+                            <span class="feature-tag">Compliance</span>
+                        </div>
+                    </div>
+
+                    <div class="industry-card">
+                        <div class="industry-icon">🛒</div>
+                        <h3>Retail & E-commerce</h3>
+                        <p>Customer segmentation, demand forecasting, and personalized recommendation engines.</p>
+                        <div class="industry-features">
+                            <span class="feature-tag">Customer Analytics</span>
+                            <span class="feature-tag">Inventory Optimization</span>
+                            <span class="feature-tag">Personalization</span>
+                        </div>
+                    </div>
+
+                    <div class="industry-card">
+                        <div class="industry-icon">🏭</div>
+                        <h3>Manufacturing</h3>
+                        <p>Predictive maintenance, quality control, and supply chain optimization solutions.</p>
+                        <div class="industry-features">
+                            <span class="feature-tag">IoT Analytics</span>
+                            <span class="feature-tag">Quality Control</span>
+                            <span class="feature-tag">Supply Chain</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Process Section -->
+        <section class="process-section">
+            <div class="container">
+                <h2 class="section-title">Our Proven Process</h2>
+                <div class="process-timeline">
+                    <div class="process-step">
+                        <div class="step-number">1</div>
+                        <div class="step-content">
+                            <h3>Discovery & Assessment</h3>
+                            <p>We analyze your current data landscape, identify opportunities, and define project objectives.</p>
+                        </div>
+                    </div>
+
+                    <div class="process-step">
+                        <div class="step-number">2</div>
+                        <div class="step-content">
+                            <h3>Strategy & Planning</h3>
+                            <p>Develop a comprehensive roadmap with timelines, deliverables, and success metrics.</p>
+                        </div>
+                    </div>
+
+                    <div class="process-step">
+                        <div class="step-number">3</div>
+                        <div class="step-content">
+                            <h3>Development & Implementation</h3>
+                            <p>Build and deploy solutions using agile methodologies with regular progress updates.</p>
+                        </div>
+                    </div>
+
+                    <div class="process-step">
+                        <div class="step-number">4</div>
+                        <div class="step-content">
+                            <h3>Testing & Optimization</h3>
+                            <p>Rigorous testing, performance tuning, and optimization to ensure optimal results.</p>
+                        </div>
+                    </div>
+
+                    <div class="process-step">
+                        <div class="step-number">5</div>
+                        <div class="step-content">
+                            <h3>Deployment & Support</h3>
+                            <p>Smooth deployment with comprehensive training and ongoing support for your team.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Pricing Plans -->
+        <section class="pricing-section">
+            <div class="container">
+                <h2 class="section-title">Flexible Pricing Options</h2>
+                <div class="pricing-grid">
+                    <div class="pricing-card">
+                        <h3>Starter Package</h3>
+                        <div class="pricing-amount">
+                            <span class="currency">$</span>
+                            <span class="amount">2,500</span>
+                            <span class="period">/month</span>
+                        </div>
+                        <ul class="pricing-features">
+                            <li>✓ Basic Analytics Dashboard</li>
+                            <li>✓ Monthly Reporting</li>
+                            <li>✓ Email Support</li>
+                            <li>✓ 1 Data Source</li>
+                            <li>✓ 5 Custom Reports</li>
+                        </ul>
+                        <button class="btn btn-outline" onclick="openChat('I\'m interested in the Starter Package')">Get Started</button>
+                    </div>
+
+                    <div class="pricing-card popular">
+                        <div class="popular-badge">Most Popular</div>
+                        <h3>Professional</h3>
+                        <div class="pricing-amount">
+                            <span class="currency">$</span>
+                            <span class="amount">7,500</span>
+                            <span class="period">/month</span>
+                        </div>
+                        <ul class="pricing-features">
+                            <li>✓ Advanced Analytics Platform</li>
+                            <li>✓ Real-time Dashboards</li>
+                            <li>✓ Phone & Email Support</li>
+                            <li>✓ 5 Data Sources</li>
+                            <li>✓ Unlimited Reports</li>
+                            <li>✓ Machine Learning Models</li>
+                        </ul>
+                        <button class="btn btn-primary" onclick="openChat('I\'m interested in the Professional Package')">Get Started</button>
+                    </div>
+
+                    <div class="pricing-card">
+                        <h3>Enterprise</h3>
+                        <div class="pricing-amount">
+                            <span class="currency">$</span>
+                            <span class="amount">15,000</span>
+                            <span class="period">/month</span>
+                        </div>
+                        <ul class="pricing-features">
+                            <li>✓ Full AI/ML Platform</li>
+                            <li>✓ Custom Integrations</li>
+                            <li>✓ Dedicated Support Team</li>
+                            <li>✓ Unlimited Data Sources</li>
+                            <li>✓ White-label Solutions</li>
+                            <li>✓ 24/7 Monitoring</li>
+                        </ul>
+                        <button class="btn btn-outline" onclick="openChat('I\'m interested in the Enterprise Package')">Contact Sales</button>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Call to Action -->
+        <section class="cta-section">
+            <div class="container">
+                <div class="cta-content">
+                    <h2>Ready to Unlock Your Data's Potential?</h2>
+                    <p>Let's discuss how our services can transform your business with data-driven insights.</p>
+                    <div class="cta-buttons">
+                        <a href="contact.html" class="btn btn-primary">Schedule Consultation</a>
+                        <button class="btn btn-secondary" onclick="openChat('I\'d like to learn more about your services')">Chat with Expert</button>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-section">
+                    <h3>KFSQUARE</h3>
+                    <p>Transforming businesses through intelligent data solutions and advanced analytics.</p>
+                    <div class="social-links">
+                        <a href="#" aria-label="LinkedIn">📧</a>
+                        <a href="#" aria-label="Twitter">📱</a>
+                        <a href="#" aria-label="GitHub">💻</a>
+                    </div>
+                </div>
+                <div class="footer-section">
+                    <h4>Services</h4>
+                    <ul>
+                        <li><a href="#data-analytics">Data Analytics</a></li>
+                        <li><a href="#machine-learning">Machine Learning</a></li>
+                        <li><a href="#ai-integration">AI Integration</a></li>
+                        <li><a href="#business-intelligence">Business Intelligence</a></li>
+                    </ul>
+                </div>
+                <div class="footer-section">
+                    <h4>Company</h4>
+                    <ul>
+                        <li><a href="about.html">About Us</a></li>
+                        <li><a href="team.html">Our Team</a></li>
+                        <li><a href="portfolio.html">Portfolio</a></li>
+                        <li><a href="contact.html">Contact</a></li>
+                    </ul>
+                </div>
+                <div class="footer-section">
+                    <h4>Contact Info</h4>
+                    <div class="contact-info">
+                        <p>📞 215-279-2887</p>
+                        <p>📧 customersupport@kfsquare.com</p>
+                        <p>🏢 Small Business & Veteran Owned</p>
+                    </div>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2024 KFSQUARE. All rights reserved. | <a href="privacy.html">Privacy Policy</a> | <a href="terms.html">Terms of Service</a></p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Enhanced Customer Support Chat Widget -->
+    <div id="chat-widget" class="chat-widget">
+        <div id="chat-toggle" class="chat-toggle">
+            <div class="chat-icon">
+                <span class="chat-bubble">💬</span>
+                <span class="chat-text">Support</span>
+            </div>
+            <div class="support-status">
+                <span style="color: #00ff88;">●</span> Online
+            </div>
+            <div id="chat-notification" class="notification-badge">1</div>
+        </div>
+
+        <div id="chat-container" class="chat-container">
+            <div class="chat-header">
+                <div class="chat-title">
+                    <span class="ai-indicator"></span>
+                    Customer Support
+                </div>
+                <div class="chat-actions">
+                    <button class="support-menu-btn" title="Support Menu">⚙️</button>
+                    <button id="chat-minimize" class="minimize-btn" title="Minimize">−</button>
+                    <button id="chat-close" class="close-btn" title="Close">×</button>
+                </div>
+            </div>
+
+            <!-- Support Menu Dropdown -->
+            <div class="support-menu-dropdown" style="display: none;">
+                <div class="menu-item" data-action="my-tickets">
+                    <span class="menu-icon">🎫</span>
+                    <span>My Tickets</span>
+                </div>
+                <div class="menu-item" data-action="live-agent">
+                    <span class="menu-icon">👨‍💼</span>
+                    <span>Live Agent</span>
+                </div>
+                <div class="menu-item" data-action="screen-share">
+                    <span class="menu-icon">🖥️</span>
+                    <span>Screen Share</span>
+                </div>
+                <div class="menu-item" data-action="knowledge-base">
+                    <span class="menu-icon">📚</span>
+                    <span>Knowledge Base</span>
+                </div>
+            </div>
+
+            <div id="chat-messages" class="chat-messages">
+                <!-- Messages will be dynamically added here -->
+            </div>
+
+            <div id="typing-indicator" class="typing-indicator" style="display: none;">
+                <div class="typing-dots">
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                </div>
+                <span>Support is typing...</span>
+            </div>
+
+            <!-- Enhanced Chat Input with File Upload and Voice -->
+            <div class="chat-input-container">
+                <!-- File Upload Area -->
+                <div class="file-upload-area" style="display: none;">
+                    <div class="upload-content">
+                        <div class="upload-icon">📎</div>
+                        <div class="upload-text">Drop files here or click to upload</div>
+                        <div class="upload-actions">
+                            <button class="upload-cancel-btn">Cancel</button>
+                        </div>
+                    </div>
+                    <input type="file" id="file-input" multiple accept=".jpg,.jpeg,.png,.pdf,.doc,.docx,.txt">
+                </div>
+
+                <!-- Agent Transfer Notification -->
+                <div class="agent-transfer-notification" style="display: none;">
+                    <div class="transfer-content">
+                        <div class="transfer-icon">🔄</div>
+                        <span>Connecting you to a live agent...</span>
+                    </div>
+                </div>
+
+                <div class="chat-input-wrapper">
+                    <input type="text" id="chat-input" placeholder="Type your message..." maxlength="500">
+                    <div class="input-actions">
+                        <button class="attachment-btn" title="Attach File">📎</button>
+                        <button class="voice-btn" title="Voice Message">🎤</button>
+                        <button class="emoji-btn" title="Emojis">😊</button>
+                        <button id="send-btn" class="send-btn" title="Send Message">📤</button>
+                    </div>
+                </div>
+
+                <!-- Emoji Picker -->
+                <div id="emoji-picker" class="emoji-picker" style="display: none;">
+                    <div class="emoji-grid">
+                        <span class="emoji-option">😊</span>
+                        <span class="emoji-option">👍</span>
+                        <span class="emoji-option">❤️</span>
+                        <span class="emoji-option">😂</span>
+                        <span class="emoji-option">🎉</span>
+                        <span class="emoji-option">🤔</span>
+                        <span class="emoji-option">👏</span>
+                        <span class="emoji-option">🙏</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Enhanced Footer with Support Info -->
+            <div class="chat-footer">
+                <div class="support-info">
+                    <div class="response-time">⚡ Avg. response time: 2 minutes</div>
+                    <div class="powered-by">
+                        Powered by KFSQUARE AI • <a href="privacy.html" class="privacy-link">Privacy</a> • <a href="contact.html" class="support-center-link">Support Center</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="index.js"></script>
+</body>
+</html>
