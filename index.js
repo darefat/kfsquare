@@ -1,3 +1,124 @@
+// Multi-Page Navigation and Enhanced Site Functionality
+document.addEventListener('DOMContentLoaded', function() {
+    // Mobile Navigation Toggle
+    const hamburger = document.getElementById('hamburger');
+    const navMenu = document.getElementById('nav-menu');
+    
+    if (hamburger && navMenu) {
+        hamburger.addEventListener('click', function() {
+            navMenu.classList.toggle('active');
+            hamburger.classList.toggle('active');
+        });
+        
+        // Close mobile menu when clicking on links
+        const navLinks = document.querySelectorAll('.nav-link');
+        navLinks.forEach(link => {
+            link.addEventListener('click', () => {
+                navMenu.classList.remove('active');
+                hamburger.classList.remove('active');
+            });
+        });
+    }
+    
+    // Global functions for multi-page functionality
+    window.openChat = function(message = '') {
+        const chatWidget = document.getElementById('chat-widget');
+        const chatContainer = document.getElementById('chat-container');
+        
+        if (chatWidget && chatContainer) {
+            chatWidget.classList.add('expanded');
+            chatContainer.style.display = 'flex';
+            
+            if (message) {
+                setTimeout(() => {
+                    const chatInput = document.getElementById('chat-input');
+                    if (chatInput) {
+                        chatInput.value = message;
+                        chatInput.focus();
+                    }
+                }, 500);
+            }
+        }
+    };
+    
+    window.openScheduleModal = function() {
+        const modal = document.getElementById('schedule-modal');
+        if (modal) {
+            modal.style.display = 'flex';
+            document.body.style.overflow = 'hidden';
+        }
+    };
+    
+    window.closeScheduleModal = function() {
+        const modal = document.getElementById('schedule-modal');
+        if (modal) {
+            modal.style.display = 'none';
+            document.body.style.overflow = 'auto';
+        }
+    };
+    
+    // Time slot selection
+    const timeSlots = document.querySelectorAll('.time-slot');
+    timeSlots.forEach(slot => {
+        slot.addEventListener('click', function() {
+            timeSlots.forEach(s => s.classList.remove('selected'));
+            this.classList.add('selected');
+        });
+    });
+    
+    // Portfolio filter functionality
+    const filterButtons = document.querySelectorAll('.filter-btn');
+    const projectCards = document.querySelectorAll('.project-card');
+    
+    filterButtons.forEach(button => {
+        button.addEventListener('click', function() {
+            const filter = this.getAttribute('data-filter');
+            
+            filterButtons.forEach(btn => btn.classList.remove('active'));
+            this.classList.add('active');
+            
+            projectCards.forEach(card => {
+                if (filter === 'all' || card.getAttribute('data-category')?.includes(filter)) {
+                    card.style.display = 'block';
+                } else {
+                    card.style.display = 'none';
+                }
+            });
+        });
+    });
+    
+    // Contact form handler
+    const contactForm = document.getElementById('contact-form');
+    if (contactForm) {
+        contactForm.addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            const button = contactForm.querySelector('button[type="submit"]');
+            button.disabled = true;
+            button.innerHTML = 'Sending...';
+            
+            setTimeout(() => {
+                alert('Thank you for your message! We will respond within 24 hours.');
+                contactForm.reset();
+                button.disabled = false;
+                button.innerHTML = 'Send Message';
+            }, 2000);
+        });
+    }
+    
+    // Modal close functionality
+    const modalCloses = document.querySelectorAll('.modal-close');
+    modalCloses.forEach(close => {
+        close.addEventListener('click', function() {
+            const modal = this.closest('.service-modal, .project-modal, .schedule-modal');
+            if (modal) {
+                modal.style.display = 'none';
+                document.body.style.overflow = 'auto';
+            }
+        });
+    });
+});
+
 // Platform Agnostic KFSQUARE Website Functionality
 (function() {
   'use strict';

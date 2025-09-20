@@ -1,0 +1,583 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>Contact Us - KFSQUARE | Get in Touch for Data Analytics Solutions</title>
+    <meta name="description" content="Contact KFSQUARE for data analytics, AI, and machine learning solutions. Get expert consultation and project quotes.">
+    <link rel="stylesheet" href="styles.css">
+    <link rel="icon" href="favicon.ico" type="image/x-icon">
+</head>
+<body>
+    <!-- Navigation -->
+    <nav class="navbar">
+        <div class="nav-container">
+            <div class="nav-logo">
+                <a href="index.html">KFSQUARE</a>
+            </div>
+            <ul class="nav-menu" id="nav-menu">
+                <li class="nav-item">
+                    <a href="index.html" class="nav-link">Home</a>
+                </li>
+                <li class="nav-item">
+                    <a href="about.html" class="nav-link">About</a>
+                </li>
+                <li class="nav-item">
+                    <a href="services.html" class="nav-link">Services</a>
+                </li>
+                <li class="nav-item">
+                    <a href="portfolio.html" class="nav-link">Portfolio</a>
+                </li>
+                <li class="nav-item">
+                    <a href="team.html" class="nav-link">Team</a>
+                </li>
+                <li class="nav-item">
+                    <a href="contact.html" class="nav-link active">Contact</a>
+                </li>
+            </ul>
+            <div class="hamburger" id="hamburger">
+                <span class="bar"></span>
+                <span class="bar"></span>
+                <span class="bar"></span>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Page Header -->
+    <section class="page-header">
+        <div class="container">
+            <h1>Contact Us</h1>
+            <p>Ready to transform your business with data? Let's start the conversation.</p>
+            <nav aria-label="breadcrumb">
+                <ol class="breadcrumb">
+                    <li><a href="index.html">Home</a></li>
+                    <li class="active">Contact</li>
+                </ol>
+            </nav>
+        </div>
+    </section>
+
+    <!-- Contact Content -->
+    <main class="main-content">
+        <!-- Contact Information -->
+        <section class="contact-info-section">
+            <div class="container">
+                <div class="contact-info-grid">
+                    <div class="contact-card">
+                        <div class="contact-icon">📞</div>
+                        <h3>Phone</h3>
+                        <p><a href="tel:215-279-2887">215-279-2887</a></p>
+                        <span class="contact-note">Mon-Fri, 9 AM - 6 PM EST</span>
+                    </div>
+
+                    <div class="contact-card">
+                        <div class="contact-icon">📧</div>
+                        <h3>Email</h3>
+                        <p><a href="mailto:customersupport@kfsquare.com">customersupport@kfsquare.com</a></p>
+                        <span class="contact-note">Response within 24 hours</span>
+                    </div>
+
+                    <div class="contact-card">
+                        <div class="contact-icon">💬</div>
+                        <h3>Live Chat</h3>
+                        <p>Chat with our experts</p>
+                        <button class="btn btn-primary" onclick="openChat('I\'d like to discuss my project requirements')">Start Chat</button>
+                    </div>
+
+                    <div class="contact-card">
+                        <div class="contact-icon">📅</div>
+                        <h3>Schedule Meeting</h3>
+                        <p>Book a consultation</p>
+                        <button class="btn btn-outline" onclick="openScheduleModal()">Schedule Call</button>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Contact Form Section -->
+        <section class="contact-form-section">
+            <div class="container">
+                <div class="contact-form-grid">
+                    <div class="form-container">
+                        <h2>Get a Free Consultation</h2>
+                        <p class="form-description">Tell us about your project and we'll provide a customized solution and quote within 24 hours.</p>
+                        
+                        <form id="contact-form" class="contact-form">
+                            <div class="form-row">
+                                <div class="form-group">
+                                    <label for="firstName">First Name *</label>
+                                    <input type="text" id="firstName" name="firstName" required>
+                                </div>
+                                <div class="form-group">
+                                    <label for="lastName">Last Name *</label>
+                                    <input type="text" id="lastName" name="lastName" required>
+                                </div>
+                            </div>
+
+                            <div class="form-row">
+                                <div class="form-group">
+                                    <label for="email">Email Address *</label>
+                                    <input type="email" id="email" name="email" required>
+                                </div>
+                                <div class="form-group">
+                                    <label for="phone">Phone Number</label>
+                                    <input type="tel" id="phone" name="phone">
+                                </div>
+                            </div>
+
+                            <div class="form-row">
+                                <div class="form-group">
+                                    <label for="company">Company Name *</label>
+                                    <input type="text" id="company" name="company" required>
+                                </div>
+                                <div class="form-group">
+                                    <label for="industry">Industry</label>
+                                    <select id="industry" name="industry">
+                                        <option value="">Select Industry</option>
+                                        <option value="healthcare">Healthcare</option>
+                                        <option value="finance">Financial Services</option>
+                                        <option value="retail">Retail & E-commerce</option>
+                                        <option value="manufacturing">Manufacturing</option>
+                                        <option value="technology">Technology</option>
+                                        <option value="government">Government</option>
+                                        <option value="education">Education</option>
+                                        <option value="other">Other</option>
+                                    </select>
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="services">Services Needed</label>
+                                <div class="checkbox-group">
+                                    <label class="checkbox-label">
+                                        <input type="checkbox" name="services" value="data-analytics">
+                                        <span class="checkmark"></span>
+                                        Data Analytics
+                                    </label>
+                                    <label class="checkbox-label">
+                                        <input type="checkbox" name="services" value="machine-learning">
+                                        <span class="checkmark"></span>
+                                        Machine Learning
+                                    </label>
+                                    <label class="checkbox-label">
+                                        <input type="checkbox" name="services" value="ai-integration">
+                                        <span class="checkmark"></span>
+                                        AI Integration
+                                    </label>
+                                    <label class="checkbox-label">
+                                        <input type="checkbox" name="services" value="business-intelligence">
+                                        <span class="checkmark"></span>
+                                        Business Intelligence
+                                    </label>
+                                    <label class="checkbox-label">
+                                        <input type="checkbox" name="services" value="data-engineering">
+                                        <span class="checkmark"></span>
+                                        Data Engineering
+                                    </label>
+                                    <label class="checkbox-label">
+                                        <input type="checkbox" name="services" value="consulting">
+                                        <span class="checkmark"></span>
+                                        Strategy Consulting
+                                    </label>
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="budget">Project Budget</label>
+                                <select id="budget" name="budget">
+                                    <option value="">Select Budget Range</option>
+                                    <option value="under-25k">Under $25,000</option>
+                                    <option value="25k-50k">$25,000 - $50,000</option>
+                                    <option value="50k-100k">$50,000 - $100,000</option>
+                                    <option value="100k-250k">$100,000 - $250,000</option>
+                                    <option value="250k-500k">$250,000 - $500,000</option>
+                                    <option value="over-500k">Over $500,000</option>
+                                </select>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="timeline">Project Timeline</label>
+                                <select id="timeline" name="timeline">
+                                    <option value="">Select Timeline</option>
+                                    <option value="asap">ASAP</option>
+                                    <option value="1-3-months">1-3 months</option>
+                                    <option value="3-6-months">3-6 months</option>
+                                    <option value="6-12-months">6-12 months</option>
+                                    <option value="over-12-months">Over 12 months</option>
+                                    <option value="flexible">Flexible</option>
+                                </select>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="message">Project Description *</label>
+                                <textarea id="message" name="message" rows="5" placeholder="Tell us about your project, challenges, and goals..." required></textarea>
+                            </div>
+
+                            <div class="form-group">
+                                <label class="checkbox-label">
+                                    <input type="checkbox" name="newsletter" value="yes">
+                                    <span class="checkmark"></span>
+                                    Subscribe to our newsletter for data science insights and updates
+                                </label>
+                            </div>
+
+                            <div class="form-actions">
+                                <button type="submit" class="btn btn-primary btn-large">
+                                    Send Message
+                                    <span class="btn-loading" style="display: none;">Sending...</span>
+                                </button>
+                                <p class="form-note">We'll respond within 24 hours with a customized proposal.</p>
+                            </div>
+                        </form>
+                    </div>
+
+                    <div class="contact-sidebar">
+                        <div class="sidebar-card">
+                            <h3>Why Choose KFSQUARE?</h3>
+                            <ul class="benefits-list">
+                                <li>✅ 500+ successful projects</li>
+                                <li>✅ Small business & veteran-owned</li>
+                                <li>✅ 15+ years of experience</li>
+                                <li>✅ Security clearance available</li>
+                                <li>✅ 24/7 support</li>
+                                <li>✅ Flexible engagement models</li>
+                            </ul>
+                        </div>
+
+                        <div class="sidebar-card">
+                            <h3>Client Success Stories</h3>
+                            <div class="success-story">
+                                <div class="story-metric">35%</div>
+                                <div class="story-text">Reduction in hospital readmissions</div>
+                            </div>
+                            <div class="success-story">
+                                <div class="story-metric">99.2%</div>
+                                <div class="story-text">Fraud detection accuracy</div>
+                            </div>
+                            <div class="success-story">
+                                <div class="story-metric">$50M+</div>
+                                <div class="story-text">Value generated for clients</div>
+                            </div>
+                        </div>
+
+                        <div class="sidebar-card">
+                            <h3>Certifications & Compliance</h3>
+                            <div class="certification-badges">
+                                <div class="cert-badge">AWS Certified</div>
+                                <div class="cert-badge">HIPAA Compliant</div>
+                                <div class="cert-badge">SOC 2 Type II</div>
+                                <div class="cert-badge">GDPR Ready</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Schedule Meeting Modal -->
+        <div id="schedule-modal" class="schedule-modal" style="display: none;">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h2>Schedule a Consultation</h2>
+                    <button class="modal-close" onclick="closeScheduleModal()">&times;</button>
+                </div>
+                <div class="modal-body">
+                    <p>Choose a convenient time for your free consultation with our data science experts.</p>
+                    
+                    <div class="calendar-container">
+                        <div class="calendar-header">
+                            <h3>Available Time Slots</h3>
+                            <p>All times are in Eastern Time (EST)</p>
+                        </div>
+                        
+                        <div class="time-slots">
+                            <div class="date-section">
+                                <h4>Today - September 19, 2024</h4>
+                                <div class="slots">
+                                    <button class="time-slot" data-time="2:00 PM">2:00 PM</button>
+                                    <button class="time-slot" data-time="3:30 PM">3:30 PM</button>
+                                    <button class="time-slot" data-time="4:00 PM">4:00 PM</button>
+                                </div>
+                            </div>
+                            
+                            <div class="date-section">
+                                <h4>Tomorrow - September 20, 2024</h4>
+                                <div class="slots">
+                                    <button class="time-slot" data-time="9:00 AM">9:00 AM</button>
+                                    <button class="time-slot" data-time="10:30 AM">10:30 AM</button>
+                                    <button class="time-slot" data-time="1:00 PM">1:00 PM</button>
+                                    <button class="time-slot" data-time="2:30 PM">2:30 PM</button>
+                                    <button class="time-slot" data-time="4:00 PM">4:00 PM</button>
+                                </div>
+                            </div>
+                            
+                            <div class="date-section">
+                                <h4>Monday - September 23, 2024</h4>
+                                <div class="slots">
+                                    <button class="time-slot" data-time="9:00 AM">9:00 AM</button>
+                                    <button class="time-slot" data-time="11:00 AM">11:00 AM</button>
+                                    <button class="time-slot" data-time="1:30 PM">1:30 PM</button>
+                                    <button class="time-slot" data-time="3:00 PM">3:00 PM</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button class="btn btn-secondary" onclick="closeScheduleModal()">Cancel</button>
+                    <button class="btn btn-primary" onclick="confirmSchedule()">Confirm Meeting</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Office Locations -->
+        <section class="locations-section">
+            <div class="container">
+                <h2 class="section-title">Our Locations</h2>
+                <div class="locations-grid">
+                    <div class="location-card">
+                        <h3>Headquarters</h3>
+                        <div class="location-info">
+                            <p>🏢 Philadelphia, PA</p>
+                            <p>📞 215-279-2887</p>
+                            <p>📧 customersupport@kfsquare.com</p>
+                        </div>
+                        <div class="location-services">
+                            <h4>Services Available:</h4>
+                            <ul>
+                                <li>On-site consultations</li>
+                                <li>Government contracts</li>
+                                <li>Security clearance projects</li>
+                                <li>Executive briefings</li>
+                            </ul>
+                        </div>
+                    </div>
+
+                    <div class="location-card">
+                        <h3>Remote Operations</h3>
+                        <div class="location-info">
+                            <p>🌎 Global Coverage</p>
+                            <p>⏰ 24/7 Support Available</p>
+                            <p>💻 Virtual Consultations</p>
+                        </div>
+                        <div class="location-services">
+                            <h4>Remote Services:</h4>
+                            <ul>
+                                <li>Virtual project management</li>
+                                <li>Cloud-based solutions</li>
+                                <li>Remote team integration</li>
+                                <li>Online training & support</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- FAQ Section -->
+        <section class="faq-section">
+            <div class="container">
+                <h2 class="section-title">Frequently Asked Questions</h2>
+                <div class="faq-grid">
+                    <div class="faq-item">
+                        <h3 class="faq-question">How quickly can you start a project?</h3>
+                        <p class="faq-answer">We can typically start new projects within 1-2 weeks after contract signing. For urgent projects, we offer expedited onboarding within 3-5 business days.</p>
+                    </div>
+
+                    <div class="faq-item">
+                        <h3 class="faq-question">Do you work with small businesses?</h3>
+                        <p class="faq-answer">Absolutely! As a certified small business ourselves, we specialize in helping other small and medium businesses leverage data analytics. We offer flexible pricing and scaled solutions.</p>
+                    </div>
+
+                    <div class="faq-item">
+                        <h3 class="faq-question">What industries do you serve?</h3>
+                        <p class="faq-answer">We serve 40+ industries including healthcare, finance, retail, manufacturing, government, and technology. Our team has experience across diverse sectors.</p>
+                    </div>
+
+                    <div class="faq-item">
+                        <h3 class="faq-question">Do you provide ongoing support?</h3>
+                        <p class="faq-answer">Yes, we offer comprehensive support packages including 24/7 monitoring, regular updates, training, and dedicated account management.</p>
+                    </div>
+
+                    <div class="faq-item">
+                        <h3 class="faq-question">Can you work with our existing team?</h3>
+                        <p class="faq-answer">Definitely! We excel at augmenting existing teams and can work in various engagement models: fully managed, collaborative, or consultative.</p>
+                    </div>
+
+                    <div class="faq-item">
+                        <h3 class="faq-question">What's your typical project timeline?</h3>
+                        <p class="faq-answer">Project timelines vary from 2-4 weeks for simple analytics dashboards to 6-12 months for complex AI implementations. We'll provide a detailed timeline during consultation.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-section">
+                    <h3>KFSQUARE</h3>
+                    <p>Transforming businesses through intelligent data solutions and advanced analytics.</p>
+                    <div class="social-links">
+                        <a href="#" aria-label="LinkedIn">📧</a>
+                        <a href="#" aria-label="Twitter">📱</a>
+                        <a href="#" aria-label="GitHub">💻</a>
+                    </div>
+                </div>
+                <div class="footer-section">
+                    <h4>Services</h4>
+                    <ul>
+                        <li><a href="services.html">Data Analytics</a></li>
+                        <li><a href="services.html">Machine Learning</a></li>
+                        <li><a href="services.html">AI Integration</a></li>
+                        <li><a href="services.html">Business Intelligence</a></li>
+                    </ul>
+                </div>
+                <div class="footer-section">
+                    <h4>Company</h4>
+                    <ul>
+                        <li><a href="about.html">About Us</a></li>
+                        <li><a href="team.html">Our Team</a></li>
+                        <li><a href="portfolio.html">Portfolio</a></li>
+                        <li><a href="contact.html">Contact</a></li>
+                    </ul>
+                </div>
+                <div class="footer-section">
+                    <h4>Contact Info</h4>
+                    <div class="contact-info">
+                        <p>📞 215-279-2887</p>
+                        <p>📧 customersupport@kfsquare.com</p>
+                        <p>🏢 Small Business & Veteran Owned</p>
+                    </div>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2024 KFSQUARE. All rights reserved. | <a href="privacy.html">Privacy Policy</a> | <a href="terms.html">Terms of Service</a></p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Enhanced Customer Support Chat Widget -->
+    <div id="chat-widget" class="chat-widget">
+        <div id="chat-toggle" class="chat-toggle">
+            <div class="chat-icon">
+                <span class="chat-bubble">💬</span>
+                <span class="chat-text">Support</span>
+            </div>
+            <div class="support-status">
+                <span style="color: #00ff88;">●</span> Online
+            </div>
+            <div id="chat-notification" class="notification-badge">1</div>
+        </div>
+
+        <div id="chat-container" class="chat-container">
+            <div class="chat-header">
+                <div class="chat-title">
+                    <span class="ai-indicator"></span>
+                    Customer Support
+                </div>
+                <div class="chat-actions">
+                    <button class="support-menu-btn" title="Support Menu">⚙️</button>
+                    <button id="chat-minimize" class="minimize-btn" title="Minimize">−</button>
+                    <button id="chat-close" class="close-btn" title="Close">×</button>
+                </div>
+            </div>
+
+            <!-- Support Menu Dropdown -->
+            <div class="support-menu-dropdown" style="display: none;">
+                <div class="menu-item" data-action="my-tickets">
+                    <span class="menu-icon">🎫</span>
+                    <span>My Tickets</span>
+                </div>
+                <div class="menu-item" data-action="live-agent">
+                    <span class="menu-icon">👨‍💼</span>
+                    <span>Live Agent</span>
+                </div>
+                <div class="menu-item" data-action="screen-share">
+                    <span class="menu-icon">🖥️</span>
+                    <span class="menu-icon">Screen Share</span>
+                </div>
+                <div class="menu-item" data-action="knowledge-base">
+                    <span class="menu-icon">📚</span>
+                    <span>Knowledge Base</span>
+                </div>
+            </div>
+
+            <div id="chat-messages" class="chat-messages">
+                <!-- Messages will be dynamically added here -->
+            </div>
+
+            <div id="typing-indicator" class="typing-indicator" style="display: none;">
+                <div class="typing-dots">
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                </div>
+                <span>Support is typing...</span>
+            </div>
+
+            <!-- Enhanced Chat Input with File Upload and Voice -->
+            <div class="chat-input-container">
+                <!-- File Upload Area -->
+                <div class="file-upload-area" style="display: none;">
+                    <div class="upload-content">
+                        <div class="upload-icon">📎</div>
+                        <div class="upload-text">Drop files here or click to upload</div>
+                        <div class="upload-actions">
+                            <button class="upload-cancel-btn">Cancel</button>
+                        </div>
+                    </div>
+                    <input type="file" id="file-input" multiple accept=".jpg,.jpeg,.png,.pdf,.doc,.docx,.txt">
+                </div>
+
+                <!-- Agent Transfer Notification -->
+                <div class="agent-transfer-notification" style="display: none;">
+                    <div class="transfer-content">
+                        <div class="transfer-icon">🔄</div>
+                        <span>Connecting you to a live agent...</span>
+                    </div>
+                </div>
+
+                <div class="chat-input-wrapper">
+                    <input type="text" id="chat-input" placeholder="Type your message..." maxlength="500">
+                    <div class="input-actions">
+                        <button class="attachment-btn" title="Attach File">📎</button>
+                        <button class="voice-btn" title="Voice Message">🎤</button>
+                        <button class="emoji-btn" title="Emojis">😊</button>
+                        <button id="send-btn" class="send-btn" title="Send Message">📤</button>
+                    </div>
+                </div>
+
+                <!-- Emoji Picker -->
+                <div id="emoji-picker" class="emoji-picker" style="display: none;">
+                    <div class="emoji-grid">
+                        <span class="emoji-option">😊</span>
+                        <span class="emoji-option">👍</span>
+                        <span class="emoji-option">❤️</span>
+                        <span class="emoji-option">😂</span>
+                        <span class="emoji-option">🎉</span>
+                        <span class="emoji-option">🤔</span>
+                        <span class="emoji-option">👏</span>
+                        <span class="emoji-option">🙏</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Enhanced Footer with Support Info -->
+            <div class="chat-footer">
+                <div class="support-info">
+                    <div class="response-time">⚡ Avg. response time: 2 minutes</div>
+                    <div class="powered-by">
+                        Powered by KFSQUARE AI • <a href="privacy.html" class="privacy-link">Privacy</a> • <a href="contact.html" class="support-center-link">Support Center</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="index.js"></script>
+</body>
+</html>
