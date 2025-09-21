@@ -10,6 +10,18 @@ const helmet = require('helmet');
 const rateLimit = require('express-rate-limit');
 const os = require('os');
 
+// MongoDB Integration
+const database = require('./config/database');
+const DataSeeder = require('./utils/seeder');
+
+// API Routes
+const teamRoutes = require('./routes/team');
+const servicesRoutes = require('./routes/services');
+const contactsRoutes = require('./routes/contacts');
+
+// Models
+const Contact = require('./models/Contact');
+
 // Platform detection for cross-platform compatibility
 const platform = os.platform();
 const isWindows = platform === 'win32';
@@ -98,6 +110,35 @@ app.use(express.static('.', {
   }
 }));
 
+// API Routes
+app.use('/api/team', teamRoutes);
+app.use('/api/services', servicesRoutes);
+app.use('/api/contacts', contactsRoutes);
+
+// Database initialization
+async function initializeDatabase() {
+  try {
+    await database.connect();
+    
+    // Check if database needs seeding
+    const seeder = new DataSeeder();
+    const stats = await seeder.getStats();
+    
+    if (!stats || (stats.teamMembers === 0 && stats.services === 0)) {
+      console.log('🌱 Database appears to be empty, seeding with initial data...');
+      await seeder.seedDatabase();
+      await seeder.getStats();
+    } else {
+      console.log('📊 Database already contains data');
+    }
+  } catch (error) {
+    console.error('❌ Database initialization failed:', error.message);
+    if (process.env.NODE_ENV === 'production') {
+      process.exit(1);
+    }
+  }
+}
+
 // Input validation middleware with enhanced security
 const validate = [
   body('name')
@@ -123,8 +164,34 @@ app.get('/health', (req, res) => {
   res.status(200).json({ 
     status: 'healthy', 
     timestamp: new Date().toISOString(),
-    uptime: process.uptime()
+    uptime: process.uptime(),
+    database: database.isConnected ? 'connected' : 'disconnected'
   });
+});
+
+// API health check
+app.get('/api/health', async (req, res) => {
+  try {
+    // Test database connectivity
+    const dbStatus = database.isConnected;
+    
+    res.status(200).json({
+      status: 'healthy',
+      timestamp: new Date().toISOString(),
+      services: {
+        api: 'operational',
+        database: dbStatus ? 'connected' : 'disconnected',
+        email: process.env.SENDGRID_API_KEY ? 'configured' : 'not-configured'
+      },
+      version: process.env.npm_package_version || '1.0.0'
+    });
+  } catch (error) {
+    res.status(503).json({
+      status: 'unhealthy',
+      timestamp: new Date().toISOString(),
+      error: error.message
+    });
+  }
 });
 
 // Root endpoint
@@ -132,7 +199,7 @@ app.get('/', (req, res) => {
   res.sendFile(path.join(__dirname, 'index.html'));
 });
 
-// Contact form endpoint with enhanced security
+// Enhanced contact form endpoint with database storage
 app.post('/send-email', emailLimiter, validate, async (req, res) => {
   const errors = validationResult(req);
   if (!errors.isEmpty()) {
@@ -149,45 +216,74 @@ app.post('/send-email', emailLimiter, validate, async (req, res) => {
     return res.status(400).json({ success: false, message: 'Spam detected' });
   }
 
-  const msg = {
-    to: recipientEmail || 'contact@kfsquare.com',
-    from: 'noreply@kfsquare.com',
-    replyTo: email,
-    subject: 'Contact Form Submission from KFSQUARE Website',
-    text: `Name: ${name}\nEmail: ${email}\nMessage:\n${message}`,
-    html: `
-      <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto;">
-        <h2 style="color: #01326d;">New Contact Form Submission</h2>
-        <div style="background: #f9fafc; padding: 20px; border-radius: 8px; margin: 20px 0;">
-          <p><strong>Name:</strong> ${name}</p>
-          <p><strong>Email:</strong> ${email}</p>
-          <p><strong>Message:</strong></p>
-          <div style="background: white; padding: 15px; border-radius: 4px; border-left: 4px solid #01326d;">
-            ${message.replace(/\n/g, '<br>')}
-          </div>
-        </div>
-        <p style="color: #666; font-size: 12px;">
-          Submitted on ${new Date().toLocaleString()}
-        </p>
-      </div>
-    `,
-  };
-
   try {
-    await sgMail.send(msg);
-    console.log(`Email sent successfully from ${email}`);
+    // Save contact to database if connected
+    let contact = null;
+    if (database.isConnected) {
+      const contactData = {
+        name,
+        email,
+        message,
+        phone: req.body.phone || '',
+        company: req.body.company || '',
+        serviceInterest: req.body.serviceInterest || 'other',
+        ipAddress: req.ip || req.connection.remoteAddress,
+        userAgent: req.get('User-Agent'),
+        source: 'website'
+      };
+      
+      contact = new Contact(contactData);
+      await contact.save();
+      console.log(`💾 Contact saved to database: ${contact._id}`);
+    }
+
+    // Send email if SendGrid is configured
+    if (apiKey) {
+      const msg = {
+        to: recipientEmail || 'contact@kfsquare.com',
+        from: 'noreply@kfsquare.com',
+        replyTo: email,
+        subject: 'Contact Form Submission from KFSQUARE Website',
+        text: `Name: ${name}\nEmail: ${email}\nMessage:\n${message}`,
+        html: `
+          <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto;">
+            <h2 style="color: #01326d;">New Contact Form Submission</h2>
+            <div style="background: #f9fafc; padding: 20px; border-radius: 8px; margin: 20px 0;">
+              <p><strong>Name:</strong> ${name}</p>
+              <p><strong>Email:</strong> ${email}</p>
+              <p><strong>Message:</strong></p>
+              <div style="background: white; padding: 15px; border-radius: 4px; border-left: 4px solid #01326d;">
+                ${message.replace(/\n/g, '<br>')}
+              </div>
+            </div>
+            <p style="color: #666; font-size: 12px;">
+              Submitted on ${new Date().toLocaleString()}
+              ${contact ? `<br>Database ID: ${contact._id}` : ''}
+            </p>
+          </div>
+        `,
+      };
+
+      await sgMail.send(msg);
+      console.log(`📧 Email sent successfully from ${email}`);
+    }
+
     res.status(200).json({ 
       success: true, 
-      message: 'Email sent successfully' 
+      message: 'Contact form submitted successfully',
+      data: contact ? { id: contact._id } : null
     });
+
   } catch (error) {
-    console.error("SendGrid Error:", error);
+    console.error("Contact form error:", error);
+    
     if (error.response) {
       console.error("SendGrid Response:", error.response.body);
     }
+    
     res.status(500).json({ 
       success: false, 
-      message: 'Error sending email. Please try again later.' 
+      message: 'Error processing contact form. Please try again later.' 
     });
   }
 });
@@ -233,19 +329,34 @@ app.use((err, req, res, next) => {
 });
 
 // Graceful shutdown with platform-aware signal handling
-const server = app.listen(port, () => {
+const server = app.listen(port, async () => {
   console.log(`🚀 KFSQUARE Server running on http://localhost:${port}`);
   console.log(`🔧 Environment: ${process.env.NODE_ENV || 'development'}`);
   console.log(`📧 SendGrid configured: ${!!process.env.SENDGRID_API_KEY}`);
   console.log(`💻 Platform: ${platform}`);
   console.log(`🏠 Working directory: ${process.cwd()}`);
   console.log(`⏰ Started at: ${new Date().toISOString()}`);
+  
+  // Initialize database connection
+  await initializeDatabase();
+  
+  console.log('✅ Server initialization complete');
 });
 
 // Platform-aware graceful shutdown
-const gracefulShutdown = (signal) => {
+const gracefulShutdown = async (signal) => {
   console.log(`${signal} received, shutting down gracefully...`);
-  server.close(() => {
+  
+  server.close(async () => {
+    console.log('🔌 HTTP server closed');
+    
+    // Close database connection
+    try {
+      await database.disconnect();
+    } catch (error) {
+      console.error('❌ Error closing database connection:', error);
+    }
+    
     console.log('✅ Server closed successfully');
     console.log('👋 Process terminated');
     process.exit(0);
