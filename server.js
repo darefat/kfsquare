@@ -38,6 +38,48 @@ const recipientEmail = process.env.RECIPIENT_EMAIL;
 const corsOrigin = process.env.CORS_ORIGIN;
 const isProduction = process.env.NODE_ENV === 'production';
 
+// Helper to parse comma-separated env vars
+function parseCsv(value) {
+  return (value || '')
+    .split(',')
+    .map(s => s.trim())
+    .filter(Boolean);
+}
+
+// Allow configuring multiple origins via ALLOWED_ORIGINS (comma-separated)
+const allowedOrigins = parseCsv(process.env.ALLOWED_ORIGINS);
+// Optional: add CDN domains to CSP via CDN_DOMAINS (comma-separated)
+const cdnDomains = parseCsv(process.env.CDN_DOMAINS);
+
+// Resolve static root (dist in production, project root in dev)
+const staticRoot = isProduction ? path.join(__dirname, 'dist') : path.join(__dirname);
+
+// Production Security Middleware with dynamic CSP
+const cspDirectives = {
+  defaultSrc: ["'self'"],
+  styleSrc: ["'self'", "'unsafe-inline'", "https://fonts.googleapis.com"],
+  fontSrc: ["'self'", "https://fonts.gstatic.com"],
+  scriptSrc: ["'self'", "'unsafe-inline'"],
+  imgSrc: ["'self'", "data:", "https:"],
+  connectSrc: ["'self'", "https:"]
+};
+
+// Always allow common CDN used in this project if present
+const defaultCdnAllowlist = [
+  'https://cdnjs.cloudflare.com' // Font Awesome/other libs via cdnjs
+];
+
+// Merge CDN domains into CSP
+[...defaultCdnAllowlist, ...cdnDomains].forEach(domain => {
+  if (!domain) return;
+  // Add to multiple sources to keep it simple; refine if needed
+  ['styleSrc', 'fontSrc', 'scriptSrc', 'imgSrc', 'connectSrc'].forEach(key => {
+    if (!cspDirectives[key].includes(domain)) {
+      cspDirectives[key].push(domain);
+    }
+  });
+});
+
 if (!apiKey) {
   console.warn("⚠️  SendGrid API key is missing. Email functionality will be disabled.");
   console.log("   Set SENDGRID_API_KEY in your environment or .env file");
@@ -46,18 +88,8 @@ if (!apiKey) {
   console.log("✅ SendGrid configured successfully");
 }
 
-// Production Security Middleware
 app.use(helmet({
-  contentSecurityPolicy: {
-    directives: {
-      defaultSrc: ["'self'"],
-      styleSrc: ["'self'", "'unsafe-inline'", "https://fonts.googleapis.com"],
-      fontSrc: ["'self'", "https://fonts.gstatic.com"],
-      scriptSrc: ["'self'", "'unsafe-inline'"],
-      imgSrc: ["'self'", "data:", "https:"],
-      connectSrc: ["'self'", "https:"],
-    },
-  },
+  contentSecurityPolicy: { directives: cspDirectives },
   hsts: {
     maxAge: 31536000,
     includeSubDomains: true,
@@ -85,9 +117,23 @@ const emailLimiter = rateLimit({
   message: 'Too many email submissions from this IP, please try again later.',
 });
 
-// CORS Configuration
+// CORS Configuration (env-driven)
+const resolvedCorsOrigins = (() => {
+  if (allowedOrigins.length) return allowedOrigins;
+  if (corsOrigin) return [corsOrigin];
+  return isProduction ? ['https://kfsquare.com'] : [];
+})();
+
 app.use(cors({
-  origin: corsOrigin || (isProduction ? 'https://kfsquare.com' : true),
+  origin: (origin, callback) => {
+    // Allow same-origin or non-browser requests
+    if (!origin) return callback(null, true);
+    // Allow everything in dev
+    if (!isProduction) return callback(null, true);
+    // Check against allowlist
+    if (resolvedCorsOrigins.includes(origin)) return callback(null, true);
+    return callback(new Error('Not allowed by CORS'));
+  },
   optionsSuccessStatus: 200,
   credentials: true
 }));
@@ -96,17 +142,21 @@ app.use(cors({
 app.use(bodyParser.urlencoded({ extended: false, limit: '10mb' }));
 app.use(bodyParser.json({ limit: '10mb' }));
 
-// Static file serving with caching
-app.use(express.static('.', {
+// Static file serving with caching (dist in production)
+app.use(express.static(staticRoot, {
   maxAge: isProduction ? '1y' : 0,
   etag: true,
   lastModified: true,
-  setHeaders: (res, path) => {
-    if (path.endsWith('.html')) {
+  setHeaders: (res, p) => {
+    if (p.endsWith('.html')) {
       res.setHeader('Cache-Control', 'public, max-age=3600'); // 1 hour for HTML
     }
-    if (path.endsWith('.css') || path.endsWith('.js')) {
-      res.setHeader('Cache-Control', 'public, max-age=31536000'); // 1 year for CSS/JS
+    if (p.includes('.min.') || p.match(/\.(?:css|js)$/)) {
+      // Long cache, immutable for minified assets
+      const value = p.includes('.min.')
+        ? 'public, max-age=31536000, immutable'
+        : 'public, max-age=31536000';
+      res.setHeader('Cache-Control', value);
     }
   }
 }));
@@ -196,9 +246,9 @@ app.get('/api/health', async (req, res) => {
   }
 });
 
-// Root endpoint
+// Root endpoint (serve from dist in production)
 app.get('/', (req, res) => {
-  res.sendFile(path.join(__dirname, 'index.html'));
+  res.sendFile(path.join(staticRoot, 'index.html'));
 });
 
 // Enhanced contact form endpoint with database storage
@@ -336,7 +386,7 @@ const server = app.listen(port, async () => {
   console.log(`🔧 Environment: ${process.env.NODE_ENV || 'development'}`);
   console.log(`📧 SendGrid configured: ${!!process.env.SENDGRID_API_KEY}`);
   console.log(`💻 Platform: ${platform}`);
-  console.log(`🏠 Working directory: ${process.cwd()}`);
+  console.log(`🏠 Serving static from: ${staticRoot}`);
   console.log(`⏰ Started at: ${new Date().toISOString()}`);
   
   // Initialize database connection
