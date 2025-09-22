@@ -82,12 +82,16 @@
       addTouchInteractions();
     }
     
-    // Trigger entrance animations
+    // Trigger entrance animations by applying the visible class used in CSS
     if (animate) {
       setTimeout(() => {
         const cards = servicesGrid.querySelectorAll('.service-card');
-        cards.forEach(card => card.classList.add('animate-visible'));
+        cards.forEach(card => card.classList.add('animate-in'));
       }, 100);
+    } else {
+      // Ensure visibility even if animations are disabled
+      const cards = servicesGrid.querySelectorAll('.service-card');
+      cards.forEach(card => card.classList.add('animate-in'));
     }
   }
 
