@@ -1,29 +1,38 @@
-# KFSQUARE Docker Compose - Cross-Platform Deployment
-version: '3.8'
+# KFSQUARE Production Docker Compose Configuration
+# Supports development and production environments
 
 services:
-  kfsquare-web:
-    build: 
+  # Main Application
+  kfsquare-app:
+    build:
       context: .
       dockerfile: Dockerfile
-      platforms:
-        - linux/amd64
-        - linux/arm64
-    container_name: kfsquare-production
+      target: runner
+    image: kfsquare:latest
+    container_name: kfsquare-app
     restart: unless-stopped
     ports:
-      - "3000:3000"
+      - "${PORT:-3000}:3000"
     environment:
-      - NODE_ENV=production
+      - NODE_ENV=${NODE_ENV:-production}
       - PORT=3000
-    env_file:
-      - .env
+      - MONGODB_URI=mongodb://kfsquare-mongo:27017/kfsquare
+      - SESSION_SECRET=${SESSION_SECRET}
+      - JWT_SECRET=${JWT_SECRET}
+      - RATE_LIMIT_WINDOW=${RATE_LIMIT_WINDOW:-900000}
+      - RATE_LIMIT_MAX=${RATE_LIMIT_MAX:-100}
+      - LOG_LEVEL=${LOG_LEVEL:-info}
     volumes:
       - ./logs:/app/logs
+      - ./uploads:/app/uploads
+      - ./backups:/app/backups
+    depends_on:
+      kfsquare-mongo:
+        condition: service_healthy
     networks:
       - kfsquare-network
     healthcheck:
-      test: ["CMD", "node", "-e", "require('http').get('http://localhost:3000/health', (res) => { process.exit(res.statusCode === 200 ? 0 : 1) })"]
+      test: ["CMD", "curl", "-f", "http://localhost:3000/health"]
       interval: 30s
       timeout: 10s
       retries: 3
@@ -34,9 +43,59 @@ services:
       - "traefik.http.routers.kfsquare.tls=true"
       - "traefik.http.routers.kfsquare.tls.certresolver=letsencrypt"
 
+  # MongoDB Database
+  kfsquare-mongo:
+    image: mongo:6.0
+    container_name: kfsquare-mongo
+    restart: unless-stopped
+    ports:
+      - "${MONGO_PORT:-27017}:27017"
+    environment:
+      - MONGO_INITDB_DATABASE=kfsquare
+    volumes:
+      - kfsquare-mongo-data:/data/db
+      - kfsquare-mongo-config:/data/configdb
+      - ./backups:/backups
+    networks:
+      - kfsquare-network
+    healthcheck:
+      test: ["CMD", "mongosh", "--eval", "db.adminCommand('ping')"]
+      interval: 30s
+      timeout: 10s
+      retries: 5
+      start_period: 30s
+
+  # Redis Cache (for session storage and rate limiting)
+  kfsquare-redis:
+    image: redis:7-alpine
+    container_name: kfsquare-redis
+    restart: unless-stopped
+    ports:
+      - "${REDIS_PORT:-6379}:6379"
+    environment:
+      - REDIS_PASSWORD=${REDIS_PASSWORD:-}
+    volumes:
+      - kfsquare-redis-data:/data
+      - ./docker/redis.conf:/etc/redis/redis.conf:ro
+    networks:
+      - kfsquare-network
+    command: redis-server /etc/redis/redis.conf
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+
+# Volumes for persistent data
+volumes:
+  kfsquare-mongo-data:
+    driver: local
+  kfsquare-mongo-config:
+    driver: local
+  kfsquare-redis-data:
+    driver: local
+
+# Network for service communication
 networks:
   kfsquare-network:
     driver: bridge
-
-volumes:
-  logs:

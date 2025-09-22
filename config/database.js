@@ -20,13 +20,9 @@ class DatabaseConnection {
       console.log('🔗 Attempting to connect to MongoDB...');
       
       const connection = await mongoose.connect(mongoURI, {
-        useNewUrlParser: true,
-        useUnifiedTopology: true,
         maxPoolSize: 10, // Maintain up to 10 socket connections
         serverSelectionTimeoutMS: 5000, // Keep trying to send operations for 5 seconds
         socketTimeoutMS: 45000, // Close sockets after 45 seconds of inactivity
-        bufferMaxEntries: 0,
-        bufferCommands: false,
       });
 
       this.connection = connection;

@@ -3,10 +3,18 @@
 
 # Environment variables
 *.env
+.env*
 .env.local
 .env.development.local
 .env.test.local
 .env.production.local
+.env.compose
+.env.docker
+.env.secrets
+
+# But keep example files
+!.env.example
+!.env.compose.example
 
 # Dependencies
 node_modules/
@@ -69,6 +77,37 @@ temp/
 
 # Docker
 docker-compose.override.yml
+docker-compose.prod.yml
+docker-compose.local.yml
+.dockerignore.local
+
+# Security & Secrets
+secrets/
+certificates/
+keys/
+*.key
+*.pem
+*.crt
+*.p12
+*.pfx
+ssl/
+tls/
+
+# Database & Backups
+backups/
+database/
+data/
+*.sql
+*.dump
+*.backup
+mongo-data/
+redis-data/
+
+# Upload & User Data
+uploads/
+user-uploads/
+tmp-uploads/
+media/
 
 # Platform-specific executables
 *.exe
@@ -94,3 +133,26 @@ coverage/
 *.bak
 *.backup
 *.tmp
+*.orig
+*~.nib
+local_settings.py
+*.sqlite3
+*.db
+
+# Production & Sensitive Configuration
+config/production.json
+config/secrets.json
+production.env
+staging.env
+local.env
+
+# Monitoring & Analytics (potentially sensitive)
+analytics/
+metrics/
+monitoring/
+.monitoring/
+
+# JWT & Session Storage
+sessions/
+jwt-keys/
+auth-tokens/

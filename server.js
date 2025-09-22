@@ -18,6 +18,7 @@ const DataSeeder = require('./utils/seeder');
 const teamRoutes = require('./routes/team');
 const servicesRoutes = require('./routes/services');
 const contactsRoutes = require('./routes/contacts');
+const chatRoutes = require('./routes/chat');
 
 // Models
 const Contact = require('./models/Contact');
@@ -114,6 +115,7 @@ app.use(express.static('.', {
 app.use('/api/team', teamRoutes);
 app.use('/api/services', servicesRoutes);
 app.use('/api/contacts', contactsRoutes);
+app.use('/api/chat', chatRoutes);
 
 // Database initialization
 async function initializeDatabase() {
