@@ -121,6 +121,29 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     }
     
+    // Contact form handler (legacy fallback; skipped if enhanced handler is enabled)
+    const legacyContactForm = document.getElementById('contact-form');
+    if (legacyContactForm && legacyContactForm.getAttribute('data-enhanced') !== 'true') {
+        legacyContactForm.addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            const button = legacyContactForm.querySelector('button[type="submit"]');
+            if (button) {
+              button.disabled = true;
+              button.innerHTML = 'Sending...';
+            }
+            
+            setTimeout(() => {
+                alert('Thank you for your message! We will respond within 24 hours.');
+                if (legacyContactForm.reset) legacyContactForm.reset();
+                if (button) {
+                  button.disabled = false;
+                  button.innerHTML = 'Send Message';
+                }
+            }, 2000);
+        });
+    }
+    
     // Modal close functionality
     const modalCloses = document.querySelectorAll('.modal-close');
     modalCloses.forEach(close => {
@@ -256,52 +279,254 @@ document.addEventListener('DOMContentLoaded', function() {
   // Contact Form Functionality
   function initContactForm() {
     var form = document.querySelector('#contact-form');
-    
-    if (form) {
-      addEvent(form, 'submit', function(event) {
-        if (event.preventDefault) {
-          event.preventDefault();
-        } else {
-          event.returnValue = false;
-        }
+    if (!form) return;
 
-        try {
-          var name = trim(form.name.value);
-          var email = trim(form.email.value);
-          var message = trim(form.message.value);
+    var status = document.getElementById('form-status');
+    // Ensure a status region exists for a11y feedback
+    if (!status) {
+      status = document.createElement('div');
+      status.id = 'form-status';
+      status.setAttribute('role', 'status');
+      status.setAttribute('aria-live', 'polite');
+      status.className = 'mt-3 text-muted';
+      // Append near the end of form
+      try { form.appendChild(status); } catch (e) {}
+    }
 
-          if (!name || !email || !message) {
-            showNotification('Please fill in all fields.', 'error');
-            return;
-          }
+    var submitBtn = form.querySelector('button[type="submit"]');
+    // Support either Bootstrap spinner or plain loading span
+    var spinner = submitBtn ? (submitBtn.querySelector('.spinner-border') || submitBtn.querySelector('.btn-loading')) : null;
+    var btnText = submitBtn ? (submitBtn.querySelector('.btn-text') || submitBtn) : null;
 
-          // Basic email validation that works across all platforms
-          var emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-          if (!emailRegex.test(email)) {
-            showNotification('Please enter a valid email address.', 'error');
-            return;
-          }
+    // Add honeypot if missing
+    if (!form.website) {
+      try {
+        var hp = document.createElement('input');
+        hp.type = 'text';
+        hp.name = 'website';
+        hp.id = 'website';
+        hp.tabIndex = -1;
+        hp.autocomplete = 'off';
+        hp.setAttribute('aria-hidden', 'true');
+        hp.style.position = 'absolute';
+        hp.style.left = '-9999px';
+        hp.style.opacity = '0';
+        form.appendChild(hp);
+      } catch (e) {}
+    }
 
-          var body = 'Name: ' + name + '\nEmail: ' + email + '\nMessage:\n' + message;
-          var subject = 'Contact Form Submission';
-          
-          // Universal mailto approach
-          var mailtoLink = 'mailto:customersupport@kfsquare.com?subject=' + 
-                           encodeURIComponent(subject) + '&body=' + encodeURIComponent(body);
-
-          if (typeof window !== 'undefined' && window.location) {
-            window.location.href = mailtoLink;
-          }
-
-          form.reset();
-          showNotification('Thank you! Your message has been prepared.', 'success');
-        } catch (error) {
-          if (window.console && console.error) {
-            console.error('Form submission error:', error);
-          }
-          showNotification('There was an error. Please try again.', 'error');
+    // Live character counter and autosize for message
+    var messageField = document.getElementById('message');
+    var counter = document.getElementById('message-counter');
+    if (messageField) {
+      if (!counter) {
+        counter = document.createElement('span');
+        counter.id = 'message-counter';
+        counter.className = 'small text-muted';
+        try { messageField.parentNode.insertBefore(counter, messageField.nextSibling); } catch (e) {}
+      }
+      addEvent(messageField, 'input', function() {
+        this.style.height = 'auto';
+        this.style.height = Math.min(this.scrollHeight, 300) + 'px';
+        if (counter) {
+          var max = this.getAttribute('maxlength') ? parseInt(this.getAttribute('maxlength'), 10) : 1000;
+          var len = this.value ? this.value.length : 0;
+          if (counter.textContent !== undefined) counter.textContent = len + '/' + max; else counter.innerText = len + '/' + max;
         }
       });
+      // Initialize counter
+      (function() {
+        var max = messageField.getAttribute('maxlength') ? parseInt(messageField.getAttribute('maxlength'), 10) : 1000;
+        var len = messageField.value ? messageField.value.length : 0;
+        if (counter) { counter.textContent = len + '/' + max; }
+      })();
+    }
+
+    function setSubmitting(state) {
+      if (!submitBtn) return;
+      submitBtn.disabled = !!state;
+      if (spinner) {
+        // Toggle visibility based on available spinner element
+        if (spinner.classList) {
+          spinner.classList[state ? 'remove' : 'add']('d-none');
+        } else {
+          spinner.style.display = state ? '' : 'none';
+        }
+      }
+      if (btnText) {
+        var el = btnText;
+        if (el.nodeType === 1 && el.tagName && el.tagName.toLowerCase() === 'button') {
+          el = btnText; // whole button, change its textContent
+        }
+        try {
+          if (btnText.classList && btnText.classList.contains('btn-text')) {
+            btnText.textContent = state ? 'Sending...' : 'Send Message';
+          } else if (submitBtn && submitBtn.textContent) {
+            submitBtn.textContent = state ? 'Sending...' : 'Send Message';
+          }
+        } catch (e) {}
+      }
+    }
+
+    function getFormData() {
+      // Support both compact form (name/email/phone/company/service/message) and detailed contact.html form
+      var firstName = (form.firstName && form.firstName.value) || '';
+      var lastName = (form.lastName && form.lastName.value) || '';
+      var singleName = (form.name && form.name.value) || '';
+      var fullName = trim([singleName, firstName, lastName].filter(Boolean).join(' ').replace(/\s+/g, ' '));
+
+      // Service select or checkboxes
+      var serviceSelectVal = (form.service && form.service.value) || '';
+      var servicesBoxes = form.querySelectorAll('input[name="services"]:checked');
+      var servicesSelected = [];
+      for (var i = 0; i < servicesBoxes.length; i++) { servicesSelected.push(servicesBoxes[i].value); }
+      var serviceInterest = serviceSelectVal || (servicesSelected[0] || 'other');
+
+      // Other optional fields
+      var industry = (form.industry && form.industry.value) || '';
+      var budget = (form.budget && form.budget.value) || '';
+      var timeline = (form.timeline && form.timeline.value) || '';
+      var newsletter = (form.newsletter && form.newsletter.checked) ? 'yes' : 'no';
+
+      return {
+        name: fullName,
+        email: (form.email && form.email.value) || '',
+        phone: (form.phone && form.phone.value) || '',
+        company: (form.company && form.company.value) || '',
+        serviceInterest: serviceInterest || 'other',
+        servicesSelected: servicesSelected,
+        industry: industry,
+        budget: budget,
+        timeline: timeline,
+        newsletter: newsletter,
+        message: (form.message && form.message.value) || '',
+        website: (form.website && form.website.value) || '' // honeypot
+      };
+    }
+
+    function updateStatus(text, type) {
+      if (!status) return;
+      status.className = 'mt-3 ' + (type === 'error' ? 'text-danger' : type === 'success' ? 'text-success' : 'text-muted');
+      if (status.textContent !== undefined) status.textContent = text; else status.innerText = text;
+    }
+
+    // Mobile-friendly focus scroll
+    var inputs = form.querySelectorAll('input, select, textarea');
+    for (var k = 0; k < inputs.length; k++) {
+      addEvent(inputs[k], 'focus', function(){
+        if (window.innerWidth < 768) {
+          try { this.scrollIntoView({ behavior: 'smooth', block: 'center' }); } catch(e) {}
+        }
+      });
+    }
+
+    addEvent(form, 'submit', function(event) {
+      if (event.preventDefault) event.preventDefault(); else event.returnValue = false;
+
+      var data = getFormData();
+
+      // Validation
+      var requiredOk = true;
+      // Support both name and first/last name requirement
+      if (!data.name) { requiredOk = false; }
+      if (!data.email || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(data.email)) { requiredOk = false; }
+      if (!data.message) { requiredOk = false; }
+
+      // Toggle simple invalid styles if available
+      var requiredEls = [];
+      if (form.name) requiredEls.push(form.name);
+      if (form.firstName) requiredEls.push(form.firstName);
+      if (form.lastName) requiredEls.push(form.lastName);
+      if (form.email) requiredEls.push(form.email);
+      if (form.message) requiredEls.push(form.message);
+      for (var r = 0; r < requiredEls.length; r++) {
+        var el = requiredEls[r];
+        var ok = !!(el.value && (el.type !== 'email' || /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(el.value)));
+        if (!ok) { addClass(el, 'is-invalid'); } else { removeClass(el, 'is-invalid'); addClass(el, 'is-valid'); }
+      }
+
+      if (!requiredOk) {
+        updateStatus('Please fill in the required fields correctly.', 'error');
+        return;
+      }
+      if (data.website) { // honeypot
+        updateStatus('Invalid submission detected.', 'error');
+        return;
+      }
+
+      setSubmitting(true);
+      updateStatus('Sending your message...', 'info');
+
+      var payload = {
+        name: data.name,
+        email: data.email,
+        message: data.message,
+        phone: data.phone,
+        company: data.company,
+        serviceInterest: data.serviceInterest,
+        // Extras (server ignores but useful via email templates in future)
+        servicesSelected: data.servicesSelected,
+        industry: data.industry,
+        budget: data.budget,
+        timeline: data.timeline,
+        newsletter: data.newsletter
+      };
+
+      var canFetch = typeof window !== 'undefined' && typeof window.fetch === 'function';
+      if (canFetch) {
+        try {
+          fetch('/send-email', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(payload)
+          })
+          .then(function(res) { return res.json(); })
+          .then(function(json) {
+            if (json && json.success) {
+              updateStatus('Thanks! Your message was sent successfully.', 'success');
+              if (form.reset) form.reset();
+              // Reset validity classes
+              var validEls = form.querySelectorAll('.is-valid');
+              for (var v = 0; v < validEls.length; v++) removeClass(validEls[v], 'is-valid');
+              if (counter) counter.textContent = '0/' + (messageField && (messageField.getAttribute('maxlength') || 1000));
+            } else {
+              fallbackMailto(data);
+            }
+          })
+          .catch(function() { fallbackMailto(data); })
+          .finally(function() { setSubmitting(false); });
+        } catch (e) {
+          fallbackMailto(data);
+          setSubmitting(false);
+        }
+      } else {
+        fallbackMailto(data);
+        setSubmitting(false);
+      }
+    });
+
+    function fallbackMailto(data) {
+      try {
+        var subject = 'Contact Form Submission';
+        var servicesText = (data.servicesSelected && data.servicesSelected.length) ? ('Services: ' + data.servicesSelected.join(', ') + '\n') : ('Service: ' + (data.serviceInterest || 'other') + '\n');
+        var extra = '';
+        if (data.industry) extra += 'Industry: ' + data.industry + '\n';
+        if (data.budget) extra += 'Budget: ' + data.budget + '\n';
+        if (data.timeline) extra += 'Timeline: ' + data.timeline + '\n';
+        if (data.newsletter) extra += 'Newsletter: ' + data.newsletter + '\n';
+        var body = 'Name: ' + data.name + '\n' +
+                   'Email: ' + data.email + '\n' +
+                   (data.phone ? ('Phone: ' + data.phone + '\n') : '') +
+                   (data.company ? ('Company: ' + data.company + '\n') : '') +
+                   servicesText +
+                   extra + '\n' +
+                   'Message:\n' + data.message;
+        var link = 'mailto:customersupport@kfsquare.com?subject=' + encodeURIComponent(subject) + '&body=' + encodeURIComponent(body);
+        if (typeof window !== 'undefined' && window.location) { window.location.href = link; }
+        updateStatus('We could not reach the server. Your email client has been opened.', 'info');
+      } catch (e) {
+        updateStatus('Something went wrong. Please try again later.', 'error');
+      }
     }
   }
 
@@ -813,18 +1038,14 @@ document.addEventListener('DOMContentLoaded', function() {
       if (document.addEventListener) {
         document.addEventListener('DOMContentLoaded', callback);
       } else {
-    loadingScreen.innerHTML = '<div class="loader"></div>';
-    document.body.appendChild(loadingScreen);
-    
-    setTimeout(function() {
-      addClass(loadingScreen, 'fade-out');
-      setTimeout(function() {
-        if (loadingScreen.parentNode) {
-          loadingScreen.parentNode.removeChild(loadingScreen);
-        }
-      }, 500);
-    }, 1500);
-  });
+        document.attachEvent('onreadystatechange', function() {
+          if (document.readyState === 'complete') {
+            callback();
+          }
+        });
+      }
+    }
+  }
 
   // Dynamic Portfolio Functionality
   function initDynamicPortfolio() {
@@ -1842,6 +2063,7 @@ document.addEventListener('DOMContentLoaded', function() {
             // Add category-specific visual effects
             var categoryType = this.getAttribute('data-category');
             if (categoryType) {
+             
               addClass(this, categoryType + '-glow');
             }
           });
@@ -2197,7 +2419,7 @@ document.addEventListener('DOMContentLoaded', function() {
       var response = aiResponses['ticket-created'];
       response.text = response.text.replace('#SUP-' + Math.floor(Math.random() * 10000), '#' + ticketId);
       
-      addMessage(response.text, false, response.quickActions);
+      addMessage(response.text, false);
       
       // Simulate email notification
       setTimeout(function() {
