@@ -765,14 +765,15 @@
     <div class="container">
       <div class="row mb-5">
         <div class="col-lg-8 mx-auto text-center">
-          <h2 class="display-4 fw-bold mb-4">Get In Touch</h2>
+          <h2 class="display-4 fw-bold mb-3">Get In Touch</h2>
+          <div class="section-divider mb-3"></div>
           <p class="lead">Ready to transform your business with data? Let's start the conversation.</p>
         </div>
       </div>
       
-      <div class="row justify-content-center">
-        <div class="col-xl-8 col-lg-9">
-          <div class="card border-0 shadow-lg rounded-4">
+      <div class="row g-5 align-items-stretch">
+        <div class="col-lg-8">
+          <div class="card border-0 shadow-lg rounded-4 h-100">
             <div class="card-body p-4 p-md-5">
               <h3 class="mb-4">Send Us a Message</h3>
               <form id="contact-form" novalidate aria-describedby="form-status" aria-live="polite" data-enhanced="true">
@@ -850,48 +851,40 @@
             </div>
           </div>
         </div>
-      </div>
-
-      <div class="row g-4 mt-4 justify-content-center">
-        <div class="col-md-4">
-          <div class="card border-0 shadow-sm h-100">
-            <div class="card-body p-4 text-center">
-              <div class="bg-primary bg-opacity-10 rounded-circle d-inline-flex align-items-center justify-content-center mb-3" style="width: 60px; height: 60px;">
-                <i class="fas fa-envelope text-primary fs-4"></i>
-              </div>
-              <h5 class="card-title">Email Us</h5>
-              <p class="card-text mb-3">Get in touch for project inquiries</p>
-              <a href="mailto:customersupport@kfsquare.com" class="btn btn-outline-primary">
-                customersupport@kfsquare.com
-              </a>
-            </div>
-          </div>
-        </div>
         
-        <div class="col-md-4">
-          <div class="card border-0 shadow-sm h-100">
-            <div class="card-body p-4 text-center">
-              <div class="bg-success bg-opacity-10 rounded-circle d-inline-flex align-items-center justify-content-center mb-3" style="width: 60px; height: 60px;">
-                <i class="fas fa-phone text-success fs-4"></i>
+        <div class="col-lg-4">
+          <div class="d-flex flex-column gap-4 h-100">
+            <div class="card border-0 shadow-sm h-100">
+              <div class="card-body p-4 text-center">
+                <div class="bg-primary bg-opacity-10 rounded-circle d-inline-flex align-items-center justify-content-center mb-3" style="width: 60px; height: 60px;">
+                  <i class="fas fa-envelope text-primary fs-4"></i>
+                </div>
+                <h5 class="card-title">Email Us</h5>
+                <p class="card-text mb-3">Get in touch for project inquiries</p>
+                <a href="mailto:customersupport@kfsquare.com" class="btn btn-outline-primary w-100">customersupport@kfsquare.com</a>
               </div>
-              <h5 class="card-title">Call Us</h5>
-              <p class="card-text mb-3">Speak directly with our team</p>
-              <a href="tel:+14109347470" class="btn btn-outline-success">
-                410-934-7470
-              </a>
             </div>
-          </div>
-        </div>
-        
-        <div class="col-md-4">
-          <div class="card border-0 shadow-sm h-100">
-            <div class="card-body p-4 text-center">
-              <div class="bg-info bg-opacity-10 rounded-circle d-inline-flex align-items-center justify-content-center mb-3" style="width: 60px; height: 60px;">
-                <i class="fas fa-clock text-info fs-4"></i>
+            
+            <div class="card border-0 shadow-sm h-100">
+              <div class="card-body p-4 text-center">
+                <div class="bg-success bg-opacity-10 rounded-circle d-inline-flex align-items-center justify-content-center mb-3" style="width: 60px; height: 60px;">
+                  <i class="fas fa-phone text-success fs-4"></i>
+                </div>
+                <h5 class="card-title">Call Us</h5>
+                <p class="card-text mb-3">Speak directly with our team</p>
+                <a href="tel:+14109347470" class="btn btn-outline-success w-100">410-934-7470</a>
               </div>
-              <h5 class="card-title">Response Time</h5>
-              <p class="card-text mb-3">We typically respond within</p>
-              <span class="badge bg-info fs-6">24 Hours</span>
+            </div>
+            
+            <div class="card border-0 shadow-sm h-100">
+              <div class="card-body p-4 text-center">
+                <div class="bg-info bg-opacity-10 rounded-circle d-inline-flex align-items-center justify-content-center mb-3" style="width: 60px; height: 60px;">
+                  <i class="fas fa-clock text-info fs-4"></i>
+                </div>
+                <h5 class="card-title">Response Time</h5>
+                <p class="card-text mb-3">We typically respond within</p>
+                <span class="badge bg-info fs-6">24 Hours</span>
+              </div>
             </div>
           </div>
         </div>
@@ -1025,6 +1018,16 @@
     .form-floating > .form-control:focus ~ label {
       color: #0d6efd;
     }
+    .section-divider { 
+      width: 140px; height: 4px; border-radius: 999px; 
+      background: linear-gradient(90deg, #0d6efd, #ffc107);
+      margin-left: auto; margin-right: auto;
+      opacity: 0.85;
+    }
+    .contact .card { border: 1px solid rgba(13,110,253,.08); }
+    .contact .btn-primary { box-shadow: 0 8px 20px rgba(13,110,253,.18); }
+    .contact .btn-primary:hover { box-shadow: 0 12px 28px rgba(13,110,253,.24); }
+    .contact .form-control, .contact .form-select { border-radius: .75rem; }
   </style>
 
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
