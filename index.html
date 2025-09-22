@@ -877,18 +877,20 @@
       </div>
 
       <!-- Row 3: Customer Support (full-width centered) -->
-      <div class="row justify-content-center g-4 mt-2">
-        <div class="col-xl-8 col-lg-10">
+      <div class="row g-4 mt-2">
+        <div class="col-12">
           <div class="card border-0 shadow-sm rounded-4 text-center">
             <div class="card-body p-4 p-md-5">
-              <div class="bg-success bg-opacity-10 rounded-circle d-inline-flex align-items-center justify-content-center mb-3" style="width: 60px; height: 60px;">
+              <div class="bg-success bg-opacity-10 rounded-circle d-inline-flex align-items-center justify-content-center mb-3" style="width: clamp(48px, 7vw, 64px); height: clamp(48px, 7vw, 64px);">
                 <i class="fas fa-headset text-success fs-4"></i>
               </div>
-              <h5 class="card-title mb-2">Customer Support</h5>
-              <p class="card-text mb-3">Speak directly with our team. We typically respond within <strong>24 hours</strong>.</p>
-              <div class="d-flex flex-column flex-sm-row gap-2 justify-content-center">
-                <a href="tel:+14109347470" class="btn btn-outline-success px-4">Call: 410-934-7470</a>
-                <span class="badge bg-info align-self-center">24 Hours</span>
+              <h5 class="card-title mb-2">
+                Customer Support
+                <a href="tel:+14109347470" class="d-block small fw-semibold text-decoration-none text-success text-break" style="word-break: break-word;">Call: 410-934-7470</a>
+              </h5>
+              <p class="card-text mb-1">Speak directly with our team. We typically respond within <strong>24 hours</strong>.</p>
+              <div class="d-flex justify-content-center">
+                <span class="badge bg-info">24 Hours</span>
               </div>
             </div>
           </div>
