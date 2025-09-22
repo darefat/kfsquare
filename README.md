@@ -246,57 +246,32 @@ This project is licensed under the MIT License - see the LICENSE file for detail
 ---
 
 **KFSQUARE** - Transforming Data into Insights 🚀
-        ```
 
-4.  **Run the server:**
+# KFSQUARE Site - Production Readiness
 
-    ```bash
-    node server.js
-    ```
+## Quick Start
+- Development: `npm run dev` then open http://localhost:3000
+- Static preview: `npm run build && npm run preview` then open http://localhost:8080
 
-5.  **Open `index.html` in your browser.**  It's recommended to use a development server (e.g., `serve`) to avoid CORS issues.
+## Environment
+Copy `.env` and set values:
+- `SENDGRID_API_KEY`, `RECIPIENT_EMAIL`
+- `ALLOWED_ORIGINS` (comma or space separated)
+- Optional: `LOG_LEVEL`, `SENTRY_DSN`
 
-## Key Files
+## Build & Deploy
+1. Build static assets
+   - `npm run build`
+2. Preview build
+   - `npm run preview`
+3. Production server (Express)
+   - `npm start`
 
-*   **`index.html`:** The main HTML file containing the website structure and content.
-*   **`styles.css`:**  CSS file for styling the website.
-*   **`script.js`:** JavaScript file for handling form submission and client-side logic.
-*   **`server.js`:** Node.js server file for handling form submissions and sending emails via SendGrid.
-*   **.env:** File for storing sensitive information like API keys and email addresses.
+## Security
+- Helmet CSP tightened for Google Fonts and CDNJS
+- CORS controlled via `ALLOWED_ORIGINS`
+- Rate limits configurable via env vars
 
-## Email Sending
-
-The website includes a contact form that sends emails using SendGrid.  The server-side code handles the email sending process.
-
-**Important:**
-
-*   Make sure you have a SendGrid account and have created an API key with the necessary permissions.
-*   Verify the "no-reply" email address with SendGrid to prevent emails from being marked as spam.
-
-## CORS Configuration
-
-The server uses CORS to allow requests from the frontend.  Make sure the `CORS_ORIGIN` environment variable is set to the correct URL of your frontend.
-
-## Input Validation
-
-The server uses `express-validator` to validate the form data on the server-side.
-
-## Error Handling
-
-The server includes error handling and logging to help identify and resolve issues.
-
-## Production Deployment
-
-When deploying to production:
-
-*   Set the environment variables directly in your hosting environment.
-*   Ensure that the CORS origin is set to the correct URL of your production frontend.
-*   Consider using a process manager like PM2 to keep the server running.
-
-## Contributing
-
-Contributions are welcome! Please submit a pull request with your changes.
-
-## License
-
-© 2025 KFSQUARE. All rights reserved.
+## Notes
+- If you want consistent minification, install terser and clean-css globally, or add as devDependencies.
+- Ensure your reverse proxy serves `dist/` or keep Express static serving with caching as configured.

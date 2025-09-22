@@ -46,13 +46,25 @@ if (!apiKey) {
   console.log("✅ SendGrid configured successfully");
 }
 
+// Helper: resolve allowed origins from env
+function resolveAllowedOrigins() {
+  const envList = process.env.ALLOWED_ORIGINS || process.env.CORS_ORIGIN || '';
+  if (envList === '' || envList === 'true') return true; // allow all in dev when not set
+  // split by comma or space
+  return envList
+    .split(/[,\s]+/)
+    .map(o => o.trim())
+    .filter(Boolean);
+}
+
 // Production Security Middleware
 app.use(helmet({
   contentSecurityPolicy: {
     directives: {
       defaultSrc: ["'self'"],
-      styleSrc: ["'self'", "'unsafe-inline'", "https://fonts.googleapis.com"],
-      fontSrc: ["'self'", "https://fonts.gstatic.com"],
+      // If you serve CSS/JS from a CDN, add it here (e.g., https://cdn.example.com)
+      styleSrc: ["'self'", "'unsafe-inline'", "https://fonts.googleapis.com", "https://cdnjs.cloudflare.com"],
+      fontSrc: ["'self'", "https://fonts.gstatic.com", "https://cdnjs.cloudflare.com"],
       scriptSrc: ["'self'", "'unsafe-inline'"],
       imgSrc: ["'self'", "data:", "https:"],
       connectSrc: ["'self'", "https:"],
@@ -86,8 +98,9 @@ const emailLimiter = rateLimit({
 });
 
 // CORS Configuration
+const allowedOrigins = resolveAllowedOrigins();
 app.use(cors({
-  origin: corsOrigin || (isProduction ? 'https://kfsquare.com' : true),
+  origin: allowedOrigins,
   optionsSuccessStatus: 200,
   credentials: true
 }));
@@ -101,12 +114,14 @@ app.use(express.static('.', {
   maxAge: isProduction ? '1y' : 0,
   etag: true,
   lastModified: true,
-  setHeaders: (res, path) => {
-    if (path.endsWith('.html')) {
+  setHeaders: (res, filePath) => {
+    if (filePath.endsWith('.html')) {
       res.setHeader('Cache-Control', 'public, max-age=3600'); // 1 hour for HTML
     }
-    if (path.endsWith('.css') || path.endsWith('.js')) {
-      res.setHeader('Cache-Control', 'public, max-age=31536000'); // 1 year for CSS/JS
+    if (filePath.endsWith('.css') || filePath.endsWith('.js')) {
+      const isMinified = filePath.endsWith('.min.css') || filePath.endsWith('.min.js');
+      const value = isMinified ? 'public, max-age=31536000, immutable' : 'public, max-age=86400';
+      res.setHeader('Cache-Control', value);
     }
   }
 }));

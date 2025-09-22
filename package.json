@@ -4,12 +4,13 @@
   "description": "KFSQUARE - Data Analytics & Predictive Modeling website",
   "main": "server.js",
   "scripts": {
+    "build": "bash scripts/build.sh",
+    "preview": "npx serve -s dist -l 8080",
     "start": "cross-env NODE_ENV=production node server.js",
     "dev": "cross-env NODE_ENV=development node server.js",
     "serve": "python3 -m http.server 8080 || python -m http.server 8080",
     "serve:win": "python -m http.server 8080",
     "serve:py3": "python3 -m http.server 8080",
-    "build": "echo 'No build process needed - static files ready'",
     "test": "echo 'Tests not implemented yet'",
     "prestart": "echo 'Starting KFSQUARE server...'",
     "postinstall": "echo 'Dependencies installed successfully'",
@@ -65,6 +66,11 @@
     "validator": "^13.12.0",
     "winston": "^3.13.0",
     "winston-daily-rotate-file": "^5.0.0"
+  },
+  "devDependencies": {
+    "clean-css-cli": "^5.6.3",
+    "terser": "^5.31.0",
+    "serve": "^14.2.1"
   },
   "engines": {
     "node": ">=18.0.0",

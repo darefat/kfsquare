@@ -6,6 +6,10 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <title>Services - KFSQUARE | Data Analytics & AI Solutions</title>
     <meta name="description" content="Explore KFSQUARE's comprehensive data analytics, machine learning, and AI services designed to transform your business.">
+    <!-- Preconnect & Icons -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" integrity="sha512-pO12H4hB7p3k7hZrZK4V1dH5dS7J9fQfQ3gJr5wN0+HfR3b0H7nF6vQF0n3b2w9zG1hM1G8y6H9E1E0n6G1mQ==" crossorigin="anonymous" referrerpolicy="no-referrer"/>
     <link rel="stylesheet" href="styles.css">
     <link rel="icon" href="favicon.ico" type="image/x-icon">
 </head>
@@ -70,10 +74,108 @@
         </section>
 
         <!-- Core Services Grid -->
-        <section class="services-grid-section">
+        <section class="services-grid-section core-services-section">
             <div class="container">
-                <h2 class="section-title">Core Services</h2>
-                <div class="services-grid" id="services-grid" aria-live="polite"></div>
+                <div class="section-header">
+                    <div class="section-icon">
+                        <i class="fas fa-cogs"></i>
+                    </div>
+                    <h2 class="section-title">Core Services</h2>
+                    <p class="section-subtitle">Comprehensive data analytics and AI solutions designed to transform your business operations and drive measurable results</p>
+                    
+                    <!-- Service Categories Filter -->
+                    <div class="service-categories-filter">
+                        <button class="filter-btn active" data-category="all">
+                            <i class="fas fa-th"></i>
+                            <span>All Services</span>
+                        </button>
+                        <button class="filter-btn" data-category="analytics">
+                            <i class="fas fa-chart-line"></i>
+                            <span>Analytics</span>
+                        </button>
+                        <button class="filter-btn" data-category="ai-ml">
+                            <i class="fas fa-robot"></i>
+                            <span>AI & ML</span>
+                        </button>
+                        <button class="filter-btn" data-category="engineering">
+                            <i class="fas fa-database"></i>
+                            <span>Engineering</span>
+                        </button>
+                        <button class="filter-btn" data-category="consulting">
+                            <i class="fas fa-handshake"></i>
+                            <span>Consulting</span>
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Services Grid Container -->
+                <div class="services-grid-wrapper">
+                    <div class="services-grid enhanced-grid" id="services-grid" aria-live="polite">
+                        <!-- Services will be loaded dynamically -->
+                        <div class="service-card skeleton-card">
+                            <div class="skeleton-icon"></div>
+                            <div class="skeleton-title"></div>
+                            <div class="skeleton-text"></div>
+                            <div class="skeleton-features"></div>
+                            <div class="skeleton-price"></div>
+                        </div>
+                        <div class="service-card skeleton-card">
+                            <div class="skeleton-icon"></div>
+                            <div class="skeleton-title"></div>
+                            <div class="skeleton-text"></div>
+                            <div class="skeleton-features"></div>
+                            <div class="skeleton-price"></div>
+                        </div>
+                        <div class="service-card skeleton-card">
+                            <div class="skeleton-icon"></div>
+                            <div class="skeleton-title"></div>
+                            <div class="skeleton-text"></div>
+                            <div class="skeleton-features"></div>
+                            <div class="skeleton-price"></div>
+                        </div>
+                        <div class="service-card skeleton-card">
+                            <div class="skeleton-icon"></div>
+                            <div class="skeleton-title"></div>
+                            <div class="skeleton-text"></div>
+                            <div class="skeleton-features"></div>
+                            <div class="skeleton-price"></div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Service Statistics -->
+                <div class="services-stats">
+                    <div class="stat-item">
+                        <div class="stat-icon">
+                            <i class="fas fa-project-diagram"></i>
+                        </div>
+                        <div class="stat-number" data-target="150">0</div>
+                        <div class="stat-label">Projects Completed</div>
+                    </div>
+                    <div class="stat-item">
+                        <div class="stat-icon">
+                            <i class="fas fa-users"></i>
+                        </div>
+                        <div class="stat-number" data-target="75">0</div>
+                        <div class="stat-label">Satisfied Clients</div>
+                    </div>
+                    <div class="stat-item">
+                        <div class="stat-icon">
+                            <i class="fas fa-clock"></i>
+                        </div>
+                        <div class="stat-number" data-target="24">0</div>
+                        <div class="stat-label">Avg. Response Time</div>
+                        <div class="stat-unit">hours</div>
+                    </div>
+                    <div class="stat-item">
+                        <div class="stat-icon">
+                            <i class="fas fa-award"></i>
+                        </div>
+                        <div class="stat-number" data-target="98">0</div>
+                        <div class="stat-label">Success Rate</div>
+                        <div class="stat-unit">%</div>
+                    </div>
+                </div>
             </div>
         </section>
 
@@ -317,97 +419,7 @@
         </div>
     </footer>
 
-    <script>
-      // Dynamic Core Services rendering (loaded from services.json)
-      (function() {
-        async function loadServices() {
-          try {
-            const res = await fetch('services.json', { cache: 'no-store' });
-            if (!res.ok) throw new Error('Failed to load services');
-            return await res.json();
-          } catch (e) {
-            console.error('Error loading services.json:', e);
-            return [];
-          }
-        }
-
-        function renderServices(services) {
-          const servicesGrid = document.getElementById('services-grid');
-          if (!servicesGrid) return;
-          if (!services || services.length === 0) {
-            servicesGrid.innerHTML = `
-              <div class="empty-state">
-                <p>No services available at the moment.</p>
-                <a class="btn btn-primary" href="contact.html?subject=${encodeURIComponent('Help me choose the right service')}">Contact Us</a>
-              </div>`;
-            return;
-          }
-          const serviceCard = (s) => `
-            <div id="${s.id}" class="service-card ${s.featured ? 'featured' : ''}">
-              <div class="service-icon">${s.icon}</div>
-              <h3>${s.title}</h3>
-              <p>${s.description}</p>
-              <ul class="service-features">
-                ${s.features.map(f => `<li>✓ ${f}</li>`).join('')}
-              </ul>
-              <div class="service-pricing">
-                <span class="price">${s.price}</span>
-                <span class="price-note">${s.priceNote}</span>
-              </div>
-              <div class="service-actions">
-                <button class="btn btn-primary service-btn" data-service="${s.id}">Learn More</button>
-                <a class="btn btn-secondary" href="contact.html?subject=${encodeURIComponent("I'm interested in " + s.title)}">Get Quote</a>
-              </div>
-            </div>`;
-          servicesGrid.innerHTML = services.map(serviceCard).join('');
-        }
-
-        function wireModal(services) {
-          const modal = document.getElementById('service-modal');
-          const modalTitle = document.getElementById('modal-title');
-          const modalBody = document.getElementById('modal-body');
-          const modalContactBtn = document.getElementById('modal-contact-btn');
-
-          function openModal(serviceId) {
-            const s = services.find(x => x.id === serviceId);
-            if (!s) return;
-            modalTitle.textContent = s.title;
-            modalBody.innerHTML = `
-              <p>${s.details}</p>
-              <ul class="service-features">
-                ${s.features.map(f => `<li>✓ ${f}</li>`).join('')}
-              </ul>`;
-            modalContactBtn.href = `contact.html?subject=${encodeURIComponent("I'd like to discuss " + s.title + " in detail")}`;
-            modal.style.display = 'block';
-            document.body.style.overflow = 'hidden';
-          }
-
-          function closeModal() {
-            modal.style.display = 'none';
-            document.body.style.overflow = '';
-          }
-
-          document.addEventListener('click', (e) => {
-            const btn = e.target.closest('.service-btn');
-            if (btn && btn.dataset.service) openModal(btn.dataset.service);
-            if (e.target.classList.contains('modal-close')) closeModal();
-          });
-
-          window.addEventListener('keydown', (e) => {
-            if (e.key === 'Escape' && modal.style.display === 'block') closeModal();
-          });
-
-          modal.addEventListener('click', (e) => { if (e.target === modal) closeModal(); });
-        }
-
-        // Show loading state before fetching
-        const gridEl = document.getElementById('services-grid');
-        if (gridEl) gridEl.innerHTML = '<p>Loading services…</p>';
-        loadServices().then((services) => {
-          renderServices(services);
-          wireModal(services);
-        });
-      })();
-    </script>
+    <!-- Replace inline script with external file -->
+    <script src="services.js" defer></script>
 </body>
 </html>
