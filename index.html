@@ -87,6 +87,8 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="anonymous">
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css">
   <link rel="stylesheet" href="styles.css" />
   <script src="js/dynamic-content.js" defer></script>
   <script src="js/chat-enhanced.js" defer></script>
@@ -96,80 +98,324 @@
 <body>
   <div class="scroll-indicator"></div>
   <!-- Navigation -->
-  <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+  <nav class="navbar navbar-expand-lg navbar-dark bg-dark fixed-top">
     <div class="container">
-      <a class="navbar-brand" href="index.html">KFSQUARE</a>
+      <a class="navbar-brand fw-bold fs-3" href="index.html">
+        <span class="text-primary">KF</span>SQUARE
+      </a>
       <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#mainNavbar" aria-controls="mainNavbar" aria-expanded="false" aria-label="Toggle navigation">
         <span class="navbar-toggler-icon"></span>
       </button>
       <div class="collapse navbar-collapse" id="mainNavbar">
-        <div class="row ms-auto gx-3 align-items-center">
-          <div class="col-auto"><a href="index.html" class="nav-link active">Home</a></div>
-          <div class="col-auto"><a href="about.html" class="nav-link">About</a></div>
-          <div class="col-auto"><a href="services.html" class="nav-link">Services</a></div>
-          <div class="col-auto"><a href="portfolio.html" class="nav-link">Portfolio</a></div>
-          <div class="col-auto"><a href="team.html" class="nav-link">Team</a></div>
-          <div class="col-auto"><a href="contact.html" class="nav-link">Contact</a></div>
+        <div class="row ms-auto gx-4 align-items-center">
+          <div class="col-auto"><a href="index.html" class="nav-link text-light active">Home</a></div>
+          <div class="col-auto"><a href="about.html" class="nav-link text-light">About</a></div>
+          <div class="col-auto"><a href="services.html" class="nav-link text-light">Services</a></div>
+          <div class="col-auto"><a href="portfolio.html" class="nav-link text-light">Portfolio</a></div>
+          <div class="col-auto"><a href="team.html" class="nav-link text-light">Team</a></div>
+          <div class="col-auto"><a href="contact.html" class="nav-link text-light">Contact</a></div>
         </div>
       </div>
     </div>
   </nav>
 
-  <header>
-
-  <section id="about" class="section about">
-    <div class="about-content">
-      <h2>About KFSQUARE</h2>
-      <div class="about-grid">
-        <div class="about-main">
-          <p class="about-intro">
-            At KFSQUARE, we are pioneers in the data analytics and artificial intelligence landscape, transforming how organizations harness the power of their data to drive strategic decision-making and sustainable growth.
-          </p>
-          
-          <div class="mission-vision">
-            <div class="mission">
-              <h3>Our Mission</h3>
-              <p>To empower enterprises with cutting-edge data engineering solutions and predictive analytics that unlock hidden insights, optimize operations, and accelerate business transformation in the digital age.</p>
+  <!-- Hero Section -->
+  <header class="hero-section position-relative min-vh-100 d-flex align-items-center" style="background: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%); padding-top: 100px;">
+    <div class="position-absolute top-0 start-0 w-100 h-100" style="background: url('data:image/svg+xml,<svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 100 100\"><defs><pattern id=\"grain\" width=\"100\" height=\"100\" patternUnits=\"userSpaceOnUse\"><circle cx=\"50\" cy=\"50\" r=\"2\" fill=\"%23ffffff\" opacity=\"0.05\"/></pattern></defs><rect width=\"100%\" height=\"100%\" fill=\"url(%23grain)\"/></svg>'); opacity: 0.3;"></div>
+    <div class="container position-relative">
+      <div class="row align-items-center">
+        <div class="col-lg-6 text-white">
+          <div class="hero-content animate__animated animate__fadeInUp">
+            <h1 class="display-1 fw-bold mb-4">
+              <span class="text-warning">KF</span>SQUARE
+            </h1>
+            <h2 class="display-5 mb-4">Data Analytics & Predictive Modeling Excellence</h2>
+            <p class="lead mb-5 fs-4">
+              A leading data engineering and analytics company leveraging cutting-edge Large Language Models (LLM) 
+              to deliver predictive analysis and transformative insights that drive business success.
+            </p>
+            
+            <!-- Hero Stats -->
+            <div class="row text-center mb-5">
+              <div class="col-4">
+                <div class="p-3">
+                  <div class="h2 text-warning mb-1 fw-bold">500+</div>
+                  <small class="text-light opacity-75">Projects Delivered</small>
+                </div>
+              </div>
+              <div class="col-4">
+                <div class="p-3">
+                  <div class="h2 text-warning mb-1 fw-bold">98%</div>
+                  <small class="text-light opacity-75">Client Satisfaction</small>
+                </div>
+              </div>
+              <div class="col-4">
+                <div class="p-3">
+                  <div class="h2 text-warning mb-1 fw-bold">24/7</div>
+                  <small class="text-light opacity-75">Support Available</small>
+                </div>
+              </div>
             </div>
             
-            <div class="vision">
-              <h3>Our Vision</h3>
-              <p>To be the global leader in AI-driven analytics solutions, setting new standards for innovation, reliability, and business impact across industries.</p>
+            <!-- CTA Buttons -->
+            <div class="d-flex flex-wrap gap-3 mb-5">
+              <a href="#contact" class="btn btn-warning btn-lg px-5 py-3 fw-semibold">Get Started Today</a>
+              <a href="#services" class="btn btn-outline-light btn-lg px-5 py-3">Explore Services</a>
+            </div>
+            
+            <!-- Trust Indicators -->
+            <div class="d-flex flex-wrap align-items-center gap-4 text-light opacity-75">
+              <span><i class="fas fa-shield-alt me-2 text-warning"></i>SOC 2 Certified</span>
+              <span><i class="fas fa-medal me-2 text-warning"></i>Veteran Owned</span>
+              <span><i class="fas fa-building me-2 text-warning"></i>Small Business</span>
+            </div>
+          </div>
+        </div>
+        <div class="col-lg-6">
+          <div class="hero-visual text-center position-relative animate__animated animate__fadeInRight animate__delay-1s">
+            <div class="position-relative d-inline-block">
+              <!-- Main Chart Icon -->
+              <div class="bg-warning bg-opacity-20 rounded-circle d-flex align-items-center justify-content-center mx-auto" 
+                   style="width: 350px; height: 350px;">
+                <i class="fas fa-chart-line text-warning" style="font-size: 6rem;"></i>
+              </div>
+              
+              <!-- Floating Elements with Animation -->
+              <div class="position-absolute animate__animated animate__pulse animate__infinite animate__slow" 
+                   style="top: 10%; left: -5%; transform: translateX(-50%);">
+                <div class="bg-info rounded-3 p-3 shadow-lg">
+                  <i class="fas fa-robot text-white fs-3"></i>
+                </div>
+              </div>
+              
+              <div class="position-absolute animate__animated animate__bounce animate__infinite animate__slow" 
+                   style="top: 15%; right: -10%; transform: translateX(50%);">
+                <div class="bg-success rounded-3 p-3 shadow-lg">
+                  <i class="fas fa-brain text-white fs-3"></i>
+                </div>
+              </div>
+              
+              <div class="position-absolute animate__animated animate__pulse animate__infinite animate__slow animate__delay-2s" 
+                   style="bottom: 20%; left: -10%; transform: translateX(-50%);">
+                <div class="bg-danger rounded-3 p-3 shadow-lg">
+                  <i class="fas fa-database text-white fs-3"></i>
+                </div>
+              </div>
+              
+              <div class="position-absolute animate__animated animate__bounce animate__infinite animate__slow animate__delay-3s" 
+                   style="bottom: 15%; right: -5%; transform: translateX(50%);">
+                <div class="bg-primary rounded-3 p-3 shadow-lg">
+                  <i class="fas fa-cogs text-white fs-3"></i>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <!-- About Section -->
+  <section id="about" class="section about py-5">
+    <div class="container">
+      <div class="row mb-5">
+        <div class="col-lg-8 mx-auto text-center">
+          <h2 class="display-4 fw-bold mb-4">About KFSQUARE</h2>
+          <p class="lead">
+            At KFSQUARE, we are pioneers in the data analytics and artificial intelligence landscape, 
+            transforming how organizations harness the power of their data to drive strategic decision-making and sustainable growth.
+          </p>
+        </div>
+      </div>
+      <!-- Mission and Vision -->
+      <div class="row mb-5">
+        <div class="col-lg-6 mb-4">
+          <div class="card h-100 border-0 shadow-lg">
+            <div class="card-body p-4">
+              <div class="d-flex align-items-center mb-3">
+                <div class="bg-primary rounded-circle p-3 me-3">
+                  <i class="fas fa-bullseye text-white fs-4"></i>
+                </div>
+                <h3 class="card-title mb-0">Our Mission</h3>
+              </div>
+              <p class="card-text">
+                To empower enterprises with cutting-edge data engineering solutions and predictive analytics 
+                that unlock hidden insights, optimize operations, and accelerate business transformation in the digital age.
+              </p>
             </div>
           </div>
         </div>
         
-        <div class="about-highlights">
-          <div class="highlight-card">
-            <h4>Expertise</h4>
-            <p>Deep specialization in Large Language Models (LLM), machine learning, and advanced statistical modeling techniques.</p>
-          </div>
-          
-          <div class="highlight-card">
-            <h4>Innovation</h4>
-            <p>Leveraging cutting-edge AI technologies to solve complex business challenges and create competitive advantages.</p>
-          </div>
-          
-          <div class="highlight-card">
-            <h4>Partnership</h4>
-            <p>Collaborative approach ensuring solutions align perfectly with your strategic objectives and operational requirements.</p>
-          </div>
-          
-          <div class="highlight-card">
-            <h4>Small Business</h4>
-            <p>Proudly serving as a certified small business, bringing agility, personalized service, and innovative solutions to organizations of all sizes.</p>
-          </div>
-          
-          <div class="highlight-card">
-            <h4>Veteran-Owned</h4>
-            <p>Founded and operated by a disabled veteran, we bring military discipline, integrity, and commitment to excellence in every project we undertake.</p>
+        <div class="col-lg-6 mb-4">
+          <div class="card h-100 border-0 shadow-lg">
+            <div class="card-body p-4">
+              <div class="d-flex align-items-center mb-3">
+                <div class="bg-success rounded-circle p-3 me-3">
+                  <i class="fas fa-eye text-white fs-4"></i>
+                </div>
+                <h3 class="card-title mb-0">Our Vision</h3>
+              </div>
+              <p class="card-text">
+                To be the global leader in AI-driven analytics solutions, setting new standards for innovation, 
+                reliability, and business impact across industries.
+              </p>
+            </div>
           </div>
         </div>
       </div>
       
-      <div class="company-values">
-        <h3>Why Choose KFSQUARE</h3>
-        <p class="values-intro">Discover the competitive advantages that make KFSQUARE the trusted partner for data transformation</p>
+      <!-- Highlights Grid -->
+      <div class="row g-4">
+        <div class="col-lg-4 col-md-6">
+          <div class="card border-0 shadow-sm h-100 text-center">
+            <div class="card-body p-4">
+              <div class="bg-primary bg-opacity-10 rounded-circle d-inline-flex align-items-center justify-content-center mb-3" style="width: 80px; height: 80px;">
+                <i class="fas fa-graduation-cap text-primary fs-3"></i>
+              </div>
+              <h4 class="card-title">Expertise</h4>
+              <p class="card-text">Deep specialization in Large Language Models (LLM), machine learning, and advanced statistical modeling techniques.</p>
+            </div>
+          </div>
+        </div>
+        
+        <div class="col-lg-4 col-md-6">
+          <div class="card border-0 shadow-sm h-100 text-center">
+            <div class="card-body p-4">
+              <div class="bg-warning bg-opacity-10 rounded-circle d-inline-flex align-items-center justify-content-center mb-3" style="width: 80px; height: 80px;">
+                <i class="fas fa-lightbulb text-warning fs-3"></i>
+              </div>
+              <h4 class="card-title">Innovation</h4>
+              <p class="card-text">Leveraging cutting-edge AI technologies to solve complex business challenges and create competitive advantages.</p>
+            </div>
+          </div>
+        </div>
+        
+        <div class="col-lg-4 col-md-6">
+          <div class="card border-0 shadow-sm h-100 text-center">
+            <div class="card-body p-4">
+              <div class="bg-info bg-opacity-10 rounded-circle d-inline-flex align-items-center justify-content-center mb-3" style="width: 80px; height: 80px;">
+                <i class="fas fa-handshake text-info fs-3"></i>
+              </div>
+              <h4 class="card-title">Partnership</h4>
+              <p class="card-text">Collaborative approach ensuring solutions align perfectly with your strategic objectives and operational requirements.</p>
+            </div>
+          </div>
+        </div>
+        
+        <div class="col-lg-4 col-md-6">
+          <div class="card border-0 shadow-sm h-100 text-center">
+            <div class="card-body p-4">
+              <div class="bg-success bg-opacity-10 rounded-circle d-inline-flex align-items-center justify-content-center mb-3" style="width: 80px; height: 80px;">
+                <i class="fas fa-building text-success fs-3"></i>
+              </div>
+              <h4 class="card-title">Small Business</h4>
+              <p class="card-text">Proudly serving as a certified small business, bringing agility, personalized service, and innovative solutions to organizations of all sizes.</p>
+            </div>
+          </div>
+        </div>
+        
+        <div class="col-lg-4 col-md-6">
+          <div class="card border-0 shadow-sm h-100 text-center">
+            <div class="card-body p-4">
+              <div class="bg-danger bg-opacity-10 rounded-circle d-inline-flex align-items-center justify-content-center mb-3" style="width: 80px; height: 80px;">
+                <i class="fas fa-medal text-danger fs-3"></i>
+              </div>
+              <h4 class="card-title">Veteran-Owned</h4>
+              <p class="card-text">Founded and operated by a disabled veteran, we bring military discipline, integrity, and commitment to excellence in every project we undertake.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Services Section -->
+  <section id="services" class="section services py-5 bg-light">
+    <div class="container">
+      <div class="row mb-5">
+        <div class="col-lg-8 mx-auto text-center">
+          <h2 class="display-4 fw-bold mb-4">Our Services</h2>
+          <p class="lead">Comprehensive data solutions designed to accelerate your business transformation</p>
+        </div>
+      </div>
+      
+      <div class="row g-4 mb-5">
+        <div class="col-lg-4 col-md-6">
+          <div class="card border-0 shadow-sm h-100 hover-lift">
+            <div class="card-body p-4">
+              <div class="bg-primary bg-opacity-10 rounded-circle d-inline-flex align-items-center justify-content-center mb-3" style="width: 60px; height: 60px;">
+                <i class="fas fa-database text-primary fs-4"></i>
+              </div>
+              <h5 class="card-title">Data Engineering</h5>
+              <p class="card-text">Build robust data pipelines and infrastructure for scalable analytics solutions.</p>
+            </div>
+          </div>
+        </div>
+        
+        <div class="col-lg-4 col-md-6">
+          <div class="card border-0 shadow-sm h-100 hover-lift">
+            <div class="card-body p-4">
+              <div class="bg-success bg-opacity-10 rounded-circle d-inline-flex align-items-center justify-content-center mb-3" style="width: 60px; height: 60px;">
+                <i class="fas fa-chart-line text-success fs-4"></i>
+              </div>
+              <h5 class="card-title">Predictive Analytics</h5>
+              <p class="card-text">Leverage machine learning to forecast trends and optimize business decisions.</p>
+            </div>
+          </div>
+        </div>
+        
+        <div class="col-lg-4 col-md-6">
+          <div class="card border-0 shadow-sm h-100 hover-lift">
+            <div class="card-body p-4">
+              <div class="bg-warning bg-opacity-10 rounded-circle d-inline-flex align-items-center justify-content-center mb-3" style="width: 60px; height: 60px;">
+                <i class="fas fa-robot text-warning fs-4"></i>
+              </div>
+              <h5 class="card-title">LLM Integration</h5>
+              <p class="card-text">Deploy cutting-edge language models for intelligent automation and insights.</p>
+            </div>
+          </div>
+        </div>
+        
+        <div class="col-lg-4 col-md-6">
+          <div class="card border-0 shadow-sm h-100 hover-lift">
+            <div class="card-body p-4">
+              <div class="bg-info bg-opacity-10 rounded-circle d-inline-flex align-items-center justify-content-center mb-3" style="width: 60px; height: 60px;">
+                <i class="fas fa-chart-bar text-info fs-4"></i>
+              </div>
+              <h5 class="card-title">Business Intelligence</h5>
+              <p class="card-text">Transform raw data into actionable insights with advanced reporting solutions.</p>
+            </div>
+          </div>
+        </div>
+        
+        <div class="col-lg-4 col-md-6">
+          <div class="card border-0 shadow-sm h-100 hover-lift">
+            <div class="card-body p-4">
+              <div class="bg-danger bg-opacity-10 rounded-circle d-inline-flex align-items-center justify-content-center mb-3" style="width: 60px; height: 60px;">
+                <i class="fas fa-shield-alt text-danger fs-4"></i>
+              </div>
+              <h5 class="card-title">Data Governance</h5>
+              <p class="card-text">Ensure compliance and security with comprehensive data governance frameworks.</p>
+            </div>
+          </div>
+        </div>
+        
+        <div class="col-lg-4 col-md-6">
+          <div class="card border-0 shadow-sm h-100 hover-lift">
+            <div class="card-body p-4">
+              <div class="bg-secondary bg-opacity-10 rounded-circle d-inline-flex align-items-center justify-content-center mb-3" style="width: 60px; height: 60px;">
+                <i class="fas fa-lightbulb text-secondary fs-4"></i>
+              </div>
+              <h5 class="card-title">Strategic Consulting</h5>
+              <p class="card-text">Expert guidance for AI strategy and digital transformation initiatives.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+      
+      <div class="text-center">
+        <a href="services.html" class="btn btn-primary btn-lg px-4">View All Services</a>
+      </div>
         
         <!-- Values Portfolio Controls -->
         <div class="values-controls">
@@ -1272,87 +1518,246 @@
       </div>
     </div>
   </section> -->
-  <section id="contact" class="section contact">
-    <h2>Contact</h2>
-    <form id="contact-form" class="contact-form">
-      <div class="form-group">
-        <label for="name">Name:</label>
-        <input type="text" id="name" name="name" required />
-      </div>
-      <div class="form-group">
-        <label for="email">Email:</label>
-        <input type="email" id="email" name="email" required />
-      </div>
-      <div class="form-group">
-        <label for="message">Message:</label>
-        <textarea id="message" name="message" rows="5" required></textarea>
-      </div>
-      <button type="submit" class="primary-btn">Send Message</button>
-    </form>
-    
-    <div class="contact-info">
-      <div class="contact-item">
-        <span class="contact-icon">📧</span>
-        <div>
-          <h4>Email</h4>
-          <p><a href="mailto:customersupport@kfsquare.com">customersupport@kfsquare.com</a></p>
+  <!-- Contact Section -->
+  <section id="contact" class="section contact py-5">
+    <div class="container">
+      <div class="row mb-5">
+        <div class="col-lg-8 mx-auto text-center">
+          <h2 class="display-4 fw-bold mb-4">Get In Touch</h2>
+          <p class="lead">Ready to transform your business with data? Let's start the conversation.</p>
         </div>
       </div>
-      <div class="contact-item">
-        <span class="contact-icon">📞</span>
-        <div>
-          <h4>Phone</h4>
-          <p><a href="tel:+12152792887">215-279-2887</a></p>
+      
+      <div class="row g-5">
+        <div class="col-lg-8">
+          <div class="card border-0 shadow-lg">
+            <div class="card-body p-5">
+              <h3 class="mb-4">Send Us a Message</h3>
+              <form id="contact-form">
+                <div class="row g-3 mb-4">
+                  <div class="col-md-6">
+                    <div class="form-floating">
+                      <input type="text" class="form-control" id="name" name="name" placeholder="Your Name" required>
+                      <label for="name">Full Name</label>
+                    </div>
+                  </div>
+                  <div class="col-md-6">
+                    <div class="form-floating">
+                      <input type="email" class="form-control" id="email" name="email" placeholder="Your Email" required>
+                      <label for="email">Email Address</label>
+                    </div>
+                  </div>
+                </div>
+                
+                <div class="form-floating mb-4">
+                  <input type="text" class="form-control" id="company" name="company" placeholder="Company Name">
+                  <label for="company">Company (Optional)</label>
+                </div>
+                
+                <div class="form-floating mb-4">
+                  <select class="form-select" id="service" name="service" required>
+                    <option selected disabled value="">Choose a service</option>
+                    <option value="data-engineering">Data Engineering</option>
+                    <option value="predictive-analytics">Predictive Analytics</option>
+                    <option value="llm-integration">LLM Integration</option>
+                    <option value="business-intelligence">Business Intelligence</option>
+                    <option value="data-governance">Data Governance</option>
+                    <option value="consulting">Strategic Consulting</option>
+                    <option value="other">Other</option>
+                  </select>
+                  <label for="service">Service of Interest</label>
+                </div>
+                
+                <div class="form-floating mb-4">
+                  <textarea class="form-control" id="message" name="message" style="height: 120px" placeholder="Your Message" required></textarea>
+                  <label for="message">Tell us about your project</label>
+                </div>
+                
+                <button type="submit" class="btn btn-primary btn-lg w-100">
+                  <i class="fas fa-paper-plane me-2"></i>Send Message
+                </button>
+              </form>
+            </div>
+          </div>
+        </div>
+        
+        <div class="col-lg-4">
+          <div class="row g-4">
+            <div class="col-12">
+              <div class="card border-0 shadow-sm h-100">
+                <div class="card-body p-4 text-center">
+                  <div class="bg-primary bg-opacity-10 rounded-circle d-inline-flex align-items-center justify-content-center mb-3" style="width: 60px; height: 60px;">
+                    <i class="fas fa-envelope text-primary fs-4"></i>
+                  </div>
+                  <h5 class="card-title">Email Us</h5>
+                  <p class="card-text mb-3">Get in touch for project inquiries</p>
+                  <a href="mailto:customersupport@kfsquare.com" class="btn btn-outline-primary">
+                    customersupport@kfsquare.com
+                  </a>
+                </div>
+              </div>
+            </div>
+            
+            <div class="col-12">
+              <div class="card border-0 shadow-sm h-100">
+                <div class="card-body p-4 text-center">
+                  <div class="bg-success bg-opacity-10 rounded-circle d-inline-flex align-items-center justify-content-center mb-3" style="width: 60px; height: 60px;">
+                    <i class="fas fa-phone text-success fs-4"></i>
+                  </div>
+                  <h5 class="card-title">Call Us</h5>
+                  <p class="card-text mb-3">Speak directly with our team</p>
+                  <a href="tel:+12152792887" class="btn btn-outline-success">
+                    215-279-2887
+                  </a>
+                </div>
+              </div>
+            </div>
+            
+            <div class="col-12">
+              <div class="card border-0 shadow-sm h-100">
+                <div class="card-body p-4 text-center">
+                  <div class="bg-info bg-opacity-10 rounded-circle d-inline-flex align-items-center justify-content-center mb-3" style="width: 60px; height: 60px;">
+                    <i class="fas fa-clock text-info fs-4"></i>
+                  </div>
+                  <h5 class="card-title">Response Time</h5>
+                  <p class="card-text mb-3">We typically respond within</p>
+                  <span class="badge bg-info fs-6">24 Hours</span>
+                </div>
+              </div>
+            </div>
+          </div>
         </div>
       </div>
     </div>
   </section>
 
   <!-- Footer -->
-  <footer class="footer">
+  <footer class="footer bg-dark text-light py-5">
     <div class="container">
-      <div class="footer-content">
-        <div class="footer-section">
-          <h3>KFSQUARE</h3>
-          <p>Transforming businesses through intelligent data solutions and advanced analytics.</p>
-          <div class="social-links">
-            <a href="#" aria-label="LinkedIn">📧</a>
-            <a href="#" aria-label="Twitter">📱</a>
-            <a href="#" aria-label="GitHub">💻</a>
+      <div class="row g-4 mb-4">
+        <div class="col-lg-4">
+          <div class="footer-brand mb-4">
+            <h3 class="fw-bold">
+              <span class="text-warning">KF</span>SQUARE
+            </h3>
+            <p class="text-light opacity-75 mb-4">
+              Transforming businesses through intelligent data solutions, advanced analytics, and cutting-edge AI technologies.
+            </p>
+            <div class="d-flex gap-3">
+              <a href="#" class="btn btn-outline-warning btn-sm rounded-circle p-2" aria-label="LinkedIn">
+                <i class="fab fa-linkedin-in"></i>
+              </a>
+              <a href="#" class="btn btn-outline-warning btn-sm rounded-circle p-2" aria-label="Twitter">
+                <i class="fab fa-twitter"></i>
+              </a>
+              <a href="#" class="btn btn-outline-warning btn-sm rounded-circle p-2" aria-label="GitHub">
+                <i class="fab fa-github"></i>
+              </a>
+            </div>
           </div>
         </div>
-        <div class="footer-section">
-          <h4>Services</h4>
-          <ul>
-            <li><a href="services.html">Data Analytics</a></li>
-            <li><a href="services.html">Machine Learning</a></li>
-            <li><a href="services.html">AI Integration</a></li>
-            <li><a href="services.html">Business Intelligence</a></li>
+        
+        <div class="col-lg-2 col-md-6">
+          <h5 class="text-warning mb-3">Services</h5>
+          <ul class="list-unstyled">
+            <li class="mb-2"><a href="services.html" class="text-light opacity-75 text-decoration-none">Data Engineering</a></li>
+            <li class="mb-2"><a href="services.html" class="text-light opacity-75 text-decoration-none">Predictive Analytics</a></li>
+            <li class="mb-2"><a href="services.html" class="text-light opacity-75 text-decoration-none">LLM Integration</a></li>
+            <li class="mb-2"><a href="services.html" class="text-light opacity-75 text-decoration-none">Business Intelligence</a></li>
           </ul>
         </div>
-        <div class="footer-section">
-          <h4>Company</h4>
-          <ul>
-            <li><a href="about.html">About Us</a></li>
-            <li><a href="team.html">Our Team</a></li>
-            <li><a href="portfolio.html">Portfolio</a></li>
-            <li><a href="contact.html">Contact</a></li>
+        
+        <div class="col-lg-2 col-md-6">
+          <h5 class="text-warning mb-3">Company</h5>
+          <ul class="list-unstyled">
+            <li class="mb-2"><a href="about.html" class="text-light opacity-75 text-decoration-none">About Us</a></li>
+            <li class="mb-2"><a href="team.html" class="text-light opacity-75 text-decoration-none">Our Team</a></li>
+            <li class="mb-2"><a href="portfolio.html" class="text-light opacity-75 text-decoration-none">Portfolio</a></li>
+            <li class="mb-2"><a href="contact.html" class="text-light opacity-75 text-decoration-none">Contact</a></li>
           </ul>
         </div>
-        <div class="footer-section">
-          <h4>Contact Info</h4>
-          <div class="contact-info">
-            <p>📞 410-934-7470</p>
-            <p>📧 customersupport@kfsquare.com</p>
-            <p>🏢 Small Business & Veteran Owned</p>
+        
+        <div class="col-lg-4">
+          <h5 class="text-warning mb-3">Contact Information</h5>
+          <div class="contact-info-footer">
+            <div class="d-flex align-items-center mb-3">
+              <i class="fas fa-phone text-warning me-3"></i>
+              <a href="tel:+14109347470" class="text-light opacity-75 text-decoration-none">410-934-7470</a>
+            </div>
+            <div class="d-flex align-items-center mb-3">
+              <i class="fas fa-envelope text-warning me-3"></i>
+              <a href="mailto:customersupport@kfsquare.com" class="text-light opacity-75 text-decoration-none">customersupport@kfsquare.com</a>
+            </div>
+            <div class="d-flex align-items-center mb-3">
+              <i class="fas fa-shield-alt text-warning me-3"></i>
+              <span class="text-light opacity-75">Small Business & Veteran Owned</span>
+            </div>
           </div>
         </div>
       </div>
-      <div class="footer-bottom">
-        <p>&copy; 2024 KFSQUARE. All rights reserved. | <a href="privacy.html">Privacy Policy</a> | <a href="terms.html">Terms of Service</a></p>
+      
+      <hr class="border-secondary">
+      
+      <div class="row align-items-center">
+        <div class="col-md-6">
+          <p class="mb-0 text-light opacity-75">
+            &copy; 2024 KFSQUARE. All rights reserved.
+          </p>
+        </div>
+        <div class="col-md-6 text-md-end">
+          <a href="privacy.html" class="text-light opacity-75 text-decoration-none me-3">Privacy Policy</a>
+          <a href="terms.html" class="text-light opacity-75 text-decoration-none">Terms of Service</a>
+        </div>
       </div>
     </div>
   </footer>
+
+  <style>
+    .hero-section {
+      background-attachment: fixed !important;
+    }
+    .hover-lift {
+      transition: transform 0.3s ease, box-shadow 0.3s ease;
+    }
+    .hover-lift:hover {
+      transform: translateY(-10px);
+      box-shadow: 0 20px 40px rgba(0,0,0,0.1) !important;
+    }
+    .nav-link:hover {
+      color: #ffc107 !important;
+    }
+    .card {
+      transition: all 0.3s ease;
+    }
+    .card:hover {
+      transform: translateY(-5px);
+    }
+    .animate__slow {
+      animation-duration: 3s;
+    }
+    .scroll-indicator {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 3px;
+      background: linear-gradient(to right, #ffc107, #0d6efd);
+      z-index: 9999;
+      transform-origin: left;
+      transform: scaleX(0);
+      transition: transform 0.3s ease;
+    }
+    .footer a:hover {
+      color: #ffc107 !important;
+    }
+    .btn:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 8px 25px rgba(0,0,0,0.15);
+    }
+    .form-floating > .form-control:focus ~ label {
+      color: #0d6efd;
+    }
+  </style>
 
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
 </body>
