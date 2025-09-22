@@ -13,21 +13,29 @@ module.exports = {
       env: {
         NODE_ENV: 'development',
         PORT: 3000,
-        MONGODB_URI: 'mongodb://localhost:27017/kfsquare_dev'
+        // Avoid hardcoding database URLs here; use a .env file instead
+        // MONGODB_URI should be provided via environment variables
       },
       
       env_production: {
         NODE_ENV: 'production',
         PORT: process.env.PORT || 3000,
-        MONGODB_URI: process.env.MONGODB_URI || 'mongodb://localhost:27017/kfsquare',
+        // Use environment-provided URI, do not fallback to localhost in production
+        MONGODB_URI: process.env.MONGODB_URI,
+        MONGODB_HOSTS: process.env.MONGODB_HOSTS,
+        MONGODB_DB: process.env.MONGODB_DB,
         SESSION_SECRET: process.env.SESSION_SECRET,
         JWT_SECRET: process.env.JWT_SECRET,
         RATE_LIMIT_WINDOW: process.env.RATE_LIMIT_WINDOW || '900000',
-        RATE_LIMIT_MAX: process.env.RATE_LIMIT_MAX || '100'
+        RATE_LIMIT_MAX: process.env.RATE_LIMIT_MAX || '100',
+        // Public site URL used for logs and CORS origin
+        PUBLIC_URL: process.env.PUBLIC_URL || 'https://darefat.github.io/kfsquare'
       },
       
       // Process Configuration
-      instances: process.env.PM2_INSTANCES || 'max', // Use all CPU cores
+      // If PM2_INSTANCES is set when starting PM2 (e.g. `PM2_INSTANCES=1 pm2 start ...`), use it.
+      // Otherwise default to 1 in development and 'max' in other environments.
+      instances: process.env.PM2_INSTANCES || (process.env.NODE_ENV === 'development' ? 1 : 'max'),
       exec_mode: 'cluster',                          // Enable clustering
       instance_var: 'INSTANCE_ID',                  // Unique instance identifier
       
@@ -54,7 +62,7 @@ module.exports = {
       // Graceful Shutdown
       kill_timeout: 5000,                         // Time to wait before force kill
       listen_timeout: 8000,                       // Time to wait for app to start
-      wait_ready: true,                           // Wait for ready signal
+      wait_ready: false,                          // Disable waiting for ready signal
       
       // Advanced Options
       node_args: '--max-old-space-size=1024',     // Node.js memory optimization

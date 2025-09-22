@@ -37,6 +37,10 @@ const apiKey = process.env.SENDGRID_API_KEY;
 const recipientEmail = process.env.RECIPIENT_EMAIL;
 const corsOrigin = process.env.CORS_ORIGIN;
 const isProduction = process.env.NODE_ENV === 'production';
+// Prefer explicit public URL in production (e.g., GitHub Pages or site domain)
+const publicUrl = process.env.PUBLIC_URL || '';
+let publicOrigin = null;
+try { if (publicUrl) { publicOrigin = new URL(publicUrl).origin; } } catch (_) {}
 
 // Helper to parse comma-separated env vars
 function parseCsv(value) {
@@ -121,6 +125,7 @@ const emailLimiter = rateLimit({
 const resolvedCorsOrigins = (() => {
   if (allowedOrigins.length) return allowedOrigins;
   if (corsOrigin) return [corsOrigin];
+  if (isProduction && publicOrigin) return [publicOrigin];
   return isProduction ? ['https://kfsquare.com'] : [];
 })();
 
@@ -382,7 +387,7 @@ app.use((err, req, res, next) => {
 
 // Graceful shutdown with platform-aware signal handling
 const server = app.listen(port, async () => {
-  console.log(`🚀 KFSQUARE Server running on http://localhost:${port}`);
+  console.log(`🚀 KFSQUARE Server running on ${publicUrl || `http://localhost:${port}`}`);
   console.log(`🔧 Environment: ${process.env.NODE_ENV || 'development'}`);
   console.log(`📧 SendGrid configured: ${!!process.env.SENDGRID_API_KEY}`);
   console.log(`💻 Platform: ${platform}`);
@@ -393,6 +398,11 @@ const server = app.listen(port, async () => {
   await initializeDatabase();
   
   console.log('✅ Server initialization complete');
+
+  // Notify PM2 that the app is ready (for wait_ready)
+  if (typeof process.send === 'function') {
+    try { process.send('ready'); } catch (_) {}
+  }
 });
 
 // Platform-aware graceful shutdown

@@ -33,6 +33,21 @@ const generateSecret = (length = 64) => {
     return crypto.randomBytes(length).toString('hex');
 };
 
+// NEW: Ensure sensitive files have strict permissions (0600)
+const ensureSecureFile = (filePath) => {
+    try {
+        if (fs.existsSync(filePath)) {
+            const mode = fs.statSync(filePath).mode & 0o777;
+            if (mode & 0o077) {
+                fs.chmodSync(filePath, 0o600);
+                success(`Hardened permissions on ${filePath} to 600`);
+            }
+        }
+    } catch (e) {
+        warning(`Could not set secure permissions on ${filePath}: ${e.message}`);
+    }
+};
+
 // Create production .env file
 const createProductionEnv = () => {
     log('Creating production environment configuration...');
@@ -48,8 +63,21 @@ APP_NAME=KFSQUARE
 APP_VERSION=1.0.0
 
 # Database Configuration
-MONGODB_URI=mongodb://localhost:27017/kfsquare
-# MONGODB_URI=mongodb+srv://username:password@cluster.mongodb.net/kfsquare?retryWrites=true&w=majority
+# Avoid embedding plaintext credentials. Prefer SRV URI without password or separate fields with MONGODB_PASSWORD_FILE.
+# Example SRV (fill values, do not commit real secrets):
+# MONGODB_URI=mongodb+srv://<username>:<password>@<cluster-host>/<db-name>?retryWrites=true&w=majority
+# Or separate fields (recommended with container/orchestrator secrets):
+# MONGODB_USE_SRV=true
+# MONGODB_HOSTS=cluster0.mongodb.net
+# MONGODB_DB=kfsquare
+# MONGODB_USER=<app_user>
+# MONGODB_PASSWORD_FILE=/run/secrets/mongodb_password
+# MONGODB_TLS=true
+# MONGODB_CA_FILE=/etc/ssl/certs/ca.pem
+# MONGODB_OPTIONS=retryWrites=true&w=majority
+
+# Local/dev fallback (not for production unless explicitly allowed)
+# DATABASE_URL=mongodb://localhost:27017/kfsquare
 
 # Redis Configuration (Optional - for session storage)
 REDIS_URL=redis://localhost:6379
@@ -145,16 +173,27 @@ HEALTH_CHECK_PATH=/health
 HEALTH_CHECK_INTERVAL=30000
 `;
 
-    // Write .env.production file
-    fs.writeFileSync('.env.production', envTemplate);
-    success('Created .env.production template');
+    // Write .env.production with secure permissions
+    try {
+        fs.writeFileSync('.env.production', envTemplate, { mode: 0o600 });
+        success('Created .env.production template with 600 permissions');
+    } catch (e) {
+        error(`Failed to write .env.production: ${e.message}`);
+    }
     
-    // Copy to .env if it doesn't exist
+    // Copy to .env if it doesn't exist, ensure strict permissions
     if (!fs.existsSync('.env')) {
-        fs.copyFileSync('.env.production', '.env');
-        success('Created .env from production template');
-        warning('Please update .env with your actual values before starting the application');
+        try {
+            fs.copyFileSync('.env.production', '.env');
+            fs.chmodSync('.env', 0o600);
+            success('Created .env from production template (permissions set to 600)');
+            warning('Please update .env with your actual values before starting the application');
+        } catch (e) {
+            error(`Failed to create .env from template: ${e.message}`);
+        }
     } else {
+        // If .env exists, ensure it is secure
+        ensureSecureFile('.env');
         warning('.env already exists. Check .env.production for new configuration options');
     }
 };
@@ -468,6 +507,9 @@ ${colors.reset}`);
     try {
         createDirectories();
         createProductionEnv();
+        // Ensure file permissions are secure after creation
+        ensureSecureFile('.env.production');
+        ensureSecureFile('.env');
         createDockerConfig();
         createMonitoringConfig();
         createSystemdService();

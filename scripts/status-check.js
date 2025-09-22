@@ -111,23 +111,60 @@ const checkDependencies = () => {
     }
 };
 
+// NEW: Check permissions of sensitive env files
+const checkEnvPermissions = (file) => {
+    try {
+        if (!fs.existsSync(file)) return;
+        const mode = fs.statSync(file).mode & 0o777;
+        if (mode & 0o077) {
+            warning(`${file} permissions are too open (${mode.toString(8)}). Recommend 600`);
+            warnings.push(`${file} permissions not 600`);
+        } else {
+            success(`${file} permissions are secure (${mode.toString(8)})`);
+        }
+    } catch (e) {
+        warning(`Could not check permissions for ${file}: ${e.message}`);
+    }
+};
+
 // Check environment configuration
 const checkEnvironment = () => {
     const envExists = checkFile('.env', 'Environment file (.env)');
     const envExampleExists = checkFile('.env.example', 'Environment template (.env.example)');
     const envProductionExists = checkFile('.env.production', 'Production environment template');
+
+    // Permissions check
+    checkEnvPermissions('.env');
+    checkEnvPermissions('.env.production');
     
     if (envExists) {
         try {
             const envContent = fs.readFileSync('.env', 'utf8');
-            const requiredVars = ['NODE_ENV', 'PORT', 'MONGODB_URI', 'SESSION_SECRET', 'JWT_SECRET'];
-            const missingVars = requiredVars.filter(varName => !envContent.includes(varName));
-            
-            if (missingVars.length === 0) {
-                success('All required environment variables are defined');
+            const hasUri = /^(?=.)\s*MONGODB_URI\s*=/.test(envContent);
+            const hasSplit = /(MONGODB_HOSTS|DB_NAME|MONGODB_DB|MONGODB_USER)/.test(envContent);
+            const hasPasswordFile = /MONGODB_PASSWORD_FILE\s*=/.test(envContent);
+            const hasPlainPassword = /MONGODB_PASSWORD\s*=/.test(envContent);
+
+            const coreVars = ['NODE_ENV', 'PORT', 'SESSION_SECRET', 'JWT_SECRET'];
+            const missingCore = coreVars.filter(v => !new RegExp(`^\n?${v}\s*=`, 'm').test(envContent));
+            if (missingCore.length) {
+                warning(`Missing core environment variables: ${missingCore.join(', ')}`);
+                warnings.push('Some core environment variables are missing');
             } else {
-                warning(`Missing environment variables: ${missingVars.join(', ')}`);
-                warnings.push('Some environment variables are missing');
+                success('Core environment variables are defined');
+            }
+
+            if (hasUri) {
+                success('Database configured via MONGODB_URI');
+            } else if (hasSplit) {
+                success('Database configured via split MongoDB variables');
+                if (!hasPasswordFile && hasPlainPassword) {
+                    warning('Using MONGODB_PASSWORD. Prefer MONGODB_PASSWORD_FILE for better security');
+                    warnings.push('Use *_PASSWORD_FILE for MongoDB credentials');
+                }
+            } else {
+                warning('MongoDB configuration not detected. Define MONGODB_URI or split variables');
+                warnings.push('MongoDB config missing');
             }
         } catch (err) {
             warning('Cannot read .env file');
