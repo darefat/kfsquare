@@ -246,6 +246,7 @@ document.addEventListener('DOMContentLoaded', function() {
       initGovernanceEnhancements();
       initValuesPortfolio();
       initChatAssistant();
+      initCredentialsSection();
     } catch (error) {
       if (window.console && console.error) {
         console.error('Error initializing features:', error);
@@ -813,18 +814,14 @@ document.addEventListener('DOMContentLoaded', function() {
       if (document.addEventListener) {
         document.addEventListener('DOMContentLoaded', callback);
       } else {
-    loadingScreen.innerHTML = '<div class="loader"></div>';
-    document.body.appendChild(loadingScreen);
-    
-    setTimeout(function() {
-      addClass(loadingScreen, 'fade-out');
-      setTimeout(function() {
-        if (loadingScreen.parentNode) {
-          loadingScreen.parentNode.removeChild(loadingScreen);
-        }
-      }, 500);
-    }, 1500);
-  });
+        document.attachEvent('onreadystatechange', function() {
+          if (document.readyState === 'complete') {
+            callback();
+          }
+        });
+      }
+    }
+  }
 
   // Dynamic Portfolio Functionality
   function initDynamicPortfolio() {
@@ -2063,8 +2060,7 @@ document.addEventListener('DOMContentLoaded', function() {
         }
       }, 15000);
 
-      // Periodic engagement for inactive users
-      setInterval(function() {
+      // Periodic engagement for inactive users      setInterval(function() {
         if (!isOpen && messageCount <= 2) {
           showNotification();
           updateNotificationText("Need help? Our support team is online!");
@@ -2704,7 +2700,262 @@ document.addEventListener('DOMContentLoaded', function() {
     }, 5000);
   }
 
-  // Initialize when DOM is ready
-  domReady(init);
+  // Enhanced Business Credentials Section Functionality
+  function initCredentialsSection() {
+    // Animation on scroll for credential cards
+    const credentialCards = document.querySelectorAll('.animate-on-scroll');
+    
+    const credentialsObserver = new IntersectionObserver((entries) => {
+        entries.forEach((entry, index) => {
+            if (entry.isIntersecting) {
+                setTimeout(() => {
+                    entry.target.classList.add('visible');
+                }, index * 200); // Staggered animation
+                credentialsObserver.unobserve(entry.target);
+            }
+        });
+    }, {
+        threshold: 0.1,
+        rootMargin: '0px 0px -50px 0px'
+    });
+
+    credentialCards.forEach(card => {
+        credentialsObserver.observe(card);
+    });
+
+    // Enhanced hover effects for mobile (touch devices)
+    if ('ontouchstart' in window) {
+        const cards = document.querySelectorAll('.credential-card');
+        
+        cards.forEach(card => {
+            card.addEventListener('touchstart', function(e) {
+                // Remove active class from other cards
+                cards.forEach(otherCard => {
+                    if (otherCard !== this) {
+                        otherCard.classList.remove('touch-active');
+                    }
+                });
+                
+                // Add active class to touched card
+                this.classList.add('touch-active');
+                
+                // Add haptic feedback if available
+                if (navigator.vibrate) {
+                    navigator.vibrate(50);
+                }
+            });
+            
+            // Remove active class after touch ends
+            card.addEventListener('touchend', function() {
+                setTimeout(() => {
+                    this.classList.remove('touch-active');
+                }, 2000);
+            });
+        });
+    }
+
+    // Dynamic stats counter animation for credentials section
+    const statNumbers = document.querySelectorAll('.stat-number');
+    let hasAnimated = false;
+
+    const statsObserver = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+            if (entry.isIntersecting && !hasAnimated) {
+                hasAnimated = true;
+                animateStatNumbers();
+                statsObserver.unobserve(entry.target);
+            }
+        });
+    }, { threshold: 0.5 });
+
+    if (statNumbers.length > 0) {
+        statsObserver.observe(statNumbers[0].closest('.credentials-stats'));
+    }
+
+    function animateStatNumbers() {
+        statNumbers.forEach(stat => {
+            const finalValue = stat.textContent;
+            const numericValue = parseInt(finalValue.replace(/\D/g, ''));
+            const suffix = finalValue.replace(/[\d\s]/g, '');
+            
+            if (!isNaN(numericValue)) {
+                let currentValue = 0;
+                const increment = Math.ceil(numericValue / 50);
+                const timer = setInterval(() => {
+                    currentValue += increment;
+                    if (currentValue >= numericValue) {
+                        currentValue = numericValue;
+                        clearInterval(timer);
+                    }
+                    stat.textContent = currentValue + suffix;
+                }, 40); // 40ms for smooth 60fps animation
+            }
+        });
+    }
+
+    // Enhanced card interactions
+    const featuredCards = document.querySelectorAll('.featured-card');
+    
+    featuredCards.forEach(card => {
+        const icon = card.querySelector('.credential-icon');
+        const seal = card.querySelector('.certification-seal');
+        
+        card.addEventListener('mouseenter', function() {
+            if (icon) {
+                icon.style.transform = 'scale(1.1) rotate(10deg)';
+            }
+            if (seal) {
+                seal.style.transform = 'scale(1.2) rotate(-10deg)';
+            }
+        });
+        
+        card.addEventListener('mouseleave', function() {
+            if (icon) {
+                icon.style.transform = '';
+            }
+            if (seal) {
+                seal.style.transform = '';
+            }
+        });
+    });
+
+    // Trust indicators animation
+    const trustItems = document.querySelectorAll('.trust-item');
+    const trustObserver = new IntersectionObserver((entries) => {
+        entries.forEach((entry, index) => {
+            if (entry.isIntersecting) {
+                setTimeout(() => {
+                    entry.target.style.opacity = '1';
+                    entry.target.style.transform = 'translateY(0)';
+                }, index * 150);
+                trustObserver.unobserve(entry.target);
+            }
+        });
+    }, { threshold: 0.2 });
+
+    trustItems.forEach(item => {
+        item.style.opacity = '0';
+        item.style.transform = 'translateY(30px)';
+        item.style.transition = 'all 0.6s ease';
+        trustObserver.observe(item);
+    });
+
+    // Progressive enhancement for better performance
+    const credentialsSection = document.querySelector('.credentials-section');
+    if (credentialsSection) {
+        // Lazy load background pattern on scroll
+        const backgroundObserver = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('background-loaded');
+                    backgroundObserver.unobserve(entry.target);
+                }
+            });
+        }, { threshold: 0.1 });
+
+        backgroundObserver.observe(credentialsSection);
+    }
+
+    // Accessibility improvements
+    const detailItems = document.querySelectorAll('.detail-item');
+    detailItems.forEach(item => {
+        item.setAttribute('role', 'listitem');
+        item.setAttribute('tabindex', '0');
+        
+        // Keyboard navigation
+        item.addEventListener('keydown', function(e) {
+            if (e.key === 'Enter' || e.key === ' ') {
+                e.preventDefault();
+                this.style.transform = 'translateX(8px)';
+                setTimeout(() => {
+                    this.style.transform = '';
+                }, 200);
+            }
+        });
+    });
+
+    // Mobile-specific enhancements
+    if (window.innerWidth <= 768) {
+        // Add swipe gesture support for credential cards on mobile
+        let startX, startY, distX, distY;
+        const cards = document.querySelectorAll('.credential-card');
+
+        cards.forEach(card => {
+            card.addEventListener('touchstart', function(e) {
+                const touch = e.touches[0];
+                startX = touch.clientX;
+                startY = touch.clientY;
+            });
+
+            card.addEventListener('touchmove', function(e) {
+                if (!startX || !startY) return;
+                
+                const touch = e.touches[0];
+                distX = touch.clientX - startX;
+                distY = touch.clientY - startY;
+                
+                // Prevent default scroll if horizontal swipe
+                if (Math.abs(distX) > Math.abs(distY)) {
+                    e.preventDefault();
+                }
+            });
+
+            card.addEventListener('touchend', function() {
+                if (Math.abs(distX) > 50) {
+                    // Add subtle feedback for swipe
+                    this.style.transform = distX > 0 ? 'translateX(5px)' : 'translateX(-5px)';
+                    setTimeout(() => {
+                        this.style.transform = '';
+                    }, 300);
+                }
+                startX = startY = distX = distY = null;
+            });
+        });
+
+        // Optimize touch interactions
+        cards.forEach(card => {
+            card.style.touchAction = 'manipulation';
+        });
+    }
+}
+
+// Initialize credentials section when DOM is loaded
+document.addEventListener('DOMContentLoaded', function() {
+    // Check if we're on the about page
+    if (document.querySelector('.credentials-section')) {
+        initCredentialsSection();
+    }
+});
+
+// Re-initialize on page navigation (for SPAs)
+window.addEventListener('load', function() {
+    if (document.querySelector('.credentials-section')) {
+        initCredentialsSection();
+    }
+});
+
+// Add touch-active styles for mobile
+const style = document.createElement('style');
+style.textContent = `
+    .credential-card.touch-active {
+        transform: scale(1.02) !important;
+        box-shadow: 0 15px 35px rgba(0, 0, 0, 0.2) !important;
+        z-index: 10;
+    }
+    
+    .credentials-section.background-loaded::before {
+        opacity: 1;
+    }
+    
+    @media (prefers-reduced-motion: reduce) {
+        .animate-on-scroll,
+        .credential-card,
+        .trust-item {
+            transition: none !important;
+            animation: none !important;
+        }
+    }
+`;
+document.head.appendChild(style);
 
 })();
