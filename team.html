@@ -455,5 +455,46 @@
     </div>
 
     <script src="index.js"></script>
+    <script src="js/dynamic-content.js"></script>
+    <script>
+        // Initialize team page with dynamic content
+        document.addEventListener('DOMContentLoaded', async () => {
+            const renderer = new DynamicContentRenderer();
+            
+            // Custom team rendering for separate containers
+            try {
+                const teamResponse = await renderer.api.getTeam();
+                if (teamResponse.success) {
+                    const { grouped } = teamResponse.data;
+                    
+                    // Render leadership team
+                    if (grouped.leadership) {
+                        const leadershipContainer = document.getElementById('leadership-team');
+                        if (leadershipContainer) {
+                            leadershipContainer.innerHTML = grouped.leadership
+                                .map(member => renderer.renderTeamMemberCard(member, 'leadership'))
+                                .join('');
+                        }
+                    }
+                    
+                    // Render core team
+                    if (grouped.core) {
+                        const coreContainer = document.getElementById('core-team');
+                        if (coreContainer) {
+                            coreContainer.innerHTML = grouped.core
+                                .map(member => renderer.renderTeamMemberCard(member, 'core'))
+                                .join('');
+                        }
+                    }
+                } else {
+                    // Fallback to static content if API fails
+                    console.log('API unavailable, using static content');
+                }
+            } catch (error) {
+                console.log('Dynamic content failed, using static fallback:', error);
+                // Static content is already in place as fallback
+            }
+        });
+    </script>
 </body>
 </html>

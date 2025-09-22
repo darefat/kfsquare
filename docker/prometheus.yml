@@ -1,0 +1,10 @@
+global:
+  scrape_interval: 15s
+  evaluation_interval: 15s
+
+scrape_configs:
+  - job_name: 'kfsquare'
+    static_configs:
+      - targets: ['kfsquare-app:3000']
+    metrics_path: '/metrics'
+    scrape_interval: 30s

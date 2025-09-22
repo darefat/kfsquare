@@ -1,0 +1,21 @@
+[Unit]
+Description=KFSQUARE Customer Support Platform
+Documentation=https://github.com/yourusername/kfsquare
+After=network.target
+
+[Service]
+Type=forking
+User=kfsquare
+WorkingDirectory=/opt/kfsquare
+Environment=NODE_ENV=production
+Environment=PORT=3000
+ExecStart=/usr/bin/pm2 start ecosystem.config.js --env production
+ExecReload=/usr/bin/pm2 reload ecosystem.config.js --env production
+ExecStop=/usr/bin/pm2 stop ecosystem.config.js
+Restart=always
+RestartSec=10
+KillMode=mixed
+TimeoutStopSec=30
+
+[Install]
+WantedBy=multi-user.target
