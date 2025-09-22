@@ -8,6 +8,8 @@
     <meta name="description" content="Explore KFSQUARE's comprehensive data analytics, machine learning, and AI services designed to transform your business.">
     <link rel="stylesheet" href="styles.css">
     <link rel="icon" href="favicon.ico" type="image/x-icon">
+    <!-- Font Awesome for icons used in dynamic UI -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
 </head>
 <body>
     <!-- Navigation -->
@@ -73,7 +75,17 @@
         <section class="services-grid-section">
             <div class="container">
                 <h2 class="section-title">Core Services</h2>
-                <div class="services-grid" id="services-grid" aria-live="polite"></div>
+                <div class="services-grid" id="services-grid" aria-live="polite">
+                  <!-- Fallback content for no-JS users -->
+                  <noscript>
+                    <style>
+                      #services-grid .service-card { opacity: 1 !important; transform: none !important; }
+                    </style>
+                    <div class="container">
+                      <p>Please enable JavaScript to view our Core Services.</p>
+                    </div>
+                  </noscript>
+                </div>
             </div>
         </section>
 
@@ -317,102 +329,15 @@
         </div>
     </footer>
 
-    <script>
-      // Dynamic Core Services rendering (loaded from services.json)
-      (function() {
-        async function loadServices() {
-          try {
-            const res = await fetch('services.json', { cache: 'no-store' });
-            if (!res.ok) throw new Error('Failed to load services');
-            return await res.json();
-          } catch (e) {
-            console.error('Error loading services.json:', e);
-            return [];
-          }
-        }
-
-        function renderServices(services) {
-          const servicesGrid = document.getElementById('services-grid');
-          if (!servicesGrid) return;
-          if (!services || services.length === 0) {
-            servicesGrid.innerHTML = `
-              <div class="empty-state">
-                <p>No services available at the moment.</p>
-                <a class="btn btn-primary" href="contact.html?subject=${encodeURIComponent('Help me choose the right service')}">Contact Us</a>
-              </div>`;
-            return;
-          }
-          const serviceCard = (s) => `
-            <div id="${s.id}" class="service-card ${s.featured ? 'featured' : ''}">
-              <div class="service-icon">${s.icon}</div>
-              <h3>${s.title}</h3>
-              <p>${s.description}</p>
-              <ul class="service-features">
-                ${s.features.map(f => `<li>✓ ${f}</li>`).join('')}
-              </ul>
-              <div class="service-pricing">
-                <span class="price">${s.price}</span>
-                <span class="price-note">${s.priceNote}</span>
-              </div>
-              <div class="service-actions">
-                <button class="btn btn-primary service-btn" data-service="${s.id}">Learn More</button>
-                <a class="btn btn-secondary" href="contact.html?subject=${encodeURIComponent("I'm interested in " + s.title)}">Get Quote</a>
-              </div>
-            </div>`;
-          servicesGrid.innerHTML = services.map(serviceCard).join('');
-          
-          // Ensure visibility across platforms by applying the reveal class used in CSS
-          requestAnimationFrame(() => {
-            servicesGrid.querySelectorAll('.service-card').forEach(card => card.classList.add('animate-in'));
-          });
-        }
-
-        function wireModal(services) {
-          const modal = document.getElementById('service-modal');
-          const modalTitle = document.getElementById('modal-title');
-          const modalBody = document.getElementById('modal-body');
-          const modalContactBtn = document.getElementById('modal-contact-btn');
-
-          function openModal(serviceId) {
-            const s = services.find(x => x.id === serviceId);
-            if (!s) return;
-            modalTitle.textContent = s.title;
-            modalBody.innerHTML = `
-              <p>${s.details}</p>
-              <ul class="service-features">
-                ${s.features.map(f => `<li>✓ ${f}</li>`).join('')}
-              </ul>`;
-            modalContactBtn.href = `contact.html?subject=${encodeURIComponent("I'd like to discuss " + s.title + " in detail")}`;
-            modal.style.display = 'block';
-            document.body.style.overflow = 'hidden';
-          }
-
-          function closeModal() {
-            modal.style.display = 'none';
-            document.body.style.overflow = '';
-          }
-
-          document.addEventListener('click', (e) => {
-            const btn = e.target.closest('.service-btn');
-            if (btn && btn.dataset.service) openModal(btn.dataset.service);
-            if (e.target.classList.contains('modal-close')) closeModal();
-          });
-
-          window.addEventListener('keydown', (e) => {
-            if (e.key === 'Escape' && modal.style.display === 'block') closeModal();
-          });
-
-          modal.addEventListener('click', (e) => { if (e.target === modal) closeModal(); });
-        }
-
-        // Show loading state before fetching
-        const gridEl = document.getElementById('services-grid');
-        if (gridEl) gridEl.innerHTML = '<p>Loading services…</p>';
-        loadServices().then((services) => {
-          renderServices(services);
-          wireModal(services);
-        });
-      })();
-    </script>
+    <!-- Replace inline script with external module -->
+    <noscript>
+      <style>
+        #services-grid .service-card { opacity: 1 !important; transform: none !important; }
+      </style>
+      <div class="container">
+        <p>Please enable JavaScript to view our Core Services.</p>
+      </div>
+    </noscript>
+    <script src="services.js" defer></script>
 </body>
 </html>
