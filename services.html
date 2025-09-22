@@ -73,133 +73,7 @@
         <section class="services-grid-section">
             <div class="container">
                 <h2 class="section-title">Core Services</h2>
-                <div class="services-grid">
-                    <!-- Data Analytics Service -->
-                    <div class="service-card featured">
-                        <div class="service-icon">📊</div>
-                        <h3>Data Analytics</h3>
-                        <p>Transform raw data into actionable insights with our comprehensive analytics solutions.</p>
-                        <ul class="service-features">
-                            <li>✓ Descriptive Analytics</li>
-                            <li>✓ Predictive Modeling</li>
-                            <li>✓ Statistical Analysis</li>
-                            <li>✓ Data Visualization</li>
-                        </ul>
-                        <div class="service-pricing">
-                            <span class="price">Starting at $5,000</span>
-                            <span class="price-note">/project</span>
-                        </div>
-                        <div class="service-actions">
-                            <button class="btn btn-primary service-btn" data-service="data-analytics">Learn More</button>
-                            <button class="btn btn-secondary" onclick="openChat('I\'m interested in Data Analytics services')">Get Quote</button>
-                        </div>
-                    </div>
-
-                    <!-- Machine Learning Service -->
-                    <div class="service-card featured">
-                        <div class="service-icon">🤖</div>
-                        <h3>Machine Learning</h3>
-                        <p>Leverage AI and ML algorithms to automate processes and predict future outcomes.</p>
-                        <ul class="service-features">
-                            <li>✓ Custom ML Models</li>
-                            <li>✓ Natural Language Processing</li>
-                            <li>✓ Computer Vision</li>
-                            <li>✓ Recommendation Systems</li>
-                        </ul>
-                        <div class="service-pricing">
-                            <span class="price">Starting at $10,000</span>
-                            <span class="price-note">/project</span>
-                        </div>
-                        <div class="service-actions">
-                            <button class="btn btn-primary service-btn" data-service="machine-learning">Learn More</button>
-                            <button class="btn btn-secondary" onclick="openChat('I\'m interested in Machine Learning services')">Get Quote</button>
-                        </div>
-                    </div>
-
-                    <!-- Business Intelligence Service -->
-                    <div class="service-card">
-                        <div class="service-icon">📈</div>
-                        <h3>Business Intelligence</h3>
-                        <p>Create comprehensive dashboards and reporting solutions for data-driven decisions.</p>
-                        <ul class="service-features">
-                            <li>✓ Interactive Dashboards</li>
-                            <li>✓ Real-time Monitoring</li>
-                            <li>✓ KPI Tracking</li>
-                            <li>✓ Executive Reporting</li>
-                        </ul>
-                        <div class="service-pricing">
-                            <span class="price">Starting at $3,000</span>
-                            <span class="price-note">/month</span>
-                        </div>
-                        <div class="service-actions">
-                            <button class="btn btn-primary service-btn" data-service="business-intelligence">Learn More</button>
-                            <button class="btn btn-secondary" onclick="openChat('I\'m interested in Business Intelligence services')">Get Quote</button>
-                        </div>
-                    </div>
-
-                    <!-- Data Engineering Service -->
-                    <div class="service-card">
-                        <div class="service-icon">⚙️</div>
-                        <h3>Data Engineering</h3>
-                        <p>Build robust data pipelines and infrastructure for scalable analytics solutions.</p>
-                        <ul class="service-features">
-                            <li>✓ ETL/ELT Pipelines</li>
-                            <li>✓ Data Warehousing</li>
-                            <li>✓ Cloud Architecture</li>
-                            <li>✓ Data Quality Assurance</li>
-                        </ul>
-                        <div class="service-pricing">
-                            <span class="price">Starting at $8,000</span>
-                            <span class="price-note">/project</span>
-                        </div>
-                        <div class="service-actions">
-                            <button class="btn btn-primary service-btn" data-service="data-engineering">Learn More</button>
-                            <button class="btn btn-secondary" onclick="openChat('I\'m interested in Data Engineering services')">Get Quote</button>
-                        </div>
-                    </div>
-
-                    <!-- AI Integration Service -->
-                    <div class="service-card">
-                        <div class="service-icon">🧠</div>
-                        <h3>AI Integration</h3>
-                        <p>Seamlessly integrate AI capabilities into your existing business processes and systems.</p>
-                        <ul class="service-features">
-                            <li>✓ Large Language Models</li>
-                            <li>✓ Generative AI Solutions</li>
-                            <li>✓ API Integration</li>
-                            <li>✓ Custom AI Workflows</li>
-                        </ul>
-                        <div class="service-pricing">
-                            <span class="price">Starting at $15,000</span>
-                            <span class="price-note">/project</span>
-                        </div>
-                        <div class="service-actions">
-                            <button class="btn btn-primary service-btn" data-service="ai-integration">Learn More</button>
-                            <button class="btn btn-secondary" onclick="openChat('I\'m interested in AI Integration services')">Get Quote</button>
-                        </div>
-                    </div>
-
-                    <!-- Consulting Service -->
-                    <div class="service-card">
-                        <div class="service-icon">💼</div>
-                        <h3>Data Strategy Consulting</h3>
-                        <p>Expert guidance to develop and execute your data strategy and analytics roadmap.</p>
-                        <ul class="service-features">
-                            <li>✓ Data Maturity Assessment</li>
-                            <li>✓ Strategic Roadmap</li>
-                            <li>✓ Technology Selection</li>
-                            <li>✓ Change Management</li>
-                        </ul>
-                        <div class="service-pricing">
-                            <span class="price">Starting at $2,500</span>
-                            <span class="price-note">/day</span>
-                        </div>
-                        <div class="service-actions">
-                            <button class="btn btn-primary service-btn" data-service="consulting">Learn More</button>
-                            <button class="btn btn-secondary" onclick="openChat('I\'m interested in Consulting services')">Get Quote</button>
-                        </div>
-                    </div>
-                </div>
+                <div class="services-grid" id="services-grid" aria-live="polite"></div>
             </div>
         </section>
 
@@ -215,7 +89,7 @@
                 </div>
                 <div class="modal-footer">
                     <button class="btn btn-secondary modal-close">Close</button>
-                    <button class="btn btn-primary" onclick="openChat('I\'d like to discuss this service in detail')">Contact Us</button>
+                    <a class="btn btn-primary" id="modal-contact-btn" href="contact.html">Contact Us</a>
                 </div>
             </div>
         </div>
@@ -339,7 +213,7 @@
                             <li>✓ 1 Data Source</li>
                             <li>✓ 5 Custom Reports</li>
                         </ul>
-                        <button class="btn btn-outline" onclick="openChat('I\'m interested in the Starter Package')">Get Started</button>
+                        <a class="btn btn-primary" href="contact.html?subject=I%27m%20interested%20in%20the%20Starter%20Package">Get Started</a>
                     </div>
 
                     <div class="pricing-card popular">
@@ -358,7 +232,7 @@
                             <li>✓ Unlimited Reports</li>
                             <li>✓ Machine Learning Models</li>
                         </ul>
-                        <button class="btn btn-primary" onclick="openChat('I\'m interested in the Professional Package')">Get Started</button>
+                        <a class="btn btn-primary" href="contact.html?subject=I%27m%20interested%20in%20the%20Professional%20Package">Get Started</a>
                     </div>
 
                     <div class="pricing-card">
@@ -376,7 +250,7 @@
                             <li>✓ White-label Solutions</li>
                             <li>✓ 24/7 Monitoring</li>
                         </ul>
-                        <button class="btn btn-outline" onclick="openChat('I\'m interested in the Enterprise Package')">Contact Sales</button>
+                        <a class="btn btn-primary" href="contact.html?subject=I%27m%20interested%20in%20the%20Enterprise%20Package">Contact Sales</a>
                     </div>
                 </div>
             </div>
@@ -390,7 +264,7 @@
                     <p>Let's discuss how our services can transform your business with data-driven insights.</p>
                     <div class="cta-buttons">
                         <a href="contact.html" class="btn btn-primary">Schedule Consultation</a>
-                        <button class="btn btn-secondary" onclick="openChat('I\'d like to learn more about your services')">Chat with Expert</button>
+                        <a class="btn btn-secondary" href="contact.html?subject=Chat%20with%20an%20Expert%20about%20Services">Chat with Expert</a>
                     </div>
                 </div>
             </div>
@@ -443,5 +317,97 @@
         </div>
     </footer>
 
+    <script>
+      // Dynamic Core Services rendering (loaded from services.json)
+      (function() {
+        async function loadServices() {
+          try {
+            const res = await fetch('services.json', { cache: 'no-store' });
+            if (!res.ok) throw new Error('Failed to load services');
+            return await res.json();
+          } catch (e) {
+            console.error('Error loading services.json:', e);
+            return [];
+          }
+        }
+
+        function renderServices(services) {
+          const servicesGrid = document.getElementById('services-grid');
+          if (!servicesGrid) return;
+          if (!services || services.length === 0) {
+            servicesGrid.innerHTML = `
+              <div class="empty-state">
+                <p>No services available at the moment.</p>
+                <a class="btn btn-primary" href="contact.html?subject=${encodeURIComponent('Help me choose the right service')}">Contact Us</a>
+              </div>`;
+            return;
+          }
+          const serviceCard = (s) => `
+            <div id="${s.id}" class="service-card ${s.featured ? 'featured' : ''}">
+              <div class="service-icon">${s.icon}</div>
+              <h3>${s.title}</h3>
+              <p>${s.description}</p>
+              <ul class="service-features">
+                ${s.features.map(f => `<li>✓ ${f}</li>`).join('')}
+              </ul>
+              <div class="service-pricing">
+                <span class="price">${s.price}</span>
+                <span class="price-note">${s.priceNote}</span>
+              </div>
+              <div class="service-actions">
+                <button class="btn btn-primary service-btn" data-service="${s.id}">Learn More</button>
+                <a class="btn btn-secondary" href="contact.html?subject=${encodeURIComponent("I'm interested in " + s.title)}">Get Quote</a>
+              </div>
+            </div>`;
+          servicesGrid.innerHTML = services.map(serviceCard).join('');
+        }
+
+        function wireModal(services) {
+          const modal = document.getElementById('service-modal');
+          const modalTitle = document.getElementById('modal-title');
+          const modalBody = document.getElementById('modal-body');
+          const modalContactBtn = document.getElementById('modal-contact-btn');
+
+          function openModal(serviceId) {
+            const s = services.find(x => x.id === serviceId);
+            if (!s) return;
+            modalTitle.textContent = s.title;
+            modalBody.innerHTML = `
+              <p>${s.details}</p>
+              <ul class="service-features">
+                ${s.features.map(f => `<li>✓ ${f}</li>`).join('')}
+              </ul>`;
+            modalContactBtn.href = `contact.html?subject=${encodeURIComponent("I'd like to discuss " + s.title + " in detail")}`;
+            modal.style.display = 'block';
+            document.body.style.overflow = 'hidden';
+          }
+
+          function closeModal() {
+            modal.style.display = 'none';
+            document.body.style.overflow = '';
+          }
+
+          document.addEventListener('click', (e) => {
+            const btn = e.target.closest('.service-btn');
+            if (btn && btn.dataset.service) openModal(btn.dataset.service);
+            if (e.target.classList.contains('modal-close')) closeModal();
+          });
+
+          window.addEventListener('keydown', (e) => {
+            if (e.key === 'Escape' && modal.style.display === 'block') closeModal();
+          });
+
+          modal.addEventListener('click', (e) => { if (e.target === modal) closeModal(); });
+        }
+
+        // Show loading state before fetching
+        const gridEl = document.getElementById('services-grid');
+        if (gridEl) gridEl.innerHTML = '<p>Loading services…</p>';
+        loadServices().then((services) => {
+          renderServices(services);
+          wireModal(services);
+        });
+      })();
+    </script>
 </body>
 </html>
