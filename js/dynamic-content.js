@@ -225,29 +225,35 @@ class DynamicContentRenderer {
   async renderServices(containerId = 'services-grid') {
     try {
       this.showLoading(containerId);
-      const response = await this.api.getServices();
       
-      if (!response.success) {
-        throw new Error(response.message || 'Failed to load services data');
+      // Load services from static JSON file
+      const response = await fetch('./services.json');
+      
+      if (!response.ok) {
+        throw new Error(`Failed to load services: ${response.status}`);
       }
 
+      const services = await response.json();
+      
       const container = document.getElementById(containerId);
       if (!container) {
         console.warn(`Container ${containerId} not found`);
         return;
       }
 
-      const { grouped } = response.data;
-      let html = '';
-
-      // Render services by category
-      Object.entries(grouped).forEach(([category, services]) => {
-        html += this.renderServiceCategory(category, services);
-      });
-
+      // Clear skeleton cards
+      container.innerHTML = '';
+      
+      // Render service cards
+      const html = services.map(service => this.renderServiceCard(service)).join('');
       container.innerHTML = html;
+      
+      // Setup interactivity
       this.setupServiceInteractivity();
       this.hideLoading(containerId);
+
+      // Add staggered animation
+      this.animateServicesGrid();
 
     } catch (error) {
       console.error('Error rendering services:', error);
@@ -278,69 +284,286 @@ class DynamicContentRenderer {
 
   // Render individual service card
   renderServiceCard(service) {
-    const availabilityClass = service.availability.replace('-', ' ');
-    const featuredClass = service.isFeatured ? 'featured' : '';
+    const availabilityClass = service.availability ? service.availability.replace('-', ' ') : 'available';
+    const featuredClass = service.featured ? 'featured' : '';
+    const categoryClass = this.getCategoryClass(service);
     
     return `
-      <div class="service-card ${availabilityClass} ${featuredClass}" 
-           data-service-id="${service._id}"
-           data-category="${service.category}"
-           data-popularity="${service.popularity}">
-        <div class="service-icon">${service.icon}</div>
-        <div class="service-info">
-          <h5>${service.name}</h5>
-          <p>${service.shortDescription}</p>
-          <div class="service-meta">
-            <span class="availability ${service.availability}">${service.availability.replace('-', ' ')}</span>
-            <span class="popularity">★ ${service.rating || 4.5}</span>
-            ${service.isFeatured ? '<span class="featured-badge">Featured</span>' : ''}
+      <div class="service-card ${availabilityClass} ${featuredClass} ${categoryClass}" 
+           data-service-id="${service.id}"
+           data-category="${categoryClass}"
+           data-featured="${service.featured || false}">
+        
+        <!-- Card Header -->
+        <div class="service-card-header">
+          <div class="service-icon-wrapper">
+            <div class="service-icon">${service.icon}</div>
+            ${service.featured ? '<div class="featured-badge"><i class="fas fa-star"></i></div>' : ''}
           </div>
-          ${service.tags && service.tags.length > 0 ? `
-            <div class="service-tags">
-              ${service.tags.map(tag => `<span class="tag">${tag}</span>`).join('')}
+          <div class="service-category-tag ${categoryClass}">${this.getCategoryName(categoryClass)}</div>
+        </div>
+
+        <!-- Card Content -->
+        <div class="service-card-content">
+          <h3 class="service-title">${service.title}</h3>
+          <p class="service-description">${service.description}</p>
+          
+          <!-- Service Features -->
+          ${service.features && service.features.length > 0 ? `
+            <div class="service-features">
+              <h4 class="features-title">Key Features:</h4>
+              <ul class="features-list">
+                ${service.features.map(feature => `
+                  <li class="feature-item">
+                    <i class="fas fa-check-circle"></i>
+                    <span>${feature}</span>
+                  </li>
+                `).join('')}
+              </ul>
             </div>
           ` : ''}
+
+          <!-- Service Pricing -->
+          <div class="service-pricing">
+            <div class="price-tag">
+              <span class="price">${service.price}</span>
+              <span class="price-note">${service.priceNote || ''}</span>
+            </div>
+            <div class="pricing-note">
+              <i class="fas fa-info-circle"></i>
+              <span>Custom pricing available</span>
+            </div>
+          </div>
         </div>
-        <div class="service-tooltip">
-          <h6>${service.name}</h6>
-          <p>${service.fullDescription}</p>
-          ${service.features && service.features.length > 0 ? `
-            <ul class="feature-list">
-              ${service.features.map(feature => `<li>${feature}</li>`).join('')}
-            </ul>
-          ` : ''}
+
+        <!-- Card Actions -->
+        <div class="service-card-actions">
+          <button class="btn btn-primary service-details-btn" 
+                  data-service-id="${service.id}">
+            <i class="fas fa-eye"></i>
+            <span>View Details</span>
+          </button>
+          <button class="btn btn-secondary service-contact-btn" 
+                  data-service="${service.title}">
+            <i class="fas fa-envelope"></i>
+            <span>Get Quote</span>
+          </button>
+        </div>
+
+        <!-- Hover Overlay -->
+        <div class="service-overlay">
+          <div class="overlay-content">
+            <h4>${service.title}</h4>
+            <p>Starting at ${service.price}</p>
+            <div class="overlay-actions">
+              <button class="overlay-btn primary">Learn More</button>
+              <button class="overlay-btn secondary">Get Quote</button>
+            </div>
+          </div>
         </div>
       </div>
     `;
   }
 
+  // Get category class from service data
+  getCategoryClass(service) {
+    if (!service.id) return 'general';
+    
+    const categoryMap = {
+      'data-analytics': 'analytics',
+      'business-intelligence': 'analytics',
+      'machine-learning': 'ai-ml',
+      'ai-integration': 'ai-ml',
+      'data-engineering': 'engineering',
+      'consulting': 'consulting'
+    };
+
+    return categoryMap[service.id] || 'general';
+  }
+
+  // Get category display name
+  getCategoryName(categoryClass) {
+    const categoryNames = {
+      'analytics': 'Analytics',
+      'ai-ml': 'AI & ML',
+      'engineering': 'Engineering',
+      'consulting': 'Consulting',
+      'general': 'General'
+    };
+
+    return categoryNames[categoryClass] || 'Service';
+  }
+
   // Setup service interactivity
   setupServiceInteractivity() {
+    // Setup category filters
+    this.setupServiceFilters();
+    
     // Add hover effects and click handlers
-    const serviceCards = document.querySelectorAll('.service-card');
+    const serviceCards = document.querySelectorAll('.service-card:not(.skeleton-card)');
     
     serviceCards.forEach(card => {
-      // Show/hide tooltips on hover
+      // Enhanced hover effects
       card.addEventListener('mouseenter', () => {
-        const tooltip = card.querySelector('.service-tooltip');
-        if (tooltip) {
-          tooltip.style.display = 'block';
-        }
+        card.classList.add('hovered');
+        this.animateServiceCard(card, 'enter');
       });
 
       card.addEventListener('mouseleave', () => {
-        const tooltip = card.querySelector('.service-tooltip');
-        if (tooltip) {
-          tooltip.style.display = 'none';
-        }
+        card.classList.remove('hovered');
+        this.animateServiceCard(card, 'leave');
       });
 
-      // Click handler for service details
-      card.addEventListener('click', () => {
-        const serviceId = card.getAttribute('data-service-id');
-        this.showServiceModal(serviceId);
+      // Mobile touch effects
+      card.addEventListener('touchstart', () => {
+        card.classList.add('touch-active');
+      }, { passive: true });
+
+      card.addEventListener('touchend', () => {
+        setTimeout(() => card.classList.remove('touch-active'), 150);
+      }, { passive: true });
+
+      // Service detail buttons
+      const detailBtn = card.querySelector('.service-details-btn');
+      if (detailBtn) {
+        detailBtn.addEventListener('click', (e) => {
+          e.stopPropagation();
+          const serviceId = detailBtn.getAttribute('data-service-id');
+          this.showServiceModal(serviceId);
+        });
+      }
+
+      // Contact buttons
+      const contactBtn = card.querySelector('.service-contact-btn');
+      if (contactBtn) {
+        contactBtn.addEventListener('click', (e) => {
+          e.stopPropagation();
+          const serviceName = contactBtn.getAttribute('data-service');
+          this.handleServiceContact(serviceName);
+        });
+      }
+    });
+
+    // Initialize statistics counter
+    this.initializeStatsCounter();
+  }
+
+  // Setup service category filters
+  setupServiceFilters() {
+    const filterButtons = document.querySelectorAll('.filter-btn');
+    const serviceCards = document.querySelectorAll('.service-card:not(.skeleton-card)');
+
+    filterButtons.forEach(button => {
+      button.addEventListener('click', () => {
+        // Update active filter
+        filterButtons.forEach(btn => btn.classList.remove('active'));
+        button.classList.add('active');
+
+        // Filter services
+        const category = button.getAttribute('data-category');
+        this.filterServices(category, serviceCards);
       });
     });
+  }
+
+  // Filter services by category
+  filterServices(category, serviceCards) {
+    serviceCards.forEach((card, index) => {
+      const cardCategory = card.getAttribute('data-category');
+      const shouldShow = category === 'all' || cardCategory === category;
+      
+      if (shouldShow) {
+        card.style.display = 'block';
+        card.style.animationDelay = `${index * 0.1}s`;
+        card.classList.add('filter-animate-in');
+        card.classList.remove('filter-animate-out');
+      } else {
+        card.classList.add('filter-animate-out');
+        card.classList.remove('filter-animate-in');
+        setTimeout(() => {
+          if (card.classList.contains('filter-animate-out')) {
+            card.style.display = 'none';
+          }
+        }, 300);
+      }
+    });
+  }
+
+  // Animate service cards
+  animateServiceCard(card, action) {
+    const overlay = card.querySelector('.service-overlay');
+    const icon = card.querySelector('.service-icon');
+    
+    if (action === 'enter') {
+      if (overlay) overlay.style.opacity = '1';
+      if (icon) icon.style.transform = 'scale(1.1) rotate(5deg)';
+    } else {
+      if (overlay) overlay.style.opacity = '0';
+      if (icon) icon.style.transform = 'scale(1) rotate(0deg)';
+    }
+  }
+
+  // Animate services grid with staggered effect
+  animateServicesGrid() {
+    const serviceCards = document.querySelectorAll('.service-card:not(.skeleton-card)');
+    
+    serviceCards.forEach((card, index) => {
+      card.style.opacity = '0';
+      card.style.transform = 'translateY(30px)';
+      
+      setTimeout(() => {
+        card.style.transition = 'all 0.6s cubic-bezier(0.175, 0.885, 0.32, 1.275)';
+        card.style.opacity = '1';
+        card.style.transform = 'translateY(0)';
+      }, index * 150);
+    });
+  }
+
+  // Handle service contact
+  handleServiceContact(serviceName) {
+    // Redirect to contact page with service pre-filled
+    const contactUrl = `contact.html?service=${encodeURIComponent(serviceName)}`;
+    window.location.href = contactUrl;
+  }
+
+  // Initialize statistics counter animation
+  initializeStatsCounter() {
+    const stats = document.querySelectorAll('.stat-number');
+    
+    const observerOptions = {
+      threshold: 0.5,
+      rootMargin: '0px 0px -50px 0px'
+    };
+
+    const statsObserver = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          const stat = entry.target;
+          const target = parseInt(stat.getAttribute('data-target'));
+          this.animateCounter(stat, target);
+          statsObserver.unobserve(stat);
+        }
+      });
+    }, observerOptions);
+
+    stats.forEach(stat => statsObserver.observe(stat));
+  }
+
+  // Animate counter numbers
+  animateCounter(element, target) {
+    let current = 0;
+    const increment = target / 50;
+    const duration = 2000; // 2 seconds
+    const stepTime = duration / 50;
+
+    const timer = setInterval(() => {
+      current += increment;
+      if (current >= target) {
+        current = target;
+        clearInterval(timer);
+      }
+      element.textContent = Math.floor(current);
+    }, stepTime);
   }
 
   // Show service modal (if exists)
@@ -358,15 +581,21 @@ class DynamicContentRenderer {
     }
   }
 
-  // Handle render errors gracefully
+  // Enhanced error handling for services
   handleRenderError(containerId, message) {
     const container = document.getElementById(containerId);
     if (container) {
       container.innerHTML = `
-        <div class="error-message">
-          <div class="error-icon">⚠️</div>
+        <div class="error-state">
+          <div class="error-icon">
+            <i class="fas fa-exclamation-triangle"></i>
+          </div>
+          <h3>Unable to Load Services</h3>
           <p>${message}</p>
-          <button onclick="location.reload()" class="retry-btn">Retry</button>
+          <button class="btn btn-primary retry-btn" onclick="location.reload()">
+            <i class="fas fa-redo"></i>
+            <span>Try Again</span>
+          </button>
         </div>
       `;
     }
