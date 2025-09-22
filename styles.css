@@ -772,6 +772,265 @@
     }
 }
 
+/* ===== SERVICE MODAL ENHANCEMENTS ===== */
+.service-modal {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.8);
+    backdrop-filter: blur(10px);
+    z-index: 1000;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 2rem;
+    animation: fadeIn 0.3s ease-out;
+}
+
+.service-modal .modal-content {
+    background: white;
+    border-radius: 25px;
+    max-width: 600px;
+    width: 100%;
+    max-height: 90vh;
+    overflow-y: auto;
+    box-shadow: 0 25px 50px rgba(0,0,0,0.3);
+    animation: slideInModal 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+
+.service-modal .modal-header {
+    padding: 2rem 2rem 1rem;
+    border-bottom: 1px solid rgba(0,0,0,0.1);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.service-modal .modal-header h2 {
+    margin: 0;
+    color: #212529;
+    font-size: 1.8rem;
+    font-weight: 700;
+}
+
+.modal-close {
+    background: none;
+    border: none;
+    font-size: 2rem;
+    color: #6c757d;
+    cursor: pointer;
+    padding: 0.5rem;
+    border-radius: 50%;
+    transition: all 0.3s ease;
+    width: 40px;
+    height: 40px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.modal-close:hover {
+    background: #f8f9fa;
+    color: #495057;
+    transform: scale(1.1);
+}
+
+.service-modal .modal-body {
+    padding: 2rem;
+}
+
+.modal-service-icon {
+    font-size: 4rem;
+    text-align: center;
+    margin-bottom: 1.5rem;
+}
+
+.modal-description {
+    font-size: 1.1rem;
+    color: #495057;
+    line-height: 1.6;
+    margin-bottom: 2rem;
+}
+
+.modal-features h4 {
+    color: #212529;
+    font-weight: 600;
+    margin-bottom: 1rem;
+}
+
+.modal-pricing {
+    text-align: center;
+    padding: 1.5rem;
+    background: linear-gradient(135deg, rgba(0, 123, 255, 0.05), rgba(0, 86, 179, 0.05));
+    border-radius: 15px;
+    margin: 2rem 0;
+}
+
+.modal-pricing .price {
+    font-size: 2rem;
+    font-weight: 800;
+    color: #007bff;
+    display: block;
+    margin-bottom: 0.5rem;
+}
+
+.modal-pricing .price-note {
+    color: #6c757d;
+    font-size: 1rem;
+}
+
+.service-modal .modal-footer {
+    padding: 1rem 2rem 2rem;
+    display: flex;
+    gap: 1rem;
+    justify-content: flex-end;
+}
+
+/* Loading and Error States */
+.loading-state,
+.error-state {
+    grid-column: 1 / -1;
+    text-align: center;
+    padding: 4rem 2rem;
+}
+
+.loading-spinner {
+    width: 50px;
+    height: 50px;
+    border: 3px solid #f0f0f0;
+    border-top: 3px solid #007bff;
+    border-radius: 50%;
+    animation: spin 1s linear infinite;
+    margin: 0 auto 1.5rem;
+}
+
+.loading-state p,
+.error-state p {
+    font-size: 1.2rem;
+    color: #6c757d;
+    margin: 0;
+}
+
+.error-icon {
+    font-size: 3rem;
+    margin-bottom: 1rem;
+}
+
+.error-state .btn {
+    margin-top: 1.5rem;
+}
+
+/* Services Count Badge */
+.services-count {
+    margin-top: 1rem;
+}
+
+.count-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.5rem 1rem;
+    background: linear-gradient(135deg, #28a745, #20c997);
+    color: white;
+    border-radius: 20px;
+    font-size: 0.9rem;
+    font-weight: 600;
+    box-shadow: 0 4px 12px rgba(40, 167, 69, 0.3);
+}
+
+/* Enhanced Empty State */
+.empty-state {
+    text-align: center;
+    padding: 4rem 2rem;
+    grid-column: 1 / -1;
+}
+
+.empty-icon {
+    font-size: 4rem;
+    margin-bottom: 1.5rem;
+    opacity: 0.5;
+}
+
+.empty-state p {
+    font-size: 1.3rem;
+    color: #6c757d;
+    margin-bottom: 2rem;
+}
+
+/* Mobile Modal Optimizations */
+@media (max-width: 768px) {
+    .service-modal {
+        padding: 1rem;
+    }
+    
+    .service-modal .modal-content {
+        border-radius: 20px;
+        max-height: 85vh;
+    }
+    
+    .service-modal .modal-header {
+        padding: 1.5rem 1.5rem 1rem;
+    }
+    
+    .service-modal .modal-header h2 {
+        font-size: 1.5rem;
+    }
+    
+    .service-modal .modal-body {
+        padding: 1.5rem;
+    }
+    
+    .modal-service-icon {
+        font-size: 3rem;
+    }
+    
+    .modal-pricing .price {
+        font-size: 1.8rem;
+    }
+    
+    .service-modal .modal-footer {
+        padding: 1rem 1.5rem 1.5rem;
+        flex-direction: column;
+    }
+    
+    .service-modal .modal-footer .btn {
+        width: 100%;
+    }
+}
+
+/* Animations */
+@keyframes fadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
+}
+
+@keyframes slideInModal {
+    from {
+        opacity: 0;
+        transform: translateY(-50px) scale(0.9);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0) scale(1);
+    }
+}
+
+@keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}
+
+/* Core Services Section Loaded State */
+.core-services-section.loaded .service-card {
+    animation-play-state: running;
+}
+
+.core-services-section.loaded .section-header {
+    animation-play-state: running;
+}
+
 /* Original Styles Continue Below */
 body {
   font-family: 'Segoe UI', Arial, sans-serif;
@@ -969,7 +1228,7 @@ footer p {
 }
 
 .contact-form {
-  background:
+  background: rgba(255, 255, 255, 0.1);
   padding: 30px;
   border-radius: 15px;
   backdrop-filter: blur(10px);
@@ -1144,4 +1403,6 @@ footer p {
   left: 0;
   right: 0;
   bottom: 0;
-    background: rgba(0, 123, 255, 0.03);
+  background: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><defs><pattern id="credentials-dots" width="20" height="20" patternUnits="userSpaceOnUse"><circle cx="10" cy="10" r="1" fill="%23007bff" opacity="0.05"/></pattern></defs><rect width="100%" height="100%" fill="url(%23credentials-dots)"/></svg>');
+  z-index: 1;
+}
