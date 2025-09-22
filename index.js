@@ -4,6 +4,21 @@ document.addEventListener('DOMContentLoaded', function() {
     const hamburger = document.getElementById('hamburger');
     const navMenu = document.getElementById('nav-menu');
     
+    // Prefill contact form from query string
+    try {
+        const params = new URLSearchParams(window.location.search);
+        const subject = params.get('subject');
+        if (subject) {
+            const messageEl = document.getElementById('message');
+            if (messageEl) {
+                messageEl.value = subject + '\n\n';
+                messageEl.focus();
+            }
+        }
+    } catch (e) {
+        // ignore
+    }
+    
     if (hamburger && navMenu) {
         hamburger.addEventListener('click', function() {
             navMenu.classList.toggle('active');
@@ -798,21 +813,6 @@ document.addEventListener('DOMContentLoaded', function() {
       if (document.addEventListener) {
         document.addEventListener('DOMContentLoaded', callback);
       } else {
-        document.attachEvent('onreadystatechange', function() {
-          if (document.readyState === 'complete') {
-            callback();
-          }
-        });
-      }
-    }
-  }
-
-  // Loading screen
-  addEvent(window, 'load', function() {
-    if (features.reducedMotion) return;
-
-    var loadingScreen = document.createElement('div');
-    loadingScreen.className = 'loading-screen';
     loadingScreen.innerHTML = '<div class="loader"></div>';
     document.body.appendChild(loadingScreen);
     
