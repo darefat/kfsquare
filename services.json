@@ -1,0 +1,68 @@
+[
+  {
+    "id": "data-analytics",
+    "icon": "📊",
+    "title": "Data Analytics",
+    "description": "Transform raw data into actionable insights with our comprehensive analytics solutions.",
+    "features": ["Descriptive Analytics", "Predictive Modeling", "Statistical Analysis", "Data Visualization"],
+    "price": "Starting at $5,000",
+    "priceNote": "/project",
+    "featured": true,
+    "details": "We deliver end-to-end analytics solutions including data preparation, modeling, and visualization. Our team helps you define KPIs, build dashboards, and unlock insights that drive measurable outcomes."
+  },
+  {
+    "id": "machine-learning",
+    "icon": "🤖",
+    "title": "Machine Learning",
+    "description": "Leverage AI and ML algorithms to automate processes and predict future outcomes.",
+    "features": ["Custom ML Models", "Natural Language Processing", "Computer Vision", "Recommendation Systems"],
+    "price": "Starting at $10,000",
+    "priceNote": "/project",
+    "featured": true,
+    "details": "We design, train, and deploy machine learning models tailored to your use cases, from NLP and vision to predictive analytics and personalization."
+  },
+  {
+    "id": "business-intelligence",
+    "icon": "📈",
+    "title": "Business Intelligence",
+    "description": "Create comprehensive dashboards and reporting solutions for data-driven decisions.",
+    "features": ["Interactive Dashboards", "Real-time Monitoring", "KPI Tracking", "Executive Reporting"],
+    "price": "Starting at $3,000",
+    "priceNote": "/month",
+    "featured": false,
+    "details": "We implement BI platforms and executive dashboards, enabling teams to monitor performance and make informed decisions in real time."
+  },
+  {
+    "id": "data-engineering",
+    "icon": "⚙️",
+    "title": "Data Engineering",
+    "description": "Build robust data pipelines and infrastructure for scalable analytics solutions.",
+    "features": ["ETL/ELT Pipelines", "Data Warehousing", "Cloud Architecture", "Data Quality Assurance"],
+    "price": "Starting at $8,000",
+    "priceNote": "/project",
+    "featured": false,
+    "details": "We architect and build reliable, scalable data pipelines on modern cloud platforms ensuring high data quality and availability."
+  },
+  {
+    "id": "ai-integration",
+    "icon": "🧠",
+    "title": "AI Integration",
+    "description": "Seamlessly integrate AI capabilities into your existing business processes and systems.",
+    "features": ["Large Language Models", "Generative AI Solutions", "API Integration", "Custom AI Workflows"],
+    "price": "Starting at $15,000",
+    "priceNote": "/project",
+    "featured": false,
+    "details": "We integrate LLMs and AI services into your apps and workflows securely, with guardrails and measurable ROI."
+  },
+  {
+    "id": "consulting",
+    "icon": "💼",
+    "title": "Data Strategy Consulting",
+    "description": "Expert guidance to develop and execute your data strategy and analytics roadmap.",
+    "features": ["Data Maturity Assessment", "Strategic Roadmap", "Technology Selection", "Change Management"],
+    "price": "Starting at $2,500",
+    "priceNote": "/day",
+    "featured": false,
+    "details": "We partner with stakeholders to assess current state, define a future vision, and build a practical roadmap to get there."
+  }
+]
