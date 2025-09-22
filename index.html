@@ -762,10 +762,9 @@
 
   <!-- Contact Section -->
   <section id="contact" class="section contact py-5 bg-light">
-    <div class="container">
+    <div class="container-xxl">
       <div class="row mb-5">
         <div class="col-lg-8 mx-auto text-center">
-          <h2 class="display-4 fw-bold mb-3">Get In Touch</h2>
           <div class="section-divider mb-3"></div>
           <p class="lead">Ready to transform your business with data? Let's start the conversation.</p>
         </div>
@@ -773,7 +772,7 @@
 
       <!-- Row 1: Send Us a Message (full-width centered) -->
       <div class="row justify-content-center g-4">
-        <div class="col-xl-8 col-lg-10">
+        <div class="col-12">
           <div class="card border-0 shadow-lg rounded-4">
             <div class="card-body p-4 p-md-5">
               <h3 class="mb-4">Send Us a Message</h3>
@@ -795,15 +794,20 @@
                   </div>
                 </div>
 
-                <!-- Optional Phone -->
-                <div class="form-floating mb-4">
-                  <input type="tel" class="form-control" id="phone" name="phone" placeholder="Phone (Optional)" inputmode="tel" autocomplete="tel">
-                  <label for="phone">Phone (Optional)</label>
-                </div>
-                
-                <div class="form-floating mb-4">
-                  <input type="text" class="form-control" id="company" name="company" placeholder="Company Name" autocomplete="organization">
-                  <label for="company">Company (Optional)</label>
+                <!-- Phone / Company (responsive two columns) -->
+                <div class="row g-3 mb-4">
+                  <div class="col-md-6">
+                    <div class="form-floating">
+                      <input type="tel" class="form-control" id="phone" name="phone" placeholder="Phone (Optional)" inputmode="tel" autocomplete="tel">
+                      <label for="phone">Phone (Optional)</label>
+                    </div>
+                  </div>
+                  <div class="col-md-6">
+                    <div class="form-floating">
+                      <input type="text" class="form-control" id="company" name="company" placeholder="Company Name" autocomplete="organization">
+                      <label for="company">Company (Optional)</label>
+                    </div>
+                  </div>
                 </div>
                 
                 <div class="form-floating mb-2">
@@ -832,7 +836,7 @@
                 </div>
                 
                 <div class="form-floating mb-1">
-                  <textarea class="form-control" id="message" name="message" style="height: 120px" placeholder="Your Message" required maxlength="1000" enterkeyhint="send"></textarea>
+                  <textarea class="form-control" id="message" name="message" style="min-height: 140px; height: 120px; resize: vertical" placeholder="Your Message" required maxlength="1000" enterkeyhint="send"></textarea>
                   <label for="message">Tell us about your project</label>
                   <div class="invalid-feedback">Please add a brief description of your project.</div>
                 </div>
