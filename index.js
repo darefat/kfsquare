@@ -286,11 +286,10 @@ document.addEventListener('DOMContentLoaded', function() {
     if (!status) {
       status = document.createElement('div');
       status.id = 'form-status';
+      status.className = 'mt-3 text-muted';
       status.setAttribute('role', 'status');
       status.setAttribute('aria-live', 'polite');
-      status.className = 'mt-3 text-muted';
-      // Append near the end of form
-      try { form.appendChild(status); } catch (e) {}
+      form.appendChild(status);
     }
 
     var submitBtn = form.querySelector('button[type="submit"]');
@@ -300,19 +299,15 @@ document.addEventListener('DOMContentLoaded', function() {
 
     // Add honeypot if missing
     if (!form.website) {
-      try {
-        var hp = document.createElement('input');
-        hp.type = 'text';
-        hp.name = 'website';
-        hp.id = 'website';
-        hp.tabIndex = -1;
-        hp.autocomplete = 'off';
-        hp.setAttribute('aria-hidden', 'true');
-        hp.style.position = 'absolute';
-        hp.style.left = '-9999px';
-        hp.style.opacity = '0';
-        form.appendChild(hp);
-      } catch (e) {}
+      var honeypot = document.createElement('input');
+      honeypot.type = 'text';
+      honeypot.name = 'website';
+      honeypot.id = 'website';
+      honeypot.className = 'visually-hidden';
+      honeypot.setAttribute('tabindex', '-1');
+      honeypot.setAttribute('autocomplete', 'off');
+      honeypot.setAttribute('aria-hidden', 'true');
+      form.appendChild(honeypot);
     }
 
     // Live character counter and autosize for message
@@ -323,82 +318,60 @@ document.addEventListener('DOMContentLoaded', function() {
         counter = document.createElement('span');
         counter.id = 'message-counter';
         counter.className = 'small text-muted';
-        try { messageField.parentNode.insertBefore(counter, messageField.nextSibling); } catch (e) {}
+        messageField.parentNode && messageField.parentNode.parentNode && messageField.parentNode.parentNode.appendChild(counter);
       }
-      addEvent(messageField, 'input', function() {
-        this.style.height = 'auto';
-        this.style.height = Math.min(this.scrollHeight, 300) + 'px';
-        if (counter) {
-          var max = this.getAttribute('maxlength') ? parseInt(this.getAttribute('maxlength'), 10) : 1000;
-          var len = this.value ? this.value.length : 0;
-          if (counter.textContent !== undefined) counter.textContent = len + '/' + max; else counter.innerText = len + '/' + max;
-        }
-      });
-      // Initialize counter
-      (function() {
-        var max = messageField.getAttribute('maxlength') ? parseInt(messageField.getAttribute('maxlength'), 10) : 1000;
-        var len = messageField.value ? messageField.value.length : 0;
-        if (counter) { counter.textContent = len + '/' + max; }
-      })();
+      var updateCounter = function() {
+        var max = parseInt(messageField.getAttribute('maxlength') || '1000', 10);
+        var len = messageField.value.length;
+        counter.textContent = len + '/' + max;
+        messageField.style.height = 'auto';
+        messageField.style.height = Math.min(messageField.scrollHeight, 300) + 'px';
+      };
+      updateCounter();
+      messageField.addEventListener('input', updateCounter);
+    }
+
+    // Quick-pick service chips (mobile-friendly shortcuts)
+    var serviceSelect = document.getElementById('service');
+    var chips = document.querySelectorAll('[data-service-chip]');
+    for (var i = 0; i < chips.length; i++) {
+      (function(chip) {
+        addEvent(chip, 'click', function() {
+          var value = chip.getAttribute('data-service-chip');
+          if (serviceSelect) {
+            serviceSelect.value = value;
+            if (typeof Event === 'function') {
+              serviceSelect.dispatchEvent(new Event('change'));
+            }
+          }
+          // Optional: focus message to continue typing on mobile
+          if (messageField) {
+            messageField.focus();
+          }
+        });
+      })(chips[i]);
     }
 
     function setSubmitting(state) {
       if (!submitBtn) return;
       submitBtn.disabled = !!state;
-      if (spinner) {
-        // Toggle visibility based on available spinner element
-        if (spinner.classList) {
-          spinner.classList[state ? 'remove' : 'add']('d-none');
-        } else {
-          spinner.style.display = state ? '' : 'none';
-        }
-      }
+      if (spinner && spinner.classList) spinner.classList[state ? 'remove' : 'add']('d-none');
       if (btnText) {
-        var el = btnText;
-        if (el.nodeType === 1 && el.tagName && el.tagName.toLowerCase() === 'button') {
-          el = btnText; // whole button, change its textContent
+        if (btnText.classList && btnText.classList.contains('btn-text')) {
+          btnText.textContent = state ? 'Sending...' : 'Send Message';
+        } else if (btnText.tagName) {
+          btnText.textContent = state ? 'Sending...' : 'Send Message';
         }
-        try {
-          if (btnText.classList && btnText.classList.contains('btn-text')) {
-            btnText.textContent = state ? 'Sending...' : 'Send Message';
-          } else if (submitBtn && submitBtn.textContent) {
-            submitBtn.textContent = state ? 'Sending...' : 'Send Message';
-          }
-        } catch (e) {}
       }
     }
 
     function getFormData() {
-      // Support both compact form (name/email/phone/company/service/message) and detailed contact.html form
-      var firstName = (form.firstName && form.firstName.value) || '';
-      var lastName = (form.lastName && form.lastName.value) || '';
-      var singleName = (form.name && form.name.value) || '';
-      var fullName = trim([singleName, firstName, lastName].filter(Boolean).join(' ').replace(/\s+/g, ' '));
-
-      // Service select or checkboxes
-      var serviceSelectVal = (form.service && form.service.value) || '';
-      var servicesBoxes = form.querySelectorAll('input[name="services"]:checked');
-      var servicesSelected = [];
-      for (var i = 0; i < servicesBoxes.length; i++) { servicesSelected.push(servicesBoxes[i].value); }
-      var serviceInterest = serviceSelectVal || (servicesSelected[0] || 'other');
-
-      // Other optional fields
-      var industry = (form.industry && form.industry.value) || '';
-      var budget = (form.budget && form.budget.value) || '';
-      var timeline = (form.timeline && form.timeline.value) || '';
-      var newsletter = (form.newsletter && form.newsletter.checked) ? 'yes' : 'no';
-
       return {
-        name: fullName,
+        name: (form.name && form.name.value) || '',
         email: (form.email && form.email.value) || '',
         phone: (form.phone && form.phone.value) || '',
         company: (form.company && form.company.value) || '',
-        serviceInterest: serviceInterest || 'other',
-        servicesSelected: servicesSelected,
-        industry: industry,
-        budget: budget,
-        timeline: timeline,
-        newsletter: newsletter,
+        serviceInterest: (form.service && form.service.value) || 'other',
         message: (form.message && form.message.value) || '',
         website: (form.website && form.website.value) || '' // honeypot
       };
@@ -407,50 +380,46 @@ document.addEventListener('DOMContentLoaded', function() {
     function updateStatus(text, type) {
       if (!status) return;
       status.className = 'mt-3 ' + (type === 'error' ? 'text-danger' : type === 'success' ? 'text-success' : 'text-muted');
-      if (status.textContent !== undefined) status.textContent = text; else status.innerText = text;
+      status.textContent = text;
     }
 
     // Mobile-friendly focus scroll
     var inputs = form.querySelectorAll('input, select, textarea');
     for (var k = 0; k < inputs.length; k++) {
-      addEvent(inputs[k], 'focus', function(){
-        if (window.innerWidth < 768) {
-          try { this.scrollIntoView({ behavior: 'smooth', block: 'center' }); } catch(e) {}
-        }
+      addEvent(inputs[k], 'focus', function() {
+        try {
+          var rect = this.getBoundingClientRect();
+          if (rect.top < 80) {
+            window.scrollTo({ top: window.pageYOffset + rect.top - 80, behavior: 'smooth' });
+          }
+        } catch (e) {}
       });
     }
 
     addEvent(form, 'submit', function(event) {
       if (event.preventDefault) event.preventDefault(); else event.returnValue = false;
 
+      // Bootstrap validation UI
+      if (form.classList) form.classList.add('was-validated');
       var data = getFormData();
 
-      // Validation
-      var requiredOk = true;
-      // Support both name and first/last name requirement
-      if (!data.name) { requiredOk = false; }
-      if (!data.email || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(data.email)) { requiredOk = false; }
-      if (!data.message) { requiredOk = false; }
+      // Basic validation
+      var invalid = false;
+      if (!data.name) { invalid = true; form.name && form.name.classList && form.name.classList.add('is-invalid'); }
+      if (!data.email) { invalid = true; form.email && form.email.classList && form.email.classList.add('is-invalid'); }
+      if (!data.message) { invalid = true; form.message && form.message.classList && form.message.classList.add('is-invalid'); }
 
-      // Toggle simple invalid styles if available
-      var requiredEls = [];
-      if (form.name) requiredEls.push(form.name);
-      if (form.firstName) requiredEls.push(form.firstName);
-      if (form.lastName) requiredEls.push(form.lastName);
-      if (form.email) requiredEls.push(form.email);
-      if (form.message) requiredEls.push(form.message);
-      for (var r = 0; r < requiredEls.length; r++) {
-        var el = requiredEls[r];
-        var ok = !!(el.value && (el.type !== 'email' || /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(el.value)));
-        if (!ok) { addClass(el, 'is-invalid'); } else { removeClass(el, 'is-invalid'); addClass(el, 'is-valid'); }
-      }
-
-      if (!requiredOk) {
-        updateStatus('Please fill in the required fields correctly.', 'error');
-        return;
+      var emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+      if (data.email && !emailRegex.test(data.email)) {
+        invalid = true;
+        form.email && form.email.classList && form.email.classList.add('is-invalid');
       }
       if (data.website) { // honeypot
         updateStatus('Invalid submission detected.', 'error');
+        return;
+      }
+      if (invalid) {
+        updateStatus('Please fill in all required fields.', 'error');
         return;
       }
 
@@ -463,13 +432,7 @@ document.addEventListener('DOMContentLoaded', function() {
         message: data.message,
         phone: data.phone,
         company: data.company,
-        serviceInterest: data.serviceInterest,
-        // Extras (server ignores but useful via email templates in future)
-        servicesSelected: data.servicesSelected,
-        industry: data.industry,
-        budget: data.budget,
-        timeline: data.timeline,
-        newsletter: data.newsletter
+        serviceInterest: data.serviceInterest
       };
 
       var canFetch = typeof window !== 'undefined' && typeof window.fetch === 'function';
@@ -480,21 +443,19 @@ document.addEventListener('DOMContentLoaded', function() {
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify(payload)
           })
-          .then(function(res) { return res.json(); })
-          .then(function(json) {
-            if (json && json.success) {
-              updateStatus('Thanks! Your message was sent successfully.', 'success');
-              if (form.reset) form.reset();
-              // Reset validity classes
-              var validEls = form.querySelectorAll('.is-valid');
-              for (var v = 0; v < validEls.length; v++) removeClass(validEls[v], 'is-valid');
-              if (counter) counter.textContent = '0/' + (messageField && (messageField.getAttribute('maxlength') || 1000));
-            } else {
-              fallbackMailto(data);
-            }
-          })
-          .catch(function() { fallbackMailto(data); })
-          .finally(function() { setSubmitting(false); });
+            .then(function(res) { return res.json(); })
+            .then(function(json) {
+              if (json && json.success) {
+                updateStatus('Thanks! Your message was sent successfully.', 'success');
+                if (form.reset) form.reset();
+                if (form.classList) form.classList.remove('was-validated');
+                if (messageField) { messageField.style.height = '120px'; }
+              } else {
+                fallbackMailto(data);
+              }
+            })
+            .catch(function() { fallbackMailto(data); })
+            .finally(function() { setSubmitting(false); });
         } catch (e) {
           fallbackMailto(data);
           setSubmitting(false);
@@ -508,21 +469,16 @@ document.addEventListener('DOMContentLoaded', function() {
     function fallbackMailto(data) {
       try {
         var subject = 'Contact Form Submission';
-        var servicesText = (data.servicesSelected && data.servicesSelected.length) ? ('Services: ' + data.servicesSelected.join(', ') + '\n') : ('Service: ' + (data.serviceInterest || 'other') + '\n');
-        var extra = '';
-        if (data.industry) extra += 'Industry: ' + data.industry + '\n';
-        if (data.budget) extra += 'Budget: ' + data.budget + '\n';
-        if (data.timeline) extra += 'Timeline: ' + data.timeline + '\n';
-        if (data.newsletter) extra += 'Newsletter: ' + data.newsletter + '\n';
         var body = 'Name: ' + data.name + '\n' +
                    'Email: ' + data.email + '\n' +
                    (data.phone ? ('Phone: ' + data.phone + '\n') : '') +
                    (data.company ? ('Company: ' + data.company + '\n') : '') +
-                   servicesText +
-                   extra + '\n' +
+                   'Service: ' + (data.serviceInterest || 'other') + '\n\n' +
                    'Message:\n' + data.message;
         var link = 'mailto:customersupport@kfsquare.com?subject=' + encodeURIComponent(subject) + '&body=' + encodeURIComponent(body);
-        if (typeof window !== 'undefined' && window.location) { window.location.href = link; }
+        if (typeof window !== 'undefined' && window.location) {
+          window.location.href = link;
+        }
         updateStatus('We could not reach the server. Your email client has been opened.', 'info');
       } catch (e) {
         updateStatus('Something went wrong. Please try again later.', 'error');
