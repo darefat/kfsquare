@@ -331,7 +331,7 @@ main() {
     console.log('✅ Version:', pkg.version || '1.0.0');
     
     const requiredModules = ['express', 'helmet', 'compression', 'express-rate-limit'];
-    const optionalModules = ['@sendgrid/mail', 'nodemon'];
+    const optionalModules = ['nodemon'];
     
     let missing = [];
     let optional = [];
@@ -385,10 +385,10 @@ main() {
 NODE_ENV=development
 PORT=3000
 
-# SendGrid Configuration (Optional)
-SENDGRID_API_KEY=your_sendgrid_api_key_here
-FROM_EMAIL=noreply@kfsquare.com
-TO_EMAIL=support@kfsquare.com
+# Mail Provider Configuration (Optional)
+MAILGUN_API_KEY=your_mailgun_api_key_here
+MAILGUN_DOMAIN=mg.example.com
+RECIPIENT_EMAIL=customersupport@kfsquare.com
 
 # Security Configuration
 SESSION_SECRET=change_this_in_production
@@ -498,7 +498,7 @@ EOF
     echo "  • Network: http://$(hostname -I 2>/dev/null | awk '{print $1}' || echo 'your-ip'):3000"
     echo ""
     echo "📋 Configuration:"
-    echo "  • Edit .env file for SendGrid email integration"
+    echo "  • Edit .env file for Mailgun email integration"
     echo "  • Customize server.js for advanced Node.js features"
     echo "  • All static files served from current directory"
     echo ""

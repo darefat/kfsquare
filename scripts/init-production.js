@@ -113,19 +113,11 @@ MAX_FILE_SIZE=10485760
 UPLOAD_PATH=uploads/
 ALLOWED_FILE_TYPES=jpg,jpeg,png,gif,pdf,doc,docx
 
-# Email Configuration (Optional)
-SMTP_HOST=
-SMTP_PORT=587
-SMTP_SECURE=false
-SMTP_USER=
-SMTP_PASS=
-FROM_EMAIL=noreply@yourdomain.com
-
-# Third-party Services (Optional)
-SENDGRID_API_KEY=
-TWILIO_ACCOUNT_SID=
-TWILIO_AUTH_TOKEN=
-TWILIO_PHONE_NUMBER=
+# Email Configuration (Mailgun)
+MAILGUN_API_KEY=
+MAILGUN_DOMAIN=
+# MAILGUN_BASE_URL=https://api.mailgun.net   # or https://api.eu.mailgun.net for EU
+RECIPIENT_EMAIL=customersupport@kfsquare.com
 
 # Monitoring & Analytics (Optional)
 GOOGLE_ANALYTICS_ID=

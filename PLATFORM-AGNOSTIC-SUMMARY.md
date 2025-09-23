@@ -163,9 +163,12 @@ docker-compose up -d
 ```bash
 NODE_ENV=production
 PORT=3000
-SENDGRID_API_KEY=your_api_key
-FROM_EMAIL=support@kfsquare.com
-TO_EMAIL=admin@kfsquare.com
+
+# Mailgun Email Configuration
+MAILGUN_API_KEY=your_mailgun_api_key_here
+MAILGUN_DOMAIN=mg.kfsquare.com
+# MAILGUN_BASE_URL=https://api.mailgun.net   # or https://api.eu.mailgun.net for EU
+RECIPIENT_EMAIL=customersupport@kfsquare.com
 ```
 
 ### Docker Environment
