@@ -267,7 +267,8 @@ class SecurityConfig {
           "style-src 'self' 'unsafe-inline' https://fonts.googleapis.com",
           "font-src 'self' https://fonts.gstatic.com",
           "img-src 'self' data: https: blob:",
-          "connect-src 'self' https://api.sendgrid.com",
+          // Updated to Mailgun API endpoints
+          "connect-src 'self' https://api.mailgun.net https://api.eu.mailgun.net",
           "frame-ancestors 'none'",
           "base-uri 'self'",
           "form-action 'self'"

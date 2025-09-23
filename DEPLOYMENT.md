@@ -279,7 +279,8 @@ git push heroku main
 ```env
 NODE_ENV=production
 PORT=3000
-SENDGRID_API_KEY=your_api_key
+MAILGUN_API_KEY=your_mailgun_api_key_here
+MAILGUN_DOMAIN=mg.kfsquare.com
 RECIPIENT_EMAIL=contact@kfsquare.com
 ```
 

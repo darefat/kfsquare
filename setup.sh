@@ -50,7 +50,7 @@ npm install
 # Verify critical dependencies
 echo "🔍 Verifying dependencies..."
 node -e "
-const requiredModules = ['express', 'helmet', 'compression', 'express-rate-limit', '@sendgrid/mail'];
+const requiredModules = ['express', 'helmet', 'compression', 'express-rate-limit', 'mailgun.js', 'form-data'];
 let missing = [];
 requiredModules.forEach(module => {
     try {
@@ -73,7 +73,7 @@ if [ ! -f ".env" ]; then
     echo "📋 Creating .env file from template..."
     cp .env.example .env
     echo "✅ .env file created from template"
-    echo "⚠️  Please edit .env file with your actual SendGrid API key and email settings"
+    echo "⚠️  Please edit .env with your Mailgun settings (MAILGUN_API_KEY, MAILGUN_DOMAIN, RECIPIENT_EMAIL)"
 else
     echo "✅ .env file already exists"
 fi
@@ -96,7 +96,7 @@ echo "🎉 Setup complete!"
 echo "=================="
 echo ""
 echo "📋 Next steps:"
-echo "1. Edit .env file with your SendGrid API key"
+echo "1. Edit .env with your Mailgun settings (MAILGUN_API_KEY, MAILGUN_DOMAIN, RECIPIENT_EMAIL)"
 echo "2. Start development: npm run dev"
 echo "3. Open browser: http://localhost:3000"
 echo ""

@@ -1,7 +1,9 @@
 require('dotenv').config();
 const express = require('express');
 const bodyParser = require('body-parser');
-const sgMail = require('@sendgrid/mail');
+// Mailgun email client
+const Mailgun = require('mailgun.js');
+const formData = require('form-data');
 const cors = require('cors');
 const { body, validationResult } = require('express-validator');
 const path = require('path');
@@ -9,6 +11,7 @@ const compression = require('compression');
 const helmet = require('helmet');
 const rateLimit = require('express-rate-limit');
 const os = require('os');
+const fs = require('fs');
 
 // MongoDB Integration
 const database = require('./config/database');
@@ -33,7 +36,10 @@ console.log(`🌐 Platform detected: ${platform} (${isWindows ? 'Windows' : isLi
 
 const app = express();
 const port = process.env.PORT || 3000;
-const apiKey = process.env.SENDGRID_API_KEY;
+// Mailgun env vars (support *_FILE)
+const mailgunApiKey = readSecret('MAILGUN_API_KEY', 'MAILGUN_API_KEY_FILE');
+const mailgunDomain = process.env.MAILGUN_DOMAIN;
+const mailgunBaseUrl = process.env.MAILGUN_BASE_URL || 'https://api.mailgun.net';
 const recipientEmail = process.env.RECIPIENT_EMAIL;
 const corsOrigin = process.env.CORS_ORIGIN;
 const isProduction = process.env.NODE_ENV === 'production';
@@ -48,6 +54,19 @@ function parseCsv(value) {
     .split(',')
     .map(s => s.trim())
     .filter(Boolean);
+}
+
+// Helper to read secret from env or file (e.g., *_FILE)
+function readSecret(envKey, fileEnvKey) {
+  const value = process.env[envKey];
+  const filePath = process.env[fileEnvKey];
+  if (value) return value;
+  if (filePath) {
+    try { return fs.readFileSync(filePath, 'utf8').trim(); } catch (e) {
+      console.warn(`⚠️  Could not read secret file for ${envKey}:`, e.message);
+    }
+  }
+  return '';
 }
 
 // Allow configuring multiple origins via ALLOWED_ORIGINS (comma-separated)
@@ -84,12 +103,18 @@ const defaultCdnAllowlist = [
   });
 });
 
-if (!apiKey) {
-  console.warn("⚠️  SendGrid API key is missing. Email functionality will be disabled.");
-  console.log("   Set SENDGRID_API_KEY in your environment or .env file");
+let mailgunClient = null;
+if (!mailgunApiKey || !mailgunDomain) {
+  console.warn('⚠️  Mailgun API key and/or domain is missing. Email functionality will be disabled.');
+  console.log('   Set MAILGUN_API_KEY and MAILGUN_DOMAIN in your environment or .env file');
 } else {
-  sgMail.setApiKey(apiKey);
-  console.log("✅ SendGrid configured successfully");
+  try {
+    const mg = new Mailgun(formData);
+    mailgunClient = mg.client({ username: 'api', key: mailgunApiKey, url: mailgunBaseUrl });
+    console.log('✅ Mailgun configured successfully');
+  } catch (e) {
+    console.warn('⚠️  Failed to initialize Mailgun:', e.message);
+  }
 }
 
 app.use(helmet({
@@ -238,7 +263,7 @@ app.get('/api/health', async (req, res) => {
       services: {
         api: 'operational',
         database: dbStatus ? 'connected' : 'disconnected',
-        email: process.env.SENDGRID_API_KEY ? 'configured' : 'not-configured'
+        email: mailgunClient ? 'configured' : 'not-configured'
       },
       version: process.env.npm_package_version || '1.0.0'
     });
@@ -294,15 +319,9 @@ app.post('/send-email', emailLimiter, validate, async (req, res) => {
       console.log(`💾 Contact saved to database: ${contact._id}`);
     }
 
-    // Send email if SendGrid is configured
-    if (apiKey) {
-      const msg = {
-        to: recipientEmail || 'contact@kfsquare.com',
-        from: 'noreply@kfsquare.com',
-        replyTo: email,
-        subject: 'Contact Form Submission from KFSQUARE Website',
-        text: `Name: ${name}\nEmail: ${email}\nMessage:\n${message}`,
-        html: `
+    // Send email via Mailgun if configured
+    if (mailgunClient) {
+      const htmlBody = `
           <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto;">
             <h2 style="color: #01326d;">New Contact Form Submission</h2>
             <div style="background: #f9fafc; padding: 20px; border-radius: 8px; margin: 20px 0;">
@@ -317,12 +336,17 @@ app.post('/send-email', emailLimiter, validate, async (req, res) => {
               Submitted on ${new Date().toLocaleString()}
               ${contact ? `<br>Database ID: ${contact._id}` : ''}
             </p>
-          </div>
-        `,
-      };
+          </div>`;
 
-      await sgMail.send(msg);
-      console.log(`📧 Email sent successfully from ${email}`);
+      await mailgunClient.messages.create(mailgunDomain, {
+        from: 'KFSQUARE <noreply@kfsquare.com>',
+        to: [recipientEmail || 'contact@kfsquare.com'],
+        'h:Reply-To': email,
+        subject: 'Contact Form Submission from KFSQUARE Website',
+        text: `Name: ${name}\nEmail: ${email}\nMessage:\n${message}`,
+        html: htmlBody
+      });
+      console.log(`📧 Email sent successfully via Mailgun from ${email}`);
     }
 
     res.status(200).json({ 
@@ -332,10 +356,10 @@ app.post('/send-email', emailLimiter, validate, async (req, res) => {
     });
 
   } catch (error) {
-    console.error("Contact form error:", error);
+    console.error('Contact form error:', error);
     
     if (error.response) {
-      console.error("SendGrid Response:", error.response.body);
+      console.error("Mailgun Response:", error.response.body);
     }
     
     res.status(500).json({ 
@@ -389,7 +413,7 @@ app.use((err, req, res, next) => {
 const server = app.listen(port, async () => {
   console.log(`🚀 KFSQUARE Server running on ${publicUrl || `http://localhost:${port}`}`);
   console.log(`🔧 Environment: ${process.env.NODE_ENV || 'development'}`);
-  console.log(`📧 SendGrid configured: ${!!process.env.SENDGRID_API_KEY}`);
+  console.log(`📧 Mailgun configured: ${!!mailgunClient}`);
   console.log(`💻 Platform: ${platform}`);
   console.log(`🏠 Serving static from: ${staticRoot}`);
   console.log(`⏰ Started at: ${new Date().toISOString()}`);

@@ -73,7 +73,7 @@ main() {
     # Verify critical dependencies
     echo "🔍 Verifying dependencies..."
     node -e "
-    const requiredModules = ['express', 'helmet', 'compression', 'express-rate-limit', '@sendgrid/mail'];
+    const requiredModules = ['express', 'helmet', 'compression', 'express-rate-limit', 'mailgun.js', 'form-data'];
     requiredModules.forEach(module => {
         try {
             require(module);
@@ -89,7 +89,7 @@ main() {
     echo "🔧 Checking environment variables..."
     node -e "
     require('dotenv').config();
-    const required = ['NODE_ENV', 'SENDGRID_API_KEY', 'RECIPIENT_EMAIL'];
+    const required = ['NODE_ENV', 'MAILGUN_API_KEY', 'MAILGUN_DOMAIN', 'RECIPIENT_EMAIL'];
     const missing = required.filter(env => !process.env[env]);
     if (missing.length > 0) {
         console.log('❌ Missing environment variables:', missing.join(', '));
@@ -184,7 +184,7 @@ EOF
     echo "   ✅ GZIP compression"
     echo "   ✅ Rate limiting"
     echo "   ✅ Input validation"
-    echo "   ✅ Email contact form"
+    echo "   ✅ Email contact form (Mailgun)"
     echo "   ✅ Static file caching"
     echo "   ✅ CORS protection"
     echo "   ✅ Error handling"

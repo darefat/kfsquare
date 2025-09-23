@@ -63,7 +63,7 @@ npm install
 
 # 5. Configure environment
 cp .env.example .env
-# Edit .env with your SendGrid API key
+# Configure Mailgun in .env (see below)
 
 # 6. Start development
 npm run dev
@@ -117,12 +117,13 @@ python setup.py --start    # Start development server (any platform)
 ### Node.js Dependencies (Required)
 ```json
 {
-  "express": "^5.1.0",           // Web framework
-  "helmet": "^8.0.0",            // Security middleware  
-  "compression": "^1.7.4",       // GZIP compression
-  "express-rate-limit": "^7.4.1", // Rate limiting
-  "@sendgrid/mail": "^8.1.5",    // Email service
-  "cross-env": "^7.0.3"          // Cross-platform env vars
+  "express": "^5.1.0",
+  "helmet": "^8.0.0",
+  "compression": "^1.7.4",
+  "express-rate-limit": "^7.4.1",
+  "mailgun.js": "^10.2.3",
+  "form-data": "^4.0.0",
+  "cross-env": "^7.0.3"
 }
 ```
 
@@ -155,9 +156,11 @@ Create a `.env` file with the following variables:
 NODE_ENV=production
 PORT=3000
 
-# SendGrid Email Configuration
-SENDGRID_API_KEY=your_sendgrid_api_key_here
-RECIPIENT_EMAIL=contact@kfsquare.com
+# Mailgun Email Configuration
+MAILGUN_API_KEY=your_mailgun_api_key_here
+MAILGUN_DOMAIN=mg.kfsquare.com
+# MAILGUN_BASE_URL=https://api.mailgun.net   # or https://api.eu.mailgun.net for EU
+RECIPIENT_EMAIL=customersupport@kfsquare.com
 
 # Security Configuration
 GENERAL_RATE_LIMIT=100
@@ -261,17 +264,26 @@ This project is licensed under the MIT License - see the LICENSE file for detail
 *   **`index.html`:** The main HTML file containing the website structure and content.
 *   **`styles.css`:**  CSS file for styling the website.
 *   **`script.js`:** JavaScript file for handling form submission and client-side logic.
-*   **`server.js`:** Node.js server file for handling form submissions and sending emails via SendGrid.
+*   **`server.js`:** Node.js server file for handling form submissions and sending emails via Mailgun.
 *   **.env:** File for storing sensitive information like API keys and email addresses.
 
-## Email Sending
+## Email Configuration (Mailgun)
 
-The website includes a contact form that sends emails using SendGrid.  The server-side code handles the email sending process.
+Set these in your `.env`:
+
+```
+MAILGUN_API_KEY=your_mailgun_api_key_here
+MAILGUN_DOMAIN=mg.kfsquare.com
+# MAILGUN_BASE_URL=https://api.mailgun.net   # or https://api.eu.mailgun.net for EU
+RECIPIENT_EMAIL=customersupport@kfsquare.com
+```
+
+The website includes a contact form that sends emails using Mailgun. The server-side code handles the email sending process via Mailgun SDK.
 
 **Important:**
 
-*   Make sure you have a SendGrid account and have created an API key with the necessary permissions.
-*   Verify the "no-reply" email address with SendGrid to prevent emails from being marked as spam.
+*   Make sure you have a Mailgun account and have created an API key with the necessary permissions.
+*   Verify the "no-reply" email address with Mailgun to prevent emails from being marked as spam.
 
 ## CORS Configuration
 
