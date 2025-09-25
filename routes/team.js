@@ -137,9 +137,18 @@ router.put('/:id', [
       });
     }
 
+    // Only allow whitelisted fields to be updated
+    const allowedFields = ['name', 'title', 'bio', 'email', 'department', 'category'];
+    const updateData = {};
+    for (const field of allowedFields) {
+      if (Object.prototype.hasOwnProperty.call(req.body, field)) {
+        updateData[field] = req.body[field];
+      }
+    }
+
     const teamMember = await TeamMember.findByIdAndUpdate(
       req.params.id,
-      req.body,
+      updateData,
       { new: true, runValidators: true }
     );
 
