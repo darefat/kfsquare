@@ -141,7 +141,10 @@ router.put('/:id', [
     const allowedFields = ['name', 'title', 'bio', 'email', 'department', 'category'];
     const updateData = {};
     for (const field of allowedFields) {
-      if (Object.prototype.hasOwnProperty.call(req.body, field)) {
+      if (
+        Object.prototype.hasOwnProperty.call(req.body, field) &&
+        typeof req.body[field] === 'string'
+      ) {
         updateData[field] = req.body[field];
       }
     }
