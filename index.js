@@ -297,6 +297,18 @@ document.addEventListener('DOMContentLoaded', function() {
     var spinner = submitBtn ? (submitBtn.querySelector('.spinner-border') || submitBtn.querySelector('.btn-loading')) : null;
     var btnText = submitBtn ? (submitBtn.querySelector('.btn-text') || submitBtn) : null;
 
+    // NEW: Ensure clicking inner span.btn-text also triggers submit (some browsers may not fire if event intercepted)
+    if (btnText && btnText !== submitBtn) {
+      btnText.classList.add('btn-text'); // ensure class present
+      btnText.addEventListener('click', function(e) {
+        // Delegate to button default submit behavior
+        if (submitBtn && !submitBtn.disabled) {
+          e.preventDefault();
+          if (form.requestSubmit) form.requestSubmit(); else form.submit();
+        }
+      });
+    }
+
     // Add honeypot if missing
     if (!form.website) {
       var honeypot = document.createElement('input');
