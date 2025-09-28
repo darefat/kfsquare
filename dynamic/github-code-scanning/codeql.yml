@@ -1,0 +1,25 @@
+name: "CodeQL"
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+    branches:
+      - main
+
+jobs:
+  analyze:
+    name: Analyze
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Set up CodeQL
+        uses: github/codeql-action/setup@v1
+        with:
+          languages: 'javascript'  # Update this line based on the actual language(s) present in the repo
+
+      - name: Analyze
+        uses: github/codeql-action/analyze@v1
