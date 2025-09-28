@@ -20,6 +20,8 @@ module.exports = {
       env_production: {
         NODE_ENV: 'production',
         PORT: process.env.PORT || 3000,
+        // Allow local MongoDB temporarily for Option A (remove when Atlas is ready)
+        ALLOW_LOCAL_DB: 'true',
         // Use environment-provided URI, do not fallback to localhost in production
         MONGODB_URI: process.env.MONGODB_URI,
         MONGODB_HOSTS: process.env.MONGODB_HOSTS,
