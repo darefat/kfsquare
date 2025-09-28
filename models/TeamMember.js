@@ -25,7 +25,7 @@ const teamMemberSchema = new mongoose.Schema({
     lowercase: true,
     validate: {
       validator: function(v) {
-        return !v || /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/.test(v);
+        return !v || /^[A-Za-z0-9]+([._-][A-Za-z0-9]+)*@[A-Za-z0-9]+([.-][A-Za-z0-9]+)*\.[A-Za-z]{2,3}$/.test(v);
       },
       message: 'Please enter a valid email'
     }
