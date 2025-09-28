@@ -340,7 +340,7 @@ app.post('/send-email', emailLimiter, validate, async (req, res) => {
 
       await mailgunClient.messages.create(mailgunDomain, {
         from: 'KFSQUARE <noreply@kfsquare.com>',
-        to: [recipientEmail || 'contact@kfsquare.com'],
+        to: [recipientEmail || 'customersupport@kfsquare.com'],
         'h:Reply-To': email,
         subject: 'Contact Form Submission from KFSQUARE Website',
         text: `Name: ${name}\nEmail: ${email}\nMessage:\n${message}`,
