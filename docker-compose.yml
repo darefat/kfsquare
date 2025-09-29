@@ -26,6 +26,7 @@ services:
       - ./logs:/app/logs
       - ./uploads:/app/uploads
       - ./backups:/app/backups
+      - ./secrets:/app/secrets:ro
     depends_on:
       kfsquare-mongo:
         condition: service_healthy
@@ -42,6 +43,8 @@ services:
       - "traefik.http.routers.kfsquare.rule=Host(`kfsquare.com`)"
       - "traefik.http.routers.kfsquare.tls=true"
       - "traefik.http.routers.kfsquare.tls.certresolver=letsencrypt"
+    env_file:
+      - .env.docker
 
   # MongoDB Database
   kfsquare-mongo:
