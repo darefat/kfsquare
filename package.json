@@ -83,5 +83,8 @@
     "type": "git",
     "url": "https://github.com/kfsquare/kfsquare-site.git"
   },
-  "homepage": "https://kfsquare.com"
+  "homepage": "https://kfsquare.com",
+  "devDependencies": {
+    "jest": "^30.2.0"
+  }
 }
