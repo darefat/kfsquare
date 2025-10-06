@@ -375,6 +375,12 @@
     grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
 }
 
+
+.service-description {
+  color: #ffffff !important;
+}
+
+
 /* Service Cards */
 .service-card {
     background: linear-gradient(145deg, #1e2329 0%, #1a1f25 100%);
