@@ -9,8 +9,8 @@ router.get('/', async (req, res) => {
     const { category, department, active = 'true' } = req.query;
     
     let filter = {};
-    if (category) filter.category = category;
-    if (department) filter.department = department;
+    if (category && typeof category === 'string') filter.category = { $eq: category };
+    if (department && typeof department === 'string') filter.department = { $eq: department };
     if (active) filter.isActive = active === 'true';
 
     const teamMembers = await TeamMember
