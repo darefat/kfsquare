@@ -47,7 +47,7 @@ sed -i.bak "s/services.js/services.min.js?v=${STAMP}/g" services.html 2>/dev/nul
 
 # Create dist directory
 mkdir -p dist
-cp -a index.html services.html about.html portfolio.html team.html contact.html styles.min.css index.min.js services.min.js favicon.ico services.json ./dist 2>/dev/null || true
+cp -a index.html services.html about.html portfolio.html contact.html styles.min.css index.min.js services.min.js favicon.ico services.json ./dist 2>/dev/null || true
 cp -a assets ./dist/assets 2>/dev/null || true
 
 echo "🎉 Build complete. Artifacts in dist/"
