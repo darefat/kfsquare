@@ -6,274 +6,345 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <title>Services - KFSQUARE | Data Analytics & AI Solutions</title>
     <meta name="description" content="Explore KFSQUARE's comprehensive data analytics, machine learning, and AI services designed to transform your business.">
+    
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link rel="stylesheet" href="styles.css">
     <link rel="icon" href="favicon.ico" type="image/x-icon">
-    <!-- Font Awesome for icons used in dynamic UI -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
 </head>
 <body>
     <!-- Navigation -->
-    <nav class="navbar">
-        <div class="nav-container">
-            <div class="nav-logo">
-                <a href="index.html">KFSQUARE</a>
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+        <div class="container">
+            <div class="navbar-brand fw-bold">
+                <a href="index.html" class="text-decoration-none">
+                    <span class="text-warning">KF</span><span class="text-white">SQUARE</span>
+                </a>
             </div>
-            <ul class="nav-menu" id="nav-menu">
-                <li class="nav-item">
-                    <a href="index.html" class="nav-link">Home</a>
-                </li>
-                <li class="nav-item">
-                    <a href="about.html" class="nav-link">About</a>
-                </li>
-                <li class="nav-item">
-                    <a href="services.html" class="nav-link active">Services</a>
-                </li>
-                <li class="nav-item">
-                    <a href="portfolio.html" class="nav-link">Portfolio</a>
-                </li>
-                <li class="nav-item">
-                    <a href="contact.html" class="nav-link">Contact</a>
-                </li>
-            </ul>
-            <div class="hamburger" id="hamburger">
-                <span class="bar"></span>
-                <span class="bar"></span>
-                <span class="bar"></span>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ms-auto">
+                    <li class="nav-item">
+                        <a href="index.html" class="nav-link">Home</a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="about.html" class="nav-link">About</a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="services.html" class="nav-link active">Services</a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="portfolio.html" class="nav-link">Portfolio</a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="contact.html" class="nav-link">Contact</a>
+                    </li>
+                </ul>
             </div>
         </div>
     </nav>
 
     <!-- Page Header -->
-    <section class="page-header">
+    <section class="page-header py-5 text-center" style="background: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%); color: white;">
         <div class="container">
-            <h1>Our Services</h1>
-            <p>Comprehensive data analytics and AI solutions tailored for your business</p>
+            <h1 class="display-4 fw-bold">Our Services</h1>
+            <p class="lead">Comprehensive data analytics and AI solutions tailored for your business</p>
             <nav aria-label="breadcrumb">
-                <ol class="breadcrumb">
-                    <li><a href="index.html">Home</a></li>
-                    <li class="active">Services</li>
+                <ol class="breadcrumb justify-content-center bg-transparent">
+                    <li class="breadcrumb-item"><a href="index.html" class="text-warning">Home</a></li>
+                    <li class="breadcrumb-item active text-light" aria-current="page">Services</li>
                 </ol>
             </nav>
         </div>
     </section>
 
-    <!-- Services Overview -->
+    <!-- Main Content -->
     <main class="main-content">
-        <section class="services-intro">
+        <!-- Services Overview -->
+        <section class="about-overview py-5 bg-light">
             <div class="container">
-                <div class="intro-content">
-                    <h2>Transforming Data into Strategic Advantage</h2>
-                    <p class="lead">Our comprehensive suite of data analytics and AI services helps businesses unlock the full potential of their data, drive innovation, and achieve measurable results.</p>
-                </div>
-            </div>
-        </section>
-
-        <!-- Core Services Grid -->
-        <section class="services-grid-section">
-            <div class="container">
-                <h2 class="section-title">Core Services</h2>
-                <div class="services-grid" id="services-grid" aria-live="polite">
-                  <!-- Fallback content for no-JS users -->
-                  <noscript>
-                    <style>
-                      #services-grid .service-card { opacity: 0.5 !important; transform: none !important; }
-                    </style>
-                    <div class="container">
-                      <p>Please enable JavaScript to view our Core Services.</p>
+                <div class="row justify-content-center">
+                    <div class="col-lg-10">
+                        <div class="about-text text-center bg-white p-4 rounded shadow">
+                            <h2 class="section-title mb-4">Transforming Data into Strategic Advantage</h2>
+                            <p class="lead">Our comprehensive suite of data analytics and AI services helps businesses unlock the full potential of their data, drive innovation, and achieve measurable results.</p>
+                            
+                            <!-- Quick Stats -->
+                            <div class="row g-3 mt-4">
+                                <div class="col-md-4">
+                                    <div class="stat-item bg-white p-3 rounded shadow-sm text-center">
+                                        <h3 class="fw-bold text-primary">50+</h3>
+                                        <p class="mb-0 text-muted">AI Models Deployed</p>
+                                    </div>
+                                </div>
+                                <div class="col-md-4">
+                                    <div class="stat-item bg-white p-3 rounded shadow-sm text-center">
+                                        <h3 class="fw-bold text-primary">99.9%</h3>
+                                        <p class="mb-0 text-muted">Uptime Guarantee</p>
+                                    </div>
+                                </div>
+                                <div class="col-md-4">
+                                    <div class="stat-item bg-white p-3 rounded shadow-sm text-center">
+                                        <h3 class="fw-bold text-primary">24/7</h3>
+                                        <p class="mb-0 text-muted">Expert Support</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
                     </div>
-                  </noscript>
                 </div>
             </div>
         </section>
 
-        <!-- Service Details Modal -->
-        <div id="service-modal" class="service-modal" style="display: none;">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h2 id="modal-title">Service Details</h2>
-                    <button class="modal-close">&times;</button>
-                </div>
-                <div class="modal-body" id="modal-body">
-                    <!-- Service details will be loaded here -->
-                </div>
-                <div class="modal-footer">
-                    <button class="btn btn-secondary modal-close">Close</button>
-                    <a class="btn btn-primary" id="modal-contact-btn" href="contact.html">Contact Us</a>
+        <!-- Core Services (White text on dark background) -->
+        <section class="services-section py-5" style="background: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%); color: white;">
+            <div class="container">
+                <h2 class="section-title text-center text-white mb-5">Core Services</h2>
+                <div class="row g-4">
+                    <div class="col-lg-6">
+                        <div class="service-item text-center h-100 p-4 rounded" style="background: rgba(255, 255, 255, 0.1); backdrop-filter: blur(10px); border: 1px solid rgba(255, 255, 255, 0.2);">
+                            <div class="service-icon text-center fs-1 mb-3 text-warning">📊</div>
+                            <h3 class="text-white">Data Analytics</h3>
+                            <p class="text-white mb-3">Transform raw data into actionable insights with our comprehensive analytics solutions and advanced statistical modeling.</p>
+                            <ul class="list-unstyled text-white mb-3">
+                                <li><span class="text-warning">✓</span> Statistical Analysis</li>
+                                <li><span class="text-warning">✓</span> Data Visualization</li>
+                                <li><span class="text-warning">✓</span> Performance Metrics</li>
+                            </ul>
+                            <a href="contact.html" class="btn btn-outline-light btn-sm">Learn More</a>
+                        </div>
+                    </div>
+                    
+                    <div class="col-lg-6">
+                        <div class="service-item text-center h-100 p-4 rounded" style="background: rgba(255, 255, 255, 0.1); backdrop-filter: blur(10px); border: 1px solid rgba(255, 255, 255, 0.2);">
+                            <div class="service-icon text-center fs-1 mb-3 text-warning">🤖</div>
+                            <h3 class="text-white">AI & Machine Learning</h3>
+                            <p class="text-white mb-3">Leverage cutting-edge AI technologies and machine learning models to automate processes and predict future trends.</p>
+                            <ul class="list-unstyled text-white mb-3">
+                                <li><span class="text-warning">✓</span> Predictive Models</li>
+                                <li><span class="text-warning">✓</span> Natural Language Processing</li>
+                                <li><span class="text-warning">✓</span> Computer Vision</li>
+                            </ul>
+                            <a href="contact.html" class="btn btn-outline-light btn-sm">Learn More</a>
+                        </div>
+                    </div>
+                    
+                    <div class="col-lg-6">
+                        <div class="service-item text-center h-100 p-4 rounded" style="background: rgba(255, 255, 255, 0.1); backdrop-filter: blur(10px); border: 1px solid rgba(255, 255, 255, 0.2);">
+                            <div class="service-icon text-center fs-1 mb-3 text-warning">🎯</div>
+                            <h3 class="text-white">Business Intelligence</h3>
+                            <p class="text-white mb-3">Make data-driven decisions with our comprehensive BI solutions and real-time dashboard implementations.</p>
+                            <ul class="list-unstyled text-white mb-3">
+                                <li><span class="text-warning">✓</span> Interactive Dashboards</li>
+                                <li><span class="text-warning">✓</span> Real-time Reporting</li>
+                                <li><span class="text-warning">✓</span> KPI Monitoring</li>
+                            </ul>
+                            <a href="contact.html" class="btn btn-outline-light btn-sm">Learn More</a>
+                        </div>
+                    </div>
+                    
+                    <div class="col-lg-6">
+                        <div class="service-item text-center h-100 p-4 rounded" style="background: rgba(255, 255, 255, 0.1); backdrop-filter: blur(10px); border: 1px solid rgba(255, 255, 255, 0.2);">
+                            <div class="service-icon text-center fs-1 mb-3 text-warning">⚙️</div>
+                            <h3 class="text-white">Data Engineering</h3>
+                            <p class="text-white mb-3">Build robust data pipelines and infrastructure to ensure reliable, scalable, and secure data processing.</p>
+                            <ul class="list-unstyled text-white mb-3">
+                                <li><span class="text-warning">✓</span> ETL Pipelines</li>
+                                <li><span class="text-warning">✓</span> Cloud Integration</li>
+                                <li><span class="text-warning">✓</span> Data Warehousing</li>
+                            </ul>
+                            <a href="contact.html" class="btn btn-outline-light btn-sm">Learn More</a>
+                        </div>
+                    </div>
                 </div>
             </div>
-        </div>
+        </section>
 
         <!-- Industry Solutions -->
-        <section class="industry-solutions">
+        <section class="credentials-section py-5">
             <div class="container">
-                <h2 class="section-title">Industry Solutions</h2>
-                <div class="industry-grid">
-                    <div class="industry-card">
-                        <div class="industry-icon">🏥</div>
-                        <h3>Healthcare</h3>
-                        <p>HIPAA-compliant analytics for patient outcomes, operational efficiency, and predictive health insights.</p>
-                        <div class="industry-features">
-                            <span class="feature-tag">EHR Integration</span>
-                            <span class="feature-tag">Predictive Analytics</span>
-                            <span class="feature-tag">Population Health</span>
+                <h2 class="section-title text-center mb-5">Industry Solutions</h2>
+                <div class="row g-4">
+                    <div class="col-md-6">
+                        <div class="credential-card card h-100 p-4 shadow-sm">
+                            <div class="credential-icon fs-1 text-center mb-3">🏥</div>
+                            <h3 class="text-center">Healthcare</h3>
+                            <p class="text-center">HIPAA-compliant analytics for patient outcomes, operational efficiency, and predictive health insights.</p>
+                            <div class="credential-details text-center">
+                                <span class="badge bg-primary me-2">EHR Integration</span>
+                                <span class="badge bg-secondary">HIPAA Compliant</span>
+                            </div>
                         </div>
                     </div>
-
-                    <div class="industry-card">
-                        <div class="industry-icon">🏦</div>
-                        <h3>Financial Services</h3>
-                        <p>Risk management, fraud detection, and algorithmic trading solutions for financial institutions.</p>
-                        <div class="industry-features">
-                            <span class="feature-tag">Risk Analytics</span>
-                            <span class="feature-tag">Fraud Detection</span>
-                            <span class="feature-tag">Compliance</span>
+                    
+                    <div class="col-md-6">
+                        <div class="credential-card card h-100 p-4 shadow-sm">
+                            <div class="credential-icon fs-1 text-center mb-3">🏦</div>
+                            <h3 class="text-center">Financial Services</h3>
+                            <p class="text-center">Risk management, fraud detection, and algorithmic trading solutions for financial institutions.</p>
+                            <div class="credential-details text-center">
+                                <span class="badge bg-success me-2">Risk Analytics</span>
+                                <span class="badge bg-info">Fraud Detection</span>
+                            </div>
                         </div>
                     </div>
-
-                    <div class="industry-card">
-                        <div class="industry-icon">🛒</div>
-                        <h3>Retail & E-commerce</h3>
-                        <p>Customer segmentation, demand forecasting, and personalized recommendation engines.</p>
-                        <div class="industry-features">
-                            <span class="feature-tag">Customer Analytics</span>
-                            <span class="feature-tag">Inventory Optimization</span>
-                            <span class="feature-tag">Personalization</span>
+                    
+                    <div class="col-md-6">
+                        <div class="credential-card card h-100 p-4 shadow-sm">
+                            <div class="credential-icon fs-1 text-center mb-3">🛒</div>
+                            <h3 class="text-center">Retail & E-commerce</h3>
+                            <p class="text-center">Customer segmentation, demand forecasting, and personalized recommendation engines.</p>
+                            <div class="credential-details text-center">
+                                <span class="badge bg-warning me-2">Personalization</span>
+                                <span class="badge bg-primary">Inventory Optimization</span>
+                            </div>
                         </div>
                     </div>
-
-                    <div class="industry-card">
-                        <div class="industry-icon">🏭</div>
-                        <h3>Manufacturing</h3>
-                        <p>Predictive maintenance, quality control, and supply chain optimization solutions.</p>
-                        <div class="industry-features">
-                            <span class="feature-tag">IoT Analytics</span>
-                            <span class="feature-tag">Quality Control</span>
-                            <span class="feature-tag">Supply Chain</span>
+                    
+                    <div class="col-md-6">
+                        <div class="credential-card card h-100 p-4 shadow-sm">
+                            <div class="credential-icon fs-1 text-center mb-3">🏭</div>
+                            <h3 class="text-center">Manufacturing</h3>
+                            <p class="text-center">Predictive maintenance, quality control, and supply chain optimization solutions.</p>
+                            <div class="credential-details text-center">
+                                <span class="badge bg-danger me-2">IoT Analytics</span>
+                                <span class="badge bg-success">Quality Control</span>
+                            </div>
                         </div>
                     </div>
                 </div>
             </div>
         </section>
 
-        <!-- Process Section -->
-        <section class="process-section">
+        <!-- Process Timeline -->
+        <section class="timeline-section py-5 bg-light">
             <div class="container">
-                <h2 class="section-title">Our Proven Process</h2>
-                <div class="process-timeline">
-                    <div class="process-step">
-                        <!-- <div class="step-number">1</div> -->
-                        <div class="step-content">
-                            <h3>Discovery & Assessment</h3>
-                            <p>We analyze your current data landscape, identify opportunities, and define project objectives.</p>
-                        </div>
-                    </div>
-
-                    <div class="process-step">
-                        <!-- <div class="step-number">2</div> -->
-                        <div class="step-content">
-                            <h3>Strategy & Planning</h3>
-                            <p>Develop a comprehensive roadmap with timelines, deliverables, and success metrics.</p>
-                        </div>
-                    </div>
-
-                    <div class="process-step">
-                        <!-- <div class="step-number">3</div> -->
-                        <div class="step-content">
-                            <h3>Development & Implementation</h3>
-                            <p>Build and deploy solutions using agile methodologies with regular progress updates.</p>
-                        </div>
-                    </div>
-
-                    <div class="process-step">
-                        <!-- <div class="step-number">4</div> -->
-                        <div class="step-content">
-                            <h3>Testing & Optimization</h3>
-                            <p>Rigorous testing, performance tuning, and optimization to ensure optimal results.</p>
-                        </div>
-                    </div>
-
-                    <div class="process-step">
-                        <!-- <div class="step-number">5</div> -->
-                        <div class="step-content">
-                            <h3>Deployment & Support</h3>
-                            <p>Smooth deployment with comprehensive training and ongoing support for your team.</p>
+                <h2 class="section-title text-center mb-5">Our Proven Process</h2>
+                <div class="row justify-content-center">
+                    <div class="col-lg-8">
+                        <div class="timeline">
+                            <div class="timeline-item d-flex mb-4">
+                                <div class="timeline-marker bg-primary text-white rounded-circle d-flex align-items-center justify-content-center me-3 fw-bold" style="width: 60px; height: 60px; min-width: 60px;">1</div>
+                                <div class="timeline-content">
+                                    <h3>Discovery & Assessment</h3>
+                                    <p>We analyze your current data landscape, identify opportunities, and define project objectives.</p>
+                                </div>
+                            </div>
+                            <div class="timeline-item d-flex mb-4">
+                                <div class="timeline-marker bg-success text-white rounded-circle d-flex align-items-center justify-content-center me-3 fw-bold" style="width: 60px; height: 60px; min-width: 60px;">2</div>
+                                <div class="timeline-content">
+                                    <h3>Strategy & Planning</h3>
+                                    <p>Develop a comprehensive roadmap with timelines, deliverables, and success metrics.</p>
+                                </div>
+                            </div>
+                            <div class="timeline-item d-flex mb-4">
+                                <div class="timeline-marker bg-info text-white rounded-circle d-flex align-items-center justify-content-center me-3 fw-bold" style="width: 60px; height: 60px; min-width: 60px;">3</div>
+                                <div class="timeline-content">
+                                    <h3>Development & Implementation</h3>
+                                    <p>Build and deploy solutions using agile methodologies with regular progress updates.</p>
+                                </div>
+                            </div>
+                            <div class="timeline-item d-flex mb-4">
+                                <div class="timeline-marker bg-warning text-dark rounded-circle d-flex align-items-center justify-content-center me-3 fw-bold" style="width: 60px; height: 60px; min-width: 60px;">4</div>
+                                <div class="timeline-content">
+                                    <h3>Testing & Optimization</h3>
+                                    <p>Rigorous testing, performance tuning, and optimization to ensure optimal results.</p>
+                                </div>
+                            </div>
+                            <div class="timeline-item d-flex">
+                                <div class="timeline-marker bg-danger text-white rounded-circle d-flex align-items-center justify-content-center me-3 fw-bold" style="width: 60px; height: 60px; min-width: 60px;">5</div>
+                                <div class="timeline-content">
+                                    <h3>Deployment & Support</h3>
+                                    <p>Smooth deployment with comprehensive training and ongoing support for your team.</p>
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>
             </div>
         </section>
 
-        <!-- Pricing Plans -->
-        <section class="pricing-section">
+        <!-- Pricing Plans (White text on dark background) -->
+        <section class="pricing-section py-5" style="background: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%); color: white;">
             <div class="container">
-                <h2 class="section-title">Flexible Pricing Options</h2>
-                <div class="pricing-grid">
-                    <div class="pricing-card">
-                        <h3>Starter Package</h3>
-                        <div class="pricing-amount">
-                            <span class="currency">$</span>
-                            <span class="amount">2,500</span>
-                            <span class="period">/month</span>
+                <h2 class="section-title text-center text-white mb-5">Flexible Pricing Options</h2>
+                <div class="row g-4">
+                    <div class="col-lg-4">
+                        <div class="pricing-card text-center h-100 p-4 rounded" style="background: rgba(255, 255, 255, 0.1); backdrop-filter: blur(10px); border: 1px solid rgba(255, 255, 255, 0.2);">
+                            <h3 class="text-white">Starter Package</h3>
+                            <div class="pricing-amount text-center mb-3">
+                                <span class="text-warning h2">$2,500</span>
+                                <span class="text-white">/month</span>
+                            </div>
+                            <ul class="list-unstyled text-white mb-4">
+                                <li><span class="text-warning">✓</span> Basic Analytics Dashboard</li>
+                                <li><span class="text-warning">✓</span> Monthly Reporting</li>
+                                <li><span class="text-warning">✓</span> Email Support</li>
+                                <li><span class="text-warning">✓</span> 1 Data Source</li>
+                                <li><span class="text-warning">✓</span> 5 Custom Reports</li>
+                            </ul>
+                            <a href="contact.html" class="btn btn-outline-light">Get Started</a>
                         </div>
-                        <ul class="pricing-features">
-                            <li>✓ Basic Analytics Dashboard</li>
-                            <li>✓ Monthly Reporting</li>
-                            <li>✓ Email Support</li>
-                            <li>✓ 1 Data Source</li>
-                            <li>✓ 5 Custom Reports</li>
-                        </ul>
-                        <a class="btn btn-primary" href="contact.html?subject=I%27m%20interested%20in%20the%20Starter%20Package">Get Started</a>
                     </div>
 
-                    <div class="pricing-card popular">
-                        <div class="popular-badge">Most Popular</div>
-                        <h3>Professional</h3>
-                        <div class="pricing-amount">
-                            <span class="currency">$</span>
-                            <span class="amount">7,500</span>
-                            <span class="period">/month</span>
+                    <div class="col-lg-4">
+                        <div class="pricing-card text-center h-100 p-4 rounded position-relative" style="background: rgba(255, 255, 255, 0.15); backdrop-filter: blur(10px); border: 2px solid #ffc107;">
+                            <div class="badge bg-warning text-dark position-absolute top-0 start-50 translate-middle px-3 py-2">Most Popular</div>
+                            <h3 class="text-white mt-3">Professional</h3>
+                            <div class="pricing-amount text-center mb-3">
+                                <span class="text-warning h2">$7,500</span>
+                                <span class="text-white">/month</span>
+                            </div>
+                            <ul class="list-unstyled text-white mb-4">
+                                <li><span class="text-warning">✓</span> Advanced Analytics Platform</li>
+                                <li><span class="text-warning">✓</span> Real-time Dashboards</li>
+                                <li><span class="text-warning">✓</span> Phone & Email Support</li>
+                                <li><span class="text-warning">✓</span> 5 Data Sources</li>
+                                <li><span class="text-warning">✓</span> Unlimited Reports</li>
+                                <li><span class="text-warning">✓</span> Machine Learning Models</li>
+                            </ul>
+                            <a href="contact.html" class="btn btn-warning">Get Started</a>
                         </div>
-                        <ul class="pricing-features">
-                            <li>✓ Advanced Analytics Platform</li>
-                            <li>✓ Real-time Dashboards</li>
-                            <li>✓ Phone & Email Support</li>
-                            <li>✓ 5 Data Sources</li>
-                            <li>✓ Unlimited Reports</li>
-                            <li>✓ Machine Learning Models</li>
-                        </ul>
-                        <a class="btn btn-primary" href="contact.html?subject=I%27m%20interested%20in%20the%20Professional%20Package">Get Started</a>
                     </div>
 
-                    <div class="pricing-card">
-                        <h3>Enterprise</h3>
-                        <div class="pricing-amount">
-                            <span class="currency">$</span>
-                            <span class="amount">15,000</span>
-                            <span class="period">/month</span>
+                    <div class="col-lg-4">
+                        <div class="pricing-card text-center h-100 p-4 rounded" style="background: rgba(255, 255, 255, 0.1); backdrop-filter: blur(10px); border: 1px solid rgba(255, 255, 255, 0.2);">
+                            <h3 class="text-white">Enterprise</h3>
+                            <div class="pricing-amount text-center mb-3">
+                                <span class="text-warning h2">$15,000</span>
+                                <span class="text-white">/month</span>
+                            </div>
+                            <ul class="list-unstyled text-white mb-4">
+                                <li><span class="text-warning">✓</span> Full AI/ML Platform</li>
+                                <li><span class="text-warning">✓</span> Custom Integrations</li>
+                                <li><span class="text-warning">✓</span> Dedicated Support Team</li>
+                                <li><span class="text-warning">✓</span> Unlimited Data Sources</li>
+                                <li><span class="text-warning">✓</span> White-label Solutions</li>
+                                <li><span class="text-warning">✓</span> 24/7 Monitoring</li>
+                            </ul>
+                            <a href="contact.html" class="btn btn-outline-light">Contact Sales</a>
                         </div>
-                        <ul class="pricing-features">
-                            <li>✓ Full AI/ML Platform</li>
-                            <li>✓ Custom Integrations</li>
-                            <li>✓ Dedicated Support Team</li>
-                            <li>✓ Unlimited Data Sources</li>
-                            <li>✓ White-label Solutions</li>
-                            <li>✓ 24/7 Monitoring</li>
-                        </ul>
-                        <a class="btn btn-primary" href="contact.html?subject=I%27m%20interested%20in%20the%20Enterprise%20Package">Contact Sales</a>
                     </div>
                 </div>
             </div>
         </section>
 
         <!-- Call to Action -->
-        <section class="cta-section">
+        <section class="cta-section py-5" style="background: linear-gradient(135deg, #2a5298 0%, #1e3c72 100%);">
             <div class="container">
-                <div class="cta-content">
-                    <h2>Ready to Unlock Your Data's Potential?</h2>
-                    <p>Let's discuss how our services can transform your business with data-driven insights.</p>
+                <div class="cta-content text-center">
+                    <h2 class="text-white mb-3">Ready to Unlock Your Data's Potential?</h2>
+                    <p class="text-light mb-4">Let's discuss how our services can transform your business with data-driven insights.</p>
                     <div class="cta-buttons">
-                        <a href="contact.html" class="btn btn-primary">Schedule Consultation</a>
-                        <a class="btn btn-secondary" href="contact.html?subject=Chat%20with%20an%20Expert%20about%20Services">Chat with Expert</a>
+                        <a href="contact.html" class="btn btn-warning btn-lg me-3 px-4 py-2">
+                            <i class="fas fa-rocket me-2"></i>Schedule Consultation
+                        </a>
+                        <a href="contact.html" class="btn btn-outline-light btn-lg px-4 py-2">
+                            <i class="fas fa-comments me-2"></i>Chat with Expert
+                        </a>
                     </div>
                 </div>
             </div>
@@ -281,36 +352,36 @@
     </main>
 
     <!-- Footer -->
-    <footer class="footer">
+    <footer class="footer bg-dark text-light py-5">
         <div class="container">
-            <div class="footer-content">
-                <div class="footer-section">
-                    <h3>KFSQUARE</h3>
+            <div class="row g-4">
+                <div class="col-lg-3">
+                    <h3 class="text-warning">KFSQUARE</h3>
                     <p>Transforming businesses through intelligent data solutions and advanced analytics.</p>
                     <div class="social-links">
-                        <a href="#" aria-label="LinkedIn">📧</a>
-                        <a href="#" aria-label="Twitter">📱</a>
-                        <a href="#" aria-label="GitHub">💻</a>
+                        <a href="mailto:customersupport@kfsquare.com" class="text-light me-2" aria-label="Email">📧</a>
+                        <a href="tel:+14109347470" class="text-light me-2" aria-label="Phone">📱</a>
+                        <a href="#" class="text-light" aria-label="LinkedIn">💻</a>
                     </div>
                 </div>
-                <div class="footer-section">
+                <div class="col-lg-3">
                     <h4>Services</h4>
-                    <ul>
-                        <li><a href="#data-analytics">Data Analytics</a></li>
-                        <li><a href="#machine-learning">Machine Learning</a></li>
-                        <li><a href="#ai-integration">AI Integration</a></li>
-                        <li><a href="#business-intelligence">Business Intelligence</a></li>
+                    <ul class="list-unstyled">
+                        <li><a href="services.html" class="text-light text-decoration-none">Data Analytics</a></li>
+                        <li><a href="services.html" class="text-light text-decoration-none">Machine Learning</a></li>
+                        <li><a href="services.html" class="text-light text-decoration-none">AI Integration</a></li>
+                        <li><a href="services.html" class="text-light text-decoration-none">Business Intelligence</a></li>
                     </ul>
                 </div>
-                <div class="footer-section">
+                <div class="col-lg-3">
                     <h4>Company</h4>
-                    <ul>
-                        <li><a href="about.html">About Us</a></li>
-                        <li><a href="portfolio.html">Portfolio</a></li>
-                        <li><a href="contact.html">Contact</a></li>
+                    <ul class="list-unstyled">
+                        <li><a href="about.html" class="text-light text-decoration-none">About Us</a></li>
+                        <li><a href="portfolio.html" class="text-light text-decoration-none">Portfolio</a></li>
+                        <li><a href="contact.html" class="text-light text-decoration-none">Contact</a></li>
                     </ul>
                 </div>
-                <div class="footer-section">
+                <div class="col-lg-3">
                     <h4>Contact Info</h4>
                     <div class="contact-info">
                         <p>📞 410-934-7470</p>
@@ -319,21 +390,14 @@
                     </div>
                 </div>
             </div>
-            <div class="footer-bottom">
-                <p>&copy; 2024 KFSQUARE. All rights reserved. | <a href="privacy.html">Privacy Policy</a> | <a href="terms.html">Terms of Service</a></p>
+            <div class="footer-bottom text-center mt-4 pt-4 border-top border-secondary">
+                <p class="mb-0">&copy; 2024 KFSQUARE. All rights reserved. | <a href="privacy.html" class="text-warning">Privacy Policy</a> | <a href="terms.html" class="text-warning">Terms of Service</a></p>
             </div>
         </div>
     </footer>
 
-    <!-- Replace inline script with external module -->
-    <noscript>
-      <style>
-        #services-grid .service-card { opacity: 1 !important; transform: none !important; }
-      </style>
-      <div class="container">
-        <p>Please enable JavaScript to view our Core Services.</p>
-      </div>
-    </noscript>
-    <script src="services.js" defer></script>
+    <!-- Bootstrap JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="index.js"></script>
 </body>
 </html>
