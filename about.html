@@ -6,50 +6,56 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <title>About Us - KFSQUARE | Data Analytics & AI Solutions</title>
     <meta name="description" content="Learn about KFSQUARE's mission, team, and commitment to transforming businesses through data analytics and AI solutions.">
+    
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link rel="stylesheet" href="styles.css">
     <link rel="icon" href="favicon.ico" type="image/x-icon">
 </head>
 <body>
     <!-- Navigation -->
-    <nav class="navbar">
-        <div class="nav-container">
-            <div class="nav-logo">
-                <a href="index.html">KFSQUARE</a>
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+        <div class="container">
+            <div class="navbar-brand fw-bold">
+                <a href="index.html" class="text-decoration-none">
+                    <span class="text-warning">KF</span><span class="text-white">SQUARE</span>
+                </a>
             </div>
-            <ul class="nav-menu" id="nav-menu">
-                <li class="nav-item">
-                    <a href="index.html" class="nav-link">Home</a>
-                </li>
-                <li class="nav-item">
-                    <a href="about.html" class="nav-link active">About</a>
-                </li>
-                <li class="nav-item">
-                    <a href="services.html" class="nav-link">Services</a>
-                </li>
-                <li class="nav-item">
-                    <a href="portfolio.html" class="nav-link">Portfolio</a>
-                </li>
-                <li class="nav-item">
-                    <a href="contact.html" class="nav-link">Contact</a>
-                </li>
-            </ul>
-            <div class="hamburger" id="hamburger">
-                <span class="bar"></span>
-                <span class="bar"></span>
-                <span class="bar"></span>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ms-auto">
+                    <li class="nav-item">
+                        <a href="index.html" class="nav-link">Home</a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="about.html" class="nav-link active">About</a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="services.html" class="nav-link">Services</a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="portfolio.html" class="nav-link">Portfolio</a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="contact.html" class="nav-link">Contact</a>
+                    </li>
+                </ul>
             </div>
         </div>
     </nav>
 
     <!-- Page Header -->
-    <section class="page-header">
+    <section class="page-header py-5 text-center" style="background: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%); color: white;">
         <div class="container">
-            <h1>About KFSQUARE</h1>
-            <p>Transforming businesses through intelligent data solutions</p>
+            <h1 class="display-4 fw-bold">About KFSQUARE</h1>
+            <p class="lead">Transforming businesses through intelligent data solutions</p>
             <nav aria-label="breadcrumb">
-                <ol class="breadcrumb">
-                    <li><a href="index.html">Home</a></li>
-                    <li class="active">About</li>
+                <ol class="breadcrumb justify-content-center bg-transparent">
+                    <li class="breadcrumb-item"><a href="index.html" class="text-warning">Home</a></li>
+                    <li class="breadcrumb-item active text-light" aria-current="page">About</li>
                 </ol>
             </nav>
         </div>
@@ -57,103 +63,147 @@
 
     <!-- About Content -->
     <main class="main-content">
-        <!-- Company Overview -->
-        <section class="about-overview">
+        <!-- Company Overview (Centered) -->
+        <section class="about-overview py-5 bg-light">
             <div class="container">
-                <div class="about-grid">
-                    <div class="about-text">
-                        <h2>Our Story</h2>
-                        <p>Since our inception, we've helped over 500+ companies transform their decision-making processes with data-driven insights. Our team of expert data scientists, engineers, and consultants work collaboratively to deliver solutions that not only meet current needs but anticipate future challenges.</p>
-                     <div class="mvv-item">
-                        <div class="mvv-icon">⭐</div>
-                        <h3>Our Values</h3>
-                        <ul>
-                            <li>Innovation through data</li>
-                            <li>Client-first approach</li>
-                            <li>Ethical AI practices</li>
-                            <li>Continuous learning</li>
-                        </ul>
-                    </div>
-                        <div class="stats-grid">
-                            <div class="stat-item">
-                                <h3>500+</h3>
-                                <p>Clients Served</p>
+                <div class="row justify-content-center">
+                    <div class="col-lg-10">
+                        <div class="about-text text-center bg-white p-4 rounded shadow">
+                            <h2 class="section-title mb-4">Our Story</h2>
+                            <p class="lead">Since our inception, we've helped over 500+ companies transform their decision-making processes with data-driven insights. Our team of expert data scientists, engineers, and consultants work collaboratively to deliver solutions that not only meet current needs but anticipate future challenges.</p>
+                            
+                            <!-- Values in Our Story -->
+                            <div class="mvv-item bg-light p-3 rounded my-4">
+                                <div class="mvv-icon text-center fs-1 mb-3">⭐</div>
+                                <h3>Our Values</h3>
+                                <ul class="list-unstyled">
+                                    <li>✓ Innovation through data</li>
+                                    <li>✓ Client-first approach</li>
+                                    <li>✓ Ethical AI practices</li>
+                                    <li>✓ Continuous learning</li>
+                                </ul>
                             </div>
-                            <div class="stat-item">
-                                <h3>1000+</h3>
-                                <p>Projects Completed</p>
+                            
+                            <!-- Stats Grid -->
+                            <div class="row g-3 mt-4">
+                                <div class="col-md-4">
+                                    <div class="stat-item bg-white p-3 rounded shadow-sm text-center">
+                                        <h3 class="fw-bold text-primary">500+</h3>
+                                        <p class="mb-0 text-muted">Clients Served</p>
+                                    </div>
+                                </div>
+                                <div class="col-md-4">
+                                    <div class="stat-item bg-white p-3 rounded shadow-sm text-center">
+                                        <h3 class="fw-bold text-primary">1000+</h3>
+                                        <p class="mb-0 text-muted">Projects Completed</p>
+                                    </div>
+                                </div>
+                                <div class="col-md-4">
+                                    <div class="stat-item bg-white p-3 rounded shadow-sm text-center">
+                                        <h3 class="fw-bold text-primary">5+</h3>
+                                        <p class="mb-0 text-muted">Years Experience</p>
+                                    </div>
+                                </div>
                             </div>
-                            <div class="stat-item">
-                                <h3>5+</h3>
-                                <p>Years Experience</p>
+
+                            <!-- Company Overview Image -->
+                            <div class="image-placeholder mt-4 p-4 bg-light rounded border-2 border-dashed">
+                                <div class="placeholder-content text-center">
+                                    <i class="icon fs-1">🏢</i>
+                                    <h5 class="mt-2">Company Overview</h5>
+                                    <p class="text-muted mb-0">Small Business & Veteran Owned • Security Cleared • Cloud Certified</p>
+                                </div>
                             </div>
                         </div>
                     </div>
-                    <div class="about-image">
-                        <div class="image-placeholder">
-                            <div class="placeholder-content">
-                                <i class="icon">🏢</i>
-                                <p>Company Overview</p>
-                               <!-- Mission, Vision, Values -->
-        <section class="mvv-section">
+                </div>
+            </div>
+        </section>
+
+        <!-- Mission, Vision, Values (White text on dark background) -->
+        <section class="mvv-section py-5" style="background: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%); color: white;">
             <div class="container">
-                <div class="mvv-grid">
-                    <div class="mvv-item">
-                        <div class="mvv-icon">🎯</div>
-                        <h3>Our Mission</h3>
-                        <p>To empower organizations with intelligent data solutions that drive innovation, efficiency, and sustainable growth in an increasingly complex digital landscape.</p>
+                <h2 class="section-title text-center text-white mb-5">Mission, Vision & Values</h2>
+                <div class="row g-4">
+                    <div class="col-md-4">
+                        <div class="mvv-item text-center h-100 p-4 rounded" style="background: rgba(255, 255, 255, 0.1); backdrop-filter: blur(10px); border: 1px solid rgba(255, 255, 255, 0.2);">
+                            <div class="mvv-icon text-center fs-1 mb-3 text-warning">🎯</div>
+                            <h3 class="text-white">Our Mission</h3>
+                            <p class="text-white">To empower organizations with intelligent data solutions that drive innovation, efficiency, and sustainable growth in an increasingly complex digital landscape.</p>
+                        </div>
                     </div>
-                    <div class="mvv-item">
-                        <div class="mvv-icon">👁️</div>
-                        <h3>Our Vision</h3>
-                        <p>To be the global leader in democratizing advanced analytics, making sophisticated data science accessible to businesses of all sizes across all industries.</p>
+                    <div class="col-md-4">
+                        <div class="mvv-item text-center h-100 p-4 rounded" style="background: rgba(255, 255, 255, 0.1); backdrop-filter: blur(10px); border: 1px solid rgba(255, 255, 255, 0.2);">
+                            <div class="mvv-icon text-center fs-1 mb-3 text-warning">👁️</div>
+                            <h3 class="text-white">Our Vision</h3>
+                            <p class="text-white">To be the global leader in democratizing advanced analytics, making sophisticated data science accessible to businesses of all sizes across all industries.</p>
+                        </div>
                     </div>
-                    
+                    <div class="col-md-4">
+                        <div class="mvv-item text-center h-100 p-4 rounded" style="background: rgba(255, 255, 255, 0.1); backdrop-filter: blur(10px); border: 1px solid rgba(255, 255, 255, 0.2);">
+                            <div class="mvv-icon text-center fs-1 mb-3 text-warning">⭐</div>
+                            <h3 class="text-white">Our Values</h3>
+                            <ul class="list-unstyled text-white">
+                                <li><span class="text-warning">✓</span> Innovation through data</li>
+                                <li><span class="text-warning">✓</span> Client-first approach</li>
+                                <li><span class="text-warning">✓</span> Ethical AI practices</li>
+                                <li><span class="text-warning">✓</span> Continuous learning</li>
+                            </ul>
+                        </div>
+                    </div>
                 </div>
             </div>
         </section>
 
         <!-- Business Credentials -->
-        <section class="credentials-section">
+        <section class="credentials-section py-5">
             <div class="container">
-                <h2 class="section-title">Business Credentials & Certifications</h2>
-                <div class="credentials-grid">
-                    <div class="credential-card highlight-card">
-                        <div class="credential-icon">🏢</div>
-                        <h3>Small Business Certified</h3>
-                        <p>Officially certified as a Small Business Enterprise (SBE), enabling us to provide specialized services and competitive pricing for government and enterprise contracts.</p>
-                        <div class="credential-details">
-                            <span class="badge">SBE Certified</span>
-                            <span class="badge">NAICS: 541511</span>
+                <h2 class="section-title text-center mb-5">Business Credentials & Certifications</h2>
+                <div class="row g-4">
+                    <div class="col-md-6">
+                        <div class="credential-card card h-100 p-4 shadow-sm">
+                            <div class="credential-icon fs-1 text-center mb-3">🏢</div>
+                            <h3 class="text-center">Small Business Certified</h3>
+                            <p class="text-center">Officially certified as a Small Business Enterprise (SBE), enabling us to provide specialized services and competitive pricing for government and enterprise contracts.</p>
+                            <div class="credential-details text-center">
+                                <span class="badge bg-primary me-2">SBE Certified</span>
+                                <span class="badge bg-secondary">NAICS: 541511</span>
+                            </div>
                         </div>
                     </div>
                     
-                    <div class="credential-card highlight-card">
-                        <div class="credential-icon">🎖️</div>
-                        <h3>Disabled Veteran Owned</h3>
-                        <p>Proudly owned and operated by disabled veterans, bringing military precision, dedication, and service excellence to every data analytics project.</p>
-                        <div class="credential-details">
-                            <span class="badge">DVBE Certified</span>
-                            <span class="badge">VOSB Verified</span>
+                    <div class="col-md-6">
+                        <div class="credential-card card h-100 p-4 shadow-sm">
+                            <div class="credential-icon fs-1 text-center mb-3">🎖️</div>
+                            <h3 class="text-center">Disabled Veteran Owned</h3>
+                            <p class="text-center">Proudly owned and operated by disabled veterans, bringing military precision, dedication, and service excellence to every data analytics project.</p>
+                            <div class="credential-details text-center">
+                                <span class="badge bg-success me-2">DVBE Certified</span>
+                                <span class="badge bg-info">VOSB Verified</span>
+                            </div>
                         </div>
                     </div>
                     
-                    <div class="credential-card">
-                        <div class="credential-icon">🔒</div>
-                        <h3>Security Clearance</h3>
-                        <p>Team members with active security clearances for government and defense sector projects requiring enhanced data protection protocols.</p>
-                        <div class="credential-details">
-                            <span class="badge">Security Cleared</span>
+                    <div class="col-md-6">
+                        <div class="credential-card card h-100 p-4 shadow-sm">
+                            <div class="credential-icon fs-1 text-center mb-3">🔒</div>
+                            <h3 class="text-center">Security Clearance</h3>
+                            <p class="text-center">Team members with active security clearances for government and defense sector projects requiring enhanced data protection protocols.</p>
+                            <div class="credential-details text-center">
+                                <span class="badge bg-warning">Security Cleared</span>
+                            </div>
                         </div>
                     </div>
                     
-                    <div class="credential-card">
-                        <div class="credential-icon">🎓</div>
-                        <h3>Industry Certifications</h3>
-                        <p>AWS, Azure, Google Cloud certified professionals with advanced certifications in data science, machine learning, and cloud architecture.</p>
-                        <div class="credential-details">
-                            <span class="badge">Cloud Certified</span>
-                            <span class="badge">ML Specialists</span>
+                    <div class="col-md-6">
+                        <div class="credential-card card h-100 p-4 shadow-sm">
+                            <div class="credential-icon fs-1 text-center mb-3">🎓</div>
+                            <h3 class="text-center">Industry Certifications</h3>
+                            <p class="text-center">AWS, Azure, Google Cloud certified professionals with advanced certifications in data science, machine learning, and cloud architecture.</p>
+                            <div class="credential-details text-center">
+                                <span class="badge bg-primary me-2">Cloud Certified</span>
+                                <span class="badge bg-success">ML Specialists</span>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -161,70 +211,53 @@
         </section>
 
         <!-- Company Timeline -->
-        <section class="timeline-section">
+        <section class="timeline-section py-5 bg-light">
             <div class="container">
-                <h2 class="section-title">Our Journey</h2>
-                <div class="timeline">
-                    <div class="timeline-item">
-                        <div class="timeline-marker">2019</div>
-                        <div class="timeline-content">
-                            <h3>Company Founded</h3>
-                            <p>KFSQUARE established with a mission to democratize advanced analytics for businesses of all sizes.</p>
-                        </div>
-                    </div>
-                    <div class="timeline-item">
-                        <div class="timeline-marker">2020</div>
-                        <div class="timeline-content">
-                            <h3>First 100 Clients</h3>
-                            <p>Reached our first major milestone by serving 100+ clients across various industries during the global digital transformation.</p>
-                        </div>
-                    </div>
-                    <div class="timeline-item">
-                        <div class="timeline-marker">2021</div>
-                        <div class="timeline-content">
-                            <h3>AI Platform Launch</h3>
-                            <p>Launched our proprietary AI platform, enabling real-time analytics and predictive modeling for enterprise clients.</p>
-                        </div>
-                    </div>
-                    <div class="timeline-item">
-                        <div class="timeline-marker">2022</div>
-                        <div class="timeline-content">
-                            <h3>Government Contracts</h3>
-                            <p>Secured major government contracts leveraging our veteran-owned status and security clearance capabilities.</p>
-                        </div>
-                    </div>
-                    <div class="timeline-item">
-                        <div class="timeline-marker">2023</div>
-                        <div class="timeline-content">
-                            <h3>International Expansion</h3>
-                            <p>Expanded services internationally, serving clients across North America, Europe, and Asia-Pacific regions.</p>
-                        </div>
-                    </div>
-                    <div class="timeline-item">
-                        <div class="timeline-marker">2024</div>
-                        <div class="timeline-content">
-                            <h3>Advanced LLM Integration</h3>
-                            <p>Pioneered enterprise LLM integration services, helping businesses leverage generative AI for competitive advantage.</p>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </section>
-
-        <!-- Call to Action -->
-        <section class="cta-section">
-            <div class="container">
-                <div class="cta-content">
-                    <h2>Ready to Transform Your Business?</h2>
-                    <p>Join 500+ companies that trust KFSQUARE for their data analytics and AI solutions.</p>
-                    <div class="cta-buttons">
-                        <a href="contact.html" class="btn btn-primary">Get Started Today</a>
-                        <a href="services.html" class="btn btn-secondary">Explore Services</a>
-                    </div>
-                </div>
-            </div>
-        </section> 
-
+                <h2 class="section-title text-center mb-5">Our Journey</h2>
+                <div class="row justify-content-center">
+                    <div class="col-lg-8">
+                        <div class="timeline">
+                            <div class="timeline-item d-flex mb-4">
+                                <div class="timeline-marker bg-primary text-white rounded-circle d-flex align-items-center justify-content-center me-3 fw-bold" style="width: 60px; height: 60px; min-width: 60px;">2019</div>
+                                <div class="timeline-content">
+                                    <h3>Company Founded</h3>
+                                    <p>KFSQUARE established with a mission to democratize advanced analytics for businesses of all sizes.</p>
+                                </div>
+                            </div>
+                            <div class="timeline-item d-flex mb-4">
+                                <div class="timeline-marker bg-success text-white rounded-circle d-flex align-items-center justify-content-center me-3 fw-bold" style="width: 60px; height: 60px; min-width: 60px;">2020</div>
+                                <div class="timeline-content">
+                                    <h3>First 100 Clients</h3>
+                                    <p>Reached our first major milestone by serving 100+ clients across various industries during the global digital transformation.</p>
+                                </div>
+                            </div>
+                            <div class="timeline-item d-flex mb-4">
+                                <div class="timeline-marker bg-info text-white rounded-circle d-flex align-items-center justify-content-center me-3 fw-bold" style="width: 60px; height: 60px; min-width: 60px;">2021</div>
+                                <div class="timeline-content">
+                                    <h3>AI Platform Launch</h3>
+                                    <p>Launched our proprietary AI platform, enabling real-time analytics and predictive modeling for enterprise clients.</p>
+                                </div>
+                            </div>
+                            <div class="timeline-item d-flex mb-4">
+                                <div class="timeline-marker bg-warning text-dark rounded-circle d-flex align-items-center justify-content-center me-3 fw-bold" style="width: 60px; height: 60px; min-width: 60px;">2022</div>
+                                <div class="timeline-content">
+                                    <h3>Government Contracts</h3>
+                                    <p>Secured major government contracts leveraging our veteran-owned status and security clearance capabilities.</p>
+                                </div>
+                            </div>
+                            <div class="timeline-item d-flex mb-4">
+                                <div class="timeline-marker bg-danger text-white rounded-circle d-flex align-items-center justify-content-center me-3 fw-bold" style="width: 60px; height: 60px; min-width: 60px;">2023</div>
+                                <div class="timeline-content">
+                                    <h3>International Expansion</h3>
+                                    <p>Expanded services internationally, serving clients across North America, Europe, and Asia-Pacific regions.</p>
+                                </div>
+                            </div>
+                            <div class="timeline-item d-flex">
+                                <div class="timeline-marker bg-dark text-white rounded-circle d-flex align-items-center justify-content-center me-3 fw-bold" style="width: 60px; height: 60px; min-width: 60px;">2024</div>
+                                <div class="timeline-content">
+                                    <h3>Advanced LLM Integration</h3>
+                                    <p>Pioneered enterprise LLM integration services, helping businesses leverage generative AI for competitive advantage.</p>
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -232,40 +265,56 @@
             </div>
         </section>
 
-        
+        <!-- Call to Action -->
+        <section class="cta-section py-5" style="background: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%);">
+            <div class="container">
+                <div class="cta-content text-center">
+                    <h2 class="text-white mb-3">Ready to Transform Your Business?</h2>
+                    <p class="text-light mb-4">Join 500+ companies that trust KFSQUARE for their data analytics and AI solutions.</p>
+                    <div class="cta-buttons">
+                        <a href="contact.html" class="btn btn-warning btn-lg me-3 px-4 py-2">
+                            <i class="fas fa-rocket me-2"></i>Get Started Today
+                        </a>
+                        <a href="services.html" class="btn btn-outline-light btn-lg px-4 py-2">
+                            <i class="fas fa-arrow-right me-2"></i>Explore Services
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </section>
     </main>
 
     <!-- Footer -->
-    <footer class="footer">
+    <footer class="footer bg-dark text-light py-5">
         <div class="container">
-            <div class="footer-content">
-                <div class="footer-section">
-                    <h3>KFSQUARE</h3>
+            <div class="row g-4">
+                <div class="col-lg-3">
+                    <h3 class="text-warning">KFSQUARE</h3>
                     <p>Transforming businesses through intelligent data solutions and advanced analytics.</p>
                     <div class="social-links">
-                        <a href="#" aria-label="LinkedIn">📧</a>
-                        <a href="#" aria-label="Twitter">📱</a>
-                        <a href="#" aria-label="GitHub">💻</a>
+                        <a href="mailto:customersupport@kfsquare.com" class="text-light me-2" aria-label="Email">📧</a>
+                        <a href="tel:+14109347470" class="text-light me-2" aria-label="Phone">📱</a>
+                        <a href="#" class="text-light" aria-label="LinkedIn">💻</a>
                     </div>
                 </div>
-                <div class="footer-section">
+                <div class="col-lg-3">
                     <h4>Services</h4>
-                    <ul>
-                        <li><a href="services.html">Data Analytics</a></li>
-                        <li><a href="services.html">Machine Learning</a></li>
-                        <li><a href="services.html">AI Integration</a></li>
-                        <li><a href="services.html">Business Intelligence</a></li>
+                    <ul class="list-unstyled">
+                        <li><a href="services.html" class="text-light text-decoration-none">Data Analytics</a></li>
+                        <li><a href="services.html" class="text-light text-decoration-none">Machine Learning</a></li>
+                        <li><a href="services.html" class="text-light text-decoration-none">AI Integration</a></li>
+                        <li><a href="services.html" class="text-light text-decoration-none">Business Intelligence</a></li>
                     </ul>
                 </div>
-                <div class="footer-section">
+                <div class="col-lg-3">
                     <h4>Company</h4>
-                    <ul>
-                        <li><a href="about.html">About Us</a></li>
-                        <li><a href="portfolio.html">Portfolio</a></li>
-                        <li><a href="contact.html">Contact</a></li>
+                    <ul class="list-unstyled">
+                        <li><a href="about.html" class="text-light text-decoration-none">About Us</a></li>
+                        <li><a href="portfolio.html" class="text-light text-decoration-none">Portfolio</a></li>
+                        <li><a href="contact.html" class="text-light text-decoration-none">Contact</a></li>
                     </ul>
                 </div>
-                <div class="footer-section">
+                <div class="col-lg-3">
                     <h4>Contact Info</h4>
                     <div class="contact-info">
                         <p>📞 410-934-7470</p>
@@ -274,12 +323,14 @@
                     </div>
                 </div>
             </div>
-            <div class="footer-bottom">
-                <p>&copy; 2024 KFSQUARE. All rights reserved. | <a href="privacy.html">Privacy Policy</a> | <a href="terms.html">Terms of Service</a></p>
+            <div class="footer-bottom text-center mt-4 pt-4 border-top border-secondary">
+                <p class="mb-0">&copy; 2024 KFSQUARE. All rights reserved. | <a href="privacy.html" class="text-warning">Privacy Policy</a> | <a href="terms.html" class="text-warning">Terms of Service</a></p>
             </div>
         </div>
     </footer>
 
+    <!-- Bootstrap JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
     <script src="index.js"></script>
 </body>
 </html>
