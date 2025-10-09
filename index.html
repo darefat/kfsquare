@@ -1,1140 +1,377 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <meta http-equiv="X-UA-Compatible" content="IE=edge">
-  <meta name="format-detection" content="telephone=no">
-  <meta name="mobile-web-app-capable" content="yes">
-  <meta name="apple-mobile-web-app-capable" content="yes">
-  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-  <meta name="theme-color" content="#00d4ff">
-  <meta name="msapplication-TileColor" content="#00d4ff">
-  <meta name="msapplication-navbutton-color" content="#00d4ff">
-  
-  <!-- SEO Meta Tags -->
-  <meta name="description" content="KFSQUARE - Leading data analytics and predictive modeling company leveraging cutting-edge AI and machine learning to deliver transformative business insights.">
-  <meta name="keywords" content="data analytics, predictive modeling, machine learning, AI, business intelligence, data science, KFSQUARE, data engineering">
-  <meta name="author" content="KFSQUARE">
-  <meta name="robots" content="index, follow">
-  <link rel="canonical" href="https://kfsquare.com">
-  
-  <!-- Open Graph Meta Tags (Facebook, LinkedIn) -->
-  <meta property="og:type" content="website">
-  <meta property="og:title" content="KFSQUARE - Data Analytics & Predictive Modeling">
-  <meta property="og:description" content="Leading data analytics company leveraging cutting-edge AI and machine learning to deliver transformative business insights and predictive analysis.">
-  <meta property="og:url" content="https://kfsquare.com">
-  <meta property="og:site_name" content="KFSQUARE">
-  <meta property="og:image" content="https://kfsquare.com/og-image.jpg">
-  <meta property="og:image:width" content="1200">
-  <meta property="og:image:height" content="630">
-  <meta property="og:locale" content="en_US">
-  
-  <!-- Twitter Card Meta Tags -->
-  <meta name="twitter:card" content="summary_large_image">
-  <meta name="twitter:title" content="KFSQUARE - Data Analytics & Predictive Modeling">
-  <meta name="twitter:description" content="Leading data analytics company leveraging cutting-edge AI and machine learning to deliver transformative business insights.">
-  <meta name="twitter:image" content="https://kfsquare.com/og-image.jpg">
-  <meta name="twitter:creator" content="@kfsquare">
-  <meta name="twitter:site" content="@kfsquare">
-  
-  <!-- Structured Data for Rich Snippets -->
-  <script type="application/ld+json">
-  {
-    "@context": "https://schema.org",
-    "@type": "Organization",
-    "name": "KFSQUARE",
-    "url": "https://kfsquare.com",
-    "logo": "https://kfsquare.com/logo.png",
-    "description": "Data analytics and predictive modeling company leveraging cutting-edge AI and machine learning",
-    "foundingDate": "2020",
-    "contactPoint": {
-      "@type": "ContactPoint",
-      "telephone": "+1-555-0123",
-      "contactType": "customer service",
-      "email": "contact@kfsquare.com"
-    },
-    "address": {
-      "@type": "PostalAddress",
-      "addressCountry": "US"
-    },
-    "sameAs": [
-      "https://linkedin.com/company/kfsquare",
-      "https://twitter.com/kfsquare"
-    ],
-    "service": [
-      {
-        "@type": "Service",
-        "name": "Data Analytics",
-        "description": "Comprehensive data analysis and insights"
-      },
-      {
-        "@type": "Service", 
-        "name": "Predictive Modeling",
-        "description": "Advanced machine learning models for business forecasting"
-      },
-      {
-        "@type": "Service",
-        "name": "Business Intelligence",
-        "description": "Strategic data-driven decision making solutions"
-      }
-    ]
-  }
-  </script>
-  
-  <title>KFSQUARE - Data Analytics & Predictive Modeling | AI-Powered Business Insights</title>
-  <link rel="preconnect" href="https://fonts.googleapis.com" crossorigin="anonymous">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="anonymous">
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css">
-  <link rel="stylesheet" href="styles.css" />
-  <script src="js/chat-enhanced.js" defer></script>
-  <script src="index.js" defer></script>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>KFSQUARE - Data Analytics & AI Solutions | Transform Your Business</title>
+    <meta name="description" content="KFSQUARE - Leading data analytics and AI company. Transform your business with cutting-edge machine learning, predictive modeling, and intelligent data solutions.">
+    
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="styles.css">
+    <link rel="icon" href="favicon.ico" type="image/x-icon">
 </head>
 <body>
-  <div class="scroll-indicator"></div>
-  <!-- Navigation -->
-  <nav class="navbar navbar-expand-lg navbar-dark bg-dark fixed-top">
-    <div class="container">
-      <a class="navbar-brand fw-bold fs-3" href="index.html">
-        <span class="text-primary">KF</span>SQUARE
-      </a>
-      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#mainNavbar" aria-controls="mainNavbar" aria-expanded="false" aria-label="Toggle navigation">
-        <span class="navbar-toggler-icon"></span>
-      </button>
-      <div class="collapse navbar-collapse" id="mainNavbar">
-        <div class="row ms-auto gx-4 align-items-center">
-          <div class="col-auto"><a href="index.html" class="nav-link text-light active">Home</a></div>
-          <div class="col-auto"><a href="about.html" class="nav-link text-light">About</a></div>
-          <div class="col-auto"><a href="services.html" class="nav-link text-light">Services</a></div>
-          <div class="col-auto"><a href="portfolio.html" class="nav-link text-light">Portfolio</a></div>
-          <div class="col-auto"><a href="contact.html" class="nav-link text-light">Contact</a></div>
+    <!-- Navigation -->
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+        <div class="container">
+            <div class="navbar-brand fw-bold">
+                <a href="index.html" class="text-decoration-none">
+                    <span class="text-warning">KF</span><span class="text-white">SQUARE</span>
+                </a>
+            </div>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ms-auto">
+                    <li class="nav-item">
+                        <a href="index.html" class="nav-link active">Home</a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="about.html" class="nav-link">About</a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="services.html" class="nav-link">Services</a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="portfolio.html" class="nav-link">Portfolio</a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="contact.html" class="nav-link">Contact</a>
+                    </li>
+                </ul>
+            </div>
         </div>
-      </div>
-    </div>
-  </nav>
+    </nav>
 
-  <!-- Hero Section -->
-  <header class="hero-section position-relative min-vh-100 d-flex align-items-center" style="background: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%); padding-top: 100px;">
-    <div class="position-absolute top-0 start-0 w-100 h-100" style="background: url('data:image/svg+xml,<svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 100 100\"><defs><pattern id=\"grain\" width=\"100\" height=\"100\" patternUnits=\"userSpaceOnUse\"><circle cx=\"50\" cy=\"50\" r=\"2\" fill=\"%23ffffff\" opacity=\"0.05\"/></pattern></defs><rect width=\"100%\" height=\"100%\" fill=\"url(%23grain)\"/></svg></div>
-    <div class="container position-relative">
-      <div class="row align-items-center">
-        <div class="col-lg-6 text-white">
-          <div class="hero-content animate__animated animate__fadeInUp">
-            <h1 class="display-1 fw-bold mb-4 hero-title">
-              <span class="text-warning me-2">KF</span><span class="hero-title-word d-block d-sm-inline">SQUARE</span>
+    <!-- Hero Header -->
+    <section class="page-header py-5 text-center" style="background: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%); color: white;">
+        <div class="container">
+            <h1 class="display-4 fw-bold mb-3">
+                <span class="text-warning">KF</span>SQUARE
             </h1>
-            <h2 class="display-5 mb-4">Data Analytics & Predictive Modeling Excellence</h2>
-            <p class="lead mb-5 fs-4">
-              A leading data engineering and analytics company leveraging cutting-edge Large Language Models (LLM) 
-              to deliver predictive analysis and transformative insights that drive business success.
-            </p>
+            <h2 class="display-6 mb-3">Data Analytics & AI Solutions</h2>
+            <p class="lead mb-4">Transforming businesses through intelligent data solutions and cutting-edge AI technology</p>
             
             <!-- Hero Stats -->
-            <div class="row text-center mb-5">
-              <div class="col-4">
-                <div class="p-3">
-                  <div class="h2 text-warning mb-1 fw-bold">500+</div>
-                  <small class="text-light opacity-75">Projects Delivered</small>
+            <div class="row g-3 justify-content-center mb-4">
+                <div class="col-4 col-md-2">
+                    <div class="p-2">
+                        <div class="h4 text-warning mb-1 fw-bold">500+</div>
+                        <small class="text-light">Projects</small>
+                    </div>
                 </div>
-              </div>
-              <div class="col-4">
-                <div class="p-3">
-                  <div class="h2 text-warning mb-1 fw-bold">98%</div>
-                  <small class="text-light opacity-75">Client Satisfaction</small>
+                <div class="col-4 col-md-2">
+                    <div class="p-2">
+                        <div class="h4 text-warning mb-1 fw-bold">98%</div>
+                        <small class="text-light">Satisfaction</small>
+                    </div>
                 </div>
-              </div>
-              <div class="col-4">
-                <div class="p-3">
-                  <div class="h2 text-warning mb-1 fw-bold">24/7</div>
-                  <small class="text-light opacity-75">Support Available</small>
+                <div class="col-4 col-md-2">
+                    <div class="p-2">
+                        <div class="h4 text-warning mb-1 fw-bold">24/7</div>
+                        <small class="text-light">Support</small>
+                    </div>
                 </div>
-              </div>
             </div>
             
             <!-- CTA Buttons -->
-            <div class="d-flex flex-wrap gap-3 mb-5">
-              <a href="#contact" class="btn btn-warning btn-lg px-5 py-3 fw-semibold">Get Started Today</a>
-              <a href="#services" class="btn btn-outline-light btn-lg px-5 py-3">Explore Services</a>
+            <div class="d-flex justify-content-center gap-3 mb-4">
+                <a href="#contact" class="btn btn-warning btn-lg px-4 py-2">
+                    <i class="fas fa-rocket me-2"></i>Get Started Today
+                </a>
+                <a href="#services" class="btn btn-outline-light btn-lg px-4 py-2">
+                    <i class="fas fa-arrow-right me-2"></i>Explore Services
+                </a>
             </div>
             
             <!-- Trust Indicators -->
-            <div class="d-flex flex-wrap align-items-center gap-4 text-light opacity-75">
-              <span><i class="fas fa-shield-alt me-2 text-warning"></i>SOC 2 Certified</span>
-              <span><i class="fas fa-medal me-2 text-warning"></i>Veteran Owned</span>
-              <span><i class="fas fa-building me-2 text-warning"></i>Small Business</span>
+            <div class="d-flex justify-content-center gap-4 text-light opacity-75 flex-wrap">
+                <span><i class="fas fa-shield-alt me-2 text-warning"></i>SOC 2 Certified</span>
+                <span><i class="fas fa-medal me-2 text-warning"></i>Veteran Owned</span>
+                <span><i class="fas fa-building me-2 text-warning"></i>Small Business</span>
             </div>
-          </div>
         </div>
-        <div class="col-lg-6">
-          <div class="hero-visual text-center position-relative animate__animated animate__fadeInRight animate__delay-1s">
-            <div class="position-relative d-inline-block">
-              <!-- Main Chart Icon -->
-              <div class="bg-warning bg-opacity-20 rounded-circle d-flex align-items-center justify-content-center mx-auto" 
-                   style="width: 350px; height: 350px;">
-                <i class="fas fa-chart-line text-warning" style="font-size: 6rem;"></i>
-              </div>
-              
-              <!-- Floating Elements with Animation -->
-              <div class="position-absolute animate__animated animate__pulse animate__infinite animate__slow" 
-                   style="top: 10%; left: -5%; transform: translateX(-50%);">
-                <div class="bg-info rounded-3 p-3 shadow-lg">
-                  <i class="fas fa-robot text-white fs-3"></i>
-                </div>
-              </div>
-              
-              <div class="position-absolute animate__animated animate__bounce animate__infinite animate__slow" 
-                   style="top: 15%; right: -10%; transform: translateX(50%);">
-                <div class="bg-success rounded-3 p-3 shadow-lg">
-                  <i class="fas fa-brain text-white fs-3"></i>
-                </div>
-              </div>
-              
-              <div class="position-absolute animate__animated animate__pulse animate__infinite animate__slow animate__delay-2s" 
-                   style="bottom: 20%; left: -10%; transform: translateX(-50%);">
-                <div class="bg-danger rounded-3 p-3 shadow-lg">
-                  <i class="fas fa-database text-white fs-3"></i>
-                </div>
-              </div>
-              
-              <div class="position-absolute animate__animated animate__bounce animate__infinite animate__slow animate__delay-3s" 
-                   style="bottom: 15%; right: -5%; transform: translateX(50%);">
-                <div class="bg-primary rounded-3 p-3 shadow-lg">
-                  <i class="fas fa-cogs text-white fs-3"></i>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-  </header>
+    </section>
 
-  <!-- About Section -->
-  <section id="about" class="section about py-5">
-    <div class="container">
-      <div class="row mb-5">
-        <div class="col-lg-8 mx-auto text-center">
-          <h2 class="display-4 fw-bold mb-4">About KFSQUARE</h2>
-          <p class="lead">
-            At KFSQUARE, we are pioneers in the data analytics and artificial intelligence landscape, 
-            transforming how organizations harness the power of their data to drive strategic decision-making and sustainable growth.
-          </p>
-        </div>
-      </div>
-      <!-- Mission and Vision -->
-      <div class="row mb-5">
-        <div class="col-lg-6 mb-4">
-          <div class="card h-100 border-0 shadow-lg">
-            <div class="card-body p-4">
-              <div class="d-flex align-items-center mb-3">
-                <div class="bg-primary rounded-circle p-3 me-3">
-                  <i class="fas fa-bullseye text-white fs-4"></i>
-                </div>
-                <h3 class="card-title mb-0">Our Mission</h3>
-              </div>
-              <p class="card-text">
-                To empower enterprises with cutting-edge data engineering solutions and predictive analytics 
-                that unlock hidden insights, optimize operations, and accelerate business transformation in the digital age.
-              </p>
-            </div>
-          </div>
-        </div>
-        
-        <div class="col-lg-6 mb-4">
-          <div class="card h-100 border-0 shadow-lg">
-            <div class="card-body p-4">
-              <div class="d-flex align-items-center mb-3">
-                <div class="bg-success rounded-circle p-3 me-3">
-                  <i class="fas fa-eye text-white fs-4"></i>
-                </div>
-                <h3 class="card-title mb-0">Our Vision</h3>
-              </div>
-              <p class="card-text">
-                To be the global leader in AI-driven analytics solutions, setting new standards for innovation, 
-                reliability, and business impact across industries.
-              </p>
-            </div>
-          </div>
-        </div>
-      </div>
-      
-      <!-- Highlights Grid -->
-      <div class="row g-4">
-        <div class="col-lg-4 col-md-6">
-          <div class="card border-0 shadow-sm h-100 text-center">
-            <div class="card-body p-4">
-              <div class="bg-primary bg-opacity-10 rounded-circle d-inline-flex align-items-center justify-content-center mb-3" style="width: 80px; height: 80px;">
-                <i class="fas fa-graduation-cap text-primary fs-3"></i>
-              </div>
-              <h4 class="card-title">Expertise</h4>
-              <p class="card-text">Deep specialization in Large Language Models (LLM), machine learning, and advanced statistical modeling techniques.</p>
-            </div>
-          </div>
-        </div>
-        
-        <div class="col-lg-4 col-md-6">
-          <div class="card border-0 shadow-sm h-100 text-center">
-            <div class="card-body p-4">
-              <div class="bg-warning bg-opacity-10 rounded-circle d-inline-flex align-items-center justify-content-center mb-3" style="width: 80px; height: 80px;">
-                <i class="fas fa-lightbulb text-warning fs-3"></i>
-              </div>
-              <h4 class="card-title">Innovation</h4>
-              <p class="card-text">Leveraging cutting-edge AI technologies to solve complex business challenges and create competitive advantages.</p>
-            </div>
-          </div>
-        </div>
-        
-        <div class="col-lg-4 col-md-6">
-          <div class="card border-0 shadow-sm h-100 text-center">
-            <div class="card-body p-4">
-              <div class="bg-info bg-opacity-10 rounded-circle d-inline-flex align-items-center justify-content-center mb-3" style="width: 80px; height: 80px;">
-                <i class="fas fa-handshake text-info fs-3"></i>
-              </div>
-              <h4 class="card-title">Partnership</h4>
-              <p class="card-text">Collaborative approach ensuring solutions align perfectly with your strategic objectives and operational requirements.</p>
-            </div>
-          </div>
-        </div>
-        
-        <div class="col-lg-4 col-md-6">
-          <div class="card border-0 shadow-sm h-100 text-center">
-            <div class="card-body p-4">
-              <div class="bg-success bg-opacity-10 rounded-circle d-inline-flex align-items-center justify-content-center mb-3" style="width: 80px; height: 80px;">
-                <i class="fas fa-building text-success fs-3"></i>
-              </div>
-              <h4 class="card-title">Small Business</h4>
-              <p class="card-text">Proudly serving as a certified small business, bringing agility, personalized service, and innovative solutions to organizations of all sizes.</p>
-            </div>
-          </div>
-        </div>
-        
-        <div class="col-lg-4 col-md-6">
-          <div class="card border-0 shadow-sm h-100 text-center">
-            <div class="card-body p-4">
-              <div class="bg-danger bg-opacity-10 rounded-circle d-inline-flex align-items-center justify-content-center mb-3" style="width: 80px; height: 80px;">
-                <i class="fas fa-medal text-danger fs-3"></i>
-              </div>
-              <h4 class="card-title">Veteran-Owned</h4>
-              <p class="card-text">Founded and operated by a disabled veteran, we bring military discipline, integrity, and commitment to excellence in every project we undertake.</p>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <!-- Services Section -->
-  <section id="services" class="section services py-5 bg-light">
-    <div class="container">
-      <div class="row mb-5">
-        <div class="col-lg-8 mx-auto text-center">
-          <h2 class="display-4 fw-bold mb-4">Our Services</h2>
-          <p class="lead">Comprehensive data solutions designed to accelerate your business transformation</p>
-        </div>
-      </div>
-      
-      <div id="home-services-grid" class="services-grid">
-        <!-- Dynamically populated from services.json -->
-      </div>
-      
-      <div class="text-center">
-        <a href="services.html" class="btn btn-primary btn-lg px-4">View All Services</a>
-      </div>
-    </div>
-  </section>
-
-  <!-- Values Section -->
-  <section id="values" class="section services">
-    <h2>Our Services</h2>
-    <p class="section-intro">Comprehensive data solutions designed to accelerate your business transformation</p>
-    
-    <!-- Values Portfolio Controls -->
-    <div class="values-controls">
-      <div class="search-container">
-        <input type="text" id="values-search" placeholder="Search advantages..." class="portfolio-search">
-        <span class="search-icon">🔍</span>
-      </div>
-      
-      <div class="filter-tabs">
-        <button class="filter-btn active" data-filter="all">All Benefits</button>
-        <button class="filter-btn" data-filter="strategic">Strategic</button>
-        <button class="filter-btn" data-filter="operational">Operational</button>
-        <button class="filter-btn" data-filter="technical">Technical</button>
-      </div>
-      
-      <div class="sort-controls">
-        <select id="values-sort" class="portfolio-sort">
-          <option value="default">Default Order</option>
-          <option value="impact">Highest Impact</option>
-          <option value="popularity">Most Valued</option>
-          <option value="alphabetical">A-Z</option>
-        </select>
-      </div>
-    </div>
-
-    <!-- Values Statistics -->
-    <div class="values-stats">
-      <div class="stat-item">
-        <span class="stat-number" id="total-values">8</span>
-        <span class="stat-label">Key Advantages</span>
-      </div>
-      <div class="stat-item">
-        <span class="stat-number" id="client-satisfaction">98%</span>
-        <span class="stat-label">Client Satisfaction</span>
-      </div>
-      <div class="stat-item">
-        <span class="stat-number" id="filtered-values">8</span>
-        <span class="stat-label">Showing</span>
-      </div>
-    </div>
-    
-    <div class="values-portfolio-grid" id="values-grid">
-      <div class="values-category" data-category="strategic">
-        <h4>Strategic Excellence</h4>
-        <div class="category-progress">
-          <div class="progress-bar">
-            <div class="progress-fill" style="width: 95%"></div>
-          </div>
-          <span class="progress-text">95% Excellence</span>
-        </div>
-        
-        <!-- Category Performance Metrics -->
-        <div class="category-metrics">
-          <div class="metric-item">
-            <span class="metric-icon">🎯</span>
-            <span class="metric-value">500+</span>
-            <span class="metric-label">Projects</span>
-          </div>
-          <div class="metric-item">
-            <span class="metric-icon">⭐</span>
-            <span class="metric-value">4.9</span>
-            <span class="metric-label">Rating</span>
-          </div>
-          <div class="metric-item">
-            <span class="metric-icon">🏆</span>
-            <span class="metric-value">95%</span>
-            <span class="metric-label">Success Rate</span>
-          </div>
-        </div>
-        
-        <div class="category-services">
-          <div class="portfolio-service-link active strategic featured" data-value="strategic-focus" data-impact="10" data-category="strategic">
-            <span class="service-icon">🎯</span>
-            <div class="service-info">
-              <strong>Strategic Focus</strong>
-              <p>Every solution is designed with your business objectives at the forefront</p>
-              <div class="service-meta">
-                <span class="availability available">Core Strength</span>
-                <span class="popularity">★ 4.9</span>
-                <span class="service-tag featured">Most Valued</span>
-              </div>
-              <div class="service-stats">
-                <span class="stat-chip">500+ Strategic Plans</span>
-                <span class="stat-chip">95% Goal Achievement</span>
-              </div>
-            </div>
-            <div class="service-tooltip">
-              <h5>Strategic Focus</h5>
-              <p>Our strategic approach ensures every data solution directly contributes to your business objectives and long-term success.</p>
-              <div class="tooltip-highlights">
-                <div class="highlight-item">
-                  <strong>Client Success:</strong>
-                  <p>Helped Fortune 500 client achieve 40% revenue growth through strategic data initiatives alignment</p>
-                </div>
-              </div>
-              <ul>
-                <li>Business objective alignment</li>
-                <li>Strategic roadmap development</li>
-                <li>ROI-focused solutions</li>
-                <li>Executive stakeholder engagement</li>
-                <li>Long-term partnership approach</li>
-                <li>Competitive advantage creation</li>
-              </ul>
-              <div class="tooltip-footer">
-                <span class="delivery-time">⏱️ Immediate Impact</span>
-                <span class="complexity">🎯 Strategic</span>
-              </div>
-            </div>
-          </div>
-
-          <div class="portfolio-service-link active strategic" data-value="measurable-roi" data-impact="9" data-category="strategic">
-            <span class="service-icon">📈</span>
-            <div class="service-info">
-              <strong>Measurable ROI</strong>
-              <p>Proven track record of delivering quantifiable business value</p>
-              <div class="service-meta">
-                <span class="availability available">Guaranteed</span>
-                <span class="popularity">★ 4.8</span>
-                <span class="service-tag roi">ROI Focused</span>
-              </div>
-              <div class="service-stats">
-                <span class="stat-chip">Average 300% ROI</span>
-                <span class="stat-chip">100% Transparency</span>
-              </div>
-            </div>
-            <div class="service-tooltip">
-              <h5>Measurable ROI</h5>
-              <p>Every project includes clear metrics and KPIs to demonstrate tangible business value and return on investment.</p>
-              <div class="tooltip-highlights">
-                <div class="highlight-item">
-                  <strong>Proven Results:</strong>
-                  <p>Average client sees 300% ROI within 18 months of implementation</p>
-                </div>
-              </div>
-              <ul>
-                <li>ROI measurement frameworks</li>
-                <li>Performance tracking dashboards</li>
-                <li>Business impact reporting</li>
-                <li>Cost-benefit analysis</li>
-                <li>Value realization planning</li>
-                <li>Continuous optimization</li>
-              </ul>
-              <div class="tooltip-footer">
-                <span class="delivery-time">⏱️ 3-6 months</span>
-                <span class="complexity">🎯 Strategic</span>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-
-      <div class="values-category" data-category="operational">
-        <h4>Operational Excellence</h4>
-        <div class="category-progress">
-          <div class="progress-bar">
-            <div class="progress-fill" style="width: 90%"></div>
-          </div>
-          <span class="progress-text">90% Excellence</span>
-        </div>
-        
-        <div class="category-metrics">
-          <div class="metric-item">
-            <span class="metric-icon">⚡</span>
-            <span class="metric-value">50%</span>
-            <span class="metric-label">Faster Deploy</span>
-          </div>
-          <div class="metric-item">
-            <span class="metric-icon">🚀</span>
-            <span class="metric-value">24/7</span>
-            <span class="metric-label">Support</span>
-          </div>
-          <div class="metric-item">
-            <span class="metric-icon">📊</span>
-            <span class="metric-value">99.9%</span>
-            <span class="metric-label">Uptime</span>
-          </div>
-        </div>
-        
-        <div class="category-services">
-          <div class="portfolio-service-link active operational trending" data-value="rapid-deployment" data-impact="9" data-category="operational">
-            <span class="service-icon">⚡</span>
-            <div class="service-info">
-              <strong>Rapid Deployment</strong>
-              <p>Accelerated implementation timelines without compromising quality</p>
-              <div class="service-meta">
-                <span class="availability available">Ready Now</span>
-                <span class="popularity">★ 4.9</span>
-                <span class="service-tag trending">Fast Track</span>
-              </div>
-              <div class="service-stats">
-                <span class="stat-chip">50% Faster Setup</span>
-                <span class="stat-chip">Zero Downtime</span>
-              </div>
-            </div>
-            <div class="service-tooltip">
-              <h5>Rapid Deployment</h5>
-              <p>Our streamlined processes and pre-built frameworks enable faster time-to-value without sacrificing solution quality.</p>
-              <div class="tooltip-highlights">
-                <div class="highlight-item">
-                  <strong>Speed Record:</strong>
-                  <p>Deployed enterprise analytics platform in just 6 weeks vs industry standard 16 weeks</p>
-                </div>
-              </div>
-              <ul>
-                <li>Pre-built solution accelerators</li>
-                <li>Agile deployment methodology</li>
-                <li>Parallel implementation streams</li>
-                <li>Automated deployment pipelines</li>
-                <li>Quick-start templates</li>
-                <li>Rapid prototyping</li>
-              </ul>
-              <div class="tooltip-footer">
-                <span class="delivery-time">⏱️ 2-6 weeks</span>
-                <span class="complexity">🎯 Optimized</span>
-              </div>
-            </div>
-          </div>
-
-          <div class="portfolio-service-link active operational reliable" data-value="support-excellence" data-impact="8" data-category="operational">
-            <span class="service-icon">🎧</span>
-            <div class="service-info">
-              <strong>24/7 Expert Support</strong>
-              <p>Round-the-clock technical support and maintenance services</p>
-              <div class="service-meta">
-                <span class="availability available">Always On</span>
-                <span class="popularity">★ 4.8</span>
-                <span class="service-tag reliable">Reliable</span>
-              </div>
-              <div class="service-stats">
-                <span class="stat-chip">99.9% Uptime</span>
-                <span class="stat-chip">5min Response</span>
-              </div>
-            </div>
-            <div class="service-tooltip">
-              <h5>24/7 Expert Support</h5>
-              <p>Our dedicated support team ensures your systems run smoothly with proactive monitoring and rapid issue resolution.</p>
-              <div class="tooltip-highlights">
-                <div class="highlight-item">
-                  <strong>Support Excellence:</strong>
-                  <p>Maintained 99.9% uptime for critical client systems over 3 consecutive years</p>
-                </div>
-              </div>
-              <ul>
-                <li>24/7 technical support</li>
-                <li>Proactive system monitoring</li>
-                <li>Rapid incident response</li>
-                <li>Expert troubleshooting</li>
-                <li>Preventive maintenance</li>
-                <li>Knowledge base access</li>
-              </ul>
-              <div class="tooltip-footer">
-                <span class="delivery-time">⏱️ Instant</span>
-                <span class="complexity">🎯 Expert</span>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-
-      <div class="values-category" data-category="technical">
-        <h4>Technical Innovation</h4>
-        <div class="category-progress">
-          <div class="progress-bar">
-            <div class="progress-fill" style="width: 98%"></div>
-          </div>
-          <span class="progress-text">98% Excellence</span>
-        </div>
-        
-        <div class="category-metrics">
-          <div class="metric-item">
-            <span class="metric-icon">🔒</span>
-            <span class="metric-value">100%</span>
-            <span class="metric-label">Secure</span>
-          </div>
-          <div class="metric-item">
-            <span class="metric-icon">🤖</span>
-            <span class="metric-value">AI</span>
-            <span class="metric-label">Powered</span>
-          </div>
-          <div class="metric-item">
-            <span class="metric-icon">⚡</span>
-            <span class="metric-value">10x</span>
-            <span class="metric-label">Performance</span>
-          </div>
-        </div>
-        
-        <div class="category-services">
-          <div class="portfolio-service-link active technical security" data-value="enterprise-security" data-impact="10" data-category="technical">
-            <span class="service-icon">🔒</span>
-            <div class="service-info">
-              <strong>Enterprise Security</strong>
-              <p>Industry-leading security standards and compliance frameworks</p>
-              <div class="service-meta">
-                <span class="availability available">Certified</span>
-                <span class="popularity">★ 5.0</span>
-                <span class="service-tag security">Security First</span>
-              </div>
-              <div class="service-stats">
-                <span class="stat-chip">SOC 2 Certified</span>
-                <span class="stat-chip">Zero Breaches</span>
-              </div>
-            </div>
-            <div class="service-tooltip">
-              <h5>Enterprise Security</h5>
-              <p>Comprehensive security framework ensuring your data is protected with military-grade encryption and compliance standards.</p>
-              <div class="tooltip-highlights">
-                <div class="highlight-item">
-                  <strong>Security Record:</strong>
-                  <p>Zero security incidents across 500+ enterprise implementations over 5 years</p>
-                </div>
-              </div>
-              <ul>
-                <li>SOC 2 Type II compliance</li>
-                <li>End-to-end encryption</li>
-                <li>Multi-factor authentication</li>
-                <li>Regular security audits</li>
-                <li>GDPR & HIPAA compliance</li>
-                <li>Zero-trust architecture</li>
-              </ul>
-              <div class="tooltip-footer">
-                <span class="delivery-time">⏱️ Built-in</span>
-                <span class="complexity">🎯 Military-grade</span>
-              </div>
-            </div>
-          </div>
-
-          <div class="portfolio-service-link active technical innovation" data-value="cutting-edge-tech" data-impact="9" data-category="technical">
-            <span class="service-icon">�</span>
-            <div class="service-info">
-              <strong>Cutting-Edge Technology</strong>
-              <p>Latest AI/ML technologies and innovative solution architectures</p>
-              <div class="service-meta">
-                <span class="availability available">Innovation Lab</span>
-                <span class="popularity">★ 4.9</span>
-                <span class="service-tag innovation">Next-Gen</span>
-              </div>
-              <div class="service-stats">
-                <span class="stat-chip">Latest AI/ML</span>
-                <span class="stat-chip">Innovation Labs</span>
-              </div>
-            </div>
-            <div class="service-tooltip">
-              <h5>Cutting-Edge Technology</h5>
-              <p>Stay ahead of the competition with our advanced AI/ML implementations and innovative technology solutions.</p>
-              <div class="tooltip-highlights">
-                <div class="highlight-item">
-                  <strong>Tech Leadership:</strong>
-                  <p>First to market with GPT-4 enterprise integrations, leading industry innovation</p>
-                </div>
-              </div>
-              <ul>
-                <li>Latest LLM technologies</li>
-                <li>Advanced machine learning</li>
-                <li>Quantum-ready algorithms</li>
-                <li>Edge computing solutions</li>
-                <li>Cloud-native architectures</li>
-                <li>Research & development lab</li>
-              </ul>
-              <div class="tooltip-footer">
-                <span class="delivery-time">⏱️ Continuous</span>
-                <span class="complexity">🎯 Revolutionary</span>
-              </div>
-            </div>
-          </div>
-
-          <div class="portfolio-service-link active technical premium" data-value="scalable-performance" data-impact="8" data-category="technical">
-            <span class="service-icon">📊</span>
-            <div class="service-info">
-              <strong>Scalable Performance</strong>
-              <p>High-performance solutions that scale with your business growth</p>
-              <div class="service-meta">
-                <span class="availability available">Enterprise Scale</span>
-                <span class="popularity">★ 4.8</span>
-                <span class="service-tag premium">Performance</span>
-              </div>
-              <div class="service-stats">
-                <span class="stat-chip">10x Performance</span>
-                <span class="stat-chip">Auto-scaling</span>
-              </div>
-            </div>
-            <div class="service-tooltip">
-              <h5>Scalable Performance</h5>
-              <p>Solutions designed to handle massive data volumes and scale seamlessly as your business grows.</p>
-              <div class="tooltip-highlights">
-                <div class="highlight-item">
-                  <strong>Performance Boost:</strong>
-                  <p>Improved client's data processing speed by 10x while reducing infrastructure costs by 40%</p>
-                </div>
-              </div>
-              <ul>
-                <li>Auto-scaling infrastructure</li>
-                <li>High-performance computing</li>
-                <li>Load balancing systems</li>
-                <li>Performance optimization</li>
-                <li>Real-time processing</li>
-                <li>Cost-efficient scaling</li>
-              </ul>
-              <div class="tooltip-footer">
-                <span class="delivery-time">⏱️ As needed</span>
-                <span class="complexity">🎯 Enterprise</span>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-  </section>
-
-
-  <!-- Contact Section -->
-  <section id="contact" class="section contact py-5 bg-light">
-    <div class="container-xxl">
-      <div class="row mb-5">
-        <div class="col-lg-12 mx-auto text-center">
-          <h2 class="display-4 fw-bold mb-4">Get In Touch</h2>
-          <p class="lead">Ready to transform your business with data? Let's start the conversation.</p>
-        </div>
-      </div>
-
-      <!-- Row 1: Send Us a Message (full-width centered) -->
-      <div class="row justify-content-center g-8">
-        <div class="col-12">
-          <div class="card border-0 shadow-lg rounded-4">
-            <div class="card-body p-4 p-md-5">
-              <h3 class="mb-4">Send Us a Message</h3>
-              <form id="contact-form" novalidate aria-describedby="form-status" aria-live="polite" data-enhanced="true">
-                <div class="row g-3 mb-4">
-                  <div class="col-md-8">
-                    <div class="form-floating">
-                      <input type="text" class="form-control" id="name" name="name" placeholder="Your Name" autocomplete="name" required>
-                      <label for="name">Full Name</label>
-                      <div class="invalid-feedback">Please enter your full name.</div>
+    <!-- Main Content -->
+    <main class="main-content">
+        <!-- About Overview -->
+        <section id="about" class="about-overview py-5 bg-light">
+            <div class="container">
+                <div class="row justify-content-center">
+                    <div class="col-lg-10">
+                        <div class="about-text text-center bg-white p-4 rounded shadow">
+                            <h2 class="section-title mb-4">About KFSQUARE</h2>
+                            <p class="lead">At KFSQUARE, we are pioneers in the data analytics and artificial intelligence landscape, transforming how organizations harness the power of their data to drive strategic decision-making and sustainable growth.</p>
+                            
+                            <!-- Mission/Vision Cards -->
+                            <div class="row g-3 mt-4">
+                                <div class="col-md-6">
+                                    <div class="card h-100 border-0 shadow-sm">
+                                        <div class="card-body p-3 text-center">
+                                            <div class="bg-primary bg-opacity-10 rounded-circle d-inline-flex align-items-center justify-content-center mb-3" style="width: 60px; height: 60px;">
+                                                <i class="fas fa-bullseye text-primary fs-4"></i>
+                                            </div>
+                                            <h5 class="card-title">Our Mission</h5>
+                                            <p class="card-text small">To empower enterprises with cutting-edge data engineering solutions and predictive analytics that unlock hidden insights and accelerate business transformation.</p>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="card h-100 border-0 shadow-sm">
+                                        <div class="card-body p-3 text-center">
+                                            <div class="bg-success bg-opacity-10 rounded-circle d-inline-flex align-items-center justify-content-center mb-3" style="width: 60px; height: 60px;">
+                                                <i class="fas fa-eye text-success fs-4"></i>
+                                            </div>
+                                            <h5 class="card-title">Our Vision</h5>
+                                            <p class="card-text small">To be the global leader in AI-driven analytics solutions, setting new standards for innovation, reliability, and business impact across industries.</p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
                     </div>
-                  </div>
-                  <div class="col-md-8">
-                    <div class="form-floating">
-                      <input type="email" class="form-control" id="email" name="email" placeholder="Your Email" autocomplete="email" inputmode="email" required>
-                      <label for="email">Email Address</label>
-                      <div class="invalid-feedback">Please provide a valid email address.</div>
-                    </div>
-                  </div>
                 </div>
+            </div>
+        </section>
 
-                <!-- Phone / Company (responsive two columns) -->
-                <div class="row g-4 mb-8">
-
-                  <div class="col-md-8">
-                    <div class="form-floating">
-                      <input type="tel" class="form-control" id="phone" name="phone" placeholder="Phone (Optional)" inputmode="tel" autocomplete="tel">
-                      <label for="phone">Phone (Optional)</label>
+        <!-- Services Section (White text on dark background) -->
+        <section id="services" class="services-section py-5" style="background: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%); color: white;">
+            <div class="container">
+                <h2 class="section-title text-center text-white mb-5">Our Services</h2>
+                <div class="row g-4">
+                    <div class="col-md-4">
+                        <div class="service-item text-center h-100 p-4 rounded" style="background: rgba(255, 255, 255, 0.1); backdrop-filter: blur(10px); border: 1px solid rgba(255, 255, 255, 0.2);">
+                            <div class="service-icon text-center fs-1 mb-3 text-warning">📊</div>
+                            <h3 class="text-white">Data Analytics</h3>
+                            <p class="text-white">Transform raw data into actionable insights with our comprehensive analytics solutions and advanced statistical modeling.</p>
+                            <a href="services.html" class="btn btn-outline-light btn-sm">Learn More</a>
+                        </div>
                     </div>
-                  </div>
-                  <div class="col-md-8">
-                    <div class="form-floating">
-                      <input type="text" class="form-control" id="company" name="company" placeholder="Company Name" autocomplete="organization">
-                      <label for="company">Company (Optional)</label>
+                    <div class="col-md-4">
+                        <div class="service-item text-center h-100 p-4 rounded" style="background: rgba(255, 255, 255, 0.1); backdrop-filter: blur(10px); border: 1px solid rgba(255, 255, 255, 0.2);">
+                            <div class="service-icon text-center fs-1 mb-3 text-warning">🤖</div>
+                            <h3 class="text-white">AI & Machine Learning</h3>
+                            <p class="text-white">Leverage cutting-edge AI technologies and machine learning models to automate processes and predict future trends.</p>
+                            <a href="services.html" class="btn btn-outline-light btn-sm">Learn More</a>
+                        </div>
                     </div>
-                  </div>
+                    <div class="col-md-4">
+                        <div class="service-item text-center h-100 p-4 rounded" style="background: rgba(255, 255, 255, 0.1); backdrop-filter: blur(10px); border: 1px solid rgba(255, 255, 255, 0.2);">
+                            <div class="service-icon text-center fs-1 mb-3 text-warning">🎯</div>
+                            <h3 class="text-white">Business Intelligence</h3>
+                            <p class="text-white">Make data-driven decisions with our comprehensive BI solutions and real-time dashboard implementations.</p>
+                            <a href="services.html" class="btn btn-outline-light btn-sm">Learn More</a>
+                        </div>
+                    </div>
                 </div>
                 
-                <div class="form-floating mb-2">
-                  <select class="form-select" id="service" name="service" required>
-                    <option selected disabled value="">Choose a service</option>
-                    <option value="data-engineering">Data Engineering</option>
-                    <option value="predictive-analytics">Predictive Analytics</option>
-                    <option value="llm-integration">LLM Integration</option>
-                    <option value="business-intelligence">Business Intelligence</option>
-                    <option value="data-governance">Data Governance</option>
-                    <option value="consulting">Strategic Consulting</option>
-                    <option value="other">Other</option>
-                  </select>
-                  <label for="service">Service of Interest</label>
-                  <div class="invalid-feedback">Please select a service of interest.</div>
+                <div class="text-center mt-5">
+                    <a href="services.html" class="btn btn-warning btn-lg">View All Services</a>
                 </div>
+            </div>
+        </section>
 
-                <!-- Quick pick chips (mobile-first) -->
-                <div class="d-md-none mb-4" aria-label="Quick select service">
-                  <div class="d-flex flex-wrap gap-2">
-                    <button type="button" class="btn btn-outline-primary btn-sm" data-service-chip="data-engineering">Data Eng.</button>
-                    <button type="button" class="btn btn-outline-primary btn-sm" data-service-chip="predictive-analytics">Predictive</button>
-                    <button type="button" class="btn btn-outline-primary btn-sm" data-service-chip="llm-integration">LLM</button>
-                    <button type="button" class="btn btn-outline-primary btn-sm" data-service-chip="business-intelligence">BI</button>
-                  </div>
+        <!-- Why Choose Us -->
+        <section class="credentials-section py-5">
+            <div class="container">
+                <h2 class="section-title text-center mb-5">Why Choose KFSQUARE</h2>
+                <div class="row g-4">
+                    <div class="col-md-6">
+                        <div class="credential-card card h-100 p-4 shadow-sm">
+                            <div class="credential-icon fs-1 text-center mb-3">🏢</div>
+                            <h3 class="text-center">Small Business Certified</h3>
+                            <p class="text-center">Officially certified as a Small Business Enterprise (SBE), bringing agility, personalized service, and competitive pricing to every project.</p>
+                            <div class="credential-details text-center">
+                                <span class="badge bg-primary me-2">SBE Certified</span>
+                                <span class="badge bg-secondary">NAICS: 541511</span>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="col-md-6">
+                        <div class="credential-card card h-100 p-4 shadow-sm">
+                            <div class="credential-icon fs-1 text-center mb-3">🎖️</div>
+                            <h3 class="text-center">Disabled Veteran Owned</h3>
+                            <p class="text-center">Proudly owned and operated by disabled veterans, bringing military precision, dedication, and service excellence to every engagement.</p>
+                            <div class="credential-details text-center">
+                                <span class="badge bg-success me-2">DVBE Certified</span>
+                                <span class="badge bg-info">VOSB Verified</span>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="col-md-6">
+                        <div class="credential-card card h-100 p-4 shadow-sm">
+                            <div class="credential-icon fs-1 text-center mb-3">🔒</div>
+                            <h3 class="text-center">Enterprise Security</h3>
+                            <p class="text-center">Industry-leading security standards with SOC 2 certification and security-cleared team members for sensitive projects.</p>
+                            <div class="credential-details text-center">
+                                <span class="badge bg-warning">SOC 2 Certified</span>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="col-md-6">
+                        <div class="credential-card card h-100 p-4 shadow-sm">
+                            <div class="credential-icon fs-1 text-center mb-3">🎓</div>
+                            <h3 class="text-center">Expert Team</h3>
+                            <p class="text-center">AWS, Azure, Google Cloud certified professionals with advanced certifications in data science and machine learning.</p>
+                            <div class="credential-details text-center">
+                                <span class="badge bg-primary me-2">Cloud Certified</span>
+                                <span class="badge bg-success">ML Specialists</span>
+                            </div>
+                        </div>
+                    </div>
                 </div>
-                
-                <div class="form-floating mb-1">
-                  <textarea class="form-control" id="message" name="message" style="min-height: 140px; height: 120px; resize: vertical" placeholder="Your Message" required maxlength="1000" enterkeyhint="send"></textarea>
-                  <label for="message">Tell us about your project</label>
-                  <div class="invalid-feedback">Please add a brief description of your project.</div>
+            </div>
+        </section>
+
+        <!-- Contact Section -->
+        <section id="contact" class="contact-section py-5 bg-light">
+            <div class="container">
+                <div class="row justify-content-center">
+                    <div class="col-lg-8">
+                        <div class="text-center mb-5">
+                            <h2 class="section-title">Get In Touch</h2>
+                            <p class="lead">Ready to transform your business with data? Let's start the conversation.</p>
+                        </div>
+                        
+                        <div class="card border-0 shadow-lg">
+                            <div class="card-body p-4">
+                                <form id="contact-form">
+                                    <div class="row g-3 mb-3">
+                                        <div class="col-md-6">
+                                            <div class="form-floating">
+                                                <input type="text" class="form-control" id="name" name="name" placeholder="Your Name" required>
+                                                <label for="name">Full Name</label>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <div class="form-floating">
+                                                <input type="email" class="form-control" id="email" name="email" placeholder="Your Email" required>
+                                                <label for="email">Email Address</label>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    
+                                    <div class="row g-3 mb-3">
+                                        <div class="col-md-6">
+                                            <div class="form-floating">
+                                                <input type="tel" class="form-control" id="phone" name="phone" placeholder="Phone">
+                                                <label for="phone">Phone (Optional)</label>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <div class="form-floating">
+                                                <select class="form-select" id="service" name="service" required>
+                                                    <option selected disabled value="">Choose a service</option>
+                                                    <option value="data-engineering">Data Engineering</option>
+                                                    <option value="predictive-analytics">Predictive Analytics</option>
+                                                    <option value="ai-ml">AI & Machine Learning</option>
+                                                    <option value="business-intelligence">Business Intelligence</option>
+                                                    <option value="consulting">Strategic Consulting</option>
+                                                    <option value="other">Other</option>
+                                                </select>
+                                                <label for="service">Service of Interest</label>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    
+                                    <div class="form-floating mb-3">
+                                        <textarea class="form-control" id="message" name="message" style="height: 120px" placeholder="Your Message" required></textarea>
+                                        <label for="message">Tell us about your project</label>
+                                    </div>
+                                    
+                                    <button type="submit" class="btn btn-primary btn-lg w-100">
+                                        <i class="fas fa-paper-plane me-2"></i>Send Message
+                                    </button>
+                                </form>
+                            </div>
+                        </div>
+                        
+                        <!-- Contact Info Cards -->
+                        <div class="row g-3 mt-4">
+                            <div class="col-md-6">
+                                <div class="card border-0 shadow-sm text-center">
+                                    <div class="card-body p-3">
+                                        <div class="bg-primary bg-opacity-10 rounded-circle d-inline-flex align-items-center justify-content-center mb-2" style="width: 50px; height: 50px;">
+                                            <i class="fas fa-envelope text-primary"></i>
+                                        </div>
+                                        <h6 class="card-title mb-1">Email Us</h6>
+                                        <a href="mailto:customersupport@kfsquare.com" class="text-decoration-none small">customersupport@kfsquare.com</a>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="card border-0 shadow-sm text-center">
+                                    <div class="card-body p-3">
+                                        <div class="bg-success bg-opacity-10 rounded-circle d-inline-flex align-items-center justify-content-center mb-2" style="width: 50px; height: 50px;">
+                                            <i class="fas fa-phone text-success"></i>
+                                        </div>
+                                        <h6 class="card-title mb-1">Call Us</h6>
+                                        <a href="tel:+14109347470" class="text-decoration-none small">410-934-7470</a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                 </div>
-                <div class="d-flex justify-content-end small text-muted mb-3">
-                  <span id="message-counter" aria-live="polite">0/1000</span>
+            </div>
+        </section>
+    </main>
+
+    <!-- Footer -->
+    <footer class="footer bg-dark text-light py-5">
+        <div class="container">
+            <div class="row g-4">
+                <div class="col-lg-3">
+                    <h3 class="text-warning">KFSQUARE</h3>
+                    <p>Transforming businesses through intelligent data solutions and advanced analytics.</p>
+                    <div class="social-links">
+                        <a href="mailto:customersupport@kfsquare.com" class="text-light me-2" aria-label="Email">📧</a>
+                        <a href="tel:+14109347470" class="text-light me-2" aria-label="Phone">📱</a>
+                        <a href="#" class="text-light" aria-label="LinkedIn">💻</a>
+                    </div>
                 </div>
-                
-                <!-- Honeypot (anti-spam) -->
-                <input type="text" class="visually-hidden" id="website" name="website" tabindex="-1" autocomplete="off" aria-hidden="true">
-                
-                <button type="submit" class="btn btn-primary btn-lg w-100">
-                  <span class="spinner-border spinner-border-sm me-2 d-none" role="status" aria-hidden="true"></span>
-                  <span class="btn-text"><i class="fas fa-paper-plane me-2"></i>Send Message</span>
-                </button>
-                <div id="form-status" class="mt-3 text-muted" role="status" aria-live="polite"></div>
-              </form>
+                <div class="col-lg-3">
+                    <h4>Services</h4>
+                    <ul class="list-unstyled">
+                        <li><a href="services.html" class="text-light text-decoration-none">Data Analytics</a></li>
+                        <li><a href="services.html" class="text-light text-decoration-none">Machine Learning</a></li>
+                        <li><a href="services.html" class="text-light text-decoration-none">AI Integration</a></li>
+                        <li><a href="services.html" class="text-light text-decoration-none">Business Intelligence</a></li>
+                    </ul>
+                </div>
+                <div class="col-lg-3">
+                    <h4>Company</h4>
+                    <ul class="list-unstyled">
+                        <li><a href="about.html" class="text-light text-decoration-none">About Us</a></li>
+                        <li><a href="portfolio.html" class="text-light text-decoration-none">Portfolio</a></li>
+                        <li><a href="contact.html" class="text-light text-decoration-none">Contact</a></li>
+                    </ul>
+                </div>
+                <div class="col-lg-3">
+                    <h4>Contact Info</h4>
+                    <div class="contact-info">
+                        <p>📞 410-934-7470</p>
+                        <p>📧 customersupport@kfsquare.com</p>
+                        <p>🏢 Small Business & Veteran Owned</p>
+                    </div>
+                </div>
             </div>
-          </div>
-        </div>
-      </div>
-
-      <!-- Row 2: Email Us (full-width centered) -->
-      <div class="row g-4 mt-2">
-        <div class="col-12">
-          <div class="card border-0 shadow-sm rounded-4 text-center">
-            <div class="card-body p-4 p-md-5">
-              <div class="bg-primary bg-opacity-10 rounded-circle d-inline-flex align-items-center justify-content-center mb-3" style="width: clamp(48px, 7vw, 64px); height: clamp(48px, 7vw, 64px);">
-                <i class="fas fa-envelope text-primary fs-4"></i>
-              </div>
-              <h5 class="card-title mb-2">
-                Email Us
-                <a href="mailto:customersupport@kfsquare.com" class="d-block small fw-semibold text-decoration-none text-primary text-break" style="word-break: break-word;">customersupport@kfsquare.com</a>
-              </h5>
-              <p class="card-text mb-1">Get in touch for project inquiries</p>
+            <div class="footer-bottom text-center mt-4 pt-4 border-top border-secondary">
+                <p class="mb-0">&copy; 2024 KFSQUARE. All rights reserved. | <a href="privacy.html" class="text-warning">Privacy Policy</a> | <a href="terms.html" class="text-warning">Terms of Service</a></p>
             </div>
-          </div>
         </div>
-      </div>
+    </footer>
 
-      <!-- Row 3: Customer Support (full-width centered) -->
-      <div class="row g-4 mt-2">
-        <div class="col-12">
-          <div class="card border-0 shadow-sm rounded-4 text-center">
-            <div class="card-body p-4 p-md-5">
-              <div class="bg-success bg-opacity-10 rounded-circle d-inline-flex align-items-center justify-content-center mb-3" style="width: clamp(48px, 7vw, 64px); height: clamp(48px, 7vw, 64px);">
-                <i class="fas fa-headset text-success fs-4"></i>
-              </div>
-              <h5 class="card-title mb-2">
-                Customer Support
-                <a href="tel:+14109347470" class="d-block small fw-semibold text-decoration-none text-success text-break" style="word-break: break-word;">Call: 410-934-7470</a>
-              </h5>
-              <p class="card-text mb-1">Speak directly with our team. We typically respond within <strong>24 hours</strong>.</p>
-              <div class="d-flex justify-content-center">
-                <span class="badge bg-info">24 Hours</span>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-
-    </div>
-  </section>
-
-  <!-- Footer -->
-  <footer class="footer bg-dark text-light py-5">
-    <div class="container">
-      <div class="row g-4 mb-4">
-        <div class="col-lg-4">
-          <div class="footer-brand mb-4">
-            <h3 class="fw-bold">
-              <span class="text-warning">KF</span>SQUARE
-            </h3>
-            <p class="text-light opacity-75 mb-4">
-              Transforming businesses through intelligent data solutions, advanced analytics, and cutting-edge AI technologies.
-            </p>
-            <div class="d-flex gap-3">
-              <a href="#" class="btn btn-outline-warning btn-sm rounded-circle p-2" aria-label="LinkedIn">
-                <i class="fab fa-linkedin-in"></i>
-              </a>
-              <a href="#" class="btn btn-outline-warning btn-sm rounded-circle p-2" aria-label="Twitter">
-                <i class="fab fa-twitter"></i>
-              </a>
-              <a href="#" class="btn btn-outline-warning btn-sm rounded-circle p-2" aria-label="GitHub">
-                <i class="fab fa-github"></i>
-              </a>
-            </div>
-          </div>
-        </div>
-        
-        <div class="col-lg-2 col-md-6">
-          <h5 class="text-warning mb-3">Services</h5>
-          <ul class="list-unstyled">
-            <li class="mb-2"><a href="services.html" class="text-light opacity-75 text-decoration-none">Data Engineering</a></li>
-            <li class="mb-2"><a href="services.html" class="text-light opacity-75 text-decoration-none">Predictive Analytics</a></li>
-            <li class="mb-2"><a href="services.html" class="text-light opacity-75 text-decoration-none">LLM Integration</a></li>
-            <li class="mb-2"><a href="services.html" class="text-light opacity-75 text-decoration-none">Business Intelligence</a></li>
-          </ul>
-        </div>
-        
-        <div class="col-lg-2 col-md-6">
-          <h5 class="text-warning mb-3">Company</h5>
-          <ul class="list-unstyled">
-            <li class="mb-2"><a href="about.html" class="text-light opacity-75 text-decoration-none">About Us</a></li>
-            <li class="mb-2"><a href="portfolio.html" class="text-light opacity-75 text-decoration-none">Portfolio</a></li>
-            <li class="mb-2"><a href="contact.html" class="text-light opacity-75 text-decoration-none">Contact</a></li>
-          </ul>
-        </div>
-        
-        <div class="col-lg-4">
-          <h5 class="text-warning mb-3">Contact Information</h5>
-          <div class="contact-info-footer">
-            <div class="d-flex align-items-center mb-3">
-              <i class="fas fa-phone text-warning me-3"></i>
-              <a href="tel:+14109347470" class="text-light opacity-75 text-decoration-none">410-934-7470</a>
-            </div>
-            <div class="d-flex align-items-center mb-3">
-              <i class="fas fa-envelope text-warning me-3"></i>
-              <a href="mailto:customersupport@kfsquare.com" class="text-light opacity-75 text-decoration-none">customersupport@kfsquare.com</a>
-            </div>
-            <div class="d-flex align-items-center mb-3">
-              <i class="fas fa-shield-alt text-warning me-3"></i>
-              <span class="text-light opacity-75">Small Business & Veteran Owned</span>
-            </div>
-          </div>
-        </div>
-      </div>
-      
-      <hr class="border-secondary">
-      
-      <div class="row align-items-center">
-        <div class="col-md-6">
-          <p class="mb-0 text-light opacity-75">
-            &copy; 2025 KFSQUARE. All rights reserved.
-          </p>
-        </div>
-        <div class="col-md-6 text-md-end">
-          <a href="privacy.html" class="text-light opacity-75 text-decoration-none me-3">Privacy Policy</a>
-          <a href="terms.html" class="text-light opacity-75 text-decoration-none">Terms of Service</a>
-        </div>
-      </div>
-    </div>
-  </footer>
-
-  <style>
-    .hero-section {
-      background-attachment: fixed !important;
-    }
-    .hover-lift {
-      transition: transform 0.3s ease, box-shadow 0.3s ease;
-    }
-    .hover-lift:hover {
-      transform: translateY(-10px);
-      box-shadow: 0 20px 40px rgba(0,0,0,0.1) !important;
-    }
-    .nav-link:hover {
-      color: #ffc107 !important;
-    }
-    .card {
-      transition: all 0.3s ease;
-    }
-    .card:hover {
-      transform: translateY(-5px);
-    }
-    .animate__slow {
-      animation-duration: 3s;
-    }
-    .scroll-indicator {
-      position: fixed;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 3px;
-      background: linear-gradient(to right, #ffc107, #0d6efd);
-      z-index: 9999;
-      transform-origin: left;
-      transform: scaleX(0);
-      transition: transform 0.3s ease;
-    }
-    .footer a:hover {
-      color: #ffc107 !important;
-    }
-    .btn:hover {
-      transform: translateY(-2px);
-      box-shadow: 0 8px 25px rgba(0,0,0,0.15);
-    }
-    .form-floating > .form-control:focus ~ label {
-      color: #0d6efd;
-    }
-    .section-divider { 
-      width: 140px; height: 4px; border-radius: 999px; 
-      background: linear-gradient(90deg, #0d6efd, #ffc107);
-      margin-left: auto; margin-right: auto;
-      opacity: 0.85;
-    }
-    .contact .card { border: 1px solid rgba(13,110,253,.08); }
-    .contact .btn-primary { box-shadow: 0 8px 20px rgba(13,110,253,.18); }
-    .contact .btn-primary:hover { box-shadow: 0 12px 28px rgba(13,110,253,.24); }
-    .contact .form-control, .contact .form-select { border-radius: .75rem; }
-
-    /* Fluid, responsive hero title */
-    .hero-title { font-size: clamp(2rem, 8vw, 5rem); line-height: 1.05; text-wrap: balance; }
-    .hero-title .hero-title-word { overflow-wrap: anywhere; }
-  </style>
-
-  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
-  <!-- Load dynamic Home Services renderer -->
-  <script src="js/home-services.js" defer></script>
+    <!-- Bootstrap JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="index.js"></script>
 </body>
 </html>
-                                   
-                                   
-                                   
-                                   
-                                   
-                                   
-                                   
-                                   
-                                   
-                                   
-                                   
-                                   
-                                   
-                                   
-                                   
-                                   
-                                   
-                                   
-                                   
-                                   
-                                   
-                                   
-                                   
-                                   
-                                   
-                                   
-                                   
-                                   
-                                   
-                                   
-                                   
-                                   
-                                   
-                                   
-                                   
-                                   
-                                   
-                                   
-                                   
-                                   
-                                   
-                                   
-                                   
-                                   
-                                   
-                                   
-                                   
-                                   
-                                   
-                                   
-                                   
-                                   
-                                   
-                                   
-                                   
-                                   
-                                   
-                                   
-                                   
-                                   
-                                   
-                                   
-                                   
-                                   
-                                   
-                                   
-                                   
-                                   
-                                   
-                                   
-                                   
-                                   
-                                   
-                                   
-                                   
-                                   
-                                   
-                                   
-                                   
-                                   
-                                   
-                                   
-                                   
-                                   
-                                   
-                                   
-                                   
-                                   
-                                   
-                                   
-                                   
-                                   
