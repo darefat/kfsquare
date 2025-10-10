@@ -246,7 +246,7 @@
                                 <form id="contact-form">
                                     <div class="row g-3 mb-3">
                                         <div class="col-md-6">
-                                            <input type="text" class="form-control" id="name" name="name" placeholder="Full Name" required>
+                                            <input type="text" class="form-control" id="name" name="name" placeholder="Full Name" required onfocus="this.placeholder=''" onblur="if(this.value==='') this.placeholder='Full Name'">
                                         </div>
                                         <div class="col-md-6">
                                             <input type="email" class="form-control" id="email" name="email" placeholder="Email Address" required>
