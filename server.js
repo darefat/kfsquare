@@ -1,482 +1,457 @@
 require('dotenv').config();
 const express = require('express');
-const bodyParser = require('body-parser');
-// Mailgun email client
+const mongoose = require('mongoose');
 const Mailgun = require('mailgun.js');
 const formData = require('form-data');
+const rateLimit = require('express-rate-limit');
+const helmet = require('helmet');
 const cors = require('cors');
 const { body, validationResult } = require('express-validator');
 const path = require('path');
-const compression = require('compression');
-const helmet = require('helmet');
-const rateLimit = require('express-rate-limit');
-const os = require('os');
-const fs = require('fs');
-
-// MongoDB Integration
-const database = require('./config/database');
-const DataSeeder = require('./utils/seeder');
-
-// API Routes
-const teamRoutes = require('./routes/team');
-const servicesRoutes = require('./routes/services');
-const contactsRoutes = require('./routes/contacts');
-const chatRoutes = require('./routes/chat');
-
-// Models
-const Contact = require('./models/Contact');
-
-// Platform detection for cross-platform compatibility
-const platform = os.platform();
-const isWindows = platform === 'win32';
-const isLinux = platform === 'linux';
-const isMac = platform === 'darwin';
-
-console.log(`🌐 Platform detected: ${platform} (${isWindows ? 'Windows' : isLinux ? 'Linux' : isMac ? 'macOS' : 'Other'})`);
 
 const app = express();
-const port = process.env.PORT || 3000;
-// Mailgun env vars (support *_FILE)
-const mailgunApiKey = readSecret('MAILGUN_API_KEY', 'MAILGUN_API_KEY_FILE');
-const mailgunDomain = process.env.MAILGUN_DOMAIN;
-const mailgunBaseUrl = process.env.MAILGUN_BASE_URL || 'https://api.mailgun.net';
-const recipientEmail = process.env.RECIPIENT_EMAIL;
-const corsOrigin = process.env.CORS_ORIGIN;
-const isProduction = process.env.NODE_ENV === 'production';
-// Prefer explicit public URL in production (e.g., GitHub Pages or site domain)
-const publicUrl = process.env.PUBLIC_URL || '';
-let publicOrigin = null;
-try { if (publicUrl) { publicOrigin = new URL(publicUrl).origin; } } catch (_) {}
+const PORT = process.env.PORT || 3000;
 
-// Helper to parse comma-separated env vars
-function parseCsv(value) {
-  return (value || '')
-    .split(',')
-    .map(s => s.trim())
-    .filter(Boolean);
-}
-
-// Helper to read secret from env or file (e.g., *_FILE)
-function readSecret(envKey, fileEnvKey) {
-  const value = process.env[envKey];
-  const filePath = process.env[fileEnvKey];
-  if (value) return value;
-  if (filePath) {
-    try { return fs.readFileSync(filePath, 'utf8').trim(); } catch (e) {
-      console.warn(`⚠️  Could not read secret file for ${envKey}:`, e.message);
-    }
-  }
-  return '';
-}
-
-// Allow configuring multiple origins via ALLOWED_ORIGINS (comma-separated)
-const allowedOrigins = parseCsv(process.env.ALLOWED_ORIGINS);
-// Optional: add CDN domains to CSP via CDN_DOMAINS (comma-separated)
-const cdnDomains = parseCsv(process.env.CDN_DOMAINS);
-
-// Resolve static root (dist in production, project root in dev)
-const staticRoot = isProduction ? path.join(__dirname, 'dist') : path.join(__dirname);
-
-// Production Security Middleware with dynamic CSP
-const cspDirectives = {
-  defaultSrc: ["'self'"],
-  styleSrc: ["'self'", "'unsafe-inline'", "https://fonts.googleapis.com"],
-  fontSrc: ["'self'", "https://fonts.gstatic.com"],
-  scriptSrc: ["'self'", "'unsafe-inline'"],
-  imgSrc: ["'self'", "data:", "https:"],
-  connectSrc: ["'self'", "https:"]
-};
-
-// Always allow common CDN used in this project if present
-const defaultCdnAllowlist = [
-  'https://cdnjs.cloudflare.com' // Font Awesome/other libs via cdnjs
-];
-
-// Merge CDN domains into CSP
-[...defaultCdnAllowlist, ...cdnDomains].forEach(domain => {
-  if (!domain) return;
-  // Add to multiple sources to keep it simple; refine if needed
-  ['styleSrc', 'fontSrc', 'scriptSrc', 'imgSrc', 'connectSrc'].forEach(key => {
-    if (!cspDirectives[key].includes(domain)) {
-      cspDirectives[key].push(domain);
-    }
-  });
-});
-
-let mailgunClient = null;
-if (!mailgunApiKey || !mailgunDomain) {
-  console.warn('⚠️  Mailgun API key and/or domain is missing. Email functionality will be disabled.');
-  console.log('   Set MAILGUN_API_KEY and MAILGUN_DOMAIN in your environment or .env file');
-} else {
-  try {
-    const mg = new Mailgun(formData);
-    mailgunClient = mg.client({ username: 'api', key: mailgunApiKey, url: mailgunBaseUrl });
-    console.log('✅ Mailgun configured successfully');
-  } catch (e) {
-    console.warn('⚠️  Failed to initialize Mailgun:', e.message);
-  }
-}
-
+// Security middleware
 app.use(helmet({
-  contentSecurityPolicy: { directives: cspDirectives },
-  hsts: {
-    maxAge: 31536000,
-    includeSubDomains: true,
-    preload: true
+  contentSecurityPolicy: {
+    directives: {
+      defaultSrc: ["'self'"],
+      styleSrc: ["'self'", "'unsafe-inline'", "cdn.jsdelivr.net", "cdnjs.cloudflare.com"],
+      scriptSrc: ["'self'", "cdn.jsdelivr.net"],
+      imgSrc: ["'self'", "data:", "https:"],
+      fontSrc: ["'self'", "cdnjs.cloudflare.com"],
+      connectSrc: ["'self'"]
+    }
   }
 }));
 
-// Compression for better performance
-app.use(compression());
-
-// Rate limiting
-const limiter = rateLimit({
-  windowMs: 15 * 60 * 1000, // 15 minutes
-  max: 100, // limit each IP to 100 requests per windowMs
-  message: 'Too many requests from this IP, please try again later.',
-  standardHeaders: true,
-  legacyHeaders: false,
-});
-app.use(limiter);
-
-// Stricter rate limiting for email endpoint
-const emailLimiter = rateLimit({
-  windowMs: 60 * 60 * 1000, // 1 hour
-  max: 5, // limit each IP to 5 email submissions per hour
-  message: 'Too many email submissions from this IP, please try again later.',
-});
-
-// CORS Configuration (env-driven)
-const resolvedCorsOrigins = (() => {
-  if (allowedOrigins.length) return allowedOrigins;
-  if (corsOrigin) return [corsOrigin];
-  if (isProduction && publicOrigin) return [publicOrigin];
-  return isProduction ? ['https://kfsquare.com'] : [];
-})();
-
+// CORS configuration
 app.use(cors({
-  origin: (origin, callback) => {
-    // Allow same-origin or non-browser requests
-    if (!origin) return callback(null, true);
-    // Allow everything in dev
-    if (!isProduction) return callback(null, true);
-    // Check against allowlist
-    if (resolvedCorsOrigins.includes(origin)) return callback(null, true);
-    return callback(new Error('Not allowed by CORS'));
-  },
-  optionsSuccessStatus: 200,
+  origin: process.env.NODE_ENV === 'production' 
+    ? ['https://kfsquare.com', 'https://www.kfsquare.com']
+    : ['http://localhost:3000', 'http://127.0.0.1:3000'],
   credentials: true
 }));
 
-// Body parser with size limits
-app.use(bodyParser.urlencoded({ extended: false, limit: '10mb' }));
-app.use(bodyParser.json({ limit: '10mb' }));
+// Body parsing middleware
+app.use(express.json({ limit: '10mb' }));
+app.use(express.urlencoded({ extended: true, limit: '10mb' }));
 
-// Static file serving with caching (dist in production)
-app.use(express.static(staticRoot, {
-  maxAge: isProduction ? '1y' : 0,
-  etag: true,
-  lastModified: true,
-  setHeaders: (res, p) => {
-    if (p.endsWith('.html')) {
-      res.setHeader('Cache-Control', 'public, max-age=3600'); // 1 hour for HTML
-    }
-    if (p.includes('.min.') || p.match(/\.(?:css|js)$/)) {
-      // Long cache, immutable for minified assets
-      const value = p.includes('.min.')
-        ? 'public, max-age=31536000, immutable'
-        : 'public, max-age=31536000';
-      res.setHeader('Cache-Control', value);
-    }
+// Rate limiting
+const generalLimiter = rateLimit({
+  windowMs: 15 * 60 * 1000, // 15 minutes
+  max: process.env.GENERAL_RATE_LIMIT || 100,
+  message: {
+    error: 'Too many requests from this IP, please try again later.'
   }
-}));
+});
 
-// API Routes
-app.use('/api/team', teamRoutes);
-app.use('/api/services', servicesRoutes);
-app.use('/api/contacts', contactsRoutes);
-app.use('/api/chat', chatRoutes);
+const emailLimiter = rateLimit({
+  windowMs: 60 * 60 * 1000, // 1 hour
+  max: process.env.EMAIL_RATE_LIMIT || 5,
+  message: {
+    error: 'Too many contact form submissions from this IP, please try again later.'
+  }
+});
 
-// Database initialization
-async function initializeDatabase() {
+app.use(generalLimiter);
+app.use(express.static(path.join(__dirname)));
+
+// MongoDB connection with retry logic
+const connectDB = async () => {
   try {
-    await database.connect();
-    
-    // Check if database needs seeding
-    const seeder = new DataSeeder();
-    const stats = await seeder.getStats();
-    
-    if (!stats || (stats.teamMembers === 0 && stats.services === 0)) {
-      console.log('🌱 Database appears to be empty, seeding with initial data...');
-      await seeder.seedDatabase();
-      await seeder.getStats();
-    } else {
-      console.log('📊 Database already contains data');
-    }
+    const conn = await mongoose.connect(process.env.MONGODB_URI, {
+      useNewUrlParser: true,
+      useUnifiedTopology: true,
+    });
+    console.log(`✅ MongoDB Connected: ${conn.connection.host}`);
+    return true;
   } catch (error) {
-    console.error('❌ Database initialization failed:', error.message);
-    if (process.env.NODE_ENV === 'production') {
-      process.exit(1);
-    }
+    console.error('❌ MongoDB connection error:', error);
+    return false;
   }
+};
+
+// Contact schema
+const contactSchema = new mongoose.Schema({
+  name: { type: String, required: true, trim: true, maxlength: 100 },
+  email: { type: String, required: true, trim: true, lowercase: true },
+  phone: { type: String, trim: true, maxlength: 20 },
+  company: { type: String, trim: true, maxlength: 100 },
+  serviceInterest: { 
+    type: String, 
+    enum: ['data-engineering', 'predictive-analytics', 'ai-ml', 'business-intelligence', 'llm-integration', 'consulting', 'other'],
+    default: 'other'
+  },
+  message: { type: String, required: true, trim: true, maxlength: 2000 },
+  source: { type: String, default: 'website_contact_form' },
+  status: { type: String, enum: ['new', 'contacted', 'qualified', 'closed'], default: 'new' },
+  priority: { type: String, enum: ['low', 'medium', 'high'], default: 'medium' },
+  ipAddress: String,
+  userAgent: String,
+  emailSent: { type: Boolean, default: false },
+  emailSentAt: Date,
+  createdAt: { type: Date, default: Date.now },
+  updatedAt: { type: Date, default: Date.now }
+});
+
+contactSchema.index({ email: 1, createdAt: -1 });
+contactSchema.index({ status: 1 });
+contactSchema.index({ createdAt: -1 });
+
+const Contact = mongoose.model('Contact', contactSchema);
+
+// Mailgun setup
+let mailgunClient = null;
+const recipientEmail = process.env.RECIPIENT_EMAIL || 'customersupport@kfsquare.com';
+
+if (process.env.MAILGUN_API_KEY && process.env.MAILGUN_DOMAIN) {
+  const mailgun = new Mailgun(formData);
+  mailgunClient = mailgun.client({
+    username: 'api',
+    key: process.env.MAILGUN_API_KEY,
+    url: process.env.MAILGUN_BASE_URL || 'https://api.mailgun.net'
+  });
+  console.log('✅ Mailgun client initialized');
+} else {
+  console.warn('⚠️ Mailgun not configured - emails will not be sent');
 }
 
-// Input validation middleware with enhanced security
-const validate = [
-  body('name')
-    .trim()
-    .isLength({ min: 2, max: 100 })
-    .escape()
-    .withMessage('Name must be between 2 and 100 characters'),
-  body('email')
-    .trim()
-    .isEmail()
-    .normalizeEmail()
-    .isLength({ max: 255 })
-    .withMessage('Invalid email address'),
-  body('message')
-    .trim()
-    .isLength({ min: 10, max: 1000 })
-    .escape()
-    .withMessage('Message must be between 10 and 1000 characters')
-];
+// Database connection status
+let database = { isConnected: false };
 
-// Health check endpoint
-app.get('/health', (req, res) => {
-  res.status(200).json({ 
-    status: 'healthy', 
-    timestamp: new Date().toISOString(),
-    uptime: process.uptime(),
-    database: database.isConnected ? 'connected' : 'disconnected'
-  });
-});
-
-// API health check
-app.get('/api/health', async (req, res) => {
-  try {
-    // Test database connectivity
-    const dbStatus = database.isConnected;
-    
-    res.status(200).json({
-      status: 'healthy',
-      timestamp: new Date().toISOString(),
-      services: {
-        api: 'operational',
-        database: dbStatus ? 'connected' : 'disconnected',
-        email: mailgunClient ? 'configured' : 'not-configured'
-      },
-      version: process.env.npm_package_version || '1.0.0'
-    });
-  } catch (error) {
-    res.status(503).json({
-      status: 'unhealthy',
-      timestamp: new Date().toISOString(),
-      error: error.message
-    });
-  }
-});
-
-// Root endpoint (serve from dist in production)
-app.get('/', (req, res) => {
-  res.sendFile(path.join(staticRoot, 'index.html'));
-});
-
-// Enhanced contact form endpoint with database storage
-app.post('/send-email', emailLimiter, validate, async (req, res) => {
+// Enhanced contact form endpoint
+app.post('/api/contacts', emailLimiter, [
+  body('name').trim().isLength({ min: 2, max: 100 }).escape().withMessage('Name must be between 2-100 characters'),
+  body('email').isEmail().normalizeEmail().withMessage('Please provide a valid email address'),
+  body('message').trim().isLength({ min: 10, max: 2000 }).escape().withMessage('Message must be between 10-2000 characters'),
+  body('phone').optional().trim().isLength({ max: 20 }).escape(),
+  body('company').optional().trim().isLength({ max: 100 }).escape(),
+  body('serviceInterest').optional().isIn(['data-engineering', 'predictive-analytics', 'ai-ml', 'business-intelligence', 'llm-integration', 'consulting', 'other']),
+  body('website').isEmpty().withMessage('Invalid submission detected') // Honeypot
+], async (req, res) => {
+  
   const errors = validationResult(req);
   if (!errors.isEmpty()) {
     return res.status(400).json({ 
       success: false,
-      errors: errors.array().map(err => err.msg)
+      message: 'Validation failed: ' + errors.array().map(e => e.msg).join(', '),
+      errors: errors.array()
     });
   }
 
-  const { name, email, message } = req.body;
-
-  // Honeypot check (if implemented in frontend)
-  if (req.body.website) {
-    return res.status(400).json({ success: false, message: 'Spam detected' });
-  }
+  const { name, email, message, phone, company, serviceInterest } = req.body;
 
   try {
-    // Save contact to database if connected
+    // 1. Save contact to MongoDB
     let contact = null;
     if (database.isConnected) {
       const contactData = {
         name,
         email,
         message,
-        phone: req.body.phone || '',
-        company: req.body.company || '',
-        serviceInterest: req.body.serviceInterest || 'other',
+        phone: phone || '',
+        company: company || '',
+        serviceInterest: serviceInterest || 'other',
+        source: 'website_contact_form',
+        status: 'new',
+        priority: serviceInterest === 'consulting' || serviceInterest === 'ai-ml' ? 'high' : 'medium',
         ipAddress: req.ip || req.connection.remoteAddress,
-        userAgent: req.get('User-Agent'),
-        source: 'website'
+        userAgent: req.get('User-Agent')
       };
       
       contact = new Contact(contactData);
       await contact.save();
-      console.log(`💾 Contact saved to database: ${contact._id}`);
+      console.log(`💾 Contact saved to MongoDB: ${contact._id}`);
     }
 
-    // Send email via Mailgun if configured
-    if (mailgunClient) {
+    // 2. Send email via Mailgun
+    let emailSent = false;
+    if (mailgunClient && process.env.MAILGUN_DOMAIN) {
+      const serviceLabels = {
+        'data-engineering': 'Data Engineering',
+        'predictive-analytics': 'Predictive Analytics',
+        'ai-ml': 'AI & Machine Learning',
+        'business-intelligence': 'Business Intelligence',
+        'llm-integration': 'LLM Integration',
+        'consulting': 'Strategic Consulting',
+        'other': 'Other Services'
+      };
+
       const htmlBody = `
-          <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto;">
-            <h2 style="color: #01326d;">New Contact Form Submission</h2>
-            <div style="background: #f9fafc; padding: 20px; border-radius: 8px; margin: 20px 0;">
-              <p><strong>Name:</strong> ${name}</p>
-              <p><strong>Email:</strong> ${email}</p>
-              <p><strong>Message:</strong></p>
-              <div style="background: white; padding: 15px; border-radius: 4px; border-left: 4px solid #01326d;">
+        <!DOCTYPE html>
+        <html>
+        <head>
+          <meta charset="UTF-8">
+          <meta name="viewport" content="width=device-width, initial-scale=1.0">
+          <title>New Contact Form Submission</title>
+        </head>
+        <body style="margin: 0; padding: 0; font-family: Arial, sans-serif; background-color: #f8f9fa;">
+          <div style="max-width: 600px; margin: 0 auto; background-color: white;">
+            <!-- Header -->
+            <div style="background: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%); padding: 30px; text-align: center;">
+              <h1 style="color: white; margin: 0; font-size: 28px;">
+                <span style="color: #ffc107;">KF</span>SQUARE
+              </h1>
+              <p style="color: white; margin: 10px 0 0 0; font-size: 16px;">New Contact Form Submission</p>
+            </div>
+            
+            <!-- Content -->
+            <div style="padding: 30px; background: #f8f9fa;">
+              <h2 style="color: #1e3c72; margin-top: 0; font-size: 24px;">Contact Details</h2>
+              <table style="width: 100%; border-collapse: collapse; margin-bottom: 30px;">
+                <tr>
+                  <td style="padding: 12px 0; font-weight: bold; color: #333; width: 30%;">Name:</td>
+                  <td style="padding: 12px 0; color: #666;">${name}</td>
+                </tr>
+                <tr>
+                  <td style="padding: 12px 0; font-weight: bold; color: #333;">Email:</td>
+                  <td style="padding: 12px 0; color: #666;"><a href="mailto:${email}" style="color: #1e3c72; text-decoration: none;">${email}</a></td>
+                </tr>
+                ${phone ? `
+                <tr>
+                  <td style="padding: 12px 0; font-weight: bold; color: #333;">Phone:</td>
+                  <td style="padding: 12px 0; color: #666;"><a href="tel:${phone}" style="color: #1e3c72; text-decoration: none;">${phone}</a></td>
+                </tr>` : ''}
+                ${company ? `
+                <tr>
+                  <td style="padding: 12px 0; font-weight: bold; color: #333;">Company:</td>
+                  <td style="padding: 12px 0; color: #666;">${company}</td>
+                </tr>` : ''}
+                <tr>
+                  <td style="padding: 12px 0; font-weight: bold; color: #333;">Service Interest:</td>
+                  <td style="padding: 12px 0; color: #666;">
+                    <span style="background: #1e3c72; color: white; padding: 4px 12px; border-radius: 16px; font-size: 14px;">
+                      ${serviceLabels[serviceInterest] || 'Other'}
+                    </span>
+                  </td>
+                </tr>
+              </table>
+              
+              <h3 style="color: #1e3c72; margin-top: 30px; font-size: 20px;">Message</h3>
+              <div style="background: white; padding: 20px; border-radius: 8px; border-left: 4px solid #1e3c72; box-shadow: 0 2px 4px rgba(0,0,0,0.1);">
                 ${message.replace(/\n/g, '<br>')}
               </div>
+              
+              <!-- Quick Actions -->
+              <div style="margin-top: 30px; text-align: center;">
+                <a href="mailto:${email}?subject=Re: Your inquiry to KFSQUARE" 
+                   style="display: inline-block; background: #1e3c72; color: white; padding: 12px 24px; text-decoration: none; border-radius: 6px; margin: 0 10px; font-weight: bold;">
+                   Reply to ${name}
+                </a>
+                ${phone ? `
+                <a href="tel:${phone}" 
+                   style="display: inline-block; background: #28a745; color: white; padding: 12px 24px; text-decoration: none; border-radius: 6px; margin: 0 10px; font-weight: bold;">
+                   Call ${name}
+                </a>` : ''}
+              </div>
             </div>
-            <p style="color: #666; font-size: 12px;">
-              Submitted on ${new Date().toLocaleString()}
-              ${contact ? `<br>Database ID: ${contact._id}` : ''}
-            </p>
-          </div>`;
+            
+            <!-- Footer -->
+            <div style="background: #e9ecef; padding: 20px; text-align: center; font-size: 12px; color: #666;">
+              <p style="margin: 0; line-height: 1.5;">
+                📅 Submitted: ${new Date().toLocaleString('en-US', { 
+                  timeZone: 'America/New_York',
+                  dateStyle: 'full',
+                  timeStyle: 'long'
+                })}<br>
+                🆔 Contact ID: ${contact ? contact._id : 'N/A'}<br>
+                🌐 IP Address: ${req.ip || 'Unknown'}<br>
+                📱 User Agent: ${req.get('User-Agent') || 'Unknown'}
+              </p>
+              <div style="margin-top: 15px; padding-top: 15px; border-top: 1px solid #ddd;">
+                <p style="margin: 0; font-size: 11px; color: #999;">
+                  This email was sent from the KFSQUARE contact form on kfsquare.com
+                </p>
+              </div>
+            </div>
+          </div>
+        </body>
+        </html>`;
 
-      await mailgunClient.messages.create(mailgunDomain, {
-        from: 'KFSQUARE <noreply@kfsquare.com>',
-        to: [recipientEmail || 'customersupport@kfsquare.com'],
+      const textBody = `
+KFSQUARE - New Contact Form Submission
+
+CONTACT DETAILS:
+Name: ${name}
+Email: ${email}
+${phone ? `Phone: ${phone}\n` : ''}${company ? `Company: ${company}\n` : ''}Service Interest: ${serviceLabels[serviceInterest] || 'Other'}
+
+MESSAGE:
+${message}
+
+SUBMISSION DETAILS:
+Submitted: ${new Date().toLocaleString()}
+Contact ID: ${contact ? contact._id : 'N/A'}
+IP Address: ${req.ip || 'Unknown'}
+User Agent: ${req.get('User-Agent') || 'Unknown'}
+
+---
+Reply directly to this email to respond to ${name}.
+      `;
+
+      await mailgunClient.messages.create(process.env.MAILGUN_DOMAIN, {
+        from: `KFSQUARE Contact Form <noreply@${process.env.MAILGUN_DOMAIN}>`,
+        to: [recipientEmail],
         'h:Reply-To': email,
-        subject: 'Contact Form Submission from KFSQUARE Website',
-        text: `Name: ${name}\nEmail: ${email}\nMessage:\n${message}`,
-        html: htmlBody
+        subject: `🚀 New Contact: ${name} - ${serviceLabels[serviceInterest] || 'General Inquiry'}`,
+        text: textBody,
+        html: htmlBody,
+        'o:tag': ['contact-form', serviceInterest || 'other'],
+        'o:tracking': true,
+        'o:tracking-clicks': true,
+        'o:tracking-opens': true
       });
-      console.log(`📧 Email sent successfully via Mailgun from ${email}`);
+      
+      emailSent = true;
+      console.log(`📧 Email sent successfully to ${recipientEmail} from ${email}`);
+      
+      // Update contact record with email status
+      if (contact) {
+        contact.emailSent = true;
+        contact.emailSentAt = new Date();
+        await contact.save();
+      }
     }
 
+    // 3. Send confirmation email to user
+    if (mailgunClient && emailSent) {
+      try {
+        const confirmationHtml = `
+          <!DOCTYPE html>
+          <html>
+          <body style="font-family: Arial, sans-serif; background-color: #f8f9fa; margin: 0; padding: 20px;">
+            <div style="max-width: 600px; margin: 0 auto; background: white; border-radius: 8px; overflow: hidden; box-shadow: 0 4px 6px rgba(0,0,0,0.1);">
+              <div style="background: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%); padding: 30px; text-align: center;">
+                <h1 style="color: white; margin: 0;"><span style="color: #ffc107;">KF</span>SQUARE</h1>
+                <p style="color: white; margin: 10px 0 0 0;">Thank you for contacting us!</p>
+              </div>
+              <div style="padding: 30px;">
+                <h2 style="color: #1e3c72; margin-top: 0;">Hi ${name},</h2>
+                <p>Thank you for reaching out to KFSQUARE regarding <strong>${serviceLabels[serviceInterest] || 'our services'}</strong>.</p>
+                <p>We've received your message and our team will review your inquiry carefully. You can expect a personalized response from our experts within <strong>24 hours</strong>.</p>
+                <div style="background: #f8f9fa; padding: 20px; border-radius: 8px; margin: 20px 0; border-left: 4px solid #1e3c72;">
+                  <h4 style="margin-top: 0; color: #1e3c72;">What happens next?</h4>
+                  <ul style="margin: 0; padding-left: 20px;">
+                    <li>Our team will review your specific requirements</li>
+                    <li>We'll prepare a customized solution proposal</li>
+                    <li>You'll receive a detailed response within 24 hours</li>
+                    <li>We'll schedule a consultation call if needed</li>
+                  </ul>
+                </div>
+                <p>In the meantime, feel free to explore our <a href="https://kfsquare.com/services.html" style="color: #1e3c72;">services</a> or <a href="https://kfsquare.com/portfolio.html" style="color: #1e3c72;">portfolio</a> to learn more about our capabilities.</p>
+                <div style="text-align: center; margin: 30px 0;">
+                  <p style="margin: 0; color: #666;">Questions? Contact us anytime:</p>
+                  <p style="margin: 5px 0;">📧 <a href="mailto:customersupport@kfsquare.com" style="color: #1e3c72;">customersupport@kfsquare.com</a></p>
+                  <p style="margin: 5px 0;">📞 <a href="tel:+14109347470" style="color: #1e3c72;">410-934-7470</a></p>
+                </div>
+              </div>
+              <div style="background: #f8f9fa; padding: 20px; text-align: center; color: #666; font-size: 14px;">
+                <p style="margin: 0;">Best regards,<br>The KFSQUARE Team</p>
+                <p style="margin: 10px 0 0 0; font-size: 12px;">
+                  Small Business & Veteran Owned | SOC 2 Certified
+                </p>
+              </div>
+            </div>
+          </body>
+          </html>`;
+
+        await mailgunClient.messages.create(process.env.MAILGUN_DOMAIN, {
+          from: `KFSQUARE Team <customersupport@${process.env.MAILGUN_DOMAIN}>`,
+          to: [email],
+          subject: `✅ We received your message, ${name}!`,
+          html: confirmationHtml,
+          text: `Hi ${name},\n\nThank you for contacting KFSQUARE! We've received your inquiry about ${serviceLabels[serviceInterest] || 'our services'} and will respond within 24 hours.\n\nBest regards,\nThe KFSQUARE Team\n\nQuestions? Email us at customersupport@kfsquare.com or call 410-934-7470`,
+          'o:tag': ['confirmation', 'contact-form']
+        });
+        
+        console.log(`📧 Confirmation email sent to ${email}`);
+      } catch (confirmError) {
+        console.error('Confirmation email error:', confirmError);
+        // Don't fail the request if confirmation email fails
+      }
+    }
+
+    // 4. Return success response
     res.status(200).json({ 
       success: true, 
-      message: 'Contact form submitted successfully',
-      data: contact ? { id: contact._id } : null
+      message: `Thank you ${name}! Your message has been sent successfully. We'll respond within 24 hours.`,
+      data: {
+        id: contact ? contact._id : null,
+        emailSent,
+        timestamp: new Date().toISOString()
+      }
     });
 
   } catch (error) {
-    console.error('Contact form error:', error);
+    console.error('❌ Contact form submission error:', error);
     
-    if (error.response) {
-      console.error("Mailgun Response:", error.response.body);
+    // Log detailed error for debugging
+    if (error.response && error.response.body) {
+      console.error("Mailgun Response Error:", error.response.body);
     }
     
     res.status(500).json({ 
       success: false, 
-      message: 'Error processing contact form. Please try again later.' 
+      message: 'We apologize, but there was an error processing your request. Please try again or contact us directly at customersupport@kfsquare.com or 410-934-7470.',
+      error: process.env.NODE_ENV === 'development' ? error.message : undefined
     });
   }
 });
 
-// Basic error handling
-app.use((err, req, res, next) => {
-  console.error("Unhandled error:", err.stack);
-  res.status(500).send('Something broke!');
+// Health check endpoint
+app.get('/api/health', (req, res) => {
+  res.json({
+    status: 'healthy',
+    timestamp: new Date().toISOString(),
+    database: database.isConnected ? 'connected' : 'disconnected',
+    mailgun: mailgunClient ? 'configured' : 'not configured'
+  });
+});
+
+// Serve static files
+app.get('/', (req, res) => {
+  res.sendFile(path.join(__dirname, 'index.html'));
+});
+
+app.get('*.html', (req, res) => {
+  const filename = req.path.substring(1);
+  res.sendFile(path.join(__dirname, filename));
 });
 
 // 404 handler
 app.use((req, res) => {
-  res.status(404).json({ 
-    success: false, 
-    message: 'Route not found',
-    timestamp: new Date().toISOString()
-  });
+  res.status(404).json({ error: 'Endpoint not found' });
 });
 
-// Global error handler
-app.use((err, req, res, next) => {
-  console.error('Error stack:', err.stack);
-  
-  if (err.type === 'entity.parse.failed') {
-    return res.status(400).json({ 
-      success: false, 
-      message: 'Invalid JSON payload' 
-    });
-  }
-  
-  if (err.type === 'entity.too.large') {
-    return res.status(413).json({ 
-      success: false, 
-      message: 'Payload too large' 
-    });
-  }
-
+// Error handler
+app.use((error, req, res, next) => {
+  console.error('Server error:', error);
   res.status(500).json({ 
-    success: false, 
-    message: 'Internal server error',
-    timestamp: new Date().toISOString()
+    error: 'Internal server error',
+    message: process.env.NODE_ENV === 'development' ? error.message : 'Something went wrong'
   });
 });
 
-// Graceful shutdown with platform-aware signal handling
-const server = app.listen(port, async () => {
-  console.log(`🚀 KFSQUARE Server running on ${publicUrl || `http://localhost:${port}`}`);
-  console.log(`🔧 Environment: ${process.env.NODE_ENV || 'development'}`);
-  console.log(`📧 Mailgun configured: ${!!mailgunClient}`);
-  console.log(`💻 Platform: ${platform}`);
-  console.log(`🏠 Serving static from: ${staticRoot}`);
-  console.log(`⏰ Started at: ${new Date().toISOString()}`);
+// Initialize database and start server
+const startServer = async () => {
+  // Connect to database
+  database.isConnected = await connectDB();
   
-  // Initialize database connection
-  await initializeDatabase();
-  
-  console.log('✅ Server initialization complete');
-
-  // Notify PM2 that the app is ready (for wait_ready)
-  if (typeof process.send === 'function') {
-    try { process.send('ready'); } catch (_) {}
+  if (!database.isConnected) {
+    console.warn('⚠️ Starting server without database connection - contacts will not be saved');
   }
-});
-
-// Platform-aware graceful shutdown
-const gracefulShutdown = async (signal) => {
-  console.log(`${signal} received, shutting down gracefully...`);
   
-  server.close(async () => {
-    console.log('🔌 HTTP server closed');
-    
-    // Close database connection
-    try {
-      await database.disconnect();
-    } catch (error) {
-      console.error('❌ Error closing database connection:', error);
-    }
-    
-    console.log('✅ Server closed successfully');
-    console.log('👋 Process terminated');
-    process.exit(0);
+  // Start server
+  app.listen(PORT, () => {
+    console.log(`🚀 Server running on port ${PORT}`);
+    console.log(`📧 Email configured: ${mailgunClient ? '✅' : '❌'}`);
+    console.log(`💾 Database connected: ${database.isConnected ? '✅' : '❌'}`);
+    console.log(`🌍 Environment: ${process.env.NODE_ENV || 'development'}`);
   });
-  
-  // Force close after 10 seconds
-  setTimeout(() => {
-    console.log('⚠️  Forcing shutdown after timeout');
-    process.exit(1);
-  }, 10000);
 };
 
-// Handle different signals based on platform
-if (isWindows) {
-  // Windows doesn't support SIGTERM/SIGINT the same way
-  process.on('SIGINT', () => gracefulShutdown('SIGINT'));
-  process.on('SIGBREAK', () => gracefulShutdown('SIGBREAK'));
-} else {
-  // Unix-like systems (Linux, macOS)
-  process.on('SIGTERM', () => gracefulShutdown('SIGTERM'));
-  process.on('SIGINT', () => gracefulShutdown('SIGINT'));
-  process.on('SIGHUP', () => gracefulShutdown('SIGHUP'));
-}
-
-// Handle uncaught exceptions
-process.on('uncaughtException', (err) => {
-  console.error('💥 Uncaught Exception:', err);
-  console.error('Stack:', err.stack);
-  gracefulShutdown('uncaughtException');
-});
-
-process.on('unhandledRejection', (reason, promise) => {
-  console.error('💥 Unhandled Rejection at:', promise, 'reason:', reason);
-  gracefulShutdown('unhandledRejection');
-});
+startServer();
 
 module.exports = app;

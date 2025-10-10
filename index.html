@@ -243,7 +243,10 @@
                         
                         <div class="card border-0 shadow-lg">
                             <div class="card-body p-4">
-                                <form id="contact-form">
+                                <form id="contact-form" method="POST">
+                                    <!-- Add form status area for user feedback -->
+                                    <div id="form-status" role="status" aria-live="polite"></div>
+                                    
                                     <div class="row g-3 mb-3">
                                         <div class="col-md-6">
                                             <input type="text" class="form-control" id="name" name="name" placeholder="Full Name" required onfocus="this.placeholder=''" onblur="if(this.value==='') this.placeholder='Full Name'">
@@ -258,23 +261,31 @@
                                             <input type="tel" class="form-control" id="phone" name="phone" placeholder="Phone (Optional)">
                                         </div>
                                         <div class="col-md-6">
-                                            <select class="form-select" id="service" name="service" required>
-                                                <option selected disabled value="">Service of Interest</option>
-                                                <option value="data-engineering">Data Engineering</option>
-                                                <option value="predictive-analytics">Predictive Analytics</option>
-                                                <option value="ai-ml">AI & Machine Learning</option>
-                                                <option value="business-intelligence">Business Intelligence</option>
-                                                <option value="consulting">Strategic Consulting</option>
-                                                <option value="other">Other</option>
-                                            </select>
+                                            <input type="text" class="form-control" id="company" name="company" placeholder="Company (Optional)">
                                         </div>
+                                    </div>
+
+                                    <div class="mb-3">
+                                        <select class="form-select" id="service" name="serviceInterest" required>
+                                            <option selected disabled value="">Service of Interest</option>
+                                            <option value="data-engineering">Data Engineering</option>
+                                            <option value="predictive-analytics">Predictive Analytics</option>
+                                            <option value="ai-ml">AI & Machine Learning</option>
+                                            <option value="business-intelligence">Business Intelligence</option>
+                                            <option value="llm-integration">LLM Integration</option>
+                                            <option value="consulting">Strategic Consulting</option>
+                                            <option value="other">Other</option>
+                                        </select>
                                     </div>
                                     
                                     <div class="mb-3">
                                         <textarea class="form-control" id="message" name="message" rows="5" placeholder="Tell us about your project" required></textarea>
                                     </div>
+
+                                    <!-- Honeypot field for spam protection (hidden) -->
+                                    <input type="text" name="website" id="website" class="visually-hidden" tabindex="-1" autocomplete="off" aria-hidden="true">
                                     
-                                    <button type="submit" class="btn btn-primary btn-lg w-100">
+                                    <button type="submit" class="btn btn-primary btn-lg w-100" id="submit-btn">
                                         <i class="fas fa-paper-plane me-2"></i>Send Message
                                     </button>
                                 </form>
@@ -291,6 +302,7 @@
                                         </div>
                                         <h6 class="card-title mb-1">Email Us</h6>
                                         <a href="mailto:customersupport@kfsquare.com" class="text-decoration-none small">customersupport@kfsquare.com</a>
+                                        <div class="text-muted small mt-1">Response within 24 hours</div>
                                     </div>
                                 </div>
                             </div>
@@ -302,6 +314,7 @@
                                         </div>
                                         <h6 class="card-title mb-1">Call Us</h6>
                                         <a href="tel:+14109347470" class="text-decoration-none small">410-934-7470</a>
+                                        <div class="text-muted small mt-1">Mon-Fri, 9 AM - 6 PM EST</div>
                                     </div>
                                 </div>
                             </div>
