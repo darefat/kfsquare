@@ -20,6 +20,8 @@
     "deploy:docker": "bash deploy-universal.sh --docker",
     "deploy:heroku": "bash deploy-universal.sh --cloud heroku",
     "deploy:vercel": "bash deploy-universal.sh --cloud vercel",
+    "deploy:prod": "./scripts/deploy.sh production",
+    "deploy:staging": "./scripts/deploy.sh staging",
     "health": "curl -f http://localhost:3000/health || python setup.py --health",
     "install:python": "pip install -r requirements-minimal.txt || pip3 install -r requirements-minimal.txt",
     "docker:build": "docker build -t kfsquare:latest .",
@@ -38,7 +40,9 @@
     "restore:db": "mongorestore --uri $MONGODB_URI --drop backups/latest/",
     "seed": "cross-env NODE_ENV=production SEED_DATABASE=true node -e \"require('./utils/seeder').seedDatabase()\"",
     "security:check": "npm audit --audit-level moderate",
-    "security:fix": "npm audit fix"
+    "security:fix": "npm audit fix",
+    "validate:env": "node utils/env-validator.js",
+    "validate:prod": "node utils/env-validator.js production"
   },
   "dependencies": {
     "bcryptjs": "^2.4.3",

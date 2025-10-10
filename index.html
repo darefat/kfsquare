@@ -243,25 +243,27 @@
                         
                         <div class="card border-0 shadow-lg">
                             <div class="card-body p-4">
-                                <form id="contact-form" method="POST">
-                                    <!-- Add form status area for user feedback -->
-                                    <div id="form-status" role="status" aria-live="polite"></div>
-                                    
+                                <!-- Form status area for feedback -->
+                                <div id="form-status" role="status" aria-live="polite" class="d-none"></div>
+                                
+                                <form id="contact-form" method="POST" novalidate>
                                     <div class="row g-3 mb-3">
                                         <div class="col-md-6">
-                                            <input type="text" class="form-control" id="name" name="name" placeholder="Full Name" required onfocus="this.placeholder=''" onblur="if(this.value==='') this.placeholder='Full Name'">
+                                            <input type="text" class="form-control" id="name" name="name" placeholder="Full Name" required maxlength="100">
+                                            <div class="invalid-feedback">Please provide your full name.</div>
                                         </div>
                                         <div class="col-md-6">
                                             <input type="email" class="form-control" id="email" name="email" placeholder="Email Address" required>
+                                            <div class="invalid-feedback">Please provide a valid email address.</div>
                                         </div>
                                     </div>
                                     
                                     <div class="row g-3 mb-3">
                                         <div class="col-md-6">
-                                            <input type="tel" class="form-control" id="phone" name="phone" placeholder="Phone (Optional)">
+                                            <input type="tel" class="form-control" id="phone" name="phone" placeholder="Phone (Optional)" maxlength="20">
                                         </div>
                                         <div class="col-md-6">
-                                            <input type="text" class="form-control" id="company" name="company" placeholder="Company (Optional)">
+                                            <input type="text" class="form-control" id="company" name="company" placeholder="Company (Optional)" maxlength="100">
                                         </div>
                                     </div>
 
@@ -276,10 +278,13 @@
                                             <option value="consulting">Strategic Consulting</option>
                                             <option value="other">Other</option>
                                         </select>
+                                        <div class="invalid-feedback">Please select a service of interest.</div>
                                     </div>
                                     
                                     <div class="mb-3">
-                                        <textarea class="form-control" id="message" name="message" rows="5" placeholder="Tell us about your project" required></textarea>
+                                        <textarea class="form-control" id="message" name="message" rows="5" placeholder="Tell us about your project, challenges, and goals" required minlength="10" maxlength="2000"></textarea>
+                                        <div class="invalid-feedback">Please provide a detailed message (minimum 10 characters).</div>
+                                        <div class="form-text text-muted"><span id="char-count">0</span>/2000 characters</div>
                                     </div>
 
                                     <!-- Honeypot field for spam protection (hidden) -->
@@ -288,6 +293,11 @@
                                     <button type="submit" class="btn btn-primary btn-lg w-100" id="submit-btn">
                                         <i class="fas fa-paper-plane me-2"></i>Send Message
                                     </button>
+                                    
+                                    <p class="text-muted text-center mt-3 small">
+                                        <i class="fas fa-shield-alt me-1"></i>
+                                        Your information is secure and will only be used to respond to your inquiry.
+                                    </p>
                                 </form>
                             </div>
                         </div>

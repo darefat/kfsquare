@@ -331,27 +331,324 @@ document.addEventListener('DOMContentLoaded', function() {
     }
   }
 
-  // Enhanced Contact Form Functionality with backend integration
+  // Enhanced Contact Form Functionality with Mailgun and MongoDB integration
   function initContactForm() {
     var form = document.querySelector('#contact-form');
     if (!form) return;
 
     var status = document.getElementById('form-status');
-    // Ensure a status region exists for a11y feedback
+    var submitBtn = form.querySelector('#submit-btn');
+    var originalBtnText = submitBtn ? submitBtn.innerHTML : '';
+    var messageField = document.getElementById('message');
+    var charCount = document.getElementById('char-count');
+
+    // Character counter for message field
+    if (messageField && charCount) {
+      messageField.addEventListener('input', function() {
+        var count = this.value.length;
+        charCount.textContent = count;
+        
+        if (count > 2000) {
+          charCount.parentElement.classList.add('text-danger');
+        } else {
+          charCount.parentElement.classList.remove('text-danger');
+        }
+      });
+    }
+
+    // Ensure a status region exists for accessibility feedback
     if (!status) {
       status = document.createElement('div');
       status.id = 'form-status';
-      status.className = 'mt-3 text-muted';
+      status.className = 'mt-3 text-muted d-none';
       status.setAttribute('role', 'status');
       status.setAttribute('aria-live', 'polite');
-      form.appendChild(status);
+      form.insertBefore(status, form.firstChild);
     }
 
-    var submitBtn = form.querySelector('button[type="submit"]');
-    var btnText = submitBtn ? submitBtn : null;
+    function setSubmitting(state) {
+      if (!submitBtn) return;
+      submitBtn.disabled = !!state;
+      submitBtn.innerHTML = state ? 
+        '<i class="fas fa-spinner fa-spin me-2"></i>Sending...' : 
+        originalBtnText;
+    }
 
-    // Add honeypot if missing
-    if (!form.website) {
+    function showStatus(message, type) {
+      if (!status) return;
+      
+      var alertClass = type === 'error' ? 'alert-danger' : 
+                       type === 'success' ? 'alert-success' : 'alert-info';
+      
+      status.className = 'alert ' + alertClass + ' alert-dismissible fade show mb-3';
+      status.innerHTML = message + 
+        '<button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>';
+      status.classList.remove('d-none');
+      
+      // Scroll to status message
+      status.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+      
+      if (type === 'success') {
+        setTimeout(function() {
+          if (status) {
+            status.classList.add('d-none');
+          }
+        }, 10000);
+      }
+    }
+
+    function validateField(field) {
+      var isValid = true;
+      var value = field.value.trim();
+      
+      // Remove existing validation classes
+      field.classList.remove('is-valid', 'is-invalid');
+      
+      if (field.hasAttribute('required') && !value) {
+        field.classList.add('is-invalid');
+        isValid = false;
+      } else if (field.type === 'email' && value) {
+        var emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+        if (!emailRegex.test(value)) {
+          field.classList.add('is-invalid');
+          isValid = false;
+        } else {
+          field.classList.add('is-valid');
+        }
+      } else if (field.hasAttribute('minlength')) {
+        var minLength = parseInt(field.getAttribute('minlength'));
+        if (value.length < minLength) {
+          field.classList.add('is-invalid');
+          isValid = false;
+        } else {
+          field.classList.add('is-valid');
+        }
+      } else if (value && field.hasAttribute('required')) {
+        field.classList.add('is-valid');
+      }
+      
+      return isValid;
+    }
+
+    function validateForm() {
+      var formData = getFormData();
+      var isValid = true;
+      
+      // Honeypot check
+      if (formData.website) {
+        showStatus('⚠️ Invalid submission detected. Please try again.', 'error');
+        return false;
+      }
+      
+      // Validate all form fields
+      var fields = form.querySelectorAll('input[required], select[required], textarea[required]');
+      for (var i = 0; i < fields.length; i++) {
+        if (!validateField(fields[i])) {
+          isValid = false;
+        }
+      }
+      
+      // Additional validations
+      if (!formData.name || formData.name.length < 2) {
+        showStatus('❌ Please provide your full name (minimum 2 characters).', 'error');
+        isValid = false;
+      }
+      
+      if (!formData.email) {
+        showStatus('❌ Please provide a valid email address.', 'error');
+        isValid = false;
+      }
+      
+      if (!formData.message || formData.message.length < 10) {
+        showStatus('❌ Please provide a detailed message (minimum 10 characters).', 'error');
+        isValid = false;
+      }
+      
+      if (formData.message && formData.message.length > 2000) {
+        showStatus('❌ Message is too long. Please keep it under 2000 characters.', 'error');
+        isValid = false;
+      }
+      
+      return isValid;
+    }
+
+    function getFormData() {
+      return {
+        name: (form.name && form.name.value.trim()) || '',
+        email: (form.email && form.email.value.trim()) || '',
+        phone: (form.phone && form.phone.value.trim()) || '',
+        company: (form.company && form.company.value.trim()) || '',
+        serviceInterest: (form.serviceInterest && form.serviceInterest.value) || '',
+        message: (form.message && form.message.value.trim()) || '',
+        website: (form.website && form.website.value) || '' // honeypot
+      };
+    }
+
+    function fallbackMailto(data) {
+      try {
+        var subject = 'Contact Form Submission from ' + data.name;
+        var body = 'Name: ' + data.name + '\n' +
+                   'Email: ' + data.email + '\n' +
+                   (data.phone ? ('Phone: ' + data.phone + '\n') : '') +
+                   (data.company ? ('Company: ' + data.company + '\n') : '') +
+                   'Service Interest: ' + (data.serviceInterest || 'other') + '\n\n' +
+                   'Message:\n' + data.message;
+        
+        var link = 'mailto:customersupport@kfsquare.com?subject=' + 
+                   encodeURIComponent(subject) + '&body=' + encodeURIComponent(body);
+        
+        window.location.href = link;
+        showStatus('📧 Your email client has been opened. Please send the message from there.', 'info');
+      } catch (e) {
+        showStatus('❌ Unable to process your request. Please contact us directly at <a href="mailto:customersupport@kfsquare.com">customersupport@kfsquare.com</a> or call <a href="tel:+14109347470">410-934-7470</a>.', 'error');
+      }
+    }
+
+    // Form submission handler with Mailgun/MongoDB integration
+    form.addEventListener('submit', async function(event) {
+      event.preventDefault();
+      
+      // Clear previous status
+      if (status) {
+        status.classList.add('d-none');
+      }
+
+      var formData = getFormData();
+
+      // Validate form
+      if (!validateForm()) {
+        return;
+      }
+
+      setSubmitting(true);
+      showStatus('📤 Sending your message...', 'info');
+
+      try {
+        // Submit to backend API with Mailgun/MongoDB integration
+        const response = await fetch('/api/contacts', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            'Accept': 'application/json',
+            'X-Requested-With': 'XMLHttpRequest'
+          },
+          body: JSON.stringify(formData)
+        });
+        
+        const result = await response.json();
+        
+        if (response.ok && result.success) {
+          showStatus('✅ <strong>Message Sent Successfully!</strong><br>Thank you ' + formData.name + '! We\'ve received your inquiry about <strong>' + (formData.serviceInterest || 'our services') + '</strong>.<br>📧 A confirmation has been sent to <strong>' + formData.email + '</strong><br>⏰ Our team will respond within 24 hours.', 'success');
+          
+          // Clear form
+          form.reset();
+          
+          // Remove validation classes
+          var fields = form.querySelectorAll('.is-valid, .is-invalid');
+          for (var i = 0; i < fields.length; i++) {
+            fields[i].classList.remove('is-valid', 'is-invalid');
+          }
+          
+          // Reset character counter
+          if (charCount) {
+            charCount.textContent = '0';
+          }
+          
+          // Analytics tracking
+          if (window.gtag) {
+            gtag('event', 'form_submit', {
+              event_category: 'Contact',
+              event_label: 'Contact Form Success',
+              value: 1
+            });
+          }
+          
+        } else {
+          throw new Error(result.message || result.error || 'Server error occurred');
+        }
+        
+      } catch (error) {
+        console.error('Contact form submission error:', error);
+        
+        // Handle different error types
+        if (error.name === 'TypeError' || error.message.includes('fetch') || error.message.includes('NetworkError')) {
+          showStatus('🔄 <strong>Connection Issue:</strong> Unable to connect to server. Opening your email client as backup...', 'info');
+          setTimeout(() => fallbackMailto(formData), 2000);
+        } else if (error.message.includes('rate limit') || error.message.includes('429')) {
+          showStatus('⏱️ <strong>Rate Limit:</strong> Too many requests. Please wait a moment before trying again.', 'error');
+        } else if (error.message.includes('validation')) {
+          showStatus('❌ <strong>Validation Error:</strong> Please check your input and try again.', 'error');
+        } else {
+          showStatus('❌ <strong>Error:</strong> ' + error.message + '<br>Please try again or contact us directly at <a href="mailto:customersupport@kfsquare.com">customersupport@kfsquare.com</a>', 'error');
+        }
+        
+        // Analytics tracking for errors
+        if (window.gtag) {
+          gtag('event', 'form_error', {
+            event_category: 'Contact',
+            event_label: error.message,
+            value: 0
+          });
+        }
+        
+      } finally {
+        setSubmitting(false);
+      }
+    });
+
+    // Real-time validation
+    var emailInput = form.querySelector('#email');
+    var nameInput = form.querySelector('#name');
+    var messageInput = form.querySelector('#message');
+
+    if (emailInput) {
+      emailInput.addEventListener('blur', function() {
+        if (this.value.trim()) {
+          validateField(this);
+        }
+      });
+
+      emailInput.addEventListener('input', function() {
+        // Remove invalid class while typing
+        this.classList.remove('is-invalid');
+      });
+    }
+
+    if (nameInput) {
+      nameInput.addEventListener('blur', function() {
+        if (this.value.trim()) {
+          validateField(this);
+        }
+      });
+    }
+
+    if (messageInput) {
+      messageInput.addEventListener('blur', function() {
+        if (this.value.trim()) {
+          validateField(this);
+        }
+      });
+    }
+
+    // Prevent form submission on Enter key in text inputs (except textarea)
+    var textInputs = form.querySelectorAll('input[type="text"], input[type="email"], input[type="tel"]');
+    for (var i = 0; i < textInputs.length; i++) {
+      textInputs[i].addEventListener('keydown', function(e) {
+        if (e.keyCode === 13) {
+          e.preventDefault();
+          var nextField = this.closest('.row').nextElementSibling || this.parentElement.nextElementSibling;
+          if (nextField) {
+            var nextInput = nextField.querySelector('input, select, textarea');
+            if (nextInput) {
+              nextInput.focus();
+            }
+          }
+        }
+      });
+    }
+
+    // Add honeypot field if missing
+    if (!form.querySelector('#website')) {
       var honeypot = document.createElement('input');
       honeypot.type = 'text';
       honeypot.name = 'website';
@@ -361,99 +658,6 @@ document.addEventListener('DOMContentLoaded', function() {
       honeypot.setAttribute('autocomplete', 'off');
       honeypot.setAttribute('aria-hidden', 'true');
       form.appendChild(honeypot);
-    }
-
-    function setSubmitting(state) {
-      if (!submitBtn) return;
-      submitBtn.disabled = !!state;
-      if (btnText) {
-        btnText.innerHTML = state ? '<i class="fas fa-spinner fa-spin me-2"></i>Sending...' : '<i class="fas fa-paper-plane me-2"></i>Send Message';
-      }
-    }
-
-    function getFormData() {
-      return {
-        name: (form.name && form.name.value) || '',
-        email: (form.email && form.email.value) || '',
-        phone: (form.phone && form.phone.value) || '',
-        company: (form.company && form.company.value) || '',
-        serviceInterest: (form.service && form.service.value) || 'other',
-        message: (form.message && form.message.value) || '',
-        website: (form.website && form.website.value) || '' // honeypot
-      };
-    }
-
-    function updateStatus(text, type) {
-      if (!status) return;
-      status.className = 'mt-3 ' + (type === 'error' ? 'text-danger' : type === 'success' ? 'text-success' : 'text-muted');
-      status.textContent = text;
-    }
-
-    form.addEventListener('submit', async function(event) {
-      event.preventDefault();
-
-      var data = getFormData();
-
-      // Basic validation
-      var invalid = false;
-      if (!data.name) invalid = true;
-      if (!data.email) invalid = true;
-      if (!data.message) invalid = true;
-
-      var emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-      if (data.email && !emailRegex.test(data.email)) {
-        invalid = true;
-      }
-      if (data.website) { // honeypot
-        updateStatus('Invalid submission detected.', 'error');
-        return;
-      }
-      if (invalid) {
-        updateStatus('Please fill in all required fields.', 'error');
-        return;
-      }
-
-      setSubmitting(true);
-      updateStatus('Sending your message...', 'info');
-
-      try {
-        const response = await fetch('/submit-contact', {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify(data)
-        });
-        
-        const result = await response.json();
-        
-        if (result && result.success) {
-          updateStatus('Thanks! Your message was sent successfully. We\'ll respond within 24 hours.', 'success');
-          form.reset();
-        } else {
-          throw new Error(result ? result.error : 'Server error');
-        }
-      } catch (error) {
-        console.error('Contact form error:', error);
-        fallbackMailto(data);
-      } finally {
-        setSubmitting(false);
-      }
-    });
-
-    function fallbackMailto(data) {
-      try {
-        var subject = 'Contact Form Submission from ' + data.name;
-        var body = 'Name: ' + data.name + '\n' +
-                   'Email: ' + data.email + '\n' +
-                   (data.phone ? ('Phone: ' + data.phone + '\n') : '') +
-                   (data.company ? ('Company: ' + data.company + '\n') : '') +
-                   'Service: ' + (data.serviceInterest || 'other') + '\n\n' +
-                   'Message:\n' + data.message;
-        var link = 'mailto:customersupport@kfsquare.com?subject=' + encodeURIComponent(subject) + '&body=' + encodeURIComponent(body);
-        window.location.href = link;
-        updateStatus('Your email client has been opened to send the message.', 'info');
-      } catch (e) {
-        updateStatus('Something went wrong. Please try again later or contact us directly.', 'error');
-      }
     }
   }
 

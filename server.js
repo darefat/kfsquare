@@ -18,7 +18,7 @@ app.use(helmet({
     directives: {
       defaultSrc: ["'self'"],
       styleSrc: ["'self'", "'unsafe-inline'", "cdn.jsdelivr.net", "cdnjs.cloudflare.com"],
-      scriptSrc: ["'self'", "cdn.jsdelivr.net"],
+      scriptSrc: ["'self'", "cdn.jsdelivr.net", "www.googletagmanager.com"],
       imgSrc: ["'self'", "data:", "https:"],
       fontSrc: ["'self'", "cdnjs.cloudflare.com"],
       connectSrc: ["'self'"]
@@ -42,23 +42,19 @@ app.use(express.urlencoded({ extended: true, limit: '10mb' }));
 const generalLimiter = rateLimit({
   windowMs: 15 * 60 * 1000, // 15 minutes
   max: process.env.GENERAL_RATE_LIMIT || 100,
-  message: {
-    error: 'Too many requests from this IP, please try again later.'
-  }
+  message: { error: 'Too many requests from this IP, please try again later.' }
 });
 
 const emailLimiter = rateLimit({
   windowMs: 60 * 60 * 1000, // 1 hour
   max: process.env.EMAIL_RATE_LIMIT || 5,
-  message: {
-    error: 'Too many contact form submissions from this IP, please try again later.'
-  }
+  message: { error: 'Too many contact form submissions from this IP, please try again later.' }
 });
 
 app.use(generalLimiter);
 app.use(express.static(path.join(__dirname)));
 
-// MongoDB connection with retry logic
+// MongoDB connection
 const connectDB = async () => {
   try {
     const conn = await mongoose.connect(process.env.MONGODB_URI, {
@@ -73,7 +69,7 @@ const connectDB = async () => {
   }
 };
 
-// Contact schema
+// Contact schema for MongoDB
 const contactSchema = new mongoose.Schema({
   name: { type: String, required: true, trim: true, maxlength: 100 },
   email: { type: String, required: true, trim: true, lowercase: true },
@@ -92,6 +88,8 @@ const contactSchema = new mongoose.Schema({
   userAgent: String,
   emailSent: { type: Boolean, default: false },
   emailSentAt: Date,
+  confirmationSent: { type: Boolean, default: false },
+  confirmationSentAt: Date,
   createdAt: { type: Date, default: Date.now },
   updatedAt: { type: Date, default: Date.now }
 });
@@ -121,7 +119,7 @@ if (process.env.MAILGUN_API_KEY && process.env.MAILGUN_DOMAIN) {
 // Database connection status
 let database = { isConnected: false };
 
-// Enhanced contact form endpoint
+// Contact form endpoint with Mailgun and MongoDB integration
 app.post('/api/contacts', emailLimiter, [
   body('name').trim().isLength({ min: 2, max: 100 }).escape().withMessage('Name must be between 2-100 characters'),
   body('email').isEmail().normalizeEmail().withMessage('Please provide a valid email address'),
@@ -156,7 +154,7 @@ app.post('/api/contacts', emailLimiter, [
         serviceInterest: serviceInterest || 'other',
         source: 'website_contact_form',
         status: 'new',
-        priority: serviceInterest === 'consulting' || serviceInterest === 'ai-ml' ? 'high' : 'medium',
+        priority: ['consulting', 'ai-ml', 'llm-integration'].includes(serviceInterest) ? 'high' : 'medium',
         ipAddress: req.ip || req.connection.remoteAddress,
         userAgent: req.get('User-Agent')
       };
@@ -166,7 +164,7 @@ app.post('/api/contacts', emailLimiter, [
       console.log(`💾 Contact saved to MongoDB: ${contact._id}`);
     }
 
-    // 2. Send email via Mailgun
+    // 2. Send email via Mailgun to customer support
     let emailSent = false;
     if (mailgunClient && process.env.MAILGUN_DOMAIN) {
       const serviceLabels = {
@@ -179,135 +177,53 @@ app.post('/api/contacts', emailLimiter, [
         'other': 'Other Services'
       };
 
+      const priorityIcon = contact && contact.priority === 'high' ? '🔥 HIGH PRIORITY - ' : '';
+      
       const htmlBody = `
         <!DOCTYPE html>
         <html>
-        <head>
-          <meta charset="UTF-8">
-          <meta name="viewport" content="width=device-width, initial-scale=1.0">
-          <title>New Contact Form Submission</title>
-        </head>
-        <body style="margin: 0; padding: 0; font-family: Arial, sans-serif; background-color: #f8f9fa;">
-          <div style="max-width: 600px; margin: 0 auto; background-color: white;">
-            <!-- Header -->
+        <body style="font-family: Arial, sans-serif; background-color: #f8f9fa; margin: 0; padding: 20px;">
+          <div style="max-width: 600px; margin: 0 auto; background: white; border-radius: 8px; overflow: hidden; box-shadow: 0 4px 6px rgba(0,0,0,0.1);">
             <div style="background: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%); padding: 30px; text-align: center;">
-              <h1 style="color: white; margin: 0; font-size: 28px;">
-                <span style="color: #ffc107;">KF</span>SQUARE
-              </h1>
-              <p style="color: white; margin: 10px 0 0 0; font-size: 16px;">New Contact Form Submission</p>
+              <h1 style="color: white; margin: 0;"><span style="color: #ffc107;">KF</span>SQUARE</h1>
+              <p style="color: white; margin: 10px 0 0 0;">${priorityIcon}New Contact Form Submission</p>
             </div>
-            
-            <!-- Content -->
-            <div style="padding: 30px; background: #f8f9fa;">
-              <h2 style="color: #1e3c72; margin-top: 0; font-size: 24px;">Contact Details</h2>
+            <div style="padding: 30px;">
+              <h2 style="color: #1e3c72; margin-top: 0;">Contact Details</h2>
               <table style="width: 100%; border-collapse: collapse; margin-bottom: 30px;">
-                <tr>
-                  <td style="padding: 12px 0; font-weight: bold; color: #333; width: 30%;">Name:</td>
-                  <td style="padding: 12px 0; color: #666;">${name}</td>
-                </tr>
-                <tr>
-                  <td style="padding: 12px 0; font-weight: bold; color: #333;">Email:</td>
-                  <td style="padding: 12px 0; color: #666;"><a href="mailto:${email}" style="color: #1e3c72; text-decoration: none;">${email}</a></td>
-                </tr>
-                ${phone ? `
-                <tr>
-                  <td style="padding: 12px 0; font-weight: bold; color: #333;">Phone:</td>
-                  <td style="padding: 12px 0; color: #666;"><a href="tel:${phone}" style="color: #1e3c72; text-decoration: none;">${phone}</a></td>
-                </tr>` : ''}
-                ${company ? `
-                <tr>
-                  <td style="padding: 12px 0; font-weight: bold; color: #333;">Company:</td>
-                  <td style="padding: 12px 0; color: #666;">${company}</td>
-                </tr>` : ''}
-                <tr>
-                  <td style="padding: 12px 0; font-weight: bold; color: #333;">Service Interest:</td>
-                  <td style="padding: 12px 0; color: #666;">
-                    <span style="background: #1e3c72; color: white; padding: 4px 12px; border-radius: 16px; font-size: 14px;">
-                      ${serviceLabels[serviceInterest] || 'Other'}
-                    </span>
-                  </td>
-                </tr>
+                <tr><td style="padding: 12px 0; font-weight: bold; color: #333; width: 30%;">Name:</td><td style="padding: 12px 0; color: #666;">${name}</td></tr>
+                <tr><td style="padding: 12px 0; font-weight: bold; color: #333;">Email:</td><td style="padding: 12px 0; color: #666;"><a href="mailto:${email}" style="color: #1e3c72;">${email}</a></td></tr>
+                ${phone ? `<tr><td style="padding: 12px 0; font-weight: bold; color: #333;">Phone:</td><td style="padding: 12px 0; color: #666;"><a href="tel:${phone}" style="color: #1e3c72;">${phone}</a></td></tr>` : ''}
+                ${company ? `<tr><td style="padding: 12px 0; font-weight: bold; color: #333;">Company:</td><td style="padding: 12px 0; color: #666;">${company}</td></tr>` : ''}
+                <tr><td style="padding: 12px 0; font-weight: bold; color: #333;">Service:</td><td style="padding: 12px 0;"><span style="background: #1e3c72; color: white; padding: 4px 12px; border-radius: 16px; font-size: 14px;">${serviceLabels[serviceInterest] || 'Other'}</span></td></tr>
               </table>
-              
-              <h3 style="color: #1e3c72; margin-top: 30px; font-size: 20px;">Message</h3>
-              <div style="background: white; padding: 20px; border-radius: 8px; border-left: 4px solid #1e3c72; box-shadow: 0 2px 4px rgba(0,0,0,0.1);">
-                ${message.replace(/\n/g, '<br>')}
-              </div>
-              
-              <!-- Quick Actions -->
-              <div style="margin-top: 30px; text-align: center;">
-                <a href="mailto:${email}?subject=Re: Your inquiry to KFSQUARE" 
-                   style="display: inline-block; background: #1e3c72; color: white; padding: 12px 24px; text-decoration: none; border-radius: 6px; margin: 0 10px; font-weight: bold;">
-                   Reply to ${name}
-                </a>
-                ${phone ? `
-                <a href="tel:${phone}" 
-                   style="display: inline-block; background: #28a745; color: white; padding: 12px 24px; text-decoration: none; border-radius: 6px; margin: 0 10px; font-weight: bold;">
-                   Call ${name}
-                </a>` : ''}
+              <h3 style="color: #1e3c72;">Message</h3>
+              <div style="background: #f8f9fa; padding: 20px; border-radius: 8px; border-left: 4px solid #1e3c72;">${message.replace(/\n/g, '<br>')}</div>
+              <div style="text-align: center; margin: 30px 0;">
+                <a href="mailto:${email}?subject=Re: Your inquiry to KFSQUARE" style="display: inline-block; background: #1e3c72; color: white; padding: 12px 24px; text-decoration: none; border-radius: 6px; margin: 0 10px;">Reply to ${name}</a>
+                ${phone ? `<a href="tel:${phone}" style="display: inline-block; background: #28a745; color: white; padding: 12px 24px; text-decoration: none; border-radius: 6px; margin: 0 10px;">Call ${name}</a>` : ''}
               </div>
             </div>
-            
-            <!-- Footer -->
             <div style="background: #e9ecef; padding: 20px; text-align: center; font-size: 12px; color: #666;">
-              <p style="margin: 0; line-height: 1.5;">
-                📅 Submitted: ${new Date().toLocaleString('en-US', { 
-                  timeZone: 'America/New_York',
-                  dateStyle: 'full',
-                  timeStyle: 'long'
-                })}<br>
-                🆔 Contact ID: ${contact ? contact._id : 'N/A'}<br>
-                🌐 IP Address: ${req.ip || 'Unknown'}<br>
-                📱 User Agent: ${req.get('User-Agent') || 'Unknown'}
-              </p>
-              <div style="margin-top: 15px; padding-top: 15px; border-top: 1px solid #ddd;">
-                <p style="margin: 0; font-size: 11px; color: #999;">
-                  This email was sent from the KFSQUARE contact form on kfsquare.com
-                </p>
-              </div>
+              <p style="margin: 0;">📅 ${new Date().toLocaleString()}<br>🆔 ID: ${contact ? contact._id : 'N/A'}<br>🌐 IP: ${req.ip || 'Unknown'}</p>
             </div>
           </div>
         </body>
         </html>`;
 
-      const textBody = `
-KFSQUARE - New Contact Form Submission
-
-CONTACT DETAILS:
-Name: ${name}
-Email: ${email}
-${phone ? `Phone: ${phone}\n` : ''}${company ? `Company: ${company}\n` : ''}Service Interest: ${serviceLabels[serviceInterest] || 'Other'}
-
-MESSAGE:
-${message}
-
-SUBMISSION DETAILS:
-Submitted: ${new Date().toLocaleString()}
-Contact ID: ${contact ? contact._id : 'N/A'}
-IP Address: ${req.ip || 'Unknown'}
-User Agent: ${req.get('User-Agent') || 'Unknown'}
-
----
-Reply directly to this email to respond to ${name}.
-      `;
-
       await mailgunClient.messages.create(process.env.MAILGUN_DOMAIN, {
         from: `KFSQUARE Contact Form <noreply@${process.env.MAILGUN_DOMAIN}>`,
         to: [recipientEmail],
         'h:Reply-To': email,
-        subject: `🚀 New Contact: ${name} - ${serviceLabels[serviceInterest] || 'General Inquiry'}`,
-        text: textBody,
+        subject: `${priorityIcon}New Contact: ${name} - ${serviceLabels[serviceInterest] || 'General Inquiry'}`,
         html: htmlBody,
         'o:tag': ['contact-form', serviceInterest || 'other'],
-        'o:tracking': true,
-        'o:tracking-clicks': true,
-        'o:tracking-opens': true
+        'o:tracking': true
       });
       
       emailSent = true;
-      console.log(`📧 Email sent successfully to ${recipientEmail} from ${email}`);
+      console.log(`📧 Email sent to ${recipientEmail} from ${email}`);
       
-      // Update contact record with email status
       if (contact) {
         contact.emailSent = true;
         contact.emailSentAt = new Date();
@@ -316,8 +232,19 @@ Reply directly to this email to respond to ${name}.
     }
 
     // 3. Send confirmation email to user
+    let confirmationSent = false;
     if (mailgunClient && emailSent) {
       try {
+        const serviceLabels = {
+          'data-engineering': 'Data Engineering',
+          'predictive-analytics': 'Predictive Analytics', 
+          'ai-ml': 'AI & Machine Learning',
+          'business-intelligence': 'Business Intelligence',
+          'llm-integration': 'LLM Integration',
+          'consulting': 'Strategic Consulting',
+          'other': 'our services'
+        };
+
         const confirmationHtml = `
           <!DOCTYPE html>
           <html>
@@ -330,17 +257,16 @@ Reply directly to this email to respond to ${name}.
               <div style="padding: 30px;">
                 <h2 style="color: #1e3c72; margin-top: 0;">Hi ${name},</h2>
                 <p>Thank you for reaching out to KFSQUARE regarding <strong>${serviceLabels[serviceInterest] || 'our services'}</strong>.</p>
-                <p>We've received your message and our team will review your inquiry carefully. You can expect a personalized response from our experts within <strong>24 hours</strong>.</p>
+                <p>We've received your message and our expert team will review your inquiry carefully. You can expect a personalized response within <strong>24 hours</strong>.</p>
                 <div style="background: #f8f9fa; padding: 20px; border-radius: 8px; margin: 20px 0; border-left: 4px solid #1e3c72;">
                   <h4 style="margin-top: 0; color: #1e3c72;">What happens next?</h4>
-                  <ul style="margin: 0; padding-left: 20px;">
+                  <ul style="margin: 0; padding-left: 20px; color: #666;">
                     <li>Our team will review your specific requirements</li>
                     <li>We'll prepare a customized solution proposal</li>
                     <li>You'll receive a detailed response within 24 hours</li>
                     <li>We'll schedule a consultation call if needed</li>
                   </ul>
                 </div>
-                <p>In the meantime, feel free to explore our <a href="https://kfsquare.com/services.html" style="color: #1e3c72;">services</a> or <a href="https://kfsquare.com/portfolio.html" style="color: #1e3c72;">portfolio</a> to learn more about our capabilities.</p>
                 <div style="text-align: center; margin: 30px 0;">
                   <p style="margin: 0; color: #666;">Questions? Contact us anytime:</p>
                   <p style="margin: 5px 0;">📧 <a href="mailto:customersupport@kfsquare.com" style="color: #1e3c72;">customersupport@kfsquare.com</a></p>
@@ -349,9 +275,7 @@ Reply directly to this email to respond to ${name}.
               </div>
               <div style="background: #f8f9fa; padding: 20px; text-align: center; color: #666; font-size: 14px;">
                 <p style="margin: 0;">Best regards,<br>The KFSQUARE Team</p>
-                <p style="margin: 10px 0 0 0; font-size: 12px;">
-                  Small Business & Veteran Owned | SOC 2 Certified
-                </p>
+                <p style="margin: 10px 0 0 0; font-size: 12px;">Small Business & Veteran Owned | SOC 2 Certified</p>
               </div>
             </div>
           </body>
@@ -362,14 +286,19 @@ Reply directly to this email to respond to ${name}.
           to: [email],
           subject: `✅ We received your message, ${name}!`,
           html: confirmationHtml,
-          text: `Hi ${name},\n\nThank you for contacting KFSQUARE! We've received your inquiry about ${serviceLabels[serviceInterest] || 'our services'} and will respond within 24 hours.\n\nBest regards,\nThe KFSQUARE Team\n\nQuestions? Email us at customersupport@kfsquare.com or call 410-934-7470`,
           'o:tag': ['confirmation', 'contact-form']
         });
         
+        confirmationSent = true;
         console.log(`📧 Confirmation email sent to ${email}`);
+        
+        if (contact) {
+          contact.confirmationSent = true;
+          contact.confirmationSentAt = new Date();
+          await contact.save();
+        }
       } catch (confirmError) {
         console.error('Confirmation email error:', confirmError);
-        // Don't fail the request if confirmation email fails
       }
     }
 
@@ -380,6 +309,7 @@ Reply directly to this email to respond to ${name}.
       data: {
         id: contact ? contact._id : null,
         emailSent,
+        confirmationSent,
         timestamp: new Date().toISOString()
       }
     });
@@ -387,14 +317,9 @@ Reply directly to this email to respond to ${name}.
   } catch (error) {
     console.error('❌ Contact form submission error:', error);
     
-    // Log detailed error for debugging
-    if (error.response && error.response.body) {
-      console.error("Mailgun Response Error:", error.response.body);
-    }
-    
     res.status(500).json({ 
       success: false, 
-      message: 'We apologize, but there was an error processing your request. Please try again or contact us directly at customersupport@kfsquare.com or 410-934-7470.',
+      message: 'We apologize, but there was an error processing your request. Please try again or contact us directly.',
       error: process.env.NODE_ENV === 'development' ? error.message : undefined
     });
   }
@@ -415,17 +340,11 @@ app.get('/', (req, res) => {
   res.sendFile(path.join(__dirname, 'index.html'));
 });
 
-app.get('*.html', (req, res) => {
-  const filename = req.path.substring(1);
-  res.sendFile(path.join(__dirname, filename));
-});
-
-// 404 handler
+// Error handlers
 app.use((req, res) => {
   res.status(404).json({ error: 'Endpoint not found' });
 });
 
-// Error handler
 app.use((error, req, res, next) => {
   console.error('Server error:', error);
   res.status(500).json({ 
@@ -434,20 +353,18 @@ app.use((error, req, res, next) => {
   });
 });
 
-// Initialize database and start server
+// Initialize and start server
 const startServer = async () => {
-  // Connect to database
   database.isConnected = await connectDB();
   
   if (!database.isConnected) {
-    console.warn('⚠️ Starting server without database connection - contacts will not be saved');
+    console.warn('⚠️ Starting server without database connection');
   }
   
-  // Start server
   app.listen(PORT, () => {
     console.log(`🚀 Server running on port ${PORT}`);
-    console.log(`📧 Email configured: ${mailgunClient ? '✅' : '❌'}`);
-    console.log(`💾 Database connected: ${database.isConnected ? '✅' : '❌'}`);
+    console.log(`📧 Mailgun: ${mailgunClient ? '✅' : '❌'}`);
+    console.log(`💾 MongoDB: ${database.isConnected ? '✅' : '❌'}`);
     console.log(`🌍 Environment: ${process.env.NODE_ENV || 'development'}`);
   });
 };
