@@ -12,6 +12,12 @@
 .env.docker
 .env.secrets
 
+# Secrets directory
+.secrets/
+.secrets
+secrets/
+*.secrets
+
 # But keep example files
 !.env.example
 !.env.compose.example
