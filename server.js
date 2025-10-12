@@ -417,7 +417,13 @@ app.get('/', (req, res) => {
 
 app.get('*.html', (req, res) => {
   const filename = req.path.substring(1);
-  res.sendFile(path.join(__dirname, filename));
+
+  // Resolve the full absolute path and prevent path traversal attacks
+  const fullPath = path.resolve(__dirname, filename);
+  if (!fullPath.startsWith(__dirname + path.sep)) {
+    return res.status(403).send('Forbidden');
+  }
+  res.sendFile(fullPath);
 });
 
 // 404 handler
