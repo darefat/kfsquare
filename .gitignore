@@ -10,7 +10,6 @@
 .env.production.local
 .env.compose
 .env.docker
-.env.secrets
 
 # But keep example files
 !.env.example
