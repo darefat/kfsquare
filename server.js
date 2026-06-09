@@ -350,7 +350,7 @@ Reply directly to this email to respond to ${name}.
               <div style="background: #f8f9fa; padding: 20px; text-align: center; color: #666; font-size: 14px;">
                 <p style="margin: 0;">Best regards,<br>The KFSQUARE Team</p>
                 <p style="margin: 10px 0 0 0; font-size: 12px;">
-                  Small Business & Veteran Owned | SOC 2 Certified
+                  Small Business & Veteran Owned |
                 </p>
               </div>
             </div>
