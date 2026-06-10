@@ -311,4 +311,4 @@ Contributions are welcome! Please submit a pull request with your changes.
 
 ## License
 
-© 2025 KFSQUARE. All rights reserved.
+© 2026 KFSQUARE. All rights reserved.
