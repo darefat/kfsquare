@@ -481,29 +481,29 @@ document.addEventListener('DOMContentLoaded', function() {
     
     if (!chatWidget) return;
 
-    // Enhanced AI responses for customer support
-    var aiResponses = {
+    // Support response templates
+    var supportResponses = {
       'technical-support': {
-        text: "🛠️ **Technical Support Center**\n\nI can help you with:\n• **System Issues & Troubleshooting**\n• **Integration Problems**\n• **Performance Optimization**\n• **API Documentation & Setup**\n• **Data Pipeline Issues**\n• **Platform Configuration**\n\nWhat technical issue are you experiencing?",
+        text: "Technical Support\n\nI can help you with:\n- System Issues & Troubleshooting\n- Integration Problems\n- Performance Optimization\n- API Documentation & Setup\n- Data Pipeline Issues\n- Platform Configuration\n\nWhat technical issue are you experiencing?",
         quickActions: ['System Down', 'Integration Help', 'Performance Issues', 'Create Ticket']
       },
       'billing-support': {
-        text: "💳 **Billing & Account Support**\n\nI can assist with:\n• **Invoice Questions & Payment Issues**\n• **Subscription Management**\n• **Usage Reports & Analytics**\n• **Plan Upgrades & Changes**\n• **Refund Requests**\n• **Enterprise Pricing**\n\nWhat billing question do you have?",
+        text: "Billing & Account Support\n\nI can assist with:\n- Invoice Questions & Payment Issues\n- Subscription Management\n- Usage Reports & Analytics\n- Plan Upgrades & Changes\n- Refund Requests\n- Enterprise Pricing\n\nWhat billing question do you have?",
         quickActions: ['View Invoice', 'Payment Issue', 'Upgrade Plan', 'Billing Ticket']
       },
       'service-info': {
-        text: "ℹ️ **Service Information Hub**\n\nLearn about our comprehensive offerings:\n• **Data Engineering & ETL Pipelines**\n• **Advanced Analytics & ML Models**\n• **Real-time Data Processing**\n• **AI Integration & LLM Solutions**\n• **Business Intelligence Dashboards**\n• **Data Security & Compliance**\n\nWhich service would you like to explore?",
+        text: "Service Information\n\nLearn about our comprehensive offerings:\n- Data Engineering & ETL Pipelines\n- Advanced Analytics & ML Models\n- Real-time Data Processing\n- AI Integration & LLM Solutions\n- Business Intelligence Dashboards\n- Data Security & Compliance\n\nWhich service would you like to explore?",
         quickActions: ['Data Engineering', 'AI Solutions', 'Analytics', 'Security']
       },
       'live-agent': {
-        text: "👨‍💼 **Live Agent Connection**\n\n**Connecting you to our expert support team...**\n\n**Current Queue Status**: 2 people ahead\n**Estimated Wait Time**: 3-5 minutes\n**Agent Specialty**: Technical & Billing Support\n\nWhile you wait, feel free to describe your issue in detail. This will help our agent assist you faster.",
+        text: "Connecting you to our support team...\n\nCurrent Queue Status: 2 people ahead\nEstimated Wait Time: 3-5 minutes\nAgent Specialty: Technical & Billing Support\n\nWhile you wait, please describe your issue in detail to help our agent assist you faster.",
         quickActions: ['Describe Issue', 'Upload Files', 'Cancel Request']
       },
       'default': [
-        "👋 Welcome to KFSQUARE Customer Support! I'm here to provide comprehensive assistance with technical issues, billing questions, and service information. How can I help you today?",
-        "Hello! I'm your dedicated KFSQUARE support assistant. Whether you need technical help, billing support, or want to learn about our services, I'm here to help. What brings you here today?",
-        "Hi there! Thank you for contacting KFSQUARE support. Our team is available 24/7 to assist with any questions or issues you may have. How can I make your day better?",
-        "Welcome! I'm equipped to help with technical troubleshooting, account management, service information, and can connect you with live agents when needed. What can I assist you with?"
+        "Welcome to KFSQUARE Customer Support. I can assist with technical issues, billing questions, and service information. How can I help you today?",
+        "Hello! I'm your KFSQUARE support assistant. Whether you need technical help, billing support, or want to learn about our services, I'm here to help.",
+        "Hi there. Thank you for contacting KFSQUARE. Our team is available to assist with any questions or issues. How can I help?",
+        "Welcome. I can help with technical troubleshooting, account management, service information, and can connect you with our team when needed."
       ]
     };
 
@@ -516,11 +516,10 @@ document.addEventListener('DOMContentLoaded', function() {
       'agent|human|person|representative|speak to someone|live chat': 'live-agent'
     };
 
-    // Initialize enhanced chat with support features
+    // Initialize chat with support features
     function initChat() {
-      // Welcome message with comprehensive support options
       setTimeout(function() {
-        var welcomeMsg = "👋 **Welcome to KFSQUARE Customer Support!**\n\nI'm your AI assistant, ready to help with:\n• 🛠️ Technical troubleshooting\n• 💳 Billing & account questions\n• ℹ️ Service information\n• 👨‍💼 Live agent connection\n\nHow can I assist you today?";
+        var welcomeMsg = "Welcome to KFSQUARE Support.\n\nI can assist with:\n- Technical troubleshooting\n- Billing & account questions\n- Service information\n- Connecting you with our team\n\nHow can I help you today?";
         addMessage(welcomeMsg, false, ['Technical Support', 'Billing Help', 'Service Info', 'Live Agent']);
       }, 1000);
 
@@ -605,7 +604,7 @@ document.addEventListener('DOMContentLoaded', function() {
       addClass(messageDiv, isUser ? 'user-message' : 'bot-message');
       
       var currentTime = new Date().toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'});
-      var avatar = isUser ? '👤' : (agentConnected ? '👨‍💼' : '🤖');
+      var avatar = isUser ? '👤' : (agentConnected ? '👨‍💼' : '💬');
       
       messageDiv.innerHTML = 
         '<div class="message-avatar">' + avatar + '</div>' +
@@ -663,23 +662,22 @@ document.addEventListener('DOMContentLoaded', function() {
       }
     }
 
-    // Enhanced response generation with support context
+    // Response generation based on message content
     function generateResponse(userMessage) {
       var message = userMessage.toLowerCase();
       
-      // Check for keyword matches with enhanced support context
       for (var keywords in keywordResponses) {
         var regex = new RegExp(keywords, 'i');
         if (regex.test(message)) {
           var responseKey = keywordResponses[keywords];
-          if (aiResponses[responseKey]) {
-            return aiResponses[responseKey];
+          if (supportResponses[responseKey]) {
+            return supportResponses[responseKey];
           }
         }
       }
       
-      // Smart default responses based on conversation context
-      var defaultResponses = aiResponses.default;
+      // Fallback to a default response
+      var defaultResponses = supportResponses.default;
       var contextualResponse = defaultResponses[Math.floor(Math.random() * defaultResponses.length)];
       
       return {
@@ -729,10 +727,10 @@ document.addEventListener('DOMContentLoaded', function() {
       var action = actionText.toLowerCase();
       
       // Map action text to response keys
-      if (action.includes('technical')) return aiResponses['technical-support'];
-      if (action.includes('billing')) return aiResponses['billing-support'];
-      if (action.includes('service')) return aiResponses['service-info'];
-      if (action.includes('agent')) return aiResponses['live-agent'];
+      if (action.includes('technical')) return supportResponses['technical-support'];
+      if (action.includes('billing')) return supportResponses['billing-support'];
+      if (action.includes('service')) return supportResponses['service-info'];
+      if (action.includes('agent')) return supportResponses['live-agent'];
       
       // Default response for unmapped actions
       return {
@@ -1256,21 +1254,13 @@ document.addEventListener('DOMContentLoaded', function() {
   }
 
   // Placeholder functions for other features (can be expanded later)
-  function initDynamicPortfolio() {
-    // Portfolio functionality placeholder
-  }
+  function initDynamicPortfolio() {}
 
-  function initAnalyticsEnhancements() {
-    // Analytics enhancements placeholder
-  }
+  function initAnalyticsEnhancements() {}
 
-  function initGovernanceEnhancements() {
-    // Governance enhancements placeholder
-  }
+  function initGovernanceEnhancements() {}
 
-  function initValuesPortfolio() {
-    // Values portfolio functionality placeholder
-  }
+  function initValuesPortfolio() {}
 
   // Cross-platform DOM ready
   function domReady(callback) {

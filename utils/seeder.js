@@ -119,7 +119,7 @@ class DataSeeder {
         shortDescription: "Acquire datasets that align with business needs",
         fullDescription: "Professional data sourcing and acquisition services including market research data, industry benchmarks, and custom dataset creation with quality assurance.",
         category: "foundation",
-        icon: "📊",
+        icon: "chart",
         features: ["Market research datasets", "Industry-specific data", "Custom data collection", "Data quality assurance"],
         technologies: ["APIs", "Web Scraping", "Database Integration", "Data Validation"],
         availability: "available",
@@ -133,7 +133,7 @@ class DataSeeder {
         shortDescription: "Build, test, and maintain database pipeline architectures",
         fullDescription: "End-to-end data pipeline design and implementation for scalable data processing and automation with cloud-native architectures.",
         category: "foundation",
-        icon: "🔗",
+        icon: "pipeline",
         features: ["ETL/ELT pipeline design", "Real-time data processing", "Cloud-native architectures", "Performance optimization"],
         technologies: ["Apache Airflow", "Apache Spark", "AWS", "Docker", "Kubernetes"],
         availability: "available",
@@ -147,7 +147,7 @@ class DataSeeder {
         shortDescription: "Develop algorithms to transform data into actionable information",
         fullDescription: "Custom algorithm design and implementation for complex data processing and business intelligence with proven accuracy and performance.",
         category: "analytics",
-        icon: "🧮",
+        icon: "algorithm",
         features: ["Machine learning algorithms", "Statistical modeling", "Optimization algorithms", "Performance tuning"],
         technologies: ["Python", "R", "TensorFlow", "PyTorch", "Scikit-learn"],
         availability: "available",
@@ -162,7 +162,7 @@ class DataSeeder {
         shortDescription: "Custom Predictive Analytics Solutions",
         fullDescription: "Advanced predictive modeling solutions to forecast trends and support strategic decision-making with high accuracy rates.",
         category: "analytics",
-        icon: "📈",
+        icon: "trending",
         features: ["Time series forecasting", "Risk assessment models", "Customer behavior prediction", "Market trend analysis"],
         technologies: ["Python", "R", "Prophet", "ARIMA", "XGBoost"],
         availability: "available",
@@ -176,7 +176,7 @@ class DataSeeder {
         shortDescription: "Large Language Model Training & Deployment",
         fullDescription: "Large Language Model integration, fine-tuning, and deployment for enterprise applications with scalable infrastructure and enterprise security.",
         category: "ai",
-        icon: "🤖",
+        icon: "ai",
         features: ["Model fine-tuning", "API integration", "Performance optimization", "Scalable deployment"],
         technologies: ["OpenAI", "Hugging Face", "Transformers", "BERT", "GPT"],
         availability: "available",
@@ -191,7 +191,7 @@ class DataSeeder {
         shortDescription: "Ensure compliance with data governance and security policies",
         fullDescription: "Comprehensive data governance frameworks to ensure compliance, security, and quality across your organization with industry standards and best practices.",
         category: "governance",
-        icon: "🔒",
+        icon: "security",
         features: ["Compliance frameworks", "Data security policies", "Access control systems", "Audit and monitoring"],
         technologies: ["AWS IAM", "Azure AD", "Apache Ranger", "Data Catalogs"],
         availability: "available",
@@ -212,65 +212,60 @@ class DataSeeder {
 
   async seedDatabase() {
     try {
-      console.log('🌱 Starting database seeding...');
+      console.log('Starting database seeding...');
       
-      // Clear existing data
       await this.clearDatabase();
-      
-      // Seed team members
       await this.seedTeamMembers();
-      
-      // Seed services
       await this.seedServices();
       
-      console.log('✅ Database seeding completed successfully!');
+      console.log('Database seeding completed successfully.');
       return true;
     } catch (error) {
-      console.error('❌ Error seeding database:', error);
+      console.error('Error seeding database:', error);
       throw error;
     }
   }
 
   async clearDatabase() {
-    console.log('🧹 Clearing existing data...');
+    console.log('Clearing existing data...');
     await TeamMember.deleteMany({});
     await Service.deleteMany({});
     await Portfolio.deleteMany({});
-    console.log('✅ Database cleared');
+    console.log('Database cleared.');
   }
 
   async seedTeamMembers() {
-    console.log('👥 Seeding team members...');
+    console.log('Seeding team members...');
     
     const teamData = this.getTeamMembersData();
     for (const memberData of teamData) {
       try {
         const member = new TeamMember(memberData);
         await member.save();
-        console.log(`✅ Created team member: ${member.name}`);
+        console.log(`Created team member: ${member.name}`);
       } catch (error) {
-        console.error(`❌ Error creating team member ${memberData.name}:`, error.message);
+        console.error(`Error creating team member ${memberData.name}:`, error.message);
       }
     }
     
-    console.log(`✅ Seeded ${teamData.length} team members`);
+    console.log(`Seeded ${teamData.length} team members.`);
   }
 
   async seedServices() {
-    console.log('🛠️  Seeding services...');
+    console.log('Seeding services...');
     
     const servicesData = this.getServicesData();
     for (const serviceData of servicesData) {
       try {
         const service = new Service(serviceData);
         await service.save();
-        console.log(`✅ Created service: ${service.name}`);
+        console.log(`Created service: ${service.name}`);
       } catch (error) {
-        console.error(`❌ Error creating service ${serviceData.name}:`, error.message);
+        console.error(`Error creating service ${serviceData.name}:`, error.message);
       }
     }
     
-    console.log(`✅ Seeded ${servicesData.length} services`);
+    console.log(`Seeded ${servicesData.length} services.`);
   }
 
   async getStats() {
@@ -281,14 +276,14 @@ class DataSeeder {
         portfolioProjects: await Portfolio.countDocuments()
       };
       
-      console.log('📊 Database Statistics:');
-      console.log(`   Team Members: ${stats.teamMembers}`);
-      console.log(`   Services: ${stats.services}`);
-      console.log(`   Portfolio Projects: ${stats.portfolioProjects}`);
+      console.log('Database Statistics:');
+      console.log(`  Team Members: ${stats.teamMembers}`);
+      console.log(`  Services: ${stats.services}`);
+      console.log(`  Portfolio Projects: ${stats.portfolioProjects}`);
       
       return stats;
     } catch (error) {
-      console.error('❌ Error fetching database stats:', error);
+      console.error('Error fetching database stats:', error);
       return null;
     }
   }

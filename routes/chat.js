@@ -18,8 +18,8 @@ router.post('/message', async (req, res) => {
       });
     }
 
-    // Generate AI response based on message content
-    const aiResponse = generateAIResponse(message);
+    // Generate response based on message content
+    const aiResponse = generateResponse(message);
     
     // Store conversation in database
     const conversation = new Contact({
@@ -40,11 +40,11 @@ router.post('/message', async (req, res) => {
 
     await conversation.save();
 
-    // Store AI response as well
+    // Store bot response as well
     if (aiResponse.message) {
-      const aiConversation = new Contact({
-        name: 'KFSQUARE AI Assistant',
-        email: 'ai@kfsquare.com',
+      const botConversation = new Contact({
+        name: 'KFSQUARE Support Bot',
+        email: 'support@kfsquare.com',
         message: aiResponse.message,
         source: 'chat_ai_response',
         metadata: {
@@ -52,12 +52,12 @@ router.post('/message', async (req, res) => {
           responseType: aiResponse.type,
           quickActions: aiResponse.quickActions,
           timestamp: new Date(),
-          messageType: 'ai_response',
+          messageType: 'bot_response',
           parentMessageId: conversation._id
         }
       });
 
-      await aiConversation.save();
+      await botConversation.save();
     }
 
     res.json({
@@ -91,7 +91,7 @@ router.get('/conversation/:sessionId', async (req, res) => {
     
     const conversations = await Contact.find({
       'metadata.sessionId': sessionId,
-      source: { $in: ['chat_widget', 'chat_ai_response'] }
+      source: { $in: ['chat_widget', 'chat_bot_response'] }
     })
     .sort({ createdAt: 1 })
     .select('name message source metadata createdAt')
@@ -103,7 +103,7 @@ router.get('/conversation/:sessionId', async (req, res) => {
         id: conv._id,
         message: conv.message,
         sender: conv.name,
-        isAI: conv.source === 'chat_ai_response',
+        isAI: conv.source === 'chat_bot_response',
         timestamp: conv.createdAt,
         type: conv.metadata?.responseType || 'text',
         quickActions: conv.metadata?.quickActions || []
@@ -188,35 +188,34 @@ router.post('/ticket', async (req, res) => {
 });
 
 /**
- * Generate AI response based on message content
+ * Generate a response based on message content
  */
-function generateAIResponse(message) {
+function generateResponse(message) {
   const lowerMessage = message.toLowerCase();
   
-  // Enhanced AI responses for customer support
   const responses = {
     'technical-support': {
-      message: "🛠️ **Technical Support Center**\n\nI can help you with:\n\n🔧 **System Issues & Troubleshooting**\n🔧 **Integration Problems**\n🔧 **Performance Optimization**\n🔧 **API Documentation & Setup**\n🔧 **Data Pipeline Issues**\n🔧 **Platform Configuration**\n\nWhat technical issue are you experiencing?",
+      message: "Technical Support\n\nI can help you with:\n- System Issues & Troubleshooting\n- Integration Problems\n- Performance Optimization\n- API Documentation & Setup\n- Data Pipeline Issues\n- Platform Configuration\n\nWhat technical issue are you experiencing?",
       type: 'support_menu',
       quickActions: ['System Down', 'Integration Help', 'Performance Issues', 'Create Ticket']
     },
     'billing-support': {
-      message: "💳 **Billing & Account Support**\n\nI can assist with:\n\n💰 **Invoice Questions & Payment Issues**\n💰 **Subscription Management**\n💰 **Usage Reports & Analytics**\n💰 **Plan Upgrades & Changes**\n💰 **Refund Requests**\n💰 **Enterprise Pricing**\n\nWhat billing question do you have?",
+      message: "Billing & Account Support\n\nI can assist with:\n- Invoice Questions & Payment Issues\n- Subscription Management\n- Usage Reports & Analytics\n- Plan Upgrades & Changes\n- Refund Requests\n- Enterprise Pricing\n\nWhat billing question do you have?",
       type: 'support_menu',
       quickActions: ['View Invoice', 'Payment Issue', 'Upgrade Plan', 'Billing Ticket']
     },
     'service-info': {
-      message: "ℹ️ **Service Information Hub**\n\nLearn about our comprehensive offerings:\n\n🌟 **Data Engineering & ETL Pipelines**\n🌟 **Advanced Analytics & ML Models**\n🌟 **Real-time Data Processing**\n🌟 **AI Integration & LLM Solutions**\n🌟 **Business Intelligence Dashboards**\n🌟 **Data Security & Compliance**\n\nWhich service would you like to explore?",
+      message: "Service Information\n\nLearn about our comprehensive offerings:\n- Data Engineering & ETL Pipelines\n- Advanced Analytics & ML Models\n- Real-time Data Processing\n- AI Integration & LLM Solutions\n- Business Intelligence Dashboards\n- Data Security & Compliance\n\nWhich service would you like to explore?",
       type: 'service_menu',
       quickActions: ['Data Engineering', 'AI Solutions', 'Analytics', 'Security']
     },
     'live-agent': {
-      message: "👨‍💼 **Live Agent Connection**\n\n🔄 **Connecting you to our expert support team...**\n\n**Current Queue Status**: 1-2 people ahead\n**Estimated Wait Time**: 2-4 minutes\n**Agent Specialty**: Technical & Billing Support\n\nWhile you wait, feel free to describe your issue in detail. This will help our agent assist you faster.",
+      message: "Connecting you to our support team...\n\nCurrent Queue Status: 1-2 people ahead\nEstimated Wait Time: 2-4 minutes\nAgent Specialty: Technical & Billing Support\n\nWhile you wait, please describe your issue in detail to help our agent assist you faster.",
       type: 'agent_transfer',
       quickActions: ['Describe Issue', 'Upload Files', 'Cancel Request']
     },
     'default': {
-      message: "👋 Thank you for contacting KFSQUARE! I'm here to help with:\n\n🛠️ **Technical Support** - System issues, troubleshooting\n💳 **Billing Questions** - Payments, subscriptions, invoices\nℹ️ **Service Information** - Learn about our offerings\n👨‍💼 **Live Agent** - Connect with our expert team\n\nHow can I assist you today?",
+      message: "Thank you for contacting KFSQUARE. I can help with:\n\n- Technical Support - System issues, troubleshooting\n- Billing Questions - Payments, subscriptions, invoices\n- Service Information - Learn about our offerings\n- Live Agent - Connect with our expert team\n\nHow can I assist you today?",
       type: 'welcome',
       quickActions: ['Technical Support', 'Billing Help', 'Service Info', 'Live Agent']
     }
@@ -241,7 +240,7 @@ function generateAIResponse(message) {
 
   // Default fallback response
   return {
-    message: `I understand you're asking about "${message}". Let me connect you with the right support option:\n\n🛠️ For technical issues, choose **Technical Support**\n💳 For billing questions, choose **Billing Help**\nℹ️ For service information, choose **Service Info**\n👨‍💼 To speak with someone, choose **Live Agent**\n\nWhich option would be most helpful?`,
+    message: `You asked about "${message}". Please select a support option below:\n\n- Technical Support: for system or integration issues\n- Billing Help: for payments or subscriptions\n- Service Info: for information about our offerings\n- Live Agent: to speak with a team member`,
     type: 'clarification',
     quickActions: ['Technical Support', 'Billing Help', 'Service Info', 'Live Agent']
   };
