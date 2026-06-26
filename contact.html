@@ -370,20 +370,7 @@
             // Auto-resize textarea as user types
             textarea.addEventListener('input', function () {
                 this.style.height = 'auto';
-                this.style.height = (this.scrollHeight) + 'px';
-            });
-
-            // Clear placeholder on focus, restore if empty on blur
-            form.querySelectorAll('input[placeholder], textarea[placeholder]').forEach(function (el) {
-                const original = el.getAttribute('placeholder');
-                el.addEventListener('focus', function () {
-                    this.setAttribute('placeholder', '');
-                });
-                el.addEventListener('blur', function () {
-                    if (this.value === '') {
-                        this.setAttribute('placeholder', original);
-                    }
-                });
+                this.style.height = this.scrollHeight + 'px';
             });
 
             // Form submission
@@ -451,17 +438,52 @@
     </script>
 
     <style>
+        /* Ensure typed text is always clearly visible */
+        #contact-form .form-control,
+        #contact-form .form-select {
+            color: #212529;
+            background-color: #ffffff;
+            font-size: 1rem;
+            line-height: 1.6;
+        }
+
+        /* Placeholder: light grey so it reads as a hint, not real content */
+        #contact-form .form-control::placeholder,
+        #contact-form .form-select::placeholder {
+            color: #adb5bd;
+            opacity: 1;
+        }
+
+        /* Remove placeholder when field is focused */
+        #contact-form .form-control:focus::placeholder,
+        #contact-form .form-select:focus::placeholder {
+            opacity: 0;
+        }
+
+        /* Keep typed text dark on focus */
+        #contact-form .form-control:focus,
+        #contact-form .form-select:focus {
+            color: #212529;
+            background-color: #ffffff;
+            border-color: #0d6efd;
+            box-shadow: 0 0 0 0.2rem rgba(13, 110, 253, 0.25);
+        }
+
+        /* Textarea auto-grows; no manual resize handle */
         textarea#message {
             min-height: 140px;
             resize: none;
             overflow: hidden;
             transition: height 0.1s ease;
         }
-        .form-control.is-invalid,
-        .form-select.is-invalid {
+
+        /* Validation states */
+        #contact-form .form-control.is-invalid,
+        #contact-form .form-select.is-invalid {
             border-color: #dc3545;
             box-shadow: 0 0 0 0.2rem rgba(220, 53, 69, 0.25);
         }
+
         .btn-primary:hover {
             transform: translateY(-1px);
             box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
