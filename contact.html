@@ -161,7 +161,9 @@
                         
                         <div class="card border-0 shadow-lg">
                             <div class="card-body p-4">
-                                <form id="contact-form">
+                                <form action="https://api.web3forms.com/submit" method="POST" id="contact-form">
+                                    <input type="hidden" name="access_key" value="e2379b32-43b7-478c-bd07-636481b4755c">
+
                                     <div class="row g-3 mb-3">
                                         <div class="col-md-6">
                                             <label for="firstName" class="form-label fw-semibold">First Name <span class="text-danger">*</span></label>
@@ -175,89 +177,69 @@
                                     
                                     <div class="row g-3 mb-3">
                                         <div class="col-md-6">
-                                            <div class="form-floating">
-                                                <input type="email" class="form-control" id="email" name="email" placeholder=" " required>
-                                                <label for="email">Email Address</label>
-                                            </div>
+                                            <label for="email" class="form-label fw-semibold">Email Address <span class="text-danger">*</span></label>
+                                            <input type="email" class="form-control form-control-lg" id="email" name="email" placeholder="you@example.com" required>
                                         </div>
                                         <div class="col-md-6">
-                                            <div class="form-floating">
-                                                <input type="tel" class="form-control" id="phone" name="phone" placeholder=" ">
-                                                <label for="phone">Phone (Optional)</label>
-                                            </div>
+                                            <label for="phone" class="form-label fw-semibold">Phone <span class="text-muted fw-normal">(Optional)</span></label>
+                                            <input type="tel" class="form-control form-control-lg" id="phone" name="phone" placeholder="e.g. 410-934-7470">
                                         </div>
                                     </div>
                                     
                                     <div class="row g-3 mb-3">
                                         <div class="col-md-6">
-                                            <div class="form-floating">
-                                                <input type="text" class="form-control" id="company" name="company" placeholder=" " required>
-                                                <label for="company">Company Name</label>
-                                            </div>
+                                            <label for="company" class="form-label fw-semibold">Company Name <span class="text-danger">*</span></label>
+                                            <input type="text" class="form-control form-control-lg" id="company" name="company" placeholder="Your company name" required>
                                         </div>
                                         <div class="col-md-6">
-                                            <div class="form-floating">
-                                                <select class="form-select" id="industry" name="industry">
-                                                    <option selected disabled value="">Select Industry</option>
-                                                    <option value="healthcare">Healthcare</option>
-                                                    <option value="finance">Financial Services</option>
-                                                    <option value="retail">Retail & E-commerce</option>
-                                                    <option value="manufacturing">Manufacturing</option>
-                                                    <option value="technology">Technology</option>
-                                                    <option value="government">Government</option>
-                                                    <option value="education">Education</option>
-                                                    <option value="other">Other</option>
-                                                </select>
-                                                <label for="industry">Industry</label>
-                                            </div>
+                                            <label for="industry" class="form-label fw-semibold">Industry <span class="text-muted fw-normal">(Optional)</span></label>
+                                            <select class="form-select form-select-lg" id="industry" name="industry">
+                                                <option selected disabled value="">Select your industry</option>
+                                                <option value="healthcare">Healthcare</option>
+                                                <option value="finance">Financial Services</option>
+                                                <option value="retail">Retail & E-commerce</option>
+                                                <option value="manufacturing">Manufacturing</option>
+                                                <option value="technology">Technology</option>
+                                                <option value="government">Government</option>
+                                                <option value="education">Education</option>
+                                                <option value="other">Other</option>
+                                            </select>
                                         </div>
                                     </div>
                                     
                                     <div class="row g-3 mb-3">
                                         <div class="col-md-6">
-                                            <div class="form-floating">
-                                                <select class="form-select" id="service" name="service" required>
-                                                    <option selected disabled value="">Choose a service</option>
-                                                    <option value="data-analytics">Data Analytics</option>
-                                                    <option value="machine-learning">Machine Learning</option>
-                                                    <option value="ai-integration">AI Integration</option>
-                                                    <option value="business-intelligence">Business Intelligence</option>
-                                                    <option value="data-engineering">Data Engineering</option>
-                                                    <option value="consulting">Strategy Consulting</option>
-                                                </select>
-                                                <label for="service">Service of Interest</label>
-                                            </div>
+                                            <label for="service" class="form-label fw-semibold">Service of Interest <span class="text-danger">*</span></label>
+                                            <select class="form-select form-select-lg" id="service" name="service" required>
+                                                <option selected disabled value="">Choose a service</option>
+                                                <option value="data-analytics">Data Analytics</option>
+                                                <option value="machine-learning">Machine Learning</option>
+                                                <option value="ai-integration">AI Integration</option>
+                                                <option value="business-intelligence">Business Intelligence</option>
+                                                <option value="data-engineering">Data Engineering</option>
+                                                <option value="consulting">Strategy Consulting</option>
+                                            </select>
                                         </div>
                                         <div class="col-md-6">
-                                            <div class="form-floating">
-                                                <select class="form-select" id="budget" name="budget">
-                                                    <option selected disabled value="">Select Budget Range</option>
-                                                    <option value="under-25k">Under $25,000</option>
-                                                    <option value="25k-50k">$25,000 - $50,000</option>
-                                                    <option value="50k-100k">$50,000 - $100,000</option>
-                                                    <option value="100k-250k">$100,000 - $250,000</option>
-                                                    <option value="250k-500k">$250,000 - $500,000</option>
-                                                    <option value="over-500k">Over $500,000</option>
-                                                </select>
-                                                <label for="budget">Project Budget (Optional)</label>
-                                            </div>
+                                            <label for="budget" class="form-label fw-semibold">Project Budget <span class="text-muted fw-normal">(Optional)</span></label>
+                                            <select class="form-select form-select-lg" id="budget" name="budget">
+                                                <option selected disabled value="">Select a range</option>
+                                                <option value="under-25k">Under $25,000</option>
+                                                <option value="25k-50k">$25,000 - $50,000</option>
+                                                <option value="50k-100k">$50,000 - $100,000</option>
+                                                <option value="100k-250k">$100,000 - $250,000</option>
+                                                <option value="250k-500k">$250,000 - $500,000</option>
+                                                <option value="over-500k">Over $500,000</option>
+                                            </select>
                                         </div>
                                     </div>
                                     
-                                    <div class="form-floating mb-3">
-                                        <form action="https://api.web3forms.com/submit" method="POST" id="form">
-                                        <input type="hidden" name="access_key" value="e2379b32-43b7-478c-bd07-636481b4755c">
-                                        <!-- <input type="text" name="name" required>
-                                        <input type="email" name="email" required> -->
-                                        <!-- <textarea name="message" required>Tell us about your project, challenges, and goals</textarea> -->
-                                        <!-- <button type="submit">Submit Form</button> -->
-                                        <textarea class="form-control" id="message" name="message" style="height: 150px" placeholder=" " required>Tell us about your project, challenges, and goals</textarea>                                      </textarea> 
-
-                                        <!-- <label for="message">Tell us about your project, challenges, and goals</label> -->
-
+                                    <div class="mb-3">
+                                        <label for="message" class="form-label fw-semibold">Message <span class="text-danger">*</span></label>
+                                        <textarea class="form-control" id="message" name="message" rows="5" placeholder="Tell us about your project, challenges, and goals..." required></textarea>
                                     </div>
                                     
-                                    <button type="submit" class="btn btn-primary btn-lg w-100">
+                                    <button type="submit" class="btn btn-primary btn-lg w-100" id="submit-btn">
                                         <i class="fas fa-paper-plane me-2"></i>Send Message
                                     </button>
                                     
@@ -379,204 +361,111 @@
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
     <script src="index.js"></script>
     
-    <!-- Contact Form Enhancement Script -->
     <script>
-const form = document.getElementById('form');
-const submitBtn = form.querySelector('button[type="submit"]');
-
-form.addEventListener('submit', async (e) => {
-    e.preventDefault();
-
-    const formData = new FormData(form);
-    formData.append("access_key", "e2379b32-43b7-478c-bd07-636481b4755c");
-
-    const originalText = submitBtn.textContent;
-
-    submitBtn.textContent = "Sending...";
-    submitBtn.disabled = true;
-
-    try {
-        const response = await fetch("https://api.web3forms.com/submit", {
-            method: "POST",
-            body: formData
-        });
-
-        const data = await response.json();
-
-        if (response.ok) {
-            alert("Success! Your message has been sent.");
-            form.reset();
-        } else {
-            alert("Error: " + data.message);
-        }
-
-    } catch (error) {
-        alert("Something went wrong. Please try again.");
-    } finally {
-        submitBtn.textContent = originalText;
-        submitBtn.disabled = false;
-    }
-});
-        document.addEventListener('DOMContentLoaded', function() {
-            // Get all form elements
+        document.addEventListener('DOMContentLoaded', function () {
             const form = document.getElementById('contact-form');
-            const inputs = form.querySelectorAll('input, textarea, select');
-            
-            // Enhanced placeholder behavior - Hide labels when typing
-            inputs.forEach(input => {
-                // Handle focus events - hide label immediately when focused
-                input.addEventListener('focus', function() {
-                    this.parentElement.classList.add('focused');
-                });
-                
-                // Handle blur events - show label only if field is empty
-                input.addEventListener('blur', function() {
-                    this.parentElement.classList.remove('focused');
-                    if (this.value.trim() === '') {
-                        this.classList.remove('has-value');
-                    } else {
-                        this.classList.add('has-value');
-                    }
-                });
-                
-                // Handle input events - hide label as soon as user types
-                input.addEventListener('input', function() {
-                    if (this.value.trim() !== '') {
-                        this.classList.add('has-value');
-                    } else {
-                        this.classList.remove('has-value');
-                    }
-                });
-                
-                // Handle change events for select elements
-                if (input.tagName.toLowerCase() === 'select') {
-                    input.addEventListener('change', function() {
-                        if (this.value !== '') {
-                            this.classList.add('has-value');
-                        } else {
-                            this.classList.remove('has-value');
-                        }
-                    });
-                }
-                
-                // Check initial state on page load
-                if (input.value.trim() !== '') {
-                    input.classList.add('has-value');
-                }
+            const submitBtn = document.getElementById('submit-btn');
+            const textarea = document.getElementById('message');
+
+            // Auto-resize textarea as user types
+            textarea.addEventListener('input', function () {
+                this.style.height = 'auto';
+                this.style.height = (this.scrollHeight) + 'px';
             });
-            
-            // Form validation and submission
-            form.addEventListener('submit', function(e) {
+
+            // Clear placeholder on focus, restore if empty on blur
+            form.querySelectorAll('input[placeholder], textarea[placeholder]').forEach(function (el) {
+                const original = el.getAttribute('placeholder');
+                el.addEventListener('focus', function () {
+                    this.setAttribute('placeholder', '');
+                });
+                el.addEventListener('blur', function () {
+                    if (this.value === '') {
+                        this.setAttribute('placeholder', original);
+                    }
+                });
+            });
+
+            // Form submission
+            form.addEventListener('submit', async function (e) {
                 e.preventDefault();
-                
-                // Basic form validation
+
+                // Validate required fields
                 let isValid = true;
-                const requiredFields = form.querySelectorAll('[required]');
-                
-                requiredFields.forEach(field => {
+                form.querySelectorAll('[required]').forEach(function (field) {
                     if (!field.value.trim()) {
                         isValid = false;
                         field.classList.add('is-invalid');
-                        field.addEventListener('input', function() {
-                            if (this.value.trim()) {
-                                this.classList.remove('is-invalid');
-                            }
-                        });
+                        field.addEventListener('input', function () {
+                            if (this.value.trim()) this.classList.remove('is-invalid');
+                        }, { once: true });
                     } else {
                         field.classList.remove('is-invalid');
-                        field.classList.add('is-valid');
                     }
                 });
-                
-                if (isValid) {
-                    // Show success message (you can replace this with actual form submission)
-                    const button = form.querySelector('button[type="submit"]');
-                    const originalText = button.innerHTML;
-                    
-                    button.innerHTML = '<i class="fas fa-spinner fa-spin me-2"></i>Sending...';
-                    button.disabled = true;
-                    
-                    // Simulate form submission (replace with actual submission logic)
-                    setTimeout(() => {
-                        button.innerHTML = '<i class="fas fa-check me-2"></i>Message Sent!';
-                        button.classList.remove('btn-primary');
-                        button.classList.add('btn-success');
-                        
-                        // Reset form after delay
-                        setTimeout(() => {
-                            form.reset();
-                            button.innerHTML = originalText;
-                            button.disabled = false;
-                            button.classList.remove('btn-success');
-                            button.classList.add('btn-primary');
-                            
-                            // Remove all validation classes
-                            inputs.forEach(input => {
-                                input.classList.remove('is-valid', 'is-invalid', 'has-value');
-                            });
-                        }, 2000);
-                    }, 1500);
-                } else {
-                    // Scroll to first invalid field
-                    const firstInvalid = form.querySelector('.is-invalid');
-                    if (firstInvalid) {
-                        firstInvalid.scrollIntoView({ behavior: 'smooth', block: 'center' });
-                        firstInvalid.focus();
+
+                if (!isValid) {
+                    const first = form.querySelector('.is-invalid');
+                    if (first) {
+                        first.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                        first.focus();
                     }
+                    return;
+                }
+
+                const originalHTML = submitBtn.innerHTML;
+                submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin me-2"></i>Sending...';
+                submitBtn.disabled = true;
+
+                try {
+                    const response = await fetch('https://api.web3forms.com/submit', {
+                        method: 'POST',
+                        body: new FormData(form)
+                    });
+                    const data = await response.json();
+
+                    if (response.ok) {
+                        submitBtn.innerHTML = '<i class="fas fa-check me-2"></i>Message Sent!';
+                        submitBtn.classList.replace('btn-primary', 'btn-success');
+                        form.reset();
+                        textarea.style.height = '';
+                        setTimeout(function () {
+                            submitBtn.innerHTML = originalHTML;
+                            submitBtn.disabled = false;
+                            submitBtn.classList.replace('btn-success', 'btn-primary');
+                        }, 3000);
+                    } else {
+                        throw new Error(data.message || 'Submission failed');
+                    }
+                } catch (err) {
+                    submitBtn.innerHTML = '<i class="fas fa-exclamation-circle me-2"></i>Failed — Try Again';
+                    submitBtn.classList.replace('btn-primary', 'btn-danger');
+                    setTimeout(function () {
+                        submitBtn.innerHTML = originalHTML;
+                        submitBtn.disabled = false;
+                        submitBtn.classList.replace('btn-danger', 'btn-primary');
+                    }, 3000);
                 }
             });
         });
     </script>
-    
-    <!-- Additional CSS for enhanced form behavior -->
+
     <style>
-        /* Enhanced floating label behavior - Hide labels when user types */
-        .form-floating.focused label {
-            color: #0d6efd;
-            opacity: 0;
-            visibility: hidden;
+        textarea#message {
+            min-height: 140px;
+            resize: none;
+            overflow: hidden;
+            transition: height 0.1s ease;
         }
-        
-        .form-floating input.has-value ~ label,
-        .form-floating textarea.has-value ~ label,
-        .form-floating select.has-value ~ label {
-            opacity: 0;
-            visibility: hidden;
-        }
-        
-        /* Show label only when field is empty and not focused */
-        .form-floating label {
-            opacity: 1;
-            visibility: visible;
-            transition: all 0.2s ease-in-out;
-        }
-        
-        /* Smooth transitions */
-        .form-floating input,
-        .form-floating textarea,
-        .form-floating select {
-            transition: all 0.2s ease-in-out;
-        }
-        
-        /* Validation feedback */
         .form-control.is-invalid,
         .form-select.is-invalid {
             border-color: #dc3545;
             box-shadow: 0 0 0 0.2rem rgba(220, 53, 69, 0.25);
         }
-        
-        .form-control.is-valid,
-        .form-select.is-valid {
-            border-color: #198754;
-            box-shadow: 0 0 0 0.2rem rgba(25, 135, 84, 0.25);
-        }
-        
-        /* Button hover effects */
         .btn-primary:hover {
             transform: translateY(-1px);
-            box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
         }
-        
         .btn-primary:active {
             transform: translateY(0);
         }
