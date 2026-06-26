@@ -360,111 +360,10 @@
     <!-- Bootstrap JS -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
     <script src="index.js"></script>
-    
-    <script>
-        document.addEventListener('DOMContentLoaded', function () {
-            const form = document.getElementById('contact-form');
-            const submitBtn = document.getElementById('submit-btn');
-            const textarea = document.getElementById('message');
-
-            // ── Placeholder: disappears on first keypress, restores on clear ──
-            form.querySelectorAll('input, textarea').forEach(function (el) {
-                const stored = el.getAttribute('placeholder') || '';
-                el.dataset.placeholder = stored;
-
-                // Hide placeholder the moment the user starts typing
-                el.addEventListener('input', function () {
-                    this.setAttribute('placeholder', this.value.length > 0 ? '' : stored);
-                });
-
-                // Also hide on focus (feels more responsive)
-                el.addEventListener('focus', function () {
-                    this.setAttribute('placeholder', '');
-                });
-
-                // Restore only if the field is still empty when leaving
-                el.addEventListener('blur', function () {
-                    if (this.value.length === 0) {
-                        this.setAttribute('placeholder', stored);
-                    }
-                });
-            });
-
-            // ── Textarea: auto-expand as user types ──
-            textarea.addEventListener('input', function () {
-                this.style.height = 'auto';
-                this.style.height = this.scrollHeight + 'px';
-            });
-
-            // ── Form submission ──
-            form.addEventListener('submit', async function (e) {
-                e.preventDefault();
-
-                let isValid = true;
-                form.querySelectorAll('[required]').forEach(function (field) {
-                    if (!field.value.trim()) {
-                        isValid = false;
-                        field.classList.add('is-invalid');
-                        field.addEventListener('input', function () {
-                            if (this.value.trim()) this.classList.remove('is-invalid');
-                        }, { once: true });
-                    } else {
-                        field.classList.remove('is-invalid');
-                    }
-                });
-
-                if (!isValid) {
-                    const first = form.querySelector('.is-invalid');
-                    if (first) {
-                        first.scrollIntoView({ behavior: 'smooth', block: 'center' });
-                        first.focus();
-                    }
-                    return;
-                }
-
-                const originalHTML = submitBtn.innerHTML;
-                submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin me-2"></i>Sending...';
-                submitBtn.disabled = true;
-
-                try {
-                    const response = await fetch('https://api.web3forms.com/submit', {
-                        method: 'POST',
-                        body: new FormData(form)
-                    });
-                    const data = await response.json();
-
-                    if (response.ok) {
-                        submitBtn.innerHTML = '<i class="fas fa-check me-2"></i>Message Sent!';
-                        submitBtn.classList.replace('btn-primary', 'btn-success');
-                        form.reset();
-                        textarea.style.height = '';
-                        // Restore placeholders after reset
-                        form.querySelectorAll('input, textarea').forEach(function (el) {
-                            el.setAttribute('placeholder', el.dataset.placeholder || '');
-                        });
-                        setTimeout(function () {
-                            submitBtn.innerHTML = originalHTML;
-                            submitBtn.disabled = false;
-                            submitBtn.classList.replace('btn-success', 'btn-primary');
-                        }, 3000);
-                    } else {
-                        throw new Error(data.message || 'Submission failed');
-                    }
-                } catch (err) {
-                    submitBtn.innerHTML = '<i class="fas fa-exclamation-circle me-2"></i>Failed — Try Again';
-                    submitBtn.classList.replace('btn-primary', 'btn-danger');
-                    setTimeout(function () {
-                        submitBtn.innerHTML = originalHTML;
-                        submitBtn.disabled = false;
-                        submitBtn.classList.replace('btn-danger', 'btn-primary');
-                    }, 3000);
-                }
-            });
-        });
-    </script>
+    <script src="js/contact.js"></script>
 
     <style>
-        /* Force typed text to always be visible — overrides Bootstrap & styles.css */
+        /* Typed text always clearly visible — overrides Bootstrap & styles.css */
         #contact-form input.form-control,
         #contact-form textarea.form-control,
         #contact-form select.form-select {
@@ -481,29 +380,26 @@
             background-color: #ffffff !important;
             border-color: #0d6efd !important;
             box-shadow: 0 0 0 0.2rem rgba(13, 110, 253, 0.25) !important;
+            outline: none !important;
         }
 
-        /* Placeholder: clearly a hint (light grey) */
-        #contact-form input.form-control::placeholder,
-        #contact-form textarea.form-control::placeholder {
-            color: #9ca3af !important;
-            opacity: 1 !important;
-        }
-
-        /* Textarea starts at a comfortable height, grows with content */
+        /* Textarea: starts tall, grows automatically via contact.js */
         #contact-form textarea#message {
             min-height: 150px !important;
             resize: none !important;
             overflow: hidden !important;
         }
 
-        /* Validation */
+        /* Validation states */
         #contact-form .is-invalid {
             border-color: #dc3545 !important;
             box-shadow: 0 0 0 0.2rem rgba(220, 53, 69, 0.2) !important;
         }
+        #contact-form .is-valid {
+            border-color: #198754 !important;
+        }
 
-        .btn-primary:hover { transform: translateY(-1px); box-shadow: 0 4px 8px rgba(0,0,0,0.15); }
+        .btn-primary:hover  { transform: translateY(-1px); box-shadow: 0 4px 8px rgba(0,0,0,0.15); }
         .btn-primary:active { transform: translateY(0); }
     </style>
 </body>
