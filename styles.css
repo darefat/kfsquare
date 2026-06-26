@@ -836,9 +836,9 @@ header.scrolled {
 #contact-form select {
   width: 100%;
   padding: 10px 12px;
-  font-size: 1rem;
-  color: #212529;
-  background-color: #ffffff;
+  font-size: 1rem !important;
+  color: #212529 !important;
+  background-color: #ffffff !important;
   border: 1px solid #ccc;
   border-radius: 4px;
   box-sizing: border-box;
@@ -848,30 +848,24 @@ header.scrolled {
 #contact-form input:focus,
 #contact-form textarea:focus,
 #contact-form select:focus {
-  color: #212529;
-  background-color: #ffffff;
+  color: #212529 !important;
+  background-color: #ffffff !important;
   border-color: #0d6efd;
   outline: none;
   box-shadow: 0 0 0 0.2rem rgba(13, 110, 253, 0.25);
 }
 
-/* Placeholder visible when empty, hidden on focus */
+/* Placeholder: visible as light grey hint, disappears on focus (JS handles removal) */
 #contact-form input::placeholder,
 #contact-form textarea::placeholder {
-  color: #adb5bd;
-  opacity: 1;
-  transition: opacity 0.15s ease;
-}
-
-#contact-form input:focus::placeholder,
-#contact-form textarea:focus::placeholder {
-  opacity: 0;
+  color: #9ca3af !important;
+  opacity: 1 !important;
 }
 
 /* Textarea expands with content */
 #contact-form textarea#message {
-  min-height: 140px;
-  overflow: hidden;
+  min-height: 150px !important;
+  overflow: hidden !important;
   line-height: 1.6;
 }
 
