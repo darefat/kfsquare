@@ -87,7 +87,7 @@ jobs:
           "https://api.github.com/repos/${{ github.repository }}")
 
         if [ "$repo_status" = "200" ]; then
-          code_scanning_status="$(jq -r '.security_and_analysis.code_security.status // .security_and_analysis.advanced_security.status // empty' "$repo_response_file")"
+          code_scanning_status="$(jq -r '.security_and_analysis.advanced_security.status // empty' "$repo_response_file")"
 
           if [ "$code_scanning_status" = "enabled" ]; then
             echo "enabled=true" >> "$GITHUB_OUTPUT"
@@ -99,6 +99,8 @@ jobs:
             echo "enabled=false" >> "$GITHUB_OUTPUT"
             exit 0
           fi
+
+          echo "::notice::Repository security metadata did not expose code scanning status; falling back to the code scanning alerts API."
         elif [ "$repo_status" != "403" ] && [ "$repo_status" != "404" ]; then
           echo "::error::Unexpected response while checking repository security settings (HTTP $repo_status). Retry the workflow if this was transient; otherwise investigate GitHub API availability."
           cat "$repo_response_file"
