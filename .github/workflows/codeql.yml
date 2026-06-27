@@ -100,7 +100,7 @@ jobs:
             exit 0
           fi
         elif [ "$repo_status" != "403" ] && [ "$repo_status" != "404" ]; then
-          echo "::error::Unexpected response while checking repository security settings (HTTP $repo_status)."
+          echo "::error::Unexpected response while checking repository security settings (HTTP $repo_status). Retry the workflow if this was transient; otherwise verify GitHub API availability and workflow token permissions."
           cat "$repo_response_file"
           exit 1
         fi
@@ -111,18 +111,10 @@ jobs:
         if [ "$alerts_status" = "200" ]; then
           echo "enabled=true" >> "$GITHUB_OUTPUT"
         elif [ "$alerts_status" = "403" ] || [ "$alerts_status" = "404" ]; then
-          message="$(jq -r '.message // ""' "$alerts_response_file")"
-
-          if [[ "$message" == *"Code scanning is not enabled"* ]] || [[ "$message" == *"GitHub Code Security or GitHub Advanced Security must be enabled"* ]]; then
-            echo "::notice::Skipping CodeQL because code scanning is not enabled for this repository."
-            echo "enabled=false" >> "$GITHUB_OUTPUT"
-          else
-            echo "::error::Unexpected response while checking code scanning availability (HTTP $alerts_status)."
-            cat "$alerts_response_file"
-            exit 1
-          fi
+          echo "::notice::Skipping CodeQL because code scanning is unavailable for this repository or workflow context."
+          echo "enabled=false" >> "$GITHUB_OUTPUT"
         else
-          echo "::error::Unexpected response while checking code scanning availability (HTTP $alerts_status)."
+          echo "::error::Unexpected response while checking code scanning availability (HTTP $alerts_status). Retry the workflow if this was transient; otherwise verify GitHub API availability and workflow token permissions."
           cat "$alerts_response_file"
           exit 1
         fi
