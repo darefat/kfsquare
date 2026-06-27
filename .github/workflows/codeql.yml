@@ -59,6 +59,42 @@ jobs:
     - name: Checkout repository
       uses: actions/checkout@v4
 
+    - name: Check code scanning availability
+      id: code_scanning
+      shell: bash
+      env:
+        GH_TOKEN: ${{ github.token }}
+      run: |
+        status=$(curl -sS -o response.json -w "%{http_code}" \
+          --oauth2-bearer "$GH_TOKEN" \
+          -H "Accept: application/vnd.github+json" \
+          "https://api.github.com/repos/${{ github.repository }}/code-scanning/alerts?per_page=1")
+
+        if [ "$status" = "200" ]; then
+          echo "enabled=true" >> "$GITHUB_OUTPUT"
+        elif [ "$status" = "403" ] && python - <<'PY'
+        import json
+        import sys
+
+        with open("response.json", "r", encoding="utf-8") as response_file:
+            message = json.load(response_file).get("message", "")
+
+        disabled_messages = (
+            "Code scanning is not enabled",
+            "GitHub Code Security or GitHub Advanced Security must be enabled"
+        )
+
+        sys.exit(0 if any(text in message for text in disabled_messages) else 1)
+        PY
+        then
+          echo "::notice::Skipping CodeQL because code scanning is not enabled for this repository."
+          echo "enabled=false" >> "$GITHUB_OUTPUT"
+        else
+          echo "::error::Unexpected response while checking code scanning availability (HTTP $status)."
+          cat response.json
+          exit 1
+        fi
+
     # Add any setup steps before running the `github/codeql-action/init` action.
     # This includes steps like installing compilers or runtimes (`actions/setup-node`
     # or others). This is typically only required for manual builds.
@@ -67,6 +103,7 @@ jobs:
 
     # Initializes the CodeQL tools for scanning.
     - name: Initialize CodeQL
+      if: steps.code_scanning.outputs.enabled == 'true'
       uses: github/codeql-action/init@v3
       with:
         languages: ${{ matrix.language }}
@@ -84,7 +121,7 @@ jobs:
     # to build your code.
     # ℹ️ Command-line programs to run using the OS shell.
     # 📚 See https://docs.github.com/en/actions/using-workflows/workflow-syntax-for-github-actions#jobsjob_idstepsrun
-    - if: matrix.build-mode == 'manual'
+    - if: steps.code_scanning.outputs.enabled == 'true' && matrix.build-mode == 'manual'
       shell: bash
       run: |
         echo 'If you are using a "manual" build mode for one or more of the' \
@@ -95,6 +132,7 @@ jobs:
         exit 1
 
     - name: Perform CodeQL Analysis
+      if: steps.code_scanning.outputs.enabled == 'true'
       uses: github/codeql-action/analyze@v3
       with:
         category: "/language:${{matrix.language}}"
