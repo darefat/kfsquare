@@ -161,20 +161,7 @@
                         
                         <div class="card border-0 shadow-lg">
                             <div class="card-body p-4">
-                                <form id="contact-form" action="https://api.web3forms.com/submit"  method="POST">
-                                    <input type="hidden" name="access_key" value="4242debc-5b13-4fc6-b0e9-9dda078332c0">
-                                    <input type="hidden" name="firstName" value="first name">
-                                    <input type="hidden" name="lastName" value="last name">
-                                    <input type="hidden" name="company" value="company name">
-                                    <input type="hidden" name="phone" value="phone number">              
-                                    <input type="hidden" name="email" value="email address">
-
-                                    <!-- <input type="hidden" name="_subject" value="New KFSQUARE Consultation Request"> -->
-
-                                    <!-- <input type="hidden" name="_subject" value="New KFSQUARE Consultation Request"> -->
-
-                                    <!-- <input type="hidden" name="_template" value="table"> -->
-                                    <!-- <input type="hidden" name="_captcha" value="false"> -->
+                                <form id="contact-form" novalidate>
 
                                     <div class="row g-3 mb-3">
                                         <div class="col-md-6">
@@ -377,7 +364,7 @@
     <!-- Bootstrap JS -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
     <script src="index.js"></script>
-    <script src="contact.js"></script>
+    <script src="js/contact.js"></script>
 
     <style>
         /* Typed text always clearly visible — overrides Bootstrap & styles.css */

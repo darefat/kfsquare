@@ -1,12 +1,10 @@
 /**
- * contact.js — Form behaviour for the "Get A Free Consultation" form
+ * contact.js — "Get A Free Consultation" form handler
  *
- * Features:
- *  - Placeholder text disappears the moment a field is focused and
- *    is restored only when the field is left empty.
- *  - The message textarea grows automatically as the user types.
- *  - Required-field validation with inline error highlighting.
- *  - Async submission to web3forms with loading / success / error states.
+ * Submits to the existing Express /api/contacts endpoint which:
+ *  - Saves the contact to MongoDB
+ *  - Sends a notification email to customersupport@kfsquare.com via Mailgun
+ *  - Sends a confirmation email back to the user
  */
 
 (function () {
@@ -16,18 +14,13 @@
 
         const form      = document.getElementById('contact-form');
         const submitBtn = document.getElementById('submit-btn');
+        const statusEl  = document.getElementById('form-status');
         const textarea  = document.getElementById('message');
 
-        if (!form) return; // only run on pages that have this form
+        if (!form) return;
 
-        // ──────────────────────────────────────────────
-        // 1. Placeholder behaviour
-        //    • Disappears immediately on focus
-        //    • Restored only if the field is still empty on blur
-        // ──────────────────────────────────────────────
+        // ── 1. Placeholder disappears on focus, restores when field is cleared ──
         form.querySelectorAll('input[placeholder], textarea[placeholder]').forEach(function (el) {
-
-            // Save the original placeholder text once
             el.dataset.originalPlaceholder = el.getAttribute('placeholder');
 
             el.addEventListener('focus', function () {
@@ -41,10 +34,7 @@
             });
         });
 
-        // ──────────────────────────────────────────────
-        // 2. Textarea auto-expand
-        //    Grows with content; never shows a scrollbar
-        // ──────────────────────────────────────────────
+        // ── 2. Textarea auto-expands as user types ──
         if (textarea) {
             textarea.addEventListener('input', function () {
                 this.style.height = 'auto';
@@ -52,41 +42,29 @@
             });
         }
 
-        // ──────────────────────────────────────────────
-        // 3. Real-time validation feedback
-        //    Red border clears as soon as the user starts correcting
-        // ──────────────────────────────────────────────
+        // ── 3. Inline validation: red border clears as user corrects the field ──
         form.querySelectorAll('[required]').forEach(function (field) {
-            field.addEventListener('input', function () {
-                if (this.value.trim() !== '') {
-                    this.classList.remove('is-invalid');
-                    this.classList.add('is-valid');
-                }
-            });
-
-            field.addEventListener('change', function () {
-                if (this.value.trim() !== '') {
-                    this.classList.remove('is-invalid');
-                    this.classList.add('is-valid');
-                }
+            ['input', 'change'].forEach(function (evt) {
+                field.addEventListener(evt, function () {
+                    if (this.value.trim() !== '') {
+                        this.classList.remove('is-invalid');
+                        this.classList.add('is-valid');
+                    }
+                });
             });
         });
 
-        // ──────────────────────────────────────────────
-        // 4. Form submission
-        // ──────────────────────────────────────────────
+        // ── 4. Form submission → /api/contacts ──
         form.addEventListener('submit', async function (e) {
             e.preventDefault();
 
-            // Validate all required fields
+            // Client-side required-field check
             let isValid = true;
             form.querySelectorAll('[required]').forEach(function (field) {
                 if (field.value.trim() === '') {
                     isValid = false;
                     field.classList.add('is-invalid');
                     field.classList.remove('is-valid');
-                } else {
-                    field.classList.remove('is-invalid');
                 }
             });
 
@@ -96,65 +74,127 @@
                     firstError.scrollIntoView({ behavior: 'smooth', block: 'center' });
                     firstError.focus();
                 }
+                setStatus('Please fill in all required fields.', 'error');
                 return;
             }
 
-            // Show loading state
+            // Map form fields to the API schema
+            // server.js expects: name, email, message, phone, company, serviceInterest
+            const firstName = (document.getElementById('firstName').value || '').trim();
+            const lastName  = (document.getElementById('lastName').value  || '').trim();
+
+            const payload = {
+                name:            [firstName, lastName].filter(Boolean).join(' '),
+                email:           (document.getElementById('email').value       || '').trim(),
+                phone:           (document.getElementById('phone').value       || '').trim(),
+                company:         (document.getElementById('company').value     || '').trim(),
+                serviceInterest: mapService(document.getElementById('service').value),
+                budget:          mapBudget(document.getElementById('budget').value),
+                industry:        (document.getElementById('industry').value    || ''),
+                message:         (textarea.value || '').trim(),
+                source:          'website'
+            };
+
+            // Loading state
             const originalHTML  = submitBtn.innerHTML;
             submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin me-2"></i>Sending...';
             submitBtn.disabled  = true;
+            setStatus('', '');
 
             try {
-                const response = await fetch('https://api.web3forms.com/submit', {
-                    method: 'POST',
-                    body: new FormData(form)
+                const response = await fetch('/api/contacts', {
+                    method:  'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body:    JSON.stringify(payload)
                 });
 
                 const data = await response.json();
 
-                if (response.ok) {
-                    // Success state
+                if (response.ok && data.success) {
+                    // Success
                     submitBtn.innerHTML = '<i class="fas fa-check me-2"></i>Message Sent!';
                     submitBtn.classList.replace('btn-primary', 'btn-success');
+                    setStatus(
+                        data.message || 'Thank you! We\'ll respond within 24 hours.',
+                        'success'
+                    );
 
-                    // Reset form and textarea height
+                    // Reset form
                     form.reset();
                     if (textarea) textarea.style.height = '';
-
-                    // Restore all placeholders after reset
                     form.querySelectorAll('[data-original-placeholder]').forEach(function (el) {
                         el.setAttribute('placeholder', el.dataset.originalPlaceholder);
                     });
-
-                    // Remove validation classes
                     form.querySelectorAll('.is-valid, .is-invalid').forEach(function (el) {
                         el.classList.remove('is-valid', 'is-invalid');
                     });
 
-                    // Revert button after 3 s
+                    // Revert button after 4 s
                     setTimeout(function () {
                         submitBtn.innerHTML = originalHTML;
                         submitBtn.disabled  = false;
                         submitBtn.classList.replace('btn-success', 'btn-primary');
-                    }, 3000);
+                    }, 4000);
 
                 } else {
                     throw new Error(data.message || 'Submission failed');
                 }
 
             } catch (err) {
-                // Error state
-                submitBtn.innerHTML = '<i class="fas fa-exclamation-circle me-2"></i>Failed — Try Again';
+                submitBtn.innerHTML = '<i class="fas fa-exclamation-circle me-2"></i>Try Again';
                 submitBtn.classList.replace('btn-primary', 'btn-danger');
+                setStatus(
+                    err.message && err.message.length < 200
+                        ? err.message
+                        : 'Something went wrong. Please email us directly at customersupport@kfsquare.com.',
+                    'error'
+                );
 
                 setTimeout(function () {
                     submitBtn.innerHTML = originalHTML;
                     submitBtn.disabled  = false;
                     submitBtn.classList.replace('btn-danger', 'btn-primary');
-                }, 3000);
+                }, 4000);
             }
         });
+
+        // ── Helpers ──
+
+        function setStatus(msg, type) {
+            if (!statusEl) return;
+            statusEl.textContent = msg;
+            statusEl.className   = 'mt-3 text-center small';
+            if (type === 'success') statusEl.classList.add('text-success', 'fw-semibold');
+            if (type === 'error')   statusEl.classList.add('text-danger');
+        }
+
+        // Map the form's service values to the enum in models/Contact.js
+        function mapService(val) {
+            const map = {
+                'data-analytics':       'other',
+                'machine-learning':     'predictive-analytics',
+                'ai-integration':       'llm-integration',
+                'business-intelligence':'business-intelligence',
+                'data-engineering':     'data-engineering',
+                'consulting':           'strategic-consulting'
+            };
+            return map[val] || 'other';
+        }
+
+        // Map the form's budget values to the enum in models/Contact.js
+        function mapBudget(val) {
+            const map = {
+                'under-25k':  'under-10k',
+                '25k-50k':    '10k-50k',
+                '50k-100k':   '50k-100k',
+                '100k-250k':  '100k-500k',
+                '250k-500k':  '100k-500k',
+                'over-500k':  '500k+'
+            };
+            return map[val] || 'not-specified';
+        }
 
     });
 
 }());
+

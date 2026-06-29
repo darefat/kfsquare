@@ -414,4 +414,197 @@ For platform-specific issues:
 
 ---
 
-**KFSQUARE** - Platform-Agnostic Data Analytics Solutions 🌐
+## Contact Form: Local Testing & Production Deployment
+
+This section covers how to run and test the contact form locally, and the exact steps to deploy it to production.
+
+### Architecture
+
+The contact form (`contact.html` → `js/contact.js`) submits JSON to `POST /api/contacts` on the Express server (`server.js`). The server validates the input, saves the record to MongoDB via Mongoose (`models/Contact.js`), and sends two emails via Mailgun:
+- A notification to `customersupport@kfsquare.com`
+- A confirmation reply to the person who submitted the form
+
+---
+
+### Local Testing
+
+#### Prerequisites
+- Node.js 18+ installed
+- MongoDB installed locally (e.g. `brew install mongodb-community` on macOS)
+
+#### Step 1 — Start local MongoDB
+```bash
+# Create a data directory and start MongoDB in the background
+mkdir -p /tmp/kfsquare-mongodb-test
+mongod --dbpath /tmp/kfsquare-mongodb-test --port 27017 &
+
+# Verify it's running
+mongosh --port 27017 --eval "db.runCommand({ping:1})"
+# Expected: { ok: 1 }
+```
+
+#### Step 2 — Set up local environment
+```bash
+# Back up any existing production .env first
+cp .env .env.production.bak
+
+# Copy the local dev config into .env
+cp .env.local .env
+```
+
+The `.env.local` file sets:
+- `MONGODB_URI=mongodb://localhost:27017/kfsquare_dev` — local MongoDB, no auth required
+- `NODE_ENV=development` — enables verbose logging
+- Mailgun keys left blank — emails are skipped locally (logged to console instead)
+- Relaxed rate limits (1000 req/hr window, 50 per contact endpoint)
+
+#### Step 3 — Install dependencies
+```bash
+npm install
+```
+
+#### Step 4 — Seed the local database with test contacts
+```bash
+npm run seed:local
+```
+This inserts 5 realistic contacts (Jane Smith, Robert Johnson, Maria Garcia, David Lee, Sarah Williams) across different service interests and pipeline stages. Safe to run multiple times — it clears and re-seeds each time.
+
+#### Step 5 — Start the server
+```bash
+npm run dev:local
+# Server listening on http://localhost:3000
+# Database: connected to mongodb://localhost:27017/kfsquare_dev
+# Email: not configured (Mailgun keys blank)
+```
+
+#### Step 6 — Test the API endpoint directly
+```bash
+curl -s "http://localhost:3000/api/contacts" \
+  -H "Content-Type: application/json" \
+  -d '{
+    "name": "Test User",
+    "email": "test@example.com",
+    "phone": "410-555-1234",
+    "company": "Test Corp",
+    "serviceInterest": "data-engineering",
+    "budget": "50k-100k",
+    "message": "This is a test submission from local development environment.",
+    "source": "website"
+  }'
+```
+Expected response:
+```json
+{
+  "success": true,
+  "message": "Thank you Test User! Your message has been sent successfully. We'll respond within 24 hours.",
+  "data": { "id": "...", "emailSent": false, "timestamp": "..." }
+}
+```
+
+#### Step 7 — Verify the record saved to MongoDB
+```bash
+mongosh mongodb://localhost:27017/kfsquare_dev \
+  --eval "db.contacts.find({email:'test@example.com'}).pretty()"
+```
+
+#### Step 8 — Test the form in a browser
+Open `http://localhost:3000/contact.html`, fill out every field, and click **Send Message**.  
+The `#form-status` div should display the success message. Check the terminal for the `Contact saved to MongoDB` log line.
+
+#### Step 9 — Check the health endpoint
+```bash
+curl -s http://localhost:3000/api/health
+# Expected: {"status":"healthy","database":"connected","mailgun":"not configured"}
+```
+
+---
+
+### Production Deployment
+
+#### Step 1 — Restore production environment config
+```bash
+# Restore .env from the backup made during local testing
+cp .env.production.bak .env
+```
+
+Edit `.env` and confirm these values are set correctly:
+
+| Variable | Required | Description |
+|---|---|---|
+| `MONGODB_URI` | YES | MongoDB Atlas SRV string, e.g. `mongodb+srv://user:pass@cluster.mongodb.net/kfsquare?retryWrites=true&w=majority` |
+| `MAILGUN_API_KEY` | YES | Mailgun private API key |
+| `MAILGUN_DOMAIN` | YES | Verified Mailgun sending domain |
+| `NODE_ENV` | YES | Set to `production` |
+| `ALLOWED_ORIGINS` | YES | `https://kfsquare.com,https://www.kfsquare.com` |
+| `SESSION_SECRET` | YES | Random 64-char string |
+| `PORT` | optional | Defaults to `3000` |
+
+#### Step 2 — Install production dependencies
+```bash
+npm install --omit=dev
+```
+
+#### Step 3 — Start the server with PM2 (recommended)
+```bash
+# Install PM2 globally if not already installed
+npm install -g pm2
+
+# Start the server under PM2 process management
+npm run pm2:start
+
+# Verify it's running
+pm2 status
+pm2 logs kfsquare --lines 20
+```
+
+PM2 automatically restarts the server on crash and on system reboot (after `pm2 startup`).
+
+#### Step 4 — Verify the health endpoint on the live server
+```bash
+curl https://kfsquare.com/api/health
+# Expected: {"status":"healthy","database":"connected","mailgun":"configured"}
+```
+`mailgun` must show `"configured"` — if it shows `"not configured"` the Mailgun keys are missing from `.env`.
+
+#### Step 5 — Submit a real test contact from the live form
+Go to `https://kfsquare.com/contact.html`, fill the form, and submit. Within seconds:
+- A notification email arrives at `customersupport@kfsquare.com`
+- A confirmation email arrives at the address entered in the form
+- The record appears in MongoDB Atlas under the `kfsquare` database, `contacts` collection
+
+#### Step 6 — Set up PM2 to survive reboots
+```bash
+pm2 startup          # Follow the printed command to register the startup script
+pm2 save             # Persist current process list
+```
+
+#### Rollback
+If the production deployment fails, restore the server to the previous state:
+```bash
+# Stop PM2
+pm2 stop kfsquare
+
+# Revert code if needed (assuming git is in use)
+git checkout HEAD~1
+
+# Restart
+pm2 start ecosystem.config.js
+```
+
+---
+
+### Environment File Summary
+
+| File | Purpose |
+|---|---|
+| `.env` | Active config loaded by the server at runtime |
+| `.env.local` | Local development config (local MongoDB, no Mailgun) |
+| `.env.production.bak` | Backup of production config — restore this before deploying |
+| `.env.example` | Template with all required keys and no real values |
+
+> **Never commit `.env`, `.env.local`, or `.env.production.bak` to version control.**  
+> Confirm `.env*` is in `.gitignore` before pushing.
+
+---
+
+**KFSQUARE** - Platform-Agnostic Data Analytics Solutions

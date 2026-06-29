@@ -1,3 +1,10 @@
+// ---------------------------------------------------------------------------
+// PRODUCTION NOTE: All configuration is loaded from the .env file at startup.
+//   - Development: copy .env.local → .env  (local MongoDB, no Mailgun)
+//   - Production:  restore .env.production.bak → .env  (Atlas URI + Mailgun keys)
+// See DEPLOYMENT.md → "Contact Form: Local Testing & Production Deployment"
+// for the full step-by-step guide.
+// ---------------------------------------------------------------------------
 require('dotenv').config();
 const express = require('express');
 const mongoose = require('mongoose');
@@ -10,7 +17,7 @@ const { body, validationResult } = require('express-validator');
 const path = require('path');
 
 const app = express();
-const PORT = process.env.PORT || 3000;
+const PORT = process.env.PORT || 3000; // Set PORT in .env to override (default 3000)
 
 // Security middleware
 app.use(helmet({
@@ -27,6 +34,9 @@ app.use(helmet({
 }));
 
 // CORS configuration
+// PRODUCTION NOTE: In production, NODE_ENV must be set to 'production' in .env
+//   so that only https://kfsquare.com and https://www.kfsquare.com are allowed.
+//   Override with ALLOWED_ORIGINS env var if needed (comma-separated list).
 app.use(cors({
   origin: process.env.NODE_ENV === 'production' 
     ? ['https://kfsquare.com', 'https://www.kfsquare.com']
@@ -59,6 +69,9 @@ app.use(generalLimiter);
 app.use(express.static(path.join(__dirname)));
 
 // MongoDB connection with retry logic
+// PRODUCTION NOTE: Set MONGODB_URI in .env to your MongoDB Atlas SRV connection string:
+//   MONGODB_URI=mongodb+srv://<user>:<pass>@<cluster>.mongodb.net/kfsquare?retryWrites=true&w=majority
+// For local testing: MONGODB_URI=mongodb://localhost:27017/kfsquare_dev
 const connectDB = async () => {
   try {
     const conn = await mongoose.connect(process.env.MONGODB_URI, {
@@ -81,7 +94,7 @@ const contactSchema = new mongoose.Schema({
   company: { type: String, trim: true, maxlength: 100 },
   serviceInterest: { 
     type: String, 
-    enum: ['data-engineering', 'predictive-analytics', 'ai-ml', 'business-intelligence', 'llm-integration', 'consulting', 'other'],
+    enum: ['data-engineering', 'predictive-analytics', 'llm-integration', 'business-intelligence', 'data-governance', 'strategic-consulting', 'other'],
     default: 'other'
   },
   message: { type: String, required: true, trim: true, maxlength: 2000 },
@@ -103,6 +116,12 @@ contactSchema.index({ createdAt: -1 });
 const Contact = mongoose.model('Contact', contactSchema);
 
 // Mailgun setup
+// PRODUCTION NOTE: Set these in .env to enable outbound email:
+//   MAILGUN_API_KEY=key-xxxxxxxxxxxxxxxxxxxxxxxxxxxx
+//   MAILGUN_DOMAIN=mg.kfsquare.com   (must be a verified sending domain in Mailgun)
+//   MAILGUN_BASE_URL=https://api.mailgun.net  (use https://api.eu.mailgun.net for EU region)
+//   RECIPIENT_EMAIL=customersupport@kfsquare.com  (defaults to this if not set)
+// If these keys are absent, contact records still save to MongoDB — only email is skipped.
 let mailgunClient = null;
 const recipientEmail = process.env.RECIPIENT_EMAIL || 'customersupport@kfsquare.com';
 
@@ -128,7 +147,7 @@ app.post('/api/contacts', emailLimiter, [
   body('message').trim().isLength({ min: 10, max: 2000 }).escape().withMessage('Message must be between 10-2000 characters'),
   body('phone').optional().trim().isLength({ max: 20 }).escape(),
   body('company').optional().trim().isLength({ max: 100 }).escape(),
-  body('serviceInterest').optional().isIn(['data-engineering', 'predictive-analytics', 'ai-ml', 'business-intelligence', 'llm-integration', 'consulting', 'other']),
+  body('serviceInterest').optional().isIn(['data-engineering', 'predictive-analytics', 'llm-integration', 'business-intelligence', 'data-governance', 'strategic-consulting', 'other']),
   body('website').isEmpty().withMessage('Invalid submission detected') // Honeypot
 ], async (req, res) => {
   
@@ -170,13 +189,13 @@ app.post('/api/contacts', emailLimiter, [
     let emailSent = false;
     if (mailgunClient && process.env.MAILGUN_DOMAIN) {
       const serviceLabels = {
-        'data-engineering': 'Data Engineering',
+        'data-engineering':     'Data Engineering',
         'predictive-analytics': 'Predictive Analytics',
-        'ai-ml': 'AI & Machine Learning',
-        'business-intelligence': 'Business Intelligence',
-        'llm-integration': 'LLM Integration',
-        'consulting': 'Strategic Consulting',
-        'other': 'Other Services'
+        'llm-integration':      'AI & LLM Integration',
+        'business-intelligence':'Business Intelligence',
+        'data-governance':      'Data Governance',
+        'strategic-consulting': 'Strategic Consulting',
+        'other':                'Other Services'
       };
 
       const htmlBody = `
