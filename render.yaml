@@ -1,0 +1,44 @@
+# Render.com deployment for the KFSQUARE backend (Express + Mailgun email).
+#
+# WHY THIS EXISTS:
+#   kfsquare.com is served as STATIC files on GitHub Pages, which cannot run
+#   Node.js. The contact form needs a live backend to send email, so the
+#   backend (server.js) is deployed here as a Render Web Service. The frontend
+#   calls it via window.KF_API_BASE in contact.html.
+#
+# SETUP:
+#   1. Push this repo to GitHub (already done).
+#   2. On https://render.com -> New -> Blueprint -> pick this repo.
+#   3. Add the secret env vars below in the Render dashboard (NOT in git):
+#        DOTENV_PRIVATE_KEY_PRODUCTION  (from your local .env.keys)
+#        MONGODB_URI                    (MongoDB Atlas connection string)
+#        SESSION_SECRET, JWT_SECRET     (random strings)
+#   4. After deploy, map a custom domain: api.kfsquare.com -> this service.
+#   5. Ensure contact.html has: window.KF_API_BASE = 'https://api.kfsquare.com';
+
+services:
+  - type: web
+    name: kfsquare-backend
+    runtime: node
+    plan: free
+    region: oregon
+    branch: main
+    buildCommand: npm ci
+    # start:secure runs dotenvx, which decrypts .env.production using
+    # DOTENV_PRIVATE_KEY_PRODUCTION (set as a Render secret env var).
+    startCommand: npm run start:secure
+    healthCheckPath: /api/health
+    envVars:
+      - key: NODE_ENV
+        value: production
+      - key: ALLOWED_ORIGINS
+        value: https://kfsquare.com,https://www.kfsquare.com
+      # Secrets — set these in the Render dashboard, leave unset here:
+      - key: DOTENV_PRIVATE_KEY_PRODUCTION
+        sync: false
+      - key: MONGODB_URI
+        sync: false
+      - key: SESSION_SECRET
+        sync: false
+      - key: JWT_SECRET
+        sync: false

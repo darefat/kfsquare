@@ -363,6 +363,17 @@
 
     <!-- Bootstrap JS -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+    <!--
+      Backend API base URL for the contact form.
+      The site (kfsquare.com) is served as static files (GitHub Pages) and CANNOT
+      run the Node backend, so the form must call the deployed backend instead.
+      Set this to your backend's public URL once it is deployed, e.g.:
+        window.KF_API_BASE = 'https://api.kfsquare.com';
+      Leave empty ('') to use same-origin (only works when server.js serves the page).
+    -->
+    <script>
+      window.KF_API_BASE = 'https://api.kfsquare.com';
+    </script>
     <script src="index.js"></script>
     <script src="js/contact.js"></script>
 

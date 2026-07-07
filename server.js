@@ -4,6 +4,13 @@
 //   - Production:  restore .env.production.bak → .env  (Atlas URI + Mailgun keys)
 // See DEPLOYMENT.md → "Contact Form: Local Testing & Production Deployment"
 // for the full step-by-step guide.
+//
+// SECURITY: Never hardcode secrets in source code.
+//   Set all keys via environment variables on your hosting platform:
+//     Render   → https://dashboard.render.com  → Environment
+//     Heroku   → heroku config:set KEY=value
+//     AWS      → Secrets Manager or ECS task env
+//     VPS/PM2  → set in .env on the server, never commit .env to git
 // ---------------------------------------------------------------------------
 require('dotenv').config();
 const express = require('express');
@@ -16,8 +23,27 @@ const cors = require('cors');
 const { body, validationResult } = require('express-validator');
 const path = require('path');
 
+// ---------------------------------------------------------------------------
+// Startup environment validation
+// Logs which required vars are missing — never logs the actual values.
+// ---------------------------------------------------------------------------
+const REQUIRED_PROD_VARS = ['MONGODB_URI', 'SESSION_SECRET'];
+if (process.env.NODE_ENV === 'production') {
+  const missing = REQUIRED_PROD_VARS.filter(k => !process.env[k]);
+  if (missing.length > 0) {
+    console.error(`❌ Missing required environment variables: ${missing.join(', ')}`);
+    console.error('   Set them on your hosting platform — do NOT hardcode them in source code.');
+    process.exit(1);
+  }
+  // Warn if Mailgun is unconfigured (non-fatal — contacts still save to MongoDB)
+  if (!process.env.MAILGUN_API_KEY || !process.env.MAILGUN_DOMAIN) {
+    console.warn('⚠️  MAILGUN_API_KEY or MAILGUN_DOMAIN not set — email notifications disabled.');
+    console.warn('   Set these in your hosting platform environment, not in source code.');
+  }
+}
+
 const app = express();
-const PORT = process.env.PORT || 3000; // Set PORT in .env to override (default 3000)
+const PORT = process.env.PORT || 3000; // Set PORT in your hosting platform env to override
 
 // Security middleware
 app.use(helmet({
@@ -37,10 +63,14 @@ app.use(helmet({
 // PRODUCTION NOTE: In production, NODE_ENV must be set to 'production' in .env
 //   so that only https://kfsquare.com and https://www.kfsquare.com are allowed.
 //   Override with ALLOWED_ORIGINS env var if needed (comma-separated list).
+const allowedOrigins = process.env.ALLOWED_ORIGINS
+  ? process.env.ALLOWED_ORIGINS.split(',').map(o => o.trim())
+  : (process.env.NODE_ENV === 'production'
+      ? ['https://kfsquare.com', 'https://www.kfsquare.com']
+      : ['http://localhost:3000', 'http://127.0.0.1:3000']);
+
 app.use(cors({
-  origin: process.env.NODE_ENV === 'production' 
-    ? ['https://kfsquare.com', 'https://www.kfsquare.com']
-    : ['http://localhost:3000', 'http://127.0.0.1:3000'],
+  origin: allowedOrigins,
   credentials: true
 }));
 
@@ -86,34 +116,11 @@ const connectDB = async () => {
   }
 };
 
-// Contact schema
-const contactSchema = new mongoose.Schema({
-  name: { type: String, required: true, trim: true, maxlength: 100 },
-  email: { type: String, required: true, trim: true, lowercase: true },
-  phone: { type: String, trim: true, maxlength: 20 },
-  company: { type: String, trim: true, maxlength: 100 },
-  serviceInterest: { 
-    type: String, 
-    enum: ['data-engineering', 'predictive-analytics', 'llm-integration', 'business-intelligence', 'data-governance', 'strategic-consulting', 'other'],
-    default: 'other'
-  },
-  message: { type: String, required: true, trim: true, maxlength: 2000 },
-  source: { type: String, default: 'website_contact_form' },
-  status: { type: String, enum: ['new', 'contacted', 'qualified', 'closed'], default: 'new' },
-  priority: { type: String, enum: ['low', 'medium', 'high'], default: 'medium' },
-  ipAddress: String,
-  userAgent: String,
-  emailSent: { type: Boolean, default: false },
-  emailSentAt: Date,
-  createdAt: { type: Date, default: Date.now },
-  updatedAt: { type: Date, default: Date.now }
-});
-
-contactSchema.index({ email: 1, createdAt: -1 });
-contactSchema.index({ status: 1 });
-contactSchema.index({ createdAt: -1 });
-
-const Contact = mongoose.model('Contact', contactSchema);
+// Contact model.
+// IMPORTANT: use the single shared model from models/Contact.js. Defining a
+// second mongoose.model('Contact', ...) here caused an OverwriteModelError crash
+// because routes/contacts.js also loads the shared model.
+const Contact = require('./models/Contact');
 
 // Mailgun setup
 // PRODUCTION NOTE: Set these in .env to enable outbound email:
@@ -173,7 +180,7 @@ app.post('/api/contacts', emailLimiter, [
         phone: phone || '',
         company: company || '',
         serviceInterest: serviceInterest || 'other',
-        source: 'website_contact_form',
+        source: 'website',
         status: 'new',
         priority: serviceInterest === 'consulting' || serviceInterest === 'ai-ml' ? 'high' : 'medium',
         ipAddress: req.ip || req.connection.remoteAddress,
@@ -429,6 +436,39 @@ app.get('/api/health', (req, res) => {
   });
 });
 
+// ---------------------------------------------------------------------------
+// Admin: list contacts stored in MongoDB
+// Usage:  GET /api/admin/contacts?status=new&limit=50&page=1
+// This endpoint is intentionally unauthenticated for local dev.
+// In production, protect it with an API key or move behind an admin login.
+// ---------------------------------------------------------------------------
+app.get('/api/admin/contacts', async (req, res) => {
+  if (!database.isConnected) {
+    return res.status(503).json({ success: false, message: 'Database not connected' });
+  }
+
+  try {
+    const { status, limit = 50, page = 1 } = req.query;
+    const filter = {};
+    if (status) filter.status = status;
+
+    const skip   = (parseInt(page) - 1) * parseInt(limit);
+    const contacts = await Contact
+      .find(filter)
+      .sort({ createdAt: -1 })
+      .skip(skip)
+      .limit(parseInt(limit))
+      .lean();
+
+    const count = await Contact.countDocuments(filter);
+
+    res.json({ success: true, count, page: parseInt(page), contacts });
+  } catch (err) {
+    console.error('Admin contacts error:', err);
+    res.status(500).json({ success: false, message: 'Failed to retrieve contacts' });
+  }
+});
+
 // Serve static files
 app.get('/', (req, res) => {
   res.sendFile(path.join(__dirname, 'index.html'));
@@ -439,10 +479,14 @@ app.get('*.html', (req, res) => {
 
   // Resolve the full absolute path and prevent path traversal attacks
   const fullPath = path.resolve(__dirname, filename);
-  if (!fullPath.startsWith(__dirname + path.sep)) {
-    return res.status(403).send('Forbidden');
+  if (!fullPath.startsWith(__dirname + path.sep) && fullPath !== __dirname) {
+    return res.status(403).json({ error: 'Forbidden' });
   }
-  res.sendFile(fullPath);
+  res.sendFile(fullPath, (err) => {
+    if (err) {
+      res.status(404).json({ error: 'File not found' });
+    }
+  });
 });
 
 // 404 handler
@@ -459,6 +503,37 @@ app.use((error, req, res, next) => {
   });
 });
 
+// ─── ROUTES ─────────────────────────────────────────────────────────────────
+// Modular route handlers for better organization
+// ────────────────────────────────────────────────────────────────────────────
+const contactsRouter = require('./routes/contacts');
+const chatRouter     = require('./routes/chat');
+const adminRouter    = require('./routes/admin');
+
+// API routes
+app.use('/api/contacts', contactsRouter);
+app.use('/api/chat',     chatRouter);
+app.use('/api/admin',    adminRouter);
+
+// ─── Admin HTML dashboard (Basic Auth protected) ──────────────────────────────
+app.get('/admin', (req, res) => {
+    if (process.env.NODE_ENV === 'production' && process.env.ADMIN_ENABLED !== 'true') {
+        return res.status(403).json({ error: 'Admin panel disabled in production.' });
+    }
+    const authHeader = req.headers['authorization'] || '';
+    const base64     = authHeader.startsWith('Basic ') ? authHeader.slice(6) : '';
+    const decoded    = Buffer.from(base64, 'base64').toString('utf8');
+    const colonIdx   = decoded.indexOf(':');
+    const user       = decoded.slice(0, colonIdx);
+    const pass       = decoded.slice(colonIdx + 1);
+
+    if (user === process.env.ADMIN_USERNAME && pass === process.env.ADMIN_PASSWORD) {
+        return res.sendFile(path.join(__dirname, 'admin.html'));
+    }
+    res.set('WWW-Authenticate', 'Basic realm="KFSQUARE Admin"');
+    res.status(401).send('Credentials required — enter admin username and password.');
+});
+
 // Initialize database and start server
 const startServer = async () => {
   // Connect to database
@@ -468,13 +543,15 @@ const startServer = async () => {
     console.warn('⚠️ Starting server without database connection - contacts will not be saved');
   }
   
-  // Start server
-  app.listen(PORT, () => {
-    console.log(`🚀 Server running on port ${PORT}`);
-    console.log(`📧 Email configured: ${mailgunClient ? '✅' : '❌'}`);
-    console.log(`💾 Database connected: ${database.isConnected ? '✅' : '❌'}`);
-    console.log(`🌍 Environment: ${process.env.NODE_ENV || 'development'}`);
-  });
+  // Start server (skip listen in test mode so Jest can import the app cleanly)
+  if (process.env.NODE_ENV !== 'test') {
+    app.listen(PORT, () => {
+      console.log(`🚀 Server running on port ${PORT}`);
+      console.log(`📧 Email configured: ${mailgunClient ? '✅' : '❌'}`);
+      console.log(`💾 Database connected: ${database.isConnected ? '✅' : '❌'}`);
+      console.log(`🌍 Environment: ${process.env.NODE_ENV || 'development'}`);
+    });
+  }
 };
 
 startServer();

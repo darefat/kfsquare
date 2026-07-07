@@ -102,13 +102,33 @@
             setStatus('', '');
 
             try {
-                const response = await fetch('/api/contacts', {
+                // API base URL. When the frontend is on a static host (e.g. GitHub
+                // Pages) the backend lives on a different origin, so allow overriding
+                // via window.KF_API_BASE (set in the HTML). Falls back to same-origin.
+                const apiBase  = (window.KF_API_BASE || '').replace(/\/$/, '');
+                const endpoint = apiBase + '/api/contacts';
+
+                const response = await fetch(endpoint, {
                     method:  'POST',
                     headers: { 'Content-Type': 'application/json' },
                     body:    JSON.stringify(payload)
                 });
 
-                const data = await response.json();
+                // Safely parse response — if the server returns HTML (404, crash, nginx
+                // error page, or file:// opened directly) JSON.parse would throw the
+                // "Unexpected token '<'" error.  Read as text first, then parse.
+                const rawText = await response.text();
+                let data;
+                try {
+                    data = JSON.parse(rawText);
+                } catch (_) {
+                    console.error('Non-JSON server response:', rawText.substring(0, 200));
+                    throw new Error(
+                        'The server returned an unexpected response. ' +
+                        'Make sure the page is opened via the server (http://...) and not as a local file. ' +
+                        'You can also reach us at customersupport@kfsquare.com.'
+                    );
+                }
 
                 if (response.ok && data.success) {
                     // Success
