@@ -49,6 +49,11 @@ if (process.env.NODE_ENV === 'production') {
 }
 
 const app = express();
+
+// Trust the hosting platform's reverse proxy (Render, Heroku, nginx, etc.) so
+// req.ip and express-rate-limit read the real client IP from X-Forwarded-For.
+// Without this, express-rate-limit throws ERR_ERL_UNEXPECTED_X_FORWARDED_FOR.
+app.set('trust proxy', 1);
 const PORT = process.env.PORT || 3000; // Set PORT in your hosting platform env to override
 
 // Security middleware
