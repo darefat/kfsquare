@@ -83,9 +83,11 @@ HEALTHCHECK --interval=30s --timeout=10s --start-period=5s --retries=3 \
 # Use tini for proper signal handling
 ENTRYPOINT ["/sbin/tini", "--"]
 
-# Start via start:secure so dotenvx decrypts .env.production using the
-# DOTENV_PRIVATE_KEY_PRODUCTION env var (set in the host, e.g. Render dashboard).
-CMD ["npm", "run", "start:secure"]
+# Start the server. Secrets are provided as plain environment variables by the
+# host (e.g. Render dashboard), which stores them securely and keeps them out of
+# git. This avoids dotenvx runtime decryption issues on the platform.
+# (For local encrypted-secret runs, use `npm run start:secure` instead.)
+CMD ["npm", "start"]
 
 # Metadata labels
 LABEL maintainer="KFSQUARE Team"
