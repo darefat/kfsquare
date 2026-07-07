@@ -169,6 +169,19 @@ app.post('/api/contacts', emailLimiter, [
 
   const { name, email, message, phone, company, serviceInterest } = req.body;
 
+  // Human-readable service labels — declared here so BOTH the notification
+  // email and the user confirmation email can use it (previously scoped inside
+  // the notification block, causing 'serviceLabels is not defined').
+  const serviceLabels = {
+    'data-engineering':     'Data Engineering',
+    'predictive-analytics': 'Predictive Analytics',
+    'llm-integration':      'AI & LLM Integration',
+    'business-intelligence':'Business Intelligence',
+    'data-governance':      'Data Governance',
+    'strategic-consulting': 'Strategic Consulting',
+    'other':                'Other Services'
+  };
+
   try {
     // 1. Save contact to MongoDB
     let contact = null;
@@ -195,16 +208,6 @@ app.post('/api/contacts', emailLimiter, [
     // 2. Send email via Mailgun
     let emailSent = false;
     if (mailgunClient && process.env.MAILGUN_DOMAIN) {
-      const serviceLabels = {
-        'data-engineering':     'Data Engineering',
-        'predictive-analytics': 'Predictive Analytics',
-        'llm-integration':      'AI & LLM Integration',
-        'business-intelligence':'Business Intelligence',
-        'data-governance':      'Data Governance',
-        'strategic-consulting': 'Strategic Consulting',
-        'other':                'Other Services'
-      };
-
       const htmlBody = `
         <!DOCTYPE html>
         <html>
