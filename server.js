@@ -27,13 +27,19 @@ const path = require('path');
 // Startup environment validation
 // Logs which required vars are missing — never logs the actual values.
 // ---------------------------------------------------------------------------
-const REQUIRED_PROD_VARS = ['MONGODB_URI', 'SESSION_SECRET'];
+// MongoDB is OPTIONAL: if MONGODB_URI is absent the server still runs and the
+// contact form still sends email — submissions just aren't persisted.
+const REQUIRED_PROD_VARS = ['SESSION_SECRET'];
 if (process.env.NODE_ENV === 'production') {
   const missing = REQUIRED_PROD_VARS.filter(k => !process.env[k]);
   if (missing.length > 0) {
     console.error(`❌ Missing required environment variables: ${missing.join(', ')}`);
     console.error('   Set them on your hosting platform — do NOT hardcode them in source code.');
     process.exit(1);
+  }
+  if (!process.env.MONGODB_URI) {
+    console.warn('⚠️  MONGODB_URI not set — running WITHOUT a database.');
+    console.warn('   Contact form email will still send; submissions will not be saved.');
   }
   // Warn if Mailgun is unconfigured (non-fatal — contacts still save to MongoDB)
   if (!process.env.MAILGUN_API_KEY || !process.env.MAILGUN_DOMAIN) {
@@ -103,6 +109,11 @@ app.use(express.static(path.join(__dirname)));
 //   MONGODB_URI=mongodb+srv://<user>:<pass>@<cluster>.mongodb.net/kfsquare?retryWrites=true&w=majority
 // For local testing: MONGODB_URI=mongodb://localhost:27017/kfsquare_dev
 const connectDB = async () => {
+  // MongoDB is optional — skip entirely if no connection string is configured.
+  if (!process.env.MONGODB_URI) {
+    console.warn('⚠️ MONGODB_URI not set — skipping database. Email still works.');
+    return false;
+  }
   try {
     const conn = await mongoose.connect(process.env.MONGODB_URI, {
       useNewUrlParser: true,
@@ -111,7 +122,8 @@ const connectDB = async () => {
     console.log(`✅ MongoDB Connected: ${conn.connection.host}`);
     return true;
   } catch (error) {
-    console.error('❌ MongoDB connection error:', error);
+    console.error('❌ MongoDB connection error:', error.message);
+    console.warn('⚠️ Continuing without database — contact email still works.');
     return false;
   }
 };

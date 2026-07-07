@@ -11,8 +11,9 @@
 #   2. On https://render.com -> New -> Blueprint -> pick this repo.
 #   3. Add the secret env vars below in the Render dashboard (NOT in git):
 #        DOTENV_PRIVATE_KEY_PRODUCTION  (from your local .env.keys)
-#        MONGODB_URI                    (MongoDB Atlas connection string)
 #        SESSION_SECRET, JWT_SECRET     (random strings)
+#        MONGODB_URI  (OPTIONAL - MongoDB Atlas string. If omitted, the contact
+#                      form still sends email; submissions just aren't saved.)
 #   4. After deploy, map a custom domain: api.kfsquare.com -> this service.
 #   5. Ensure contact.html has: window.KF_API_BASE = 'https://api.kfsquare.com';
 
