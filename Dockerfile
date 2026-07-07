@@ -58,11 +58,12 @@ RUN rm -rf \
     coverage \
     .env.example
 
+# Create logs directory as root and hand ownership to the app user BEFORE
+# switching users (mkdir as non-root in a root-owned /app fails otherwise).
+RUN mkdir -p logs && chown -R kfsquare:nodejs logs
+
 # Switch to non-root user
 USER kfsquare
-
-# Create logs directory
-RUN mkdir -p logs
 
 # Expose application port
 EXPOSE 3000
