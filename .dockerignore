@@ -1,0 +1,21 @@
+# Never bake secrets or local env into the image.
+# .env.production is the ENCRYPTED file and is safe/needed, so it is NOT ignored.
+.env
+.env.keys
+.env.local
+.env.*.local
+.env.compose
+.env.docker
+.env.secrets
+.env.production.bak
+.env.dev.bak
+
+# Dev noise
+.git
+.gitignore
+node_modules
+npm-debug.log
+coverage
+__tests__
+*.md
+.DS_Store

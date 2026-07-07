@@ -74,13 +74,14 @@ ENV HOSTNAME="0.0.0.0"
 
 # Health check (single instance)
 HEALTHCHECK --interval=30s --timeout=10s --start-period=5s --retries=3 \
-  CMD curl -f http://localhost:3000/health || node -e "require('http').get('http://localhost:3000/health', (res) => process.exit(res.statusCode === 200 ? 0 : 1))" || exit 1
+  CMD curl -f http://localhost:3000/api/health || node -e "require('http').get('http://localhost:3000/api/health', (res) => process.exit(res.statusCode === 200 ? 0 : 1))" || exit 1
 
 # Use tini for proper signal handling
 ENTRYPOINT ["/sbin/tini", "--"]
 
-# Start the application (single CMD)
-CMD ["npm", "start"]
+# Start via start:secure so dotenvx decrypts .env.production using the
+# DOTENV_PRIVATE_KEY_PRODUCTION env var (set in the host, e.g. Render dashboard).
+CMD ["npm", "run", "start:secure"]
 
 # Metadata labels
 LABEL maintainer="KFSQUARE Team"
