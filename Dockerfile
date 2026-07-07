@@ -1,7 +1,10 @@
 # KFSQUARE Multi-Architecture Production Dockerfile
 # Supports AMD64, ARM64, and multi-stage builds for optimization
 
-FROM --platform=$BUILDPLATFORM node:18-alpine as base
+# Node 20+ is required: undici (pulled in by dotenvx/mailgun) uses the global
+# File API, which does not exist in Node 18 and crashes with
+# 'ReferenceError: File is not defined'.
+FROM --platform=$BUILDPLATFORM node:20-alpine as base
 
 # Install system dependencies
 RUN apk add --no-cache libc6-compat tini curl bash
