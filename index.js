@@ -102,80 +102,11 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     });
     
-    // Enhanced contact form handler with email/MongoDB functionality
-    const contactForm = document.getElementById('contact-form');
-    if (contactForm) {
-        contactForm.addEventListener('submit', async function(e) {
-            e.preventDefault();
-            
-            const submitBtn = this.querySelector('button[type="submit"]');
-            const originalText = submitBtn.innerHTML;
-            
-            // Show loading state
-            submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin me-2"></i>Sending...';
-            submitBtn.disabled = true;
-            
-            try {
-                const formData = new FormData(this);
-                const response = await fetch('/submit-contact', {
-                    method: 'POST',
-                    body: formData
-                });
-                
-                const result = await response.json();
-                
-                if (result.success) {
-                    // Show success message
-                    showAlert('success', result.message);
-                    this.reset(); // Clear form
-                } else {
-                    showAlert('error', result.error || 'Failed to send message');
-                }
-                
-            } catch (error) {
-                console.error('Error:', error);
-                showAlert('error', 'Network error. Please try again.');
-            } finally {
-                // Restore button
-                submitBtn.innerHTML = originalText;
-                submitBtn.disabled = false;
-            }
-        });
-    }
-    
-    // Alert system for user feedback
-    function showAlert(type, message) {
-        // Create alert element
-        const alert = document.createElement('div');
-        alert.className = `alert alert-${type === 'success' ? 'success' : 'danger'} alert-dismissible fade show`;
-        alert.innerHTML = `
-            ${message}
-            <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
-        `;
-        
-        // Insert at top of contact section or form
-        const contactSection = document.getElementById('contact');
-        const contactForm = document.getElementById('contact-form');
-        let container;
-        
-        if (contactSection) {
-            container = contactSection.querySelector('.container');
-        } else if (contactForm) {
-            container = contactForm.parentElement;
-        }
-        
-        if (container) {
-            container.insertBefore(alert, container.firstChild);
-            
-            // Auto-dismiss after 5 seconds
-            setTimeout(() => {
-                if (alert.parentNode) {
-                    alert.remove();
-                }
-            }, 5000);
-        }
-    }
-    
+    // NOTE: Contact form submission is handled in js/contact.js
+    // (posts to /api/contacts, which saves to MongoDB and sends email via Mailgun).
+    // The previous handler here posted to a non-existent /submit-contact route
+    // and conflicted with js/contact.js, so it has been removed.
+
     // Modal close functionality
     const modalCloses = document.querySelectorAll('.modal-close');
     modalCloses.forEach(close => {
@@ -309,7 +240,10 @@ document.addEventListener('DOMContentLoaded', function() {
   function init() {
     try {
       initPolyfills();
-      initContactForm();
+      // Contact form is handled by js/contact.js (posts to /api/contacts).
+      // initContactForm() here posted to a non-existent /submit-contact route and
+      // conflicted with js/contact.js, so it is intentionally not called.
+      // initContactForm();
       initSmoothScrolling();
       initScrollAnimations();
       initCounterAnimations();
