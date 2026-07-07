@@ -70,18 +70,27 @@ app.use(helmet({
   }
 }));
 
-// CORS configuration
-// PRODUCTION NOTE: In production, NODE_ENV must be set to 'production' in .env
-//   so that only https://kfsquare.com and https://www.kfsquare.com are allowed.
-//   Override with ALLOWED_ORIGINS env var if needed (comma-separated list).
-const allowedOrigins = process.env.ALLOWED_ORIGINS
-  ? process.env.ALLOWED_ORIGINS.split(',').map(o => o.trim())
-  : (process.env.NODE_ENV === 'production'
-      ? ['https://kfsquare.com', 'https://www.kfsquare.com']
-      : ['http://localhost:3000', 'http://127.0.0.1:3000']);
+// CORS configuration.
+// The production site origins are ALWAYS allowed so the contact form on
+// kfsquare.com works even if ALLOWED_ORIGINS/NODE_ENV env vars are missing.
+// Extra origins can be added via the ALLOWED_ORIGINS env var (comma-separated).
+const DEFAULT_ORIGINS = [
+  'https://kfsquare.com',
+  'https://www.kfsquare.com',
+  'http://localhost:3000',
+  'http://127.0.0.1:3000'
+];
+const envOrigins = process.env.ALLOWED_ORIGINS
+  ? process.env.ALLOWED_ORIGINS.split(',').map(o => o.trim()).filter(Boolean)
+  : [];
+const allowedOrigins = [...new Set([...DEFAULT_ORIGINS, ...envOrigins])];
 
 app.use(cors({
-  origin: allowedOrigins,
+  origin: function (origin, callback) {
+    // Allow non-browser clients (no Origin) and any whitelisted origin.
+    if (!origin || allowedOrigins.includes(origin)) return callback(null, true);
+    return callback(null, false);
+  },
   credentials: true
 }));
 
