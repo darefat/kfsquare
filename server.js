@@ -447,14 +447,11 @@ Reply directly to this email to respond to ${name}.
       console.error("Mailgun Response Error:", error.response.body);
     }
     
-    // Expose error detail when DEBUG_ERRORS=true (temporary diagnostics) or in dev.
     const showDetail = process.env.NODE_ENV === 'development' || process.env.DEBUG_ERRORS === 'true';
     res.status(500).json({ 
       success: false, 
       message: 'We apologize, but there was an error processing your request. Please try again or contact us directly at customersupport@kfsquare.com or 410-934-7470.',
-      error: showDetail ? error.message : undefined,
-      mailgun: showDetail && error.response && error.response.body ? error.response.body : undefined,
-      status: showDetail ? error.status : undefined
+      error: showDetail ? error.message : undefined
     });
   }
 });
