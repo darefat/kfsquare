@@ -4,333 +4,466 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <title>About Us - KFSQUARE | Data Analytics & Automation Solutions</title>
-    <meta name="description" content="Learn about KFSQUARE's mission, team, and commitment to transforming businesses through data analytics and automation solutions.">
-    
-    <!-- Bootstrap CSS -->
+    <title>About - KFSQUARE | Small Business & Veteran Owned</title>
+    <meta name="description" content="KFSQUARE is a small business and veteran-owned software engineering and data analytics firm delivering measurable outcomes for government and commercial clients.">
+
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link rel="stylesheet" href="styles.css">
     <link rel="icon" href="favicon.ico" type="image/x-icon">
+
+    <style>
+        :root {
+            --navy:            #0d1a35;
+            --navy-mid:        #1a2d50;
+            --gold:            #ffc107;
+            --gold-border:     rgba(255,193,7,0.25);
+            --card-bg:         rgba(255,255,255,0.04);
+            --card-border:     rgba(255,255,255,0.08);
+            --text-muted-dark: rgba(255,255,255,0.55);
+        }
+
+        * { box-sizing: border-box; }
+        body { background: #fff; color: #0d1a35; font-family: 'Inter', system-ui, sans-serif; margin: 0; }
+
+        /* ── Nav ── */
+        .site-nav {
+            position: sticky; top: 0; z-index: 1000;
+            background: rgba(13,26,53,0.97);
+            backdrop-filter: blur(12px);
+            border-bottom: 1px solid rgba(255,255,255,0.07);
+            padding: 0;
+        }
+        .site-nav .container { display: flex; align-items: center; justify-content: space-between; height: 64px; }
+        .nav-brand { font-size: 1.2rem; font-weight: 800; text-decoration: none; letter-spacing: -0.02em; }
+        .nav-brand .kf { color: var(--gold); }
+        .nav-brand .sq { color: #fff; }
+        .nav-links { display: flex; align-items: center; gap: 8px; list-style: none; margin: 0; padding: 0; }
+        .nav-links a { color: rgba(255,255,255,0.7); text-decoration: none; font-size: 0.875rem; font-weight: 500; padding: 6px 14px; border-radius: 6px; transition: color 0.2s, background 0.2s; }
+        .nav-links a:hover, .nav-links a.active { color: #fff; background: rgba(255,255,255,0.07); }
+        .nav-cta { background: var(--gold) !important; color: #0d1a35 !important; font-weight: 700 !important; }
+        .nav-cta:hover { background: #e6ac00 !important; }
+        .nav-toggle { display: none; background: none; border: 1px solid rgba(255,255,255,0.2); border-radius: 6px; padding: 6px 10px; color: #fff; cursor: pointer; }
+        @media (max-width: 768px) {
+            .nav-toggle { display: block; }
+            .nav-links { display: none; flex-direction: column; position: absolute; top: 64px; left: 0; right: 0; background: rgba(13,26,53,0.98); padding: 16px; gap: 4px; }
+            .nav-links.open { display: flex; }
+        }
+
+        /* ── Hero ── */
+        .about-hero {
+            background: var(--navy); padding: 96px 0 80px;
+            position: relative; overflow: hidden;
+        }
+        .about-hero::before {
+            content: ''; position: absolute; inset: 0;
+            background-image: linear-gradient(rgba(255,255,255,0.02) 1px, transparent 1px),
+                              linear-gradient(90deg, rgba(255,255,255,0.02) 1px, transparent 1px);
+            background-size: 48px 48px; pointer-events: none;
+        }
+        .hero-glow {
+            position: absolute; top: -80px; left: 50%; transform: translateX(-50%);
+            width: 700px; height: 400px;
+            background: radial-gradient(ellipse, rgba(255,193,7,0.08) 0%, transparent 68%);
+            pointer-events: none;
+        }
+
+        /* ── Shared layout ── */
+        .section-eyebrow {
+            display: inline-flex; align-items: center; gap: 8px;
+            font-size: 0.72rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.12em;
+            color: var(--gold); background: rgba(255,193,7,0.1);
+            border: 1px solid rgba(255,193,7,0.2); border-radius: 20px;
+            padding: 5px 14px; margin-bottom: 24px;
+        }
+        .section-eyebrow span { width: 5px; height: 5px; border-radius: 50%; background: var(--gold); display: inline-block; }
+        .section-title-light { font-size: clamp(1.6rem,3vw,2.2rem); font-weight: 800; letter-spacing: -0.03em; color: #0d1a35; margin-bottom: 0.5rem; }
+        .section-title-dark  { font-size: clamp(1.6rem,3vw,2.2rem); font-weight: 800; letter-spacing: -0.03em; color: #fff; margin-bottom: 0.5rem; }
+        .section-sub { font-size: 1rem; color: #6b7a99; line-height: 1.75; max-width: 560px; }
+        .section-light { padding: 96px 0; background: #f8f9fc; }
+        .section-white { padding: 96px 0; background: #fff; }
+        .section-dark  { padding: 96px 0; background: var(--navy); }
+
+        /* ── Stats bar ── */
+        .stat-val { font-size: 2rem; font-weight: 900; color: var(--gold); letter-spacing: -0.03em; line-height: 1; }
+        .stat-lbl { font-size: 0.75rem; color: var(--text-muted-dark); text-transform: uppercase; letter-spacing: 0.08em; margin-top: 6px; }
+
+        /* ── Story split ── */
+        .story-card {
+            background: #fff; border: 1px solid #e8ecf4; border-radius: 14px; padding: 36px;
+        }
+        .story-card p { font-size: 0.9375rem; color: #4a5568; line-height: 1.85; margin-bottom: 16px; }
+        .story-card p:last-child { margin-bottom: 0; }
+
+        /* ── Pillar cards (mission/vision/values) ── */
+        .pillar-card {
+            background: var(--card-bg); border: 1px solid var(--card-border);
+            border-radius: 12px; padding: 32px;
+            transition: border-color 0.25s, transform 0.25s, box-shadow 0.25s;
+        }
+        .pillar-card:hover { border-color: var(--gold-border); transform: translateY(-4px); box-shadow: 0 20px 40px rgba(0,0,0,0.25); }
+        .pillar-icon { font-size: 1.75rem; margin-bottom: 16px; }
+        .pillar-card h3 { font-size: 1rem; font-weight: 800; color: #fff; margin-bottom: 12px; }
+        .pillar-card p,
+        .pillar-card li { font-size: 0.875rem; color: var(--text-muted-dark); line-height: 1.8; }
+        .pillar-card ul { list-style: none; padding: 0; margin: 0; }
+        .pillar-card li { display: flex; align-items: flex-start; gap: 8px; margin-bottom: 8px; }
+        .pillar-card li::before { content: ''; width: 5px; height: 5px; border-radius: 50%; background: var(--gold); margin-top: 8px; flex-shrink: 0; }
+
+        /* ── Credential cards ── */
+        .cred-card {
+            background: #fff; border: 1px solid #e8ecf4; border-radius: 12px; padding: 28px;
+            transition: border-color 0.2s, box-shadow 0.2s, transform 0.2s;
+        }
+        .cred-card:hover { border-color: #1e3c72; box-shadow: 0 12px 32px rgba(30,60,114,0.1); transform: translateY(-3px); }
+        .cred-icon { font-size: 1.75rem; margin-bottom: 14px; }
+        .cred-card h4 { font-size: 0.95rem; font-weight: 700; color: #0d1a35; margin-bottom: 8px; }
+        .cred-card p { font-size: 0.85rem; color: #6b7a99; line-height: 1.7; margin-bottom: 16px; }
+        .cred-tag {
+            display: inline-block; font-size: 0.68rem; font-weight: 700;
+            background: rgba(30,60,114,0.07); color: #1e3c72;
+            border: 1px solid rgba(30,60,114,0.15); border-radius: 4px;
+            padding: 3px 9px; margin: 2px;
+        }
+
+        /* ── Timeline ── */
+        .tl-wrap { position: relative; padding-left: 32px; }
+        .tl-wrap::before { content: ''; position: absolute; left: 10px; top: 0; bottom: 0; width: 2px; background: #e8ecf4; }
+        .tl-item { position: relative; padding-bottom: 36px; }
+        .tl-item:last-child { padding-bottom: 0; }
+        .tl-dot {
+            position: absolute; left: -27px; top: 4px;
+            width: 18px; height: 18px; border-radius: 50%;
+            background: #fff; border: 2px solid #1e3c72;
+            display: flex; align-items: center; justify-content: center;
+        }
+        .tl-dot::after { content: ''; width: 6px; height: 6px; border-radius: 50%; background: #1e3c72; }
+        .tl-item.current .tl-dot { background: var(--gold); border-color: var(--gold); }
+        .tl-item.current .tl-dot::after { background: #0d1a35; }
+        .tl-year { font-size: 0.72rem; font-weight: 700; color: #1e3c72; letter-spacing: 0.08em; text-transform: uppercase; margin-bottom: 4px; }
+        .tl-item h4 { font-size: 0.95rem; font-weight: 700; color: #0d1a35; margin: 0 0 6px; }
+        .tl-item p  { font-size: 0.875rem; color: #6b7a99; line-height: 1.7; margin: 0; }
+
+        /* ── CTA band ── */
+        .cta-band {
+            background: linear-gradient(135deg, #0d1a35 0%, #1a2d50 100%);
+            padding: 80px 0; text-align: center;
+            border-top: 1px solid rgba(255,193,7,0.15);
+        }
+
+        /* ── Buttons ── */
+        .btn-gold {
+            display: inline-flex; align-items: center; gap: 8px;
+            background: var(--gold); color: #0d1a35; font-weight: 700; font-size: 0.9rem; border: none;
+            padding: 13px 28px; border-radius: 8px; text-decoration: none;
+            transition: background 0.2s, transform 0.15s;
+        }
+        .btn-gold:hover { background: #e6ac00; transform: translateY(-1px); color: #0d1a35; }
+        .btn-outline-gold {
+            display: inline-flex; align-items: center; gap: 8px;
+            border: 1px solid var(--gold-border); color: rgba(255,255,255,0.8);
+            font-weight: 600; font-size: 0.9rem; padding: 13px 28px; border-radius: 8px;
+            text-decoration: none; transition: background 0.2s, border-color 0.2s; background: transparent;
+        }
+        .btn-outline-gold:hover { background: rgba(255,193,7,0.08); border-color: var(--gold); color: #fff; }
+
+        /* ── Footer ── */
+        .site-footer { background: #060e1e; border-top: 1px solid rgba(255,255,255,0.07); padding: 64px 0 32px; }
+        .footer-brand { font-size: 1.3rem; font-weight: 800; letter-spacing: -0.02em; margin-bottom: 12px; }
+        .footer-brand .kf { color: var(--gold); }
+        .footer-brand .sq { color: #fff; }
+        .footer-desc { font-size: 0.875rem; color: rgba(255,255,255,0.45); line-height: 1.75; max-width: 240px; }
+        .footer-heading { font-size: 0.72rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.1em; color: rgba(255,255,255,0.3); margin-bottom: 16px; }
+        .footer-link { display: block; color: rgba(255,255,255,0.55); font-size: 0.875rem; text-decoration: none; padding: 4px 0; transition: color 0.2s; }
+        .footer-link:hover { color: #fff; }
+        .footer-social { display: flex; gap: 10px; margin-top: 20px; }
+        .footer-social a { width: 36px; height: 36px; border-radius: 8px; border: 1px solid rgba(255,255,255,0.1); display: flex; align-items: center; justify-content: center; color: rgba(255,255,255,0.5); font-size: 0.8rem; text-decoration: none; transition: all 0.2s; }
+        .footer-social a:hover { border-color: var(--gold); color: var(--gold); }
+        .footer-bottom { border-top: 1px solid rgba(255,255,255,0.07); margin-top: 48px; padding-top: 24px; font-size: 0.78rem; color: rgba(255,255,255,0.3); }
+
+        /* ── Reveal ── */
+        .reveal { opacity: 0; transform: translateY(24px); transition: opacity 0.6s ease, transform 0.6s ease; }
+        .reveal.visible { opacity: 1; transform: translateY(0); }
+        .reveal-d1 { transition-delay: 0.1s; }
+        .reveal-d2 { transition-delay: 0.2s; }
+        .reveal-d3 { transition-delay: 0.3s; }
+    </style>
 </head>
 <body>
+
     <!-- Navigation -->
-    <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+    <nav class="site-nav">
         <div class="container">
-            <div class="navbar-brand fw-bold">
-                <a href="index.html" class="text-decoration-none">
-                    <span class="text-warning">KF</span><span class="text-white">SQUARE</span>
-                </a>
-            </div>
-            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
-                <span class="navbar-toggler-icon"></span>
+            <a href="index.html" class="nav-brand"><span class="kf">KF</span><span class="sq">SQUARE</span></a>
+            <button class="nav-toggle" aria-label="Toggle menu" id="nav-toggle">
+                <i class="fas fa-bars"></i>
             </button>
-            <div class="collapse navbar-collapse" id="navbarNav">
-                <ul class="navbar-nav ms-auto">
-                    <li class="nav-item">
-                        <a href="index.html" class="nav-link">Home</a>
-                    </li>
-                    <li class="nav-item">
-                        <a href="about.html" class="nav-link active">About</a>
-                    </li>
-                    <li class="nav-item">
-                        <a href="services.html" class="nav-link">Services</a>
-                    </li>
-                    <li class="nav-item">
-                        <a href="portfolio.html" class="nav-link">Portfolio</a>
-                    </li>
-                    <li class="nav-item">
-                        <a href="contact.html" class="nav-link">Contact</a>
-                    </li>
-                </ul>
-            </div>
+            <ul class="nav-links" id="nav-links">
+                <li><a href="index.html">Home</a></li>
+                <li><a href="about.html" class="active">About</a></li>
+                <li><a href="services.html">Services</a></li>
+                <li><a href="portfolio.html">Portfolio</a></li>
+                <li><a href="contact.html" class="nav-cta">Let's Talk</a></li>
+            </ul>
         </div>
     </nav>
 
-    <!-- Page Header -->
-    <section class="page-header py-5 text-center" style="background: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%); color: white;">
-        <div class="container">
-            <h1 class="display-4 fw-bold">About KFSQUARE</h1>
-            <p class="lead">Transforming businesses through practical data solutions</p>
-            <nav aria-label="breadcrumb">
-                <ol class="breadcrumb justify-content-center bg-transparent">
-                    <li class="breadcrumb-item"><a href="index.html" class="text-warning">Home</a></li>
-                    <li class="breadcrumb-item active text-light" aria-current="page">About</li>
-                </ol>
-            </nav>
+    <!-- Hero -->
+    <section class="about-hero">
+        <div class="hero-glow"></div>
+        <div class="container position-relative text-center">
+            <div class="section-eyebrow reveal"><span></span>About Us</div>
+            <h1 class="reveal reveal-d1" style="font-size:clamp(2.2rem,5vw,3.4rem);font-weight:900;color:#fff;letter-spacing:-0.04em;line-height:1.1;margin-bottom:20px;">
+                Built by veterans.<br>
+                <em style="color:var(--gold);font-style:normal;">Driven by data.</em>
+            </h1>
+            <p class="reveal reveal-d2" style="font-size:1rem;color:var(--text-muted-dark);max-width:520px;margin:0 auto 36px;line-height:1.8;">
+                We are a small business and veteran-owned firm that turns complex data problems into clear, measurable outcomes for government and commercial clients.
+            </p>
+            <div class="reveal reveal-d2 d-flex gap-3 justify-content-center flex-wrap">
+                <a href="contact.html" class="btn-gold">Work With Us <i class="fas fa-arrow-right" style="font-size:0.75rem;"></i></a>
+                <a href="portfolio.html" class="btn-outline-gold">See Our Work</a>
+            </div>
         </div>
     </section>
 
-    <!-- About Content -->
-    <main class="main-content">
-        <!-- Company Overview (Centered) -->
-        <section class="about-overview py-5 bg-light">
-            <div class="container">
-                <div class="row justify-content-center">
-                    <div class="col-lg-10">
-                        <div class="about-text text-center bg-white p-4 rounded shadow">
-                            <h2 class="section-title mb-4">Our Story</h2>
-                            <p class="lead">Since our inception, we've helped over 500+ companies transform their decision-making processes with data-driven insights. Our team of expert data scientists, engineers, and consultants work collaboratively to deliver solutions that not only meet current needs but anticipate future challenges.</p>
-                            
-                            <!-- Values in Our Story -->
-                            <div class="mvv-item bg-light p-3 rounded my-4">
-                                <div class="mvv-icon text-center fs-1 mb-3">⭐</div>
-                                <h3>Our Values</h3>
-                                <ul class="list-unstyled">
-                                    <li>✓ Innovation through data</li>
-                                    <li>✓ Client-first approach</li>
-                                    <li>✓ Responsible data practices</li>
-                                    <li>✓ Continuous learning</li>
-                                </ul>
-                            </div>
-                            
-                            <!-- Stats Grid -->
-                            <div class="row g-3 mt-4">
-                                <div class="col-md-4">
-                                    <div class="stat-item bg-white p-3 rounded shadow-sm text-center">
-                                        <h3 class="fw-bold text-primary">500+</h3>
-                                        <p class="mb-0 text-muted">Clients Served</p>
-                                    </div>
-                                </div>
-                                <div class="col-md-4">
-                                    <div class="stat-item bg-white p-3 rounded shadow-sm text-center">
-                                        <h3 class="fw-bold text-primary">1000+</h3>
-                                        <p class="mb-0 text-muted">Projects Completed</p>
-                                    </div>
-                                </div>
-                                <div class="col-md-4">
-                                    <div class="stat-item bg-white p-3 rounded shadow-sm text-center">
-                                        <h3 class="fw-bold text-primary">5+</h3>
-                                        <p class="mb-0 text-muted">Years Experience</p>
-                                    </div>
-                                </div>
-                            </div>
+    <!-- Stats bar -->
+    <section style="background:var(--navy);padding:0 0 56px;">
+        <div class="container">
+            <div class="row g-3 reveal" style="border-top:1px solid rgba(255,255,255,0.06);padding-top:48px;">
+                <div class="col-6 col-md-3 text-center">
+                    <div class="stat-val" data-count="500">0</div>
+                    <div class="stat-lbl">Clients Served</div>
+                </div>
+                <div class="col-6 col-md-3 text-center">
+                    <div class="stat-val" data-count="1000">0</div>
+                    <div class="stat-lbl">Projects Completed</div>
+                </div>
+                <div class="col-6 col-md-3 text-center">
+                    <div class="stat-val" data-count="7">0</div>
+                    <div class="stat-lbl">Years in Business</div>
+                </div>
+                <div class="col-6 col-md-3 text-center">
+                    <div class="stat-val" data-count="40">0</div>
+                    <div class="stat-lbl">Industries Served</div>
+                </div>
+            </div>
+        </div>
+    </section>
 
-                            <!-- Company Overview Image -->
-                            <div class="image-placeholder mt-4 p-4 bg-light rounded border-2 border-dashed">
-                                <div class="placeholder-content text-center">
-                                    <i class="icon fs-1">🏢</i>
-                                    <h5 class="mt-2">Company Overview</h5>
-                                    <p class="text-muted mb-0">Small Business & Veteran Owned • Security Cleared • Cloud Certified</p>
-                                </div>
+    <!-- Our Story -->
+    <section class="section-white">
+        <div class="container">
+            <div class="row align-items-center g-5">
+                <div class="col-lg-5 reveal">
+                    <div class="section-eyebrow" style="color:#1e3c72;background:rgba(30,60,114,0.06);border-color:rgba(30,60,114,0.15);">
+                        <span style="background:#1e3c72;"></span>Our Story
+                    </div>
+                    <h2 class="section-title-light">From service to<br>software.</h2>
+                    <p class="section-sub">Founded by veterans who understood firsthand that the difference between a good decision and a bad one often comes down to the quality of the information behind it.</p>
+                </div>
+                <div class="col-lg-6 offset-lg-1 reveal reveal-d1">
+                    <div class="story-card">
+                        <p>KFSQUARE was founded on a straightforward premise: organizations deserve data systems that actually work. Not demos. Not decks. Working software and pipelines that produce results their teams can act on.</p>
+                        <p>We started in government — where the requirements are strict, the stakes are high, and the timelines are real. That discipline shaped how we deliver for every client since, commercial or federal.</p>
+                        <p>Today our team spans software engineers, data scientists, cloud architects, and automation specialists. We are small by design. Every engagement gets senior attention, not junior hand-offs.</p>
+                        <div class="d-flex gap-3 flex-wrap mt-4">
+                            <div style="padding:14px 20px;background:#f8f9fc;border-radius:8px;border:1px solid #e8ecf4;text-align:center;min-width:110px;">
+                                <div style="font-size:1.1rem;font-weight:900;color:#1e3c72;">SBE</div>
+                                <div style="font-size:0.7rem;color:#6b7a99;margin-top:2px;">Certified</div>
+                            </div>
+                            <div style="padding:14px 20px;background:#f8f9fc;border-radius:8px;border:1px solid #e8ecf4;text-align:center;min-width:110px;">
+                                <div style="font-size:1.1rem;font-weight:900;color:#1e3c72;">DVOSB</div>
+                                <div style="font-size:0.7rem;color:#6b7a99;margin-top:2px;">Verified</div>
+                            </div>
+                            <div style="padding:14px 20px;background:#f8f9fc;border-radius:8px;border:1px solid #e8ecf4;text-align:center;min-width:110px;">
+                                <div style="font-size:1.1rem;font-weight:900;color:#1e3c72;">SECRET</div>
+                                <div style="font-size:0.7rem;color:#6b7a99;margin-top:2px;">Clearance</div>
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
-        </section>
+        </div>
+    </section>
 
-        <!-- Mission, Vision, Values (White text on dark background) -->
-        <section class="mvv-section py-5" style="background: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%); color: white;">
-            <div class="container">
-                <h2 class="section-title text-center text-white mb-5">Mission, Vision & Values</h2>
-                <div class="row g-4">
-                    <div class="col-md-4">
-                        <div class="mvv-item text-center h-100 p-4 rounded" style="background: rgba(255, 255, 255, 0.1); backdrop-filter: blur(10px); border: 1px solid rgba(255, 255, 255, 0.2);">
-                            <div class="mvv-icon text-center fs-1 mb-3 text-warning">🎯</div>
-                            <h3 class="text-white">Our Mission</h3>
-                            <p class="text-white">To empower organizations with practical data solutions that drive innovation, efficiency, and sustainable growth in an increasingly complex digital landscape.</p>
-                        </div>
+    <!-- Mission / Vision / Values -->
+    <section class="section-dark">
+        <div class="container">
+            <div class="text-center mb-5 reveal">
+                <div class="section-eyebrow"><span></span>What We Stand For</div>
+                <h2 class="section-title-dark">Principles, not platitudes.</h2>
+                <p style="font-size:1rem;color:var(--text-muted-dark);max-width:480px;margin:0 auto;line-height:1.75;">
+                    These aren't wall posters. They show up in how we scope work, how we communicate, and how we deliver.
+                </p>
+            </div>
+            <div class="row g-3">
+                <div class="col-md-4 reveal reveal-d1">
+                    <div class="pillar-card h-100">
+                        <div class="pillar-icon">🎯</div>
+                        <h3>Mission</h3>
+                        <p>Empower organizations with software and data systems that create measurable, durable impact — not shelfware.</p>
                     </div>
-                    <div class="col-md-4">
-                        <div class="mvv-item text-center h-100 p-4 rounded" style="background: rgba(255, 255, 255, 0.1); backdrop-filter: blur(10px); border: 1px solid rgba(255, 255, 255, 0.2);">
-                            <div class="mvv-icon text-center fs-1 mb-3 text-warning">👁️</div>
-                            <h3 class="text-white">Our Vision</h3>
-                            <p class="text-white">To be the global leader in democratizing advanced analytics, making sophisticated data science accessible to businesses of all sizes across all industries.</p>
-                        </div>
+                </div>
+                <div class="col-md-4 reveal reveal-d2">
+                    <div class="pillar-card h-100">
+                        <div class="pillar-icon">👁️</div>
+                        <h3>Vision</h3>
+                        <p>A world where the gap between data and decision is measured in seconds, not weeks — regardless of organization size.</p>
                     </div>
-                    <div class="col-md-4">
-                        <div class="mvv-item text-center h-100 p-4 rounded" style="background: rgba(255, 255, 255, 0.1); backdrop-filter: blur(10px); border: 1px solid rgba(255, 255, 255, 0.2);">
-                            <div class="mvv-icon text-center fs-1 mb-3 text-warning">⭐</div>
-                            <h3 class="text-white">Our Values</h3>
-                            <ul class="list-unstyled text-white">
-                                <li><span class="text-warning">✓</span> Innovation through data</li>
-                                <li><span class="text-warning">✓</span> Client-first approach</li>
-                                <li><span class="text-warning">✓</span> Responsible data practices</li>
-                                <li><span class="text-warning">✓</span> Continuous learning</li>
-                            </ul>
-                        </div>
+                </div>
+                <div class="col-md-4 reveal reveal-d3">
+                    <div class="pillar-card h-100">
+                        <div class="pillar-icon">⚡</div>
+                        <h3>Values</h3>
+                        <ul>
+                            <li>Outcomes over output</li>
+                            <li>Direct communication</li>
+                            <li>Responsible data stewardship</li>
+                            <li>Senior ownership of every engagement</li>
+                            <li>Continuous improvement</li>
+                        </ul>
                     </div>
                 </div>
             </div>
-        </section>
+        </div>
+    </section>
 
-        <!-- Business Credentials -->
-        <section class="credentials-section py-5">
-            <div class="container">
-                <h2 class="section-title text-center mb-5">Business Credentials & Certifications</h2>
-                <div class="row g-4">
-                    <div class="col-md-6">
-                        <div class="credential-card card h-100 p-4 shadow-sm">
-                            <div class="credential-icon fs-1 text-center mb-3">🏢</div>
-                            <h3 class="text-center">Small Business Certified</h3>
-                            <p class="text-center">Officially certified as a Small Business Enterprise (SBE), enabling us to provide specialized services and competitive pricing for government and enterprise contracts.</p>
-                            <div class="credential-details text-center">
-                                <span class="badge bg-primary me-2">SBE Certified</span>
-                                <span class="badge bg-secondary">NAICS: 541511</span>
-                            </div>
-                        </div>
+    <!-- Credentials -->
+    <section class="section-light">
+        <div class="container">
+            <div class="text-center mb-5 reveal">
+                <div class="section-eyebrow" style="color:#1e3c72;background:rgba(30,60,114,0.06);border-color:rgba(30,60,114,0.15);">
+                    <span style="background:#1e3c72;"></span>Credentials
+                </div>
+                <h2 class="section-title-light">Verified. Certified. Cleared.</h2>
+                <p class="section-sub" style="margin:0 auto;">Not claims — documented qualifications that matter when you're selecting a vendor for work that counts.</p>
+            </div>
+            <div class="row g-3">
+                <div class="col-md-6 col-lg-3 reveal reveal-d1">
+                    <div class="cred-card h-100">
+                        <div class="cred-icon">🏢</div>
+                        <h4>Small Business Certified</h4>
+                        <p>SBE-certified, enabling participation in set-aside contracts and specialized procurement vehicles.</p>
+                        <span class="cred-tag">SBE Certified</span>
+                        <span class="cred-tag">NAICS 541511</span>
                     </div>
-                    
-                    <div class="col-md-6">
-                        <div class="credential-card card h-100 p-4 shadow-sm">
-                            <div class="credential-icon fs-1 text-center mb-3">🎖️</div>
-                            <h3 class="text-center">Disabled Veteran Owned</h3>
-                            <p class="text-center">Proudly owned and operated by disabled veterans, bringing military precision, dedication, and service excellence to every data analytics project.</p>
-                            <div class="credential-details text-center">
-                                <span class="badge bg-success me-2">DVBE Certified</span>
-                                <span class="badge bg-info">VOSB Verified</span>
-                            </div>
-                        </div>
+                </div>
+                <div class="col-md-6 col-lg-3 reveal reveal-d1">
+                    <div class="cred-card h-100">
+                        <div class="cred-icon">🎖️</div>
+                        <h4>Veteran Owned</h4>
+                        <p>Disabled veteran-owned business bringing military discipline and accountability to every engagement.</p>
+                        <span class="cred-tag">DVBE Certified</span>
+                        <span class="cred-tag">VOSB Verified</span>
                     </div>
-                    
-                    <div class="col-md-6">
-                        <div class="credential-card card h-100 p-4 shadow-sm">
-                            <div class="credential-icon fs-1 text-center mb-3">🔒</div>
-                            <h3 class="text-center">Security Clearance</h3>
-                            <p class="text-center">Team members with active security clearances for government and defense sector projects requiring enhanced data protection protocols.</p>
-                            <div class="credential-details text-center">
-                                <span class="badge bg-warning">Security Cleared</span>
-                            </div>
-                        </div>
+                </div>
+                <div class="col-md-6 col-lg-3 reveal reveal-d2">
+                    <div class="cred-card h-100">
+                        <div class="cred-icon">🔒</div>
+                        <h4>Security Clearance</h4>
+                        <p>Team members holding active clearances for government and defense programs with stringent data requirements.</p>
+                        <span class="cred-tag">Security Cleared</span>
+                        <span class="cred-tag">FedRAMP Aware</span>
                     </div>
-                    
-                    <div class="col-md-6">
-                        <div class="credential-card card h-100 p-4 shadow-sm">
-                            <div class="credential-icon fs-1 text-center mb-3">🎓</div>
-                            <h3 class="text-center">Industry Certifications</h3>
-                            <p class="text-center">AWS, Azure, and Google Cloud certified professionals with advanced expertise in data science and cloud architecture.</p>
-                            <div class="credential-details text-center">
-                                <span class="badge bg-primary me-2">Cloud Certified</span>
-                                <span class="badge bg-success">Analytics Specialists</span>
-                            </div>
-                        </div>
+                </div>
+                <div class="col-md-6 col-lg-3 reveal reveal-d2">
+                    <div class="cred-card h-100">
+                        <div class="cred-icon">🎓</div>
+                        <h4>Cloud Certified</h4>
+                        <p>AWS, Azure, and GCP certified practitioners with advanced specializations in data and ML platforms.</p>
+                        <span class="cred-tag">AWS Certified</span>
+                        <span class="cred-tag">Azure Certified</span>
+                        <span class="cred-tag">GCP Certified</span>
                     </div>
                 </div>
             </div>
-        </section>
+        </div>
+    </section>
 
-        <!-- Company Timeline -->
-        <section class="timeline-section py-5 bg-light">
-            <div class="container">
-                <h2 class="section-title text-center mb-5">Our Journey</h2>
-                <div class="row justify-content-center">
-                    <div class="col-lg-8">
-                        <div class="timeline">
-                            <div class="timeline-item d-flex mb-4">
-                                <div class="timeline-marker bg-primary text-white rounded-circle d-flex align-items-center justify-content-center me-3 fw-bold" style="width: 60px; height: 60px; min-width: 60px;">2019</div>
-                                <div class="timeline-content">
-                                    <h3>Company Founded</h3>
-                                    <p>KFSQUARE established with a mission to democratize advanced analytics for businesses of all sizes.</p>
-                                </div>
-                            </div>
-                            <div class="timeline-item d-flex mb-4">
-                                <div class="timeline-marker bg-success text-white rounded-circle d-flex align-items-center justify-content-center me-3 fw-bold" style="width: 60px; height: 60px; min-width: 60px;">2020</div>
-                                <div class="timeline-content">
-                                    <h3>First 100 Clients</h3>
-                                    <p>Reached our first major milestone by serving 100+ clients across various industries during the global digital transformation.</p>
-                                </div>
-                            </div>
-                            <div class="timeline-item d-flex mb-4">
-                                <div class="timeline-marker bg-info text-white rounded-circle d-flex align-items-center justify-content-center me-3 fw-bold" style="width: 60px; height: 60px; min-width: 60px;">2021</div>
-                                <div class="timeline-content">
-                                    <h3>Analytics Platform Launch</h3>
-                                    <p>Launched our analytics platform, enabling real-time reporting and predictive modeling for enterprise clients.</p>
-                                </div>
-                            </div>
-                            <div class="timeline-item d-flex mb-4">
-                                <div class="timeline-marker bg-warning text-dark rounded-circle d-flex align-items-center justify-content-center me-3 fw-bold" style="width: 60px; height: 60px; min-width: 60px;">2022</div>
-                                <div class="timeline-content">
-                                    <h3>Government Contracts</h3>
-                                    <p>Secured major government contracts leveraging our veteran-owned status and security clearance capabilities.</p>
-                                </div>
-                            </div>
-                            <div class="timeline-item d-flex mb-4">
-                                <div class="timeline-marker bg-danger text-white rounded-circle d-flex align-items-center justify-content-center me-3 fw-bold" style="width: 60px; height: 60px; min-width: 60px;">2023</div>
-                                <div class="timeline-content">
-                                    <h3>International Expansion</h3>
-                                    <p>Expanded services internationally, serving clients across North America, Europe, and Asia-Pacific regions.</p>
-                                </div>
-                            </div>
-                            <div class="timeline-item d-flex">
-                                <div class="timeline-marker bg-dark text-white rounded-circle d-flex align-items-center justify-content-center me-3 fw-bold" style="width: 60px; height: 60px; min-width: 60px;">2024</div>
-                                <div class="timeline-content">
-                                    <h3>Advanced Workflow Integration</h3>
-                                    <p>Expanded enterprise workflow integration services, helping businesses automate document processing and operational tasks.</p>
-                                </div>
-                            </div>
-                        </div>
+    <!-- Timeline -->
+    <section class="section-white">
+        <div class="container">
+            <div class="row align-items-start g-5">
+                <div class="col-lg-4 reveal" style="position:sticky;top:88px;">
+                    <div class="section-eyebrow" style="color:#1e3c72;background:rgba(30,60,114,0.06);border-color:rgba(30,60,114,0.15);">
+                        <span style="background:#1e3c72;"></span>Our Journey
                     </div>
+                    <h2 class="section-title-light">Seven years.<br>Forward the whole time.</h2>
+                    <p class="section-sub">From a two-person startup to a multi-contract firm with cleared staff and a proven delivery record.</p>
+                </div>
+                <div class="col-lg-7 offset-lg-1 reveal reveal-d1">
+                    <div class="tl-wrap" id="timeline"></div>
                 </div>
             </div>
-        </section>
+        </div>
+    </section>
 
-        <!-- Call to Action -->
-        <section class="cta-section py-5" style="background: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%);">
-            <div class="container">
-                <div class="cta-content text-center">
-                    <h2 class="text-white mb-3">Ready to Transform Your Business?</h2>
-                    <p class="text-light mb-4">Join 500+ companies that trust KFSQUARE for their data analytics and automation solutions.</p>
-                    <div class="cta-buttons">
-                        <a href="contact.html" class="btn btn-warning btn-lg me-3 px-4 py-2">
-                            <i class="fas fa-rocket me-2"></i>Get Started Today
-                        </a>
-                        <a href="services.html" class="btn btn-outline-light btn-lg px-4 py-2">
-                            <i class="fas fa-arrow-right me-2"></i>Explore Services
-                        </a>
-                    </div>
-                </div>
+    <!-- CTA -->
+    <section class="cta-band">
+        <div class="container reveal">
+            <h2 style="font-size:clamp(1.8rem,3.5vw,2.5rem);font-weight:800;color:#fff;letter-spacing:-0.03em;margin-bottom:12px;">
+                Let's solve something together.
+            </h2>
+            <p style="font-size:1rem;color:var(--text-muted-dark);max-width:440px;margin:0 auto 32px;line-height:1.75;">
+                Tell us what you're working on. We'll tell you honestly whether and how we can help.
+            </p>
+            <div class="d-flex gap-3 justify-content-center flex-wrap">
+                <a href="contact.html" class="btn-gold">Get in Touch <i class="fas fa-arrow-right" style="font-size:0.75rem;"></i></a>
+                <a href="services.html" class="btn-outline-gold">Our Services</a>
             </div>
-        </section>
-    </main>
+        </div>
+    </section>
 
     <!-- Footer -->
-    <footer class="footer bg-dark text-light py-5">
+    <footer class="site-footer">
         <div class="container">
-            <div class="row g-4">
-                <div class="col-lg-3">
-                    <h3 class="text-warning">KFSQUARE</h3>
-                    <p>Transforming businesses through practical data solutions and advanced analytics.</p>
-                    <div class="social-links">
-                        <a href="mailto:customersupport@kfsquare.com" class="text-light me-2" aria-label="Email">📧</a>
-                        <a href="tel:+14109347470" class="text-light me-2" aria-label="Phone">📱</a>
-                        <a href="#" class="text-light" aria-label="LinkedIn">💻</a>
+            <div class="row g-5">
+                <div class="col-lg-4">
+                    <div class="footer-brand"><span class="kf">KF</span><span class="sq">SQUARE</span></div>
+                    <p class="footer-desc">Secure software engineering, modern data platforms, and AI solutions for organizations where the work actually matters.</p>
+                    <div class="footer-social">
+                        <a href="mailto:customersupport@kfsquare.com" aria-label="Email"><i class="fas fa-envelope"></i></a>
+                        <a href="tel:+14109347470" aria-label="Phone"><i class="fas fa-phone"></i></a>
+                        <a href="#" aria-label="LinkedIn"><i class="fab fa-linkedin-in"></i></a>
                     </div>
                 </div>
-                <div class="col-lg-3">
-                    <h4>Services</h4>
-                    <ul class="list-unstyled">
-                        <li><a href="services.html" class="text-light text-decoration-none">Data Analytics</a></li>
-                        <li><a href="services.html" class="text-light text-decoration-none">Predictive Modeling</a></li>
-                        <li><a href="services.html" class="text-light text-decoration-none">Process Automation</a></li>
-                        <li><a href="services.html" class="text-light text-decoration-none">Business Intelligence</a></li>
-                    </ul>
+                <div class="col-lg-2 col-6">
+                    <p class="footer-heading">Services</p>
+                    <a href="services.html#software-engineering" class="footer-link">Software Engineering</a>
+                    <a href="services.html#data-engineering" class="footer-link">Data Engineering</a>
+                    <a href="services.html#ai-ml" class="footer-link">AI & ML</a>
+                    <a href="services.html#cloud-devops" class="footer-link">Cloud & DevOps</a>
+                    <a href="services.html#analytics-bi" class="footer-link">Analytics & BI</a>
+                    <a href="services.html#cybersecurity" class="footer-link">Cybersecurity</a>
+                </div>
+                <div class="col-lg-2 col-6">
+                    <p class="footer-heading">Company</p>
+                    <a href="about.html" class="footer-link">About</a>
+                    <a href="portfolio.html" class="footer-link">Portfolio</a>
+                    <a href="contact.html" class="footer-link">Contact</a>
+                    <a href="privacy.html" class="footer-link">Privacy Policy</a>
+                    <a href="terms.html" class="footer-link">Terms of Service</a>
                 </div>
                 <div class="col-lg-3">
-                    <h4>Company</h4>
-                    <ul class="list-unstyled">
-                        <li><a href="about.html" class="text-light text-decoration-none">About Us</a></li>
-                        <li><a href="portfolio.html" class="text-light text-decoration-none">Portfolio</a></li>
-                        <li><a href="contact.html" class="text-light text-decoration-none">Contact</a></li>
-                    </ul>
-                </div>
-                <div class="col-lg-3">
-                    <h4>Contact Info</h4>
-                    <div class="contact-info">
-                        <p>📞 410-934-7470</p>
-                        <p>📧 customersupport@kfsquare.com</p>
-                        <p>🏢 Small Business & Veteran Owned</p>
-                    </div>
+                    <p class="footer-heading">Contact</p>
+                    <p style="font-size:0.875rem;color:rgba(255,255,255,0.55);margin-bottom:6px;">📞 410-934-7470</p>
+                    <p style="font-size:0.875rem;color:rgba(255,255,255,0.55);margin-bottom:6px;">📧 customersupport@kfsquare.com</p>
+                    <p style="font-size:0.875rem;color:rgba(255,255,255,0.55);">🏢 Small Business &amp; Veteran Owned</p>
                 </div>
             </div>
-            <div class="footer-bottom text-center mt-4 pt-4 border-top border-secondary">
-                <p class="mb-0">&copy; 2024 KFSQUARE. All rights reserved. | <a href="privacy.html" class="text-warning">Privacy Policy</a> | <a href="terms.html" class="text-warning">Terms of Service</a></p>
+            <div class="footer-bottom d-flex flex-wrap justify-content-between align-items-center gap-2">
+                <span>&copy; 2026 KFSQUARE. All rights reserved.</span>
+                <span>
+                    <a href="privacy.html" class="footer-link d-inline" style="font-size:0.78rem;">Privacy</a> ·
+                    <a href="terms.html" class="footer-link d-inline" style="font-size:0.78rem;">Terms</a>
+                </span>
             </div>
         </div>
     </footer>
 
-    <!-- Bootstrap JS -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="about.js"></script>
     <script src="index.js"></script>
 </body>
 </html>

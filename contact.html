@@ -4,409 +4,488 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <title>Contact Us - KFSQUARE | Get in Touch for Data Analytics Solutions</title>
-    <meta name="description" content="Contact KFSQUARE for data analytics, predictive modeling, automation, and software solutions. Get expert consultation and project quotes.">
-    
-    <!-- Bootstrap CSS -->
+    <title>Contact - KFSQUARE | Start a Conversation</title>
+    <meta name="description" content="Get in touch with KFSQUARE. Tell us what you're building and we'll respond within one business day with a direct assessment.">
+
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link rel="stylesheet" href="styles.css">
     <link rel="icon" href="favicon.ico" type="image/x-icon">
+
+    <style>
+        :root {
+            --navy:            #0d1a35;
+            --navy-mid:        #1a2d50;
+            --gold:            #ffc107;
+            --gold-border:     rgba(255,193,7,0.25);
+            --card-bg:         rgba(255,255,255,0.04);
+            --card-border:     rgba(255,255,255,0.08);
+            --text-muted-dark: rgba(255,255,255,0.55);
+        }
+
+        * { box-sizing: border-box; }
+        body { background: #fff; color: #0d1a35; font-family: 'Inter', system-ui, sans-serif; margin: 0; }
+
+        /* ── Nav ── */
+        .site-nav {
+            position: sticky; top: 0; z-index: 1000;
+            background: rgba(13,26,53,0.97);
+            backdrop-filter: blur(12px);
+            border-bottom: 1px solid rgba(255,255,255,0.07);
+            padding: 0;
+        }
+        .site-nav .container { display: flex; align-items: center; justify-content: space-between; height: 64px; }
+        .nav-brand { font-size: 1.2rem; font-weight: 800; text-decoration: none; letter-spacing: -0.02em; }
+        .nav-brand .kf { color: var(--gold); }
+        .nav-brand .sq { color: #fff; }
+        .nav-links { display: flex; align-items: center; gap: 8px; list-style: none; margin: 0; padding: 0; }
+        .nav-links a { color: rgba(255,255,255,0.7); text-decoration: none; font-size: 0.875rem; font-weight: 500; padding: 6px 14px; border-radius: 6px; transition: color 0.2s, background 0.2s; }
+        .nav-links a:hover, .nav-links a.active { color: #fff; background: rgba(255,255,255,0.07); }
+        .nav-cta { background: var(--gold) !important; color: #0d1a35 !important; font-weight: 700 !important; }
+        .nav-cta:hover { background: #e6ac00 !important; }
+        .nav-toggle { display: none; background: none; border: 1px solid rgba(255,255,255,0.2); border-radius: 6px; padding: 6px 10px; color: #fff; cursor: pointer; }
+        @media (max-width: 768px) {
+            .nav-toggle { display: block; }
+            .nav-links { display: none; flex-direction: column; position: absolute; top: 64px; left: 0; right: 0; background: rgba(13,26,53,0.98); padding: 16px; gap: 4px; }
+            .nav-links.open { display: flex; }
+        }
+
+        /* ── Hero ── */
+        .ct-hero {
+            background: var(--navy); padding: 96px 0 80px;
+            position: relative; overflow: hidden;
+        }
+        .ct-hero::before {
+            content: ''; position: absolute; inset: 0;
+            background-image: linear-gradient(rgba(255,255,255,0.02) 1px, transparent 1px),
+                              linear-gradient(90deg, rgba(255,255,255,0.02) 1px, transparent 1px);
+            background-size: 48px 48px; pointer-events: none;
+        }
+        .ct-hero-glow {
+            position: absolute; top: -80px; left: 50%; transform: translateX(-50%);
+            width: 700px; height: 400px;
+            background: radial-gradient(ellipse, rgba(255,193,7,0.08) 0%, transparent 68%);
+            pointer-events: none;
+        }
+
+        /* ── Shared ── */
+        .section-eyebrow {
+            display: inline-flex; align-items: center; gap: 8px;
+            font-size: 0.72rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.12em;
+            color: var(--gold); background: rgba(255,193,7,0.1);
+            border: 1px solid rgba(255,193,7,0.2); border-radius: 20px;
+            padding: 5px 14px; margin-bottom: 24px;
+        }
+        .section-eyebrow span { width: 5px; height: 5px; border-radius: 50%; background: var(--gold); display: inline-block; }
+        .section-title-light { font-size: clamp(1.6rem,3vw,2.2rem); font-weight: 800; letter-spacing: -0.03em; color: #0d1a35; margin-bottom: 0.5rem; }
+        .section-sub { font-size: 1rem; color: #6b7a99; line-height: 1.75; }
+        .section-light { padding: 96px 0; background: #f8f9fc; }
+        .section-white { padding: 96px 0; background: #fff; }
+
+        /* ── Buttons ── */
+        .btn-gold {
+            display: inline-flex; align-items: center; gap: 8px;
+            background: var(--gold); color: #0d1a35; font-weight: 700; font-size: 0.9rem; border: none;
+            padding: 13px 28px; border-radius: 8px; text-decoration: none;
+            transition: background 0.2s, transform 0.15s; cursor: pointer;
+        }
+        .btn-gold:hover { background: #e6ac00; transform: translateY(-1px); color: #0d1a35; }
+        .btn-gold:disabled { opacity: 0.65; cursor: not-allowed; transform: none; }
+        .btn-outline-gold {
+            display: inline-flex; align-items: center; gap: 8px;
+            border: 1px solid var(--gold-border); color: rgba(255,255,255,0.8);
+            font-weight: 600; font-size: 0.9rem; padding: 13px 28px; border-radius: 8px;
+            text-decoration: none; transition: background 0.2s, border-color 0.2s; background: transparent;
+        }
+        .btn-outline-gold:hover { background: rgba(255,193,7,0.08); border-color: var(--gold); color: #fff; }
+
+        /* ── Contact channel cards ── */
+        .channel-card {
+            background: #fff; border: 1px solid #e8ecf4; border-radius: 12px; padding: 32px 28px;
+            transition: border-color 0.2s, box-shadow 0.2s, transform 0.2s; text-align: center;
+        }
+        .channel-card:hover { border-color: rgba(30,60,114,0.3); box-shadow: 0 12px 32px rgba(30,60,114,0.1); transform: translateY(-3px); }
+        .channel-icon { font-size: 2rem; margin-bottom: 16px; }
+        .channel-card h3 { font-size: 1rem; font-weight: 700; color: #0d1a35; margin-bottom: 8px; }
+        .channel-card p { font-size: 0.875rem; color: #6b7a99; line-height: 1.65; margin-bottom: 16px; }
+        .channel-link { font-size: 1rem; font-weight: 700; color: #1e3c72; text-decoration: none; display: block; transition: color 0.2s; }
+        .channel-link:hover { color: var(--gold); }
+        .channel-note { font-size: 0.75rem; color: #9ca3af; margin-top: 8px; display: block; }
+
+        /* ── Form card ── */
+        .form-card {
+            background: #fff; border: 1px solid #e8ecf4; border-radius: 16px;
+            padding: 48px; box-shadow: 0 8px 40px rgba(0,0,0,0.06);
+        }
+        @media (max-width: 576px) { .form-card { padding: 28px 20px; } }
+
+        .form-label { font-size: 0.85rem; font-weight: 600; color: #2d3748; margin-bottom: 6px; display: block; }
+        .form-label .req { color: #e53e3e; margin-left: 2px; }
+        .form-label .opt { color: #9ca3af; font-weight: 400; font-size: 0.78rem; margin-left: 4px; }
+
+        .form-control, .form-select {
+            width: 100%; font-size: 0.9rem; color: #1a202c;
+            background: #fff; border: 1px solid #dde3ef; border-radius: 8px;
+            padding: 11px 14px; transition: border-color 0.2s, box-shadow 0.2s;
+            appearance: none; -webkit-appearance: none;
+        }
+        .form-select { background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath fill='%236b7a99' d='M1 1l5 5 5-5'/%3E%3C/svg%3E"); background-repeat: no-repeat; background-position: right 14px center; padding-right: 36px; }
+        .form-control:focus, .form-select:focus {
+            border-color: #1e3c72; box-shadow: 0 0 0 3px rgba(30,60,114,0.1); outline: none; color: #1a202c;
+        }
+        .form-control.is-invalid, .form-select.is-invalid { border-color: #e53e3e; box-shadow: 0 0 0 3px rgba(229,62,62,0.1); }
+        .form-control.is-valid, .form-select.is-valid { border-color: #38a169; }
+        textarea.form-control { min-height: 140px; resize: none; overflow: hidden; line-height: 1.7; }
+
+        .form-submit {
+            width: 100%; padding: 14px; border-radius: 8px; border: none; cursor: pointer;
+            background: var(--gold); color: #0d1a35; font-size: 0.95rem; font-weight: 700;
+            transition: background 0.2s, transform 0.15s;
+        }
+        .form-submit:hover:not(:disabled) { background: #e6ac00; transform: translateY(-1px); }
+        .form-submit:disabled { opacity: 0.65; cursor: not-allowed; transform: none; }
+
+        #form-status { font-size: 0.875rem; margin-top: 16px; border-radius: 8px; padding: 0; }
+        #form-status.visible { padding: 12px 16px; }
+        #form-status.status-success { background: #f0fdf4; border: 1px solid #bbf7d0; color: #166534; }
+        #form-status.status-error   { background: #fef2f2; border: 1px solid #fecaca; color: #dc2626; }
+
+        /* ── Trust items ── */
+        .trust-item { display: flex; gap: 16px; align-items: flex-start; padding: 20px 0; border-bottom: 1px solid #e8ecf4; }
+        .trust-item:last-child { border-bottom: none; }
+        .trust-marker { width: 44px; height: 44px; min-width: 44px; border-radius: 50%; background: rgba(30,60,114,0.07); border: 1px solid rgba(30,60,114,0.15); display: flex; align-items: center; justify-content: center; font-size: 1.2rem; }
+        .trust-item h4 { font-size: 0.95rem; font-weight: 700; color: #0d1a35; margin: 0 0 4px; }
+        .trust-item p  { font-size: 0.875rem; color: #6b7a99; margin: 0; line-height: 1.7; }
+
+        /* ── CTA band ── */
+        .cta-band {
+            background: linear-gradient(135deg, #0d1a35 0%, #1a2d50 100%);
+            padding: 80px 0; text-align: center;
+            border-top: 1px solid rgba(255,193,7,0.15);
+        }
+
+        /* ── Footer ── */
+        .site-footer { background: #060e1e; border-top: 1px solid rgba(255,255,255,0.07); padding: 64px 0 32px; }
+        .footer-brand { font-size: 1.3rem; font-weight: 800; letter-spacing: -0.02em; margin-bottom: 12px; }
+        .footer-brand .kf { color: var(--gold); }
+        .footer-brand .sq { color: #fff; }
+        .footer-desc { font-size: 0.875rem; color: rgba(255,255,255,0.45); line-height: 1.75; max-width: 240px; }
+        .footer-heading { font-size: 0.72rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.1em; color: rgba(255,255,255,0.3); margin-bottom: 16px; }
+        .footer-link { display: block; color: rgba(255,255,255,0.55); font-size: 0.875rem; text-decoration: none; padding: 4px 0; transition: color 0.2s; }
+        .footer-link:hover { color: #fff; }
+        .footer-social { display: flex; gap: 10px; margin-top: 20px; }
+        .footer-social a { width: 36px; height: 36px; border-radius: 8px; border: 1px solid rgba(255,255,255,0.1); display: flex; align-items: center; justify-content: center; color: rgba(255,255,255,0.5); font-size: 0.8rem; text-decoration: none; transition: all 0.2s; }
+        .footer-social a:hover { border-color: var(--gold); color: var(--gold); }
+        .footer-bottom { border-top: 1px solid rgba(255,255,255,0.07); margin-top: 48px; padding-top: 24px; font-size: 0.78rem; color: rgba(255,255,255,0.3); }
+
+        /* ── Reveal ── */
+        .reveal { opacity: 0; transform: translateY(24px); transition: opacity 0.6s ease, transform 0.6s ease; }
+        .reveal.visible { opacity: 1; transform: translateY(0); }
+        .reveal-d1 { transition-delay: 0.1s; }
+        .reveal-d2 { transition-delay: 0.2s; }
+        .reveal-d3 { transition-delay: 0.3s; }
+    </style>
 </head>
 <body>
+
     <!-- Navigation -->
-    <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+    <nav class="site-nav">
         <div class="container">
-            <div class="navbar-brand fw-bold">
-                <a href="index.html" class="text-decoration-none">
-                    <span class="text-warning">KF</span><span class="text-white">SQUARE</span>
-                </a>
-            </div>
-            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
-                <span class="navbar-toggler-icon"></span>
+            <a href="index.html" class="nav-brand"><span class="kf">KF</span><span class="sq">SQUARE</span></a>
+            <button class="nav-toggle" aria-label="Toggle menu" id="nav-toggle">
+                <i class="fas fa-bars"></i>
             </button>
-            <div class="collapse navbar-collapse" id="navbarNav">
-                <ul class="navbar-nav ms-auto">
-                    <li class="nav-item">
-                        <a href="index.html" class="nav-link">Home</a>
-                    </li>
-                    <li class="nav-item">
-                        <a href="about.html" class="nav-link">About</a>
-                    </li>
-                    <li class="nav-item">
-                        <a href="services.html" class="nav-link">Services</a>
-                    </li>
-                    <li class="nav-item">
-                        <a href="portfolio.html" class="nav-link">Portfolio</a>
-                    </li>
-                    <li class="nav-item">
-                        <a href="contact.html" class="nav-link active">Contact</a>
-                    </li>
-                </ul>
-            </div>
+            <ul class="nav-links" id="nav-links">
+                <li><a href="index.html">Home</a></li>
+                <li><a href="about.html">About</a></li>
+                <li><a href="services.html">Services</a></li>
+                <li><a href="portfolio.html">Portfolio</a></li>
+                <li><a href="contact.html" class="active nav-cta">Let's Talk</a></li>
+            </ul>
         </div>
     </nav>
 
-    <!-- Page Header -->
-    <section class="page-header py-5 text-center" style="background: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%); color: white;">
-        <div class="container">
-            <h1 class="display-4 fw-bold">Contact Us</h1>
-            <p class="lead">Ready to transform your business with data? Let's start the conversation.</p>
-            <nav aria-label="breadcrumb">
-                <ol class="breadcrumb justify-content-center bg-transparent">
-                    <li class="breadcrumb-item"><a href="index.html" class="text-warning">Home</a></li>
-                    <li class="breadcrumb-item active text-light" aria-current="page">Contact</li>
-                </ol>
-            </nav>
+    <!-- Hero -->
+    <section class="ct-hero">
+        <div class="ct-hero-glow"></div>
+        <div class="container position-relative text-center">
+            <div class="section-eyebrow reveal"><span></span>Get In Touch</div>
+            <h1 class="reveal reveal-d1" style="font-size:clamp(2.2rem,5vw,3.4rem);font-weight:900;color:#fff;letter-spacing:-0.04em;line-height:1.1;margin-bottom:20px;">
+                Let's scope your<br>
+                <em style="color:var(--gold);font-style:normal;">next program.</em>
+            </h1>
+            <p class="reveal reveal-d2" style="font-size:1rem;color:var(--text-muted-dark);max-width:500px;margin:0 auto 36px;line-height:1.8;">
+                Complete the form below and one of our principals will respond within one business day with a direct, honest assessment of how we can help.
+            </p>
+            <div class="reveal reveal-d2 d-flex gap-3 justify-content-center flex-wrap">
+                <a href="#contact-form-section" class="btn-gold">Start the Form <i class="fas fa-arrow-down" style="font-size:0.75rem;"></i></a>
+                <a href="tel:+14109347470" class="btn-outline-gold"><i class="fas fa-phone" style="font-size:0.75rem;"></i> 410-934-7470</a>
+            </div>
         </div>
     </section>
 
-    <!-- Main Content -->
-    <main class="main-content">
-        <!-- Contact Overview (Centered like about.html) -->
-        <section class="about-overview py-5 bg-light">
-            <div class="container">
-                <div class="row justify-content-center">
-                    <div class="col-lg-10">
-                        <div class="about-text text-center bg-white p-4 rounded shadow">
-                            <h2 class="section-title mb-4">Get In Touch With Our Experts</h2>
-                            <p class="lead">We're here to help you unlock the power of your data. Reach out for a free consultation and discover how KFSQUARE can transform your business.</p>
-                            
-                            <!-- Contact Highlights -->
-                            <div class="mvv-item bg-light p-3 rounded my-4">
-                                <div class="mvv-icon text-center fs-1 mb-3">🚀</div>
-                                <h3>Why Contact Us?</h3>
-                                <ul class="list-unstyled">
-                                    <li>✓ Free 30-minute consultation</li>
-                                    <li>✓ Custom solution proposals</li>
-                                    <li>✓ 24-hour response guarantee</li>
-                                    <li>✓ No-obligation project estimates</li>
-                                </ul>
+    <!-- Contact channels -->
+    <section class="section-light">
+        <div class="container">
+            <div class="text-center mb-5 reveal">
+                <div class="section-eyebrow" style="color:#1e3c72;background:rgba(30,60,114,0.06);border-color:rgba(30,60,114,0.15);">
+                    <span style="background:#1e3c72;"></span>How to Reach Us
+                </div>
+                <h2 class="section-title-light">Choose what works for you.</h2>
+            </div>
+            <div class="row g-3 justify-content-center">
+                <div class="col-md-6 col-lg-4 reveal reveal-d1">
+                    <div class="channel-card h-100">
+                        <div class="channel-icon">📞</div>
+                        <h3>Phone</h3>
+                        <p>Speak directly with one of our principals. No sales reps, no scripts.</p>
+                        <a href="tel:+14109347470" class="channel-link">410-934-7470</a>
+                        <span class="channel-note">Mon – Fri, 9 AM – 6 PM EST</span>
+                    </div>
+                </div>
+                <div class="col-md-6 col-lg-4 reveal reveal-d2">
+                    <div class="channel-card h-100">
+                        <div class="channel-icon">📧</div>
+                        <h3>Email</h3>
+                        <p>Send project requirements and we'll respond with a concrete proposal, not a brochure.</p>
+                        <a href="mailto:customersupport@kfsquare.com" class="channel-link" style="font-size:0.875rem;">customersupport@kfsquare.com</a>
+                        <span class="channel-note">Response within one business day</span>
+                    </div>
+                </div>
+                <div class="col-md-6 col-lg-4 reveal reveal-d3">
+                    <div class="channel-card h-100">
+                        <div class="channel-icon">📋</div>
+                        <h3>Project Form</h3>
+                        <p>Use the form below to give us the full picture. The more detail, the better our response.</p>
+                        <a href="#contact-form-section" class="channel-link">Fill out the form</a>
+                        <span class="channel-note">No obligation, no sales calls without permission</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Contact Form -->
+    <section class="section-white" id="contact-form-section">
+        <div class="container">
+            <div class="row justify-content-center">
+                <div class="col-lg-8">
+                    <div class="text-center mb-5 reveal">
+                        <div class="section-eyebrow" style="color:#1e3c72;background:rgba(30,60,114,0.06);border-color:rgba(30,60,114,0.15);">
+                            <span style="background:#1e3c72;"></span>Project Inquiry
+                        </div>
+                        <h2 class="section-title-light">Tell us what you're working on.</h2>
+                        <p class="section-sub">Fields marked <span style="color:#e53e3e;">*</span> are required. Everything else helps us give you a better answer.</p>
+                    </div>
+
+                    <div class="form-card reveal reveal-d1">
+                        <form id="contact-form" novalidate autocomplete="on">
+
+                            <div class="row g-3 mb-4">
+                                <div class="col-sm-6">
+                                    <label for="firstName" class="form-label">First Name <span class="req">*</span></label>
+                                    <input type="text" class="form-control" id="firstName" name="firstName" placeholder="First name" autocomplete="given-name" required>
+                                </div>
+                                <div class="col-sm-6">
+                                    <label for="lastName" class="form-label">Last Name <span class="req">*</span></label>
+                                    <input type="text" class="form-control" id="lastName" name="lastName" placeholder="Last name" autocomplete="family-name" required>
+                                </div>
                             </div>
-                            
-                            <!-- Quick Contact Stats -->
-                            <div class="row g-3 mt-4">
-                                <div class="col-md-3">
-                                    <div class="stat-item bg-white p-3 rounded shadow-sm text-center">
-                                        <h3 class="fw-bold text-primary">24hrs</h3>
-                                        <p class="mb-0 text-muted">Response Time</p>
-                                    </div>
+
+                            <div class="row g-3 mb-4">
+                                <div class="col-sm-6">
+                                    <label for="email" class="form-label">Email Address <span class="req">*</span></label>
+                                    <input type="email" class="form-control" id="email" name="email" placeholder="you@company.com" autocomplete="email" required>
                                 </div>
-                                <div class="col-md-3">
-                                    <div class="stat-item bg-white p-3 rounded shadow-sm text-center">
-                                        <h3 class="fw-bold text-primary">100%</h3>
-                                        <p class="mb-0 text-muted">Free Consultation</p>
-                                    </div>
+                                <div class="col-sm-6">
+                                    <label for="phone" class="form-label">Phone <span class="opt">(optional)</span></label>
+                                    <input type="tel" class="form-control" id="phone" name="phone" placeholder="410-000-0000" autocomplete="tel">
                                 </div>
-                                <div class="col-md-3">
-                                    <div class="stat-item bg-white p-3 rounded shadow-sm text-center">
-                                        <h3 class="fw-bold text-primary">24/7</h3>
-                                        <p class="mb-0 text-muted">Support Available</p>
-                                    </div>
+                            </div>
+
+                            <div class="row g-3 mb-4">
+                                <div class="col-sm-6">
+                                    <label for="company" class="form-label">Company <span class="req">*</span></label>
+                                    <input type="text" class="form-control" id="company" name="company" placeholder="Your organization" autocomplete="organization" required>
                                 </div>
-                                <div class="col-md-3">
-                                    <div class="stat-item bg-white p-3 rounded shadow-sm text-center">
-                                        <h3 class="fw-bold text-primary">500+</h3>
-                                        <p class="mb-0 text-muted">Happy Clients</p>
-                                    </div>
+                                <div class="col-sm-6">
+                                    <label for="industry" class="form-label">Industry <span class="opt">(optional)</span></label>
+                                    <select class="form-select" id="industry" name="industry">
+                                        <option value="">Select industry</option>
+                                        <option value="government">Government / Federal</option>
+                                        <option value="healthcare">Healthcare</option>
+                                        <option value="finance">Financial Services</option>
+                                        <option value="manufacturing">Manufacturing</option>
+                                        <option value="retail">Retail & E-commerce</option>
+                                        <option value="technology">Technology</option>
+                                        <option value="education">Education</option>
+                                        <option value="other">Other</option>
+                                    </select>
                                 </div>
+                            </div>
+
+                            <div class="row g-3 mb-4">
+                                <div class="col-sm-6">
+                                    <label for="service" class="form-label">Service of Interest <span class="req">*</span></label>
+                                    <select class="form-select" id="service" name="service" required>
+                                        <option value="" disabled selected>Choose a service</option>
+                                        <option value="data-engineering">Data Engineering</option>
+                                        <option value="predictive-analytics">Predictive Analytics</option>
+                                        <option value="process-automation">Process Automation</option>
+                                        <option value="business-intelligence">Business Intelligence</option>
+                                        <option value="data-governance">Data Governance</option>
+                                        <option value="strategic-consulting">Strategic Consulting</option>
+                                        <option value="other">Other / Not sure yet</option>
+                                    </select>
+                                </div>
+                                <div class="col-sm-6">
+                                    <label for="budget" class="form-label">Budget Range <span class="opt">(optional)</span></label>
+                                    <select class="form-select" id="budget" name="budget">
+                                        <option value="">Select a range</option>
+                                        <option value="under-10k">Under $10,000</option>
+                                        <option value="10k-50k">$10,000 – $50,000</option>
+                                        <option value="50k-100k">$50,000 – $100,000</option>
+                                        <option value="100k-500k">$100,000 – $500,000</option>
+                                        <option value="500k+">$500,000+</option>
+                                        <option value="not-specified">Prefer not to say</option>
+                                    </select>
+                                </div>
+                            </div>
+
+                            <div class="mb-4">
+                                <label for="message" class="form-label">Message <span class="req">*</span></label>
+                                <textarea class="form-control" id="message" name="message"
+                                    placeholder="Describe the problem you're solving, your current setup, key constraints, and what success looks like. The more context you give, the more useful our response." required></textarea>
+                            </div>
+
+                            <button type="submit" class="form-submit" id="submit-btn">
+                                <i class="fas fa-paper-plane me-2"></i>Send Message
+                            </button>
+                            <div id="form-status" role="status" aria-live="polite"></div>
+                            <p style="font-size:0.78rem;color:#9ca3af;text-align:center;margin-top:14px;margin-bottom:0;">
+                                We respond within one business day. No sales calls without your permission.
+                            </p>
+
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Why KFSQUARE -->
+    <section class="section-light">
+        <div class="container">
+            <div class="row align-items-center g-5">
+                <div class="col-lg-5 reveal">
+                    <div class="section-eyebrow" style="color:#1e3c72;background:rgba(30,60,114,0.06);border-color:rgba(30,60,114,0.15);">
+                        <span style="background:#1e3c72;"></span>Why KFSQUARE
+                    </div>
+                    <h2 class="section-title-light">What to expect<br>when you reach out.</h2>
+                    <p class="section-sub">We don't send brochures. Every first response includes a direct technical assessment and honest scope estimate.</p>
+                </div>
+                <div class="col-lg-6 offset-lg-1 reveal reveal-d1">
+                    <div style="background:#fff;border:1px solid #e8ecf4;border-radius:14px;padding:32px;">
+                        <div class="trust-item">
+                            <div class="trust-marker">🏢</div>
+                            <div>
+                                <h4>Small Business Certified</h4>
+                                <p>We move faster than large integrators and stay accountable to named individuals — not account managers.</p>
+                            </div>
+                        </div>
+                        <div class="trust-item">
+                            <div class="trust-marker">🎖️</div>
+                            <div>
+                                <h4>Veteran Owned</h4>
+                                <p>Military-grade discipline applied to delivery timelines, documentation standards, and security posture.</p>
+                            </div>
+                        </div>
+                        <div class="trust-item">
+                            <div class="trust-marker">🔒</div>
+                            <div>
+                                <h4>Enterprise Security</h4>
+                                <p>Production systems built with security controls and compliance requirements baked in from day one.</p>
+                            </div>
+                        </div>
+                        <div class="trust-item">
+                            <div class="trust-marker">⚡</div>
+                            <div>
+                                <h4>One Business Day Response</h4>
+                                <p>A principal responds to every inquiry within 24 hours with a concrete answer, not a placeholder reply.</p>
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
-        </section>
+        </div>
+    </section>
 
-        <!-- Contact Methods (MVV-style section like about.html) -->
-        <section class="mvv-section py-5" style="background: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%); color: white;">
-            <div class="container">
-                <h2 class="section-title text-center text-white mb-5">How to Reach Us</h2>
-                <div class="row g-4 justify-content-center">
-                    <div class="col-lg-5">
-                        <div class="mvv-item text-center h-100 p-4 rounded" style="background: rgba(255, 255, 255, 0.1); backdrop-filter: blur(10px); border: 1px solid rgba(255, 255, 255, 0.2);">
-                            <div class="mvv-icon text-center fs-1 mb-3 text-warning">📞</div>
-                            <h3 class="text-white">Phone</h3>
-                            <p class="text-white mb-3">Speak directly with our experts for immediate assistance and project consultation.</p>
-                            <div class="text-center mb-3">
-                                <a href="tel:+14109347470" class="h4 text-warning text-decoration-none">410-934-7470</a>
-                            </div>
-                            <small class="text-light">Mon-Fri, 9 AM - 6 PM EST</small>
-                        </div>
-                    </div>
-                    
-                    <div class="col-lg-5">
-                        <div class="mvv-item text-center h-100 p-4 rounded" style="background: rgba(255, 255, 255, 0.1); backdrop-filter: blur(10px); border: 1px solid rgba(255, 255, 255, 0.2);">
-                            <div class="mvv-icon text-center fs-1 mb-3 text-warning">📧</div>
-                            <h3 class="text-white">Email</h3>
-                            <p class="text-white mb-3">Send us detailed project requirements and we'll respond with a customized proposal.</p>
-                            <div class="text-center mb-3">
-                                <a href="mailto:customersupport@kfsquare.com" class="h5 text-warning text-decoration-none">customersupport@kfsquare.com</a>
-                            </div>
-                            <small class="text-light">Response within 24 hours</small>
-                        </div>
-                    </div>
-                </div>
+    <!-- CTA -->
+    <section class="cta-band">
+        <div class="container reveal">
+            <h2 style="font-size:clamp(1.8rem,3.5vw,2.5rem);font-weight:800;color:#fff;letter-spacing:-0.03em;margin-bottom:12px;">
+                Prefer to jump on a call?
+            </h2>
+            <p style="font-size:1rem;color:var(--text-muted-dark);max-width:420px;margin:0 auto 32px;line-height:1.75;">
+                Call us directly during business hours and speak with someone who can answer technical questions.
+            </p>
+            <div class="d-flex gap-3 justify-content-center flex-wrap">
+                <a href="tel:+14109347470" class="btn-gold"><i class="fas fa-phone" style="font-size:0.75rem;"></i> 410-934-7470</a>
+                <a href="services.html" class="btn-outline-gold">Our Services</a>
             </div>
-        </section>
-
-        <!-- Contact Form Section (Credentials-style like about.html) -->
-        <section class="credentials-section py-5">
-            <div class="container">
-                <div class="row justify-content-center">
-                    <div class="col-lg-8">
-                        <div class="text-center mb-5">
-                            <h2 class="section-title">Get A Free Consultation</h2>
-                            <p class="lead">Tell us about your project and we'll provide a customized solution within 24 hours.</p>
-                        </div>
-                        
-                        <div class="card border-0 shadow-lg">
-                            <div class="card-body p-4">
-                                <form id="contact-form" novalidate>
-
-                                    <div class="row g-3 mb-3">
-                                        <div class="col-md-6">
-                                            <label for="firstName" class="form-label fw-semibold">First Name <span class="text-danger">*</span></label>
-                                            <!-- <input type="text" name="firstName" required> -->
-                                            <input type="text" class="form-control form-control-lg" id="firstName" name="firstName" placeholder="Enter your first name" required>
-                                        </div>
-
-
-                                        <div class="col-md-6">
-                                            <label for="lastName" class="form-label fw-semibold">Last Name <span class="text-danger">*</span></label>
-                                            <input type="text" class="form-control form-control-lg" id="lastName" name="lastName" placeholder="Enter your last name" required>
-                                        </div>
-                                    </div>
-                                    
-                                    <div class="row g-3 mb-3">
-                                        <div class="col-md-6">
-                                            <label for="email" class="form-label fw-semibold">Email Address <span class="text-danger">*</span></label>
-                                            <input type="email" class="form-control form-control-lg" id="email" name="email" placeholder="you@example.com" required>
-                                        </div>
-                                        <div class="col-md-6">
-                                            <label for="phone" class="form-label fw-semibold">Phone <span class="text-muted fw-normal">(Optional)</span></label>
-                                            <input type="tel" class="form-control form-control-lg" id="phone" name="phone" placeholder="e.g. 410-934-7470">
-                                        </div>
-                                    </div>
-                                    
-                                    <div class="row g-3 mb-3">
-                                        <div class="col-md-6">
-                                            <label for="company" class="form-label fw-semibold">Company Name <span class="text-danger">*</span></label>
-                                            <input type="text" class="form-control form-control-lg" id="company" name="company" placeholder="Your company name" required>
-                                        </div>
-                                        <div class="col-md-6">
-                                            <label for="industry" class="form-label fw-semibold">Industry <span class="text-muted fw-normal">(Optional)</span></label>
-                                            <select class="form-select form-select-lg" id="industry" name="industry">
-                                                <option selected disabled value="">Select your industry</option>
-                                                <option value="healthcare">Healthcare</option>
-                                                <option value="finance">Financial Services</option>
-                                                <option value="retail">Retail & E-commerce</option>
-                                                <option value="manufacturing">Manufacturing</option>
-                                                <option value="technology">Technology</option>
-                                                <option value="government">Government</option>
-                                                <option value="education">Education</option>
-                                                <option value="other">Other</option>
-                                            </select>
-                                        </div>
-                                    </div>
-                                    
-                                    <div class="row g-3 mb-3">
-                                        <div class="col-md-6">
-                                            <label for="service" class="form-label fw-semibold">Service of Interest <span class="text-danger">*</span></label>
-                                            <select class="form-select form-select-lg" id="service" name="service" required>
-                                                <option selected disabled value="">Choose a service</option>
-                                                <option value="data-analytics">Data Analytics</option>
-                                                <option value="predictive-modeling">Predictive Modeling</option>
-                                                <option value="process-automation">Process Automation</option>
-                                                <option value="business-intelligence">Business Intelligence</option>
-                                                <option value="data-engineering">Data Engineering</option>
-                                                <option value="consulting">Strategy Consulting</option>
-                                            </select>
-                                        </div>
-                                        <div class="col-md-6">
-                                            <label for="budget" class="form-label fw-semibold">Project Budget <span class="text-muted fw-normal">(Optional)</span></label>
-                                            <select class="form-select form-select-lg" id="budget" name="budget">
-                                                <option selected disabled value="">Select a range</option>
-                                                <option value="under-25k">Under $25,000</option>
-                                                <option value="25k-50k">$25,000 - $50,000</option>
-                                                <option value="50k-100k">$50,000 - $100,000</option>
-                                                <option value="100k-250k">$100,000 - $250,000</option>
-                                                <option value="250k-500k">$250,000 - $500,000</option>
-                                                <option value="over-500k">Over $500,000</option>
-                                            </select>
-                                        </div>
-                                    </div>
-                                    
-                                    <div class="mb-3">
-                                        
-                                        <label for="message" class="form-label fw-semibold">Message <span class="text-danger">*</span></label>
-                                        <textarea class="form-control" id="message" name="message" rows="5" placeholder="Tell us about your project, challenges, and goals..." required></textarea>
-                                    </div>
-                                    
-                                    <button type="submit" class="btn btn-primary btn-lg w-100" id="submit-btn">
-                                        <i class="fas fa-paper-plane me-2"></i>Send Message
-                                    </button>
-                                    <div id="form-status" class="mt-3 text-center small" role="status" aria-live="polite"></div>
-                                    
-                                    <p class="text-muted text-center mt-3 small">We'll respond within 24 hours with a customized proposal.</p>
-                                </form>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </section>
-
-        <!-- Why Choose Us (Timeline section like about.html) -->
-        <section class="timeline-section py-5 bg-light">
-            <div class="container">
-                <h2 class="section-title text-center mb-5">Why Choose KFSQUARE</h2>
-                <div class="row justify-content-center">
-                    <div class="col-lg-8">
-                        <div class="timeline">
-                            <div class="timeline-item d-flex mb-4">
-                                <div class="timeline-marker bg-primary text-white rounded-circle d-flex align-items-center justify-content-center me-3 fw-bold" style="width: 60px; height: 60px; min-width: 60px;">🏢</div>
-                                <div class="timeline-content">
-                                    <h3>Small Business Certified</h3>
-                                    <p>As a certified small business, we understand your challenges and provide personalized, cost-effective solutions.</p>
-                                </div>
-                            </div>
-                            <div class="timeline-item d-flex mb-4">
-                                <div class="timeline-marker bg-success text-white rounded-circle d-flex align-items-center justify-content-center me-3 fw-bold" style="width: 60px; height: 60px; min-width: 60px;">🎖️</div>
-                                <div class="timeline-content">
-                                    <h3>Veteran Owned</h3>
-                                    <p>Military precision and dedication drive our commitment to excellence and client success.</p>
-                                </div>
-                            </div>
-                            <div class="timeline-item d-flex mb-4">
-                                <div class="timeline-marker bg-info text-white rounded-circle d-flex align-items-center justify-content-center me-3 fw-bold" style="width: 60px; height: 60px; min-width: 60px;">🔒</div>
-                                <div class="timeline-content">
-                                    <h3>Enterprise Security</h3>
-                                    <!-- <p>SOC 2 certified with security clearance available for government and sensitive projects.</p> -->
-                                </div>
-                            </div>
-                            <div class="timeline-item d-flex">
-                                <div class="timeline-marker bg-warning text-dark rounded-circle d-flex align-items-center justify-content-center me-3 fw-bold" style="width: 60px; height: 60px; min-width: 60px;">⚡</div>
-                                <div class="timeline-content">
-                                    <h3>Rapid Response</h3>
-                                    <p>24-hour response time with expedited project starts available for urgent requirements.</p>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </section>
-
-        <!-- Call to Action -->
-        <section class="cta-section py-5" style="background: linear-gradient(135deg, #2a5298 0%, #1e3c72 100%);">
-            <div class="container">
-                <div class="cta-content text-center">
-                    <h2 class="text-white mb-3">Ready to Get Started?</h2>
-                    <p class="text-light mb-4">Schedule your free consultation today and discover how data can transform your business.</p>
-                    <div class="cta-buttons">
-                        <a href="tel:+14109347470" class="btn btn-warning btn-lg me-3 px-4 py-2">
-                            <i class="fas fa-phone me-2"></i>Call Now: 410-934-7470
-                        </a>
-                        <a href="mailto:customersupport@kfsquare.com" class="btn btn-outline-light btn-lg px-4 py-2">
-                            <i class="fas fa-envelope me-2"></i>Send Email
-                        </a>
-                    </div>
-                </div>
-            </div>
-        </section>
-    </main>
+        </div>
+    </section>
 
     <!-- Footer -->
-    <footer class="footer bg-dark text-light py-5">
+    <footer class="site-footer">
         <div class="container">
-            <div class="row g-4">
-                <div class="col-lg-3">
-                    <h3 class="text-warning">KFSQUARE</h3>
-                    <p>Transforming businesses through practical data solutions and advanced analytics.</p>
-                    <div class="social-links">
-                        <a href="mailto:customersupport@kfsquare.com" class="text-light me-2" aria-label="Email">📧</a>
-                        <a href="tel:+14109347470" class="text-light me-2" aria-label="Phone">📱</a>
-                        <a href="#" class="text-light" aria-label="LinkedIn">💻</a>
+            <div class="row g-5">
+                <div class="col-lg-4">
+                    <div class="footer-brand"><span class="kf">KF</span><span class="sq">SQUARE</span></div>
+                    <p class="footer-desc">Secure software engineering, modern data platforms, and AI solutions for organizations where the work actually matters.</p>
+                    <div class="footer-social">
+                        <a href="mailto:customersupport@kfsquare.com" aria-label="Email"><i class="fas fa-envelope"></i></a>
+                        <a href="tel:+14109347470" aria-label="Phone"><i class="fas fa-phone"></i></a>
+                        <a href="#" aria-label="LinkedIn"><i class="fab fa-linkedin-in"></i></a>
                     </div>
                 </div>
-                <div class="col-lg-3">
-                    <h4>Services</h4>
-                    <ul class="list-unstyled">
-                        <li><a href="services.html" class="text-light text-decoration-none">Data Analytics</a></li>
-                        <li><a href="services.html" class="text-light text-decoration-none">Predictive Modeling</a></li>
-                        <li><a href="services.html" class="text-light text-decoration-none">Process Automation</a></li>
-                        <li><a href="services.html" class="text-light text-decoration-none">Business Intelligence</a></li>
-                    </ul>
+                <div class="col-lg-2 col-6">
+                    <p class="footer-heading">Services</p>
+                    <a href="services.html#software-engineering" class="footer-link">Software Engineering</a>
+                    <a href="services.html#data-engineering" class="footer-link">Data Engineering</a>
+                    <a href="services.html#ai-ml" class="footer-link">AI & ML</a>
+                    <a href="services.html#cloud-devops" class="footer-link">Cloud & DevOps</a>
+                    <a href="services.html#analytics-bi" class="footer-link">Analytics & BI</a>
+                    <a href="services.html#cybersecurity" class="footer-link">Cybersecurity</a>
+                </div>
+                <div class="col-lg-2 col-6">
+                    <p class="footer-heading">Company</p>
+                    <a href="about.html" class="footer-link">About</a>
+                    <a href="portfolio.html" class="footer-link">Portfolio</a>
+                    <a href="contact.html" class="footer-link">Contact</a>
+                    <a href="privacy.html" class="footer-link">Privacy Policy</a>
+                    <a href="terms.html" class="footer-link">Terms of Service</a>
                 </div>
                 <div class="col-lg-3">
-                    <h4>Company</h4>
-                    <ul class="list-unstyled">
-                        <li><a href="about.html" class="text-light text-decoration-none">About Us</a></li>
-                        <li><a href="portfolio.html" class="text-light text-decoration-none">Portfolio</a></li>
-                        <li><a href="contact.html" class="text-light text-decoration-none">Contact</a></li>
-                    </ul>
-                </div>
-                <div class="col-lg-3">
-                    <h4>Contact Info</h4>
-                    <div class="contact-info">
-                        <p>📞 410-934-7470</p>
-                        <p>📧 customersupport@kfsquare.com</p>
-                        <p>🏢 Small Business & Veteran Owned</p>
-                    </div>
+                    <p class="footer-heading">Contact</p>
+                    <p style="font-size:0.875rem;color:rgba(255,255,255,0.55);margin-bottom:6px;">📞 410-934-7470</p>
+                    <p style="font-size:0.875rem;color:rgba(255,255,255,0.55);margin-bottom:6px;">📧 customersupport@kfsquare.com</p>
+                    <p style="font-size:0.875rem;color:rgba(255,255,255,0.55);">🏢 Small Business &amp; Veteran Owned</p>
                 </div>
             </div>
-            <div class="footer-bottom text-center mt-4 pt-4 border-top border-secondary">
-                <p class="mb-0">&copy; 2026 KFSQUARE. All rights reserved. | <a href="privacy.html" class="text-warning">Privacy Policy</a> | <a href="terms.html" class="text-warning">Terms of Service</a></p>
+            <div class="footer-bottom d-flex flex-wrap justify-content-between align-items-center gap-2">
+                <span>&copy; 2026 KFSQUARE. All rights reserved.</span>
+                <span>
+                    <a href="privacy.html" class="footer-link d-inline" style="font-size:0.78rem;">Privacy</a> ·
+                    <a href="terms.html" class="footer-link d-inline" style="font-size:0.78rem;">Terms</a>
+                </span>
             </div>
         </div>
     </footer>
 
-    <!-- Bootstrap JS -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
-    <!-- Public API origin used when the page is hosted separately from Express. -->
     <script src="js/config.js"></script>
-    <script src="index.js"></script>
     <script src="js/contact.js"></script>
-
-    <style>
-        /* Typed text always clearly visible — overrides Bootstrap & styles.css */
-        #contact-form input.form-control,
-        #contact-form textarea.form-control,
-        #contact-form select.form-select {
-            color: #212529 !important;
-            background-color: #ffffff !important;
-            font-size: 1rem !important;
-            line-height: 1.6 !important;
-        }
-
-        #contact-form input.form-control:focus,
-        #contact-form textarea.form-control:focus,
-        #contact-form select.form-select:focus {
-            color: #212529 !important;
-            background-color: #ffffff !important;
-            border-color: #0d6efd !important;
-            box-shadow: 0 0 0 0.2rem rgba(13, 110, 253, 0.25) !important;
-            outline: none !important;
-        }
-
-        /* Textarea: starts tall, grows automatically via contact.js */
-        #contact-form textarea#message {
-            min-height: 150px !important;
-            resize: none !important;
-            overflow: hidden !important;
-        }
-
-        /* Validation states */
-        #contact-form .is-invalid {
-            border-color: #dc3545 !important;
-            box-shadow: 0 0 0 0.2rem rgba(220, 53, 69, 0.2) !important;
-        }
-        #contact-form .is-valid {
-            border-color: #198754 !important;
-        }
-
-        .btn-primary:hover  { transform: translateY(-1px); box-shadow: 0 4px 8px rgba(0,0,0,0.15); }
-        .btn-primary:active { transform: translateY(0); }
-    </style>
+    <script src="index.js"></script>
 </body>
 </html>

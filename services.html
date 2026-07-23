@@ -4,408 +4,721 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <title>Services - KFSQUARE | Data Analytics & Automation Solutions</title>
-    <meta name="description" content="Explore KFSQUARE's data analytics, predictive modeling, automation, and data engineering services.">
-    
-    <!-- Bootstrap CSS -->
+    <title>Services - KFSQUARE | Software Engineering & Data Solutions</title>
+    <meta name="description" content="Explore KFSQUARE's full-stack engineering capabilities: software development, data platforms, AI/ML, cloud, analytics, and cybersecurity.">
+
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link rel="stylesheet" href="styles.css">
     <link rel="icon" href="favicon.ico" type="image/x-icon">
+
+    <style>
+        :root {
+            --navy:            #0d1a35;
+            --navy-mid:        #1a2d50;
+            --gold:            #ffc107;
+            --gold-border:     rgba(255,193,7,0.25);
+            --card-bg:         rgba(255,255,255,0.04);
+            --card-border:     rgba(255,255,255,0.08);
+            --text-muted-dark: rgba(255,255,255,0.55);
+        }
+
+        * { box-sizing: border-box; }
+        body { background: #fff; color: #0d1a35; font-family: 'Inter', system-ui, sans-serif; margin: 0; }
+
+        /* ── Nav ── */
+        .site-nav {
+            position: sticky; top: 0; z-index: 1000;
+            background: rgba(13,26,53,0.97);
+            backdrop-filter: blur(12px);
+            border-bottom: 1px solid rgba(255,255,255,0.07);
+            padding: 0;
+        }
+        .site-nav .container { display: flex; align-items: center; justify-content: space-between; height: 64px; }
+        .nav-brand { font-size: 1.2rem; font-weight: 800; text-decoration: none; letter-spacing: -0.02em; }
+        .nav-brand .kf { color: var(--gold); }
+        .nav-brand .sq { color: #fff; }
+        .nav-links { display: flex; align-items: center; gap: 8px; list-style: none; margin: 0; padding: 0; }
+        .nav-links a { color: rgba(255,255,255,0.7); text-decoration: none; font-size: 0.875rem; font-weight: 500; padding: 6px 14px; border-radius: 6px; transition: color 0.2s, background 0.2s; }
+        .nav-links a:hover, .nav-links a.active { color: #fff; background: rgba(255,255,255,0.07); }
+        .nav-cta { background: var(--gold) !important; color: #0d1a35 !important; font-weight: 700 !important; }
+        .nav-cta:hover { background: #e6ac00 !important; }
+        .nav-toggle { display: none; background: none; border: 1px solid rgba(255,255,255,0.2); border-radius: 6px; padding: 6px 10px; color: #fff; cursor: pointer; }
+        @media (max-width: 768px) {
+            .nav-toggle { display: block; }
+            .nav-links { display: none; flex-direction: column; position: absolute; top: 64px; left: 0; right: 0; background: rgba(13,26,53,0.98); padding: 16px; gap: 4px; }
+            .nav-links.open { display: flex; }
+        }
+
+        /* ── Hero ── */
+        .svc-hero {
+            background: var(--navy); padding: 96px 0 80px;
+            position: relative; overflow: hidden;
+        }
+        .svc-hero::before {
+            content: ''; position: absolute; inset: 0;
+            background-image: linear-gradient(rgba(255,255,255,0.02) 1px, transparent 1px),
+                              linear-gradient(90deg, rgba(255,255,255,0.02) 1px, transparent 1px);
+            background-size: 48px 48px; pointer-events: none;
+        }
+        .svc-hero-glow {
+            position: absolute; top: -80px; left: 50%; transform: translateX(-50%);
+            width: 700px; height: 400px;
+            background: radial-gradient(ellipse, rgba(255,193,7,0.08) 0%, transparent 68%);
+            pointer-events: none;
+        }
+
+        /* ── Shared ── */
+        .section-eyebrow {
+            display: inline-flex; align-items: center; gap: 8px;
+            font-size: 0.72rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.12em;
+            color: var(--gold); background: rgba(255,193,7,0.1);
+            border: 1px solid rgba(255,193,7,0.2); border-radius: 20px;
+            padding: 5px 14px; margin-bottom: 24px;
+        }
+        .section-eyebrow span { width: 5px; height: 5px; border-radius: 50%; background: var(--gold); display: inline-block; }
+        .section-title-light { font-size: clamp(1.6rem,3vw,2.2rem); font-weight: 800; letter-spacing: -0.03em; color: #0d1a35; margin-bottom: 0.5rem; }
+        .section-title-dark  { font-size: clamp(1.6rem,3vw,2.2rem); font-weight: 800; letter-spacing: -0.03em; color: #fff; margin-bottom: 0.5rem; }
+        .section-sub { font-size: 1rem; color: #6b7a99; line-height: 1.75; max-width: 540px; }
+        .section-light { padding: 96px 0; background: #f8f9fc; }
+        .section-white { padding: 96px 0; background: #fff; }
+        .section-dark  { padding: 96px 0; background: var(--navy); }
+
+        /* ── Buttons ── */
+        .btn-gold {
+            display: inline-flex; align-items: center; gap: 8px;
+            background: var(--gold); color: #0d1a35; font-weight: 700; font-size: 0.9rem; border: none;
+            padding: 13px 28px; border-radius: 8px; text-decoration: none;
+            transition: background 0.2s, transform 0.15s;
+        }
+        .btn-gold:hover { background: #e6ac00; transform: translateY(-1px); color: #0d1a35; }
+        .btn-outline-gold {
+            display: inline-flex; align-items: center; gap: 8px;
+            border: 1px solid var(--gold-border); color: rgba(255,255,255,0.8);
+            font-weight: 600; font-size: 0.9rem; padding: 13px 28px; border-radius: 8px;
+            text-decoration: none; transition: background 0.2s, border-color 0.2s; background: transparent;
+        }
+        .btn-outline-gold:hover { background: rgba(255,193,7,0.08); border-color: var(--gold); color: #fff; }
+
+        /* ── Filter bar ── */
+        .filter-wrap { background: var(--navy); padding: 0 0 0; border-bottom: 1px solid rgba(255,255,255,0.06); }
+        .filter-bar { display: flex; gap: 6px; flex-wrap: wrap; justify-content: center; padding: 24px 0 20px; }
+        .filter-btn {
+            padding: 9px 22px; border-radius: 6px; border: 1px solid var(--card-border);
+            background: var(--card-bg); color: rgba(255,255,255,0.6);
+            font-size: 0.82rem; font-weight: 600; cursor: pointer;
+            transition: all 0.2s; backdrop-filter: blur(8px);
+        }
+        .filter-btn:hover { border-color: var(--gold-border); color: #fff; }
+        .filter-btn.active { background: var(--gold); color: #0d1a35; border-color: var(--gold); }
+
+        /* ── Services grid section ── */
+        #services-section { background: var(--navy); padding: 56px 0 80px; }
+
+        /* ── Stats bar ── */
+        .stats-row { border-bottom: 1px solid rgba(255,255,255,0.06); padding-bottom: 40px; margin-bottom: 40px; }
+        .stat-val { font-size: 1.8rem; font-weight: 900; color: var(--gold); letter-spacing: -0.03em; line-height: 1; }
+        .stat-lbl { font-size: 0.72rem; color: var(--text-muted-dark); text-transform: uppercase; letter-spacing: 0.08em; margin-top: 6px; }
+
+        /* ── Service cards ── */
+        .svc-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(310px, 1fr)); gap: 18px; }
+        .svc-card {
+            background: var(--card-bg); border: 1px solid var(--card-border);
+            border-radius: 12px; padding: 28px; position: relative;
+            transition: border-color 0.25s, transform 0.25s, box-shadow 0.25s, opacity 0.35s;
+            opacity: 0; transform: translateY(20px); cursor: pointer;
+        }
+        .svc-card.visible { opacity: 1; transform: translateY(0); }
+        .svc-card:hover { border-color: var(--gold-border); transform: translateY(-4px); box-shadow: 0 20px 40px rgba(0,0,0,0.3); }
+        .svc-card.featured { border-color: rgba(255,193,7,0.3); }
+        .svc-card.hidden { opacity: 0; transform: translateY(16px); pointer-events: none; height: 0; padding: 0; border: none; overflow: hidden; margin: 0; }
+
+        .svc-badge {
+            position: absolute; top: 16px; right: 16px;
+            background: var(--gold); color: #0d1a35;
+            font-size: 0.65rem; font-weight: 800; text-transform: uppercase; letter-spacing: 0.08em;
+            padding: 3px 10px; border-radius: 20px;
+        }
+        .svc-num { font-size: 0.68rem; font-weight: 700; color: rgba(255,193,7,0.4); letter-spacing: 0.1em; margin-bottom: 14px; }
+        .svc-icon-wrap {
+            width: 44px; height: 44px; border-radius: 10px;
+            background: rgba(255,193,7,0.1);
+            display: flex; align-items: center; justify-content: center;
+            margin-bottom: 14px;
+        }
+        .svc-title { font-size: 1rem; font-weight: 700; color: #fff; margin: 0 0 10px; }
+        .svc-desc { font-size: 0.875rem; color: var(--text-muted-dark); line-height: 1.75; margin-bottom: 16px; }
+        .tech-tag {
+            display: inline-block; font-size: 0.67rem; font-weight: 600;
+            background: rgba(255,255,255,0.06); color: rgba(255,255,255,0.5);
+            border: 1px solid rgba(255,255,255,0.1); border-radius: 4px;
+            padding: 2px 8px; margin: 2px 2px 0 0;
+        }
+        .svc-link {
+            display: inline-flex; align-items: center; gap: 6px;
+            color: var(--gold); font-size: 0.8rem; font-weight: 600;
+            margin-top: 16px; transition: gap 0.2s;
+        }
+        .svc-link i { font-size: 0.65rem; transition: transform 0.2s; }
+        .svc-card:hover .svc-link i { transform: translateX(3px); }
+
+        /* ── Category anchor sections ── */
+        .category-section { padding: 80px 0; }
+        .category-section:nth-child(odd) { background: #f8f9fc; }
+        .category-section:nth-child(even) { background: #fff; }
+        .cat-tag {
+            display: inline-flex; align-items: center; gap: 6px;
+            font-size: 0.68rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.1em;
+            padding: 4px 12px; border-radius: 4px; margin-bottom: 8px;
+        }
+        .detail-card {
+            background: #fff; border: 1px solid #e8ecf4; border-radius: 14px; padding: 36px;
+        }
+        .detail-card h3 { font-size: 1.05rem; font-weight: 800; color: #0d1a35; margin-bottom: 12px; }
+        .detail-card p  { font-size: 0.9rem; color: #4a5568; line-height: 1.8; margin-bottom: 14px; }
+        .detail-card ul { list-style: none; padding: 0; margin: 0; }
+        .detail-card li {
+            font-size: 0.875rem; color: #4a5568; padding: 8px 0;
+            border-bottom: 1px solid #f0f4f8; display: flex; align-items: flex-start; gap: 10px;
+        }
+        .detail-card li:last-child { border-bottom: none; }
+        .detail-card li::before { content: ''; width: 5px; height: 5px; border-radius: 50%; background: #1e3c72; margin-top: 8px; flex-shrink: 0; }
+        .stack-tag {
+            display: inline-block; font-size: 0.72rem; font-weight: 600;
+            background: rgba(30,60,114,0.06); color: #1e3c72;
+            border: 1px solid rgba(30,60,114,0.15); border-radius: 4px;
+            padding: 3px 10px; margin: 3px;
+        }
+
+        /* ── Detail modal / drawer ── */
+        .svc-drawer-overlay {
+            display: none; position: fixed; inset: 0;
+            background: rgba(6,14,30,0.72); z-index: 2000;
+            backdrop-filter: blur(4px);
+        }
+        .svc-drawer-overlay.open { display: block; }
+        .svc-drawer {
+            position: fixed; top: 0; right: 0; bottom: 0; width: 520px; max-width: 96vw;
+            background: #0f1e3a; border-left: 1px solid rgba(255,255,255,0.08);
+            overflow-y: auto; z-index: 2001;
+            transform: translateX(100%); transition: transform 0.32s cubic-bezier(0.4,0,0.2,1);
+            padding: 40px 36px;
+        }
+        .svc-drawer.open { transform: translateX(0); }
+        @media (max-width: 576px) { .svc-drawer { padding: 28px 20px; } }
+
+        .drawer-close {
+            position: absolute; top: 20px; right: 20px;
+            background: rgba(255,255,255,0.06); border: 1px solid rgba(255,255,255,0.1);
+            border-radius: 8px; width: 36px; height: 36px;
+            display: flex; align-items: center; justify-content: center;
+            color: rgba(255,255,255,0.6); cursor: pointer; font-size: 0.85rem;
+            transition: background 0.2s, color 0.2s;
+        }
+        .drawer-close:hover { background: rgba(255,255,255,0.12); color: #fff; }
+
+        .drawer-cat {
+            display: inline-flex; align-items: center; gap: 6px;
+            font-size: 0.68rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.1em;
+            padding: 4px 12px; border-radius: 4px; margin-bottom: 16px;
+        }
+        .drawer-icon { font-size: 2.5rem; margin-bottom: 16px; }
+        .drawer-title { font-size: 1.4rem; font-weight: 800; color: #fff; letter-spacing: -0.02em; margin-bottom: 12px; }
+        .drawer-desc { font-size: 0.9rem; color: var(--text-muted-dark); line-height: 1.8; margin-bottom: 28px; }
+
+        .drawer-section-label {
+            font-size: 0.68rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.1em;
+            color: rgba(255,255,255,0.3); margin-bottom: 12px; margin-top: 28px;
+        }
+        .drawer-list { list-style: none; padding: 0; margin: 0 0 8px; }
+        .drawer-list li {
+            font-size: 0.875rem; color: rgba(255,255,255,0.75);
+            padding: 9px 0; border-bottom: 1px solid rgba(255,255,255,0.06);
+            display: flex; align-items: flex-start; gap: 10px;
+        }
+        .drawer-list li:last-child { border-bottom: none; }
+        .drawer-list li::before { content: ''; width: 5px; height: 5px; border-radius: 50%; background: var(--gold); margin-top: 8px; flex-shrink: 0; }
+        .drawer-stack { margin-bottom: 28px; }
+        .drawer-stack-tag {
+            display: inline-block; font-size: 0.7rem; font-weight: 600;
+            background: rgba(255,255,255,0.06); color: rgba(255,255,255,0.55);
+            border: 1px solid rgba(255,255,255,0.1); border-radius: 4px;
+            padding: 3px 10px; margin: 3px;
+        }
+        .drawer-cta {
+            display: flex; gap: 10px; margin-top: 32px; flex-wrap: wrap;
+        }
+        .drawer-btn-primary {
+            flex: 1; min-width: 140px; padding: 12px 20px; border-radius: 8px; border: none;
+            background: var(--gold); color: #0d1a35; font-weight: 700; font-size: 0.875rem;
+            text-align: center; text-decoration: none; cursor: pointer;
+            transition: background 0.2s;
+        }
+        .drawer-btn-primary:hover { background: #e6ac00; color: #0d1a35; }
+        .drawer-btn-secondary {
+            flex: 1; min-width: 140px; padding: 12px 20px; border-radius: 8px;
+            border: 1px solid rgba(255,255,255,0.15); color: rgba(255,255,255,0.8);
+            font-weight: 600; font-size: 0.875rem; text-align: center; text-decoration: none;
+            background: transparent; transition: border-color 0.2s, background 0.2s;
+        }
+        .drawer-btn-secondary:hover { border-color: var(--gold); background: rgba(255,193,7,0.06); color: #fff; }
+
+        /* ── Empty state ── */
+        .state-box { text-align: center; padding: 64px 20px; color: var(--text-muted-dark); }
+        .state-box .state-icon { font-size: 2.5rem; margin-bottom: 16px; }
+
+        /* ── Process ── */
+        .process-step { display: flex; gap: 20px; padding: 22px 0; border-bottom: 1px solid #e8ecf4; }
+        .process-step:last-child { border-bottom: none; }
+        .step-num {
+            width: 40px; height: 40px; min-width: 40px; border-radius: 50%;
+            background: rgba(30,60,114,0.07); border: 1px solid rgba(30,60,114,0.2);
+            display: flex; align-items: center; justify-content: center;
+            font-size: 0.78rem; font-weight: 800; color: #1e3c72;
+        }
+        .step-content h4 { font-size: 0.95rem; font-weight: 700; color: #0d1a35; margin: 0 0 5px; }
+        .step-content p  { font-size: 0.875rem; color: #6b7a99; margin: 0; line-height: 1.7; }
+
+        /* ── Industry cards ── */
+        .industry-card {
+            background: #fff; border: 1px solid #e8ecf4; border-radius: 12px;
+            padding: 28px; text-align: center;
+            transition: border-color 0.2s, box-shadow 0.2s, transform 0.2s;
+        }
+        .industry-card:hover { border-color: #1e3c72; box-shadow: 0 12px 32px rgba(30,60,114,0.1); transform: translateY(-3px); }
+        .industry-icon { font-size: 2rem; margin-bottom: 12px; }
+        .industry-card h4 { font-size: 1rem; font-weight: 700; color: #0d1a35; margin-bottom: 8px; }
+        .industry-card p  { font-size: 0.85rem; color: #6b7a99; line-height: 1.65; margin-bottom: 0; }
+
+        /* ── CTA band ── */
+        .cta-band {
+            background: linear-gradient(135deg, #0d1a35 0%, #1a2d50 100%);
+            padding: 80px 0; text-align: center;
+            border-top: 1px solid rgba(255,193,7,0.15);
+        }
+
+        /* ── Footer ── */
+        .site-footer { background: #060e1e; border-top: 1px solid rgba(255,255,255,0.07); padding: 64px 0 32px; }
+        .footer-brand { font-size: 1.3rem; font-weight: 800; letter-spacing: -0.02em; margin-bottom: 12px; }
+        .footer-brand .kf { color: var(--gold); }
+        .footer-brand .sq { color: #fff; }
+        .footer-desc { font-size: 0.875rem; color: rgba(255,255,255,0.45); line-height: 1.75; max-width: 240px; }
+        .footer-heading { font-size: 0.72rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.1em; color: rgba(255,255,255,0.3); margin-bottom: 16px; }
+        .footer-link { display: block; color: rgba(255,255,255,0.55); font-size: 0.875rem; text-decoration: none; padding: 4px 0; transition: color 0.2s; }
+        .footer-link:hover { color: #fff; }
+        .footer-social { display: flex; gap: 10px; margin-top: 20px; }
+        .footer-social a { width: 36px; height: 36px; border-radius: 8px; border: 1px solid rgba(255,255,255,0.1); display: flex; align-items: center; justify-content: center; color: rgba(255,255,255,0.5); font-size: 0.8rem; text-decoration: none; transition: all 0.2s; }
+        .footer-social a:hover { border-color: var(--gold); color: var(--gold); }
+        .footer-bottom { border-top: 1px solid rgba(255,255,255,0.07); margin-top: 48px; padding-top: 24px; font-size: 0.78rem; color: rgba(255,255,255,0.3); }
+
+        /* ── Reveal ── */
+        .reveal { opacity: 0; transform: translateY(24px); transition: opacity 0.6s ease, transform 0.6s ease; }
+        .reveal.visible { opacity: 1; transform: translateY(0); }
+        .reveal-d1 { transition-delay: 0.1s; }
+        .reveal-d2 { transition-delay: 0.2s; }
+        .reveal-d3 { transition-delay: 0.3s; }
+
+        /* ── Loading skeleton ── */
+        .skeleton-card { background: var(--card-bg); border: 1px solid var(--card-border); border-radius: 12px; padding: 28px; }
+        .skeleton-line { background: rgba(255,255,255,0.06); border-radius: 4px; margin-bottom: 10px; animation: shimmer 1.5s infinite; }
+        @keyframes shimmer { 0%,100%{opacity:0.4} 50%{opacity:0.8} }
+    </style>
 </head>
 <body>
+
     <!-- Navigation -->
-    <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+    <nav class="site-nav">
         <div class="container">
-            <div class="navbar-brand fw-bold">
-                <a href="index.html" class="text-decoration-none">
-                    <span class="text-warning">KF</span><span class="text-white">SQUARE</span>
-                </a>
-            </div>
-            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
-                <span class="navbar-toggler-icon"></span>
+            <a href="index.html" class="nav-brand"><span class="kf">KF</span><span class="sq">SQUARE</span></a>
+            <button class="nav-toggle" aria-label="Toggle menu" id="nav-toggle">
+                <i class="fas fa-bars"></i>
             </button>
-            <div class="collapse navbar-collapse" id="navbarNav">
-                <ul class="navbar-nav ms-auto">
-                    <li class="nav-item">
-                        <a href="index.html" class="nav-link">Home</a>
-                    </li>
-                    <li class="nav-item">
-                        <a href="about.html" class="nav-link">About</a>
-                    </li>
-                    <li class="nav-item">
-                        <a href="services.html" class="nav-link active">Services</a>
-                    </li>
-                    <li class="nav-item">
-                        <a href="portfolio.html" class="nav-link">Portfolio</a>
-                    </li>
-                    <li class="nav-item">
-                        <a href="contact.html" class="nav-link">Contact</a>
-                    </li>
-                </ul>
-            </div>
+            <ul class="nav-links" id="nav-links">
+                <li><a href="index.html">Home</a></li>
+                <li><a href="about.html">About</a></li>
+                <li><a href="services.html" class="active">Services</a></li>
+                <li><a href="portfolio.html">Portfolio</a></li>
+                <li><a href="contact.html" class="nav-cta">Let's Talk</a></li>
+            </ul>
         </div>
     </nav>
 
-    <!-- Page Header -->
-    <section class="page-header py-5 text-center" style="background: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%); color: white;">
-        <div class="container">
-            <h1 class="display-4 fw-bold">Our Services</h1>
-            <p class="lead">Comprehensive data analytics and automation solutions tailored for your business</p>
-            <nav aria-label="breadcrumb">
-                <ol class="breadcrumb justify-content-center bg-transparent">
-                    <li class="breadcrumb-item"><a href="index.html" class="text-warning">Home</a></li>
-                    <li class="breadcrumb-item active text-light" aria-current="page">Services</li>
-                </ol>
-            </nav>
+    <!-- Hero -->
+    <section class="svc-hero">
+        <div class="svc-hero-glow"></div>
+        <div class="container position-relative text-center">
+            <div class="section-eyebrow reveal"><span></span>What We Build</div>
+            <h1 class="reveal reveal-d1" style="font-size:clamp(2.2rem,5vw,3.4rem);font-weight:900;color:#fff;letter-spacing:-0.04em;line-height:1.1;margin-bottom:20px;">
+                Engineering capabilities<br>
+                <em style="color:var(--gold);font-style:normal;">that scale under pressure.</em>
+            </h1>
+            <p class="reveal reveal-d2" style="font-size:1rem;color:var(--text-muted-dark);max-width:540px;margin:0 auto 36px;line-height:1.8;">
+                Six integrated practice areas built for government agencies and commercial organizations where performance, security, and reliability are non-negotiable.
+            </p>
+            <div class="reveal reveal-d2 d-flex gap-3 justify-content-center flex-wrap">
+                <a href="#services-section" class="btn-gold">Browse Services <i class="fas fa-arrow-down" style="font-size:0.75rem;"></i></a>
+                <a href="contact.html" class="btn-outline-gold">Schedule a Call</a>
+            </div>
         </div>
     </section>
 
-    <!-- Main Content -->
-    <main class="main-content">
-        <!-- Services Overview (Centered) -->
-        <section class="about-overview py-5 bg-light">
-            <div class="container">
-                <div class="row justify-content-center">
-                    <div class="col-lg-10">
-                        <div class="about-text text-center bg-white p-4 rounded shadow">
-                            <h2 class="section-title mb-4">Transforming Data into Strategic Advantage</h2>
-                            <p class="lead">Our comprehensive suite of data analytics and automation services helps businesses unlock the full potential of their data and achieve measurable results.</p>
-                            
-                            <!-- Service Highlights -->
-                            <div class="mvv-item bg-light p-3 rounded my-4">
-                                <div class="mvv-icon text-center fs-1 mb-3">🚀</div>
-                                <h3>Our Approach</h3>
-                                <ul class="list-unstyled">
-                                    <li>✓ Custom solutions tailored to your business needs</li>
-                                    <li>✓ Enterprise-grade security and compliance</li>
-                                    <li>✓ 24/7 support and monitoring</li>
-                                    <li>✓ Proven methodologies and best practices</li>
-                                </ul>
+    <!-- Filter bar -->
+    <div class="filter-wrap" id="services-section">
+        <div class="container">
+            <div class="filter-bar" id="filter-bar" role="tablist" aria-label="Filter services by category">
+                <button class="filter-btn active" data-category="all"         role="tab" aria-selected="true">All Services</button>
+                <button class="filter-btn"         data-category="engineering" role="tab" aria-selected="false">Engineering</button>
+                <button class="filter-btn"         data-category="analytics"   role="tab" aria-selected="false">Analytics</button>
+                <button class="filter-btn"         data-category="automation"  role="tab" aria-selected="false">Automation</button>
+                <button class="filter-btn"         data-category="consulting"  role="tab" aria-selected="false">Consulting</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Services grid -->
+    <section style="background:var(--navy);padding:48px 0 80px;">
+        <div class="container">
+
+            <!-- Stats -->
+            <div class="row g-3 stats-row reveal">
+                <div class="col-6 col-md-3 text-center">
+                    <div class="stat-val" data-count="8">0</div>
+                    <div class="stat-lbl">Practice Areas</div>
+                </div>
+                <div class="col-6 col-md-3 text-center">
+                    <div class="stat-val" data-count="500">0</div>
+                    <div class="stat-lbl">Clients Served</div>
+                </div>
+                <div class="col-6 col-md-3 text-center">
+                    <div class="stat-val">99.9%</div>
+                    <div class="stat-lbl">Uptime SLA</div>
+                </div>
+                <div class="col-6 col-md-3 text-center">
+                    <div class="stat-val">24/7</div>
+                    <div class="stat-lbl">Expert Support</div>
+                </div>
+            </div>
+
+            <!-- Category heading (dynamic) -->
+            <div id="category-heading" style="margin-bottom:32px;min-height:48px;"></div>
+
+            <!-- Grid -->
+            <div class="svc-grid" id="services-grid" role="list"></div>
+
+        </div>
+    </section>
+
+    <!-- Category deep-dive sections -->
+    <section class="section-light" id="section-engineering">
+        <div class="container">
+            <div class="row align-items-center g-5">
+                <div class="col-lg-5 reveal">
+                    <div class="cat-tag" style="background:rgba(30,60,114,0.08);color:#1e3c72;border:1px solid rgba(30,60,114,0.2);">
+                        ⚙️ Engineering
+                    </div>
+                    <h2 class="section-title-light">Production software your<br>team can rely on.</h2>
+                    <p class="section-sub" style="text-align:left;">We build systems that survive contact with reality — high-traffic APIs, distributed pipelines, and mission-critical applications hardened for security and performance.</p>
+                    <a href="contact.html?subject=Software Engineering inquiry" class="btn-gold mt-4" style="display:inline-flex;">
+                        Discuss a Project <i class="fas fa-arrow-right" style="font-size:0.75rem;"></i>
+                    </a>
+                </div>
+                <div class="col-lg-6 offset-lg-1 reveal reveal-d1">
+                    <div class="detail-card">
+                        <h3>What we deliver</h3>
+                        <ul>
+                            <li>Full-stack web and mobile application development</li>
+                            <li>Microservices and API-first architecture design</li>
+                            <li>Legacy modernization and platform migration</li>
+                            <li>Infrastructure as Code and CI/CD pipeline setup</li>
+                            <li>Security-first development with SAST/DAST integration</li>
+                            <li>Scalable cloud-native applications on AWS, Azure, and GCP</li>
+                        </ul>
+                        <div style="margin-top:20px;">
+                            <p style="font-size:0.72rem;font-weight:700;text-transform:uppercase;letter-spacing:0.1em;color:#9ca3af;margin-bottom:10px;">Tech stack</p>
+                            <span class="stack-tag">React</span><span class="stack-tag">Node.js</span><span class="stack-tag">Python</span><span class="stack-tag">Java</span>
+                            <span class="stack-tag">Go</span><span class="stack-tag">PostgreSQL</span><span class="stack-tag">Redis</span><span class="stack-tag">Docker</span>
+                            <span class="stack-tag">Kubernetes</span><span class="stack-tag">Terraform</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="section-white" id="section-analytics">
+        <div class="container">
+            <div class="row align-items-center g-5">
+                <div class="col-lg-5 reveal">
+                    <div class="cat-tag" style="background:rgba(255,193,7,0.08);color:#92650a;border:1px solid rgba(255,193,7,0.25);">
+                        📊 Analytics
+                    </div>
+                    <h2 class="section-title-light">Data that drives decisions,<br>not just dashboards.</h2>
+                    <p class="section-sub" style="text-align:left;">We turn raw operational data into predictive models, live dashboards, and automated reporting systems your leadership can act on the same day.</p>
+                    <a href="contact.html?subject=Analytics inquiry" class="btn-gold mt-4" style="display:inline-flex;background:#1e3c72;color:#fff;">
+                        Talk to an Analyst <i class="fas fa-arrow-right" style="font-size:0.75rem;"></i>
+                    </a>
+                </div>
+                <div class="col-lg-6 offset-lg-1 reveal reveal-d1">
+                    <div class="detail-card">
+                        <h3>What we deliver</h3>
+                        <ul>
+                            <li>End-to-end data pipeline design and implementation</li>
+                            <li>Real-time and batch analytics on cloud data warehouses</li>
+                            <li>Executive dashboards and self-service BI portals</li>
+                            <li>Predictive models for churn, demand, risk, and anomaly detection</li>
+                            <li>ETL/ELT modernization and data quality frameworks</li>
+                            <li>Embedded analytics integrated directly into your products</li>
+                        </ul>
+                        <div style="margin-top:20px;">
+                            <p style="font-size:0.72rem;font-weight:700;text-transform:uppercase;letter-spacing:0.1em;color:#9ca3af;margin-bottom:10px;">Tech stack</p>
+                            <span class="stack-tag">Snowflake</span><span class="stack-tag">dbt</span><span class="stack-tag">Spark</span><span class="stack-tag">Airflow</span>
+                            <span class="stack-tag">Power BI</span><span class="stack-tag">Tableau</span><span class="stack-tag">BigQuery</span><span class="stack-tag">Redshift</span>
+                            <span class="stack-tag">Python</span><span class="stack-tag">R</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="section-light" id="section-automation">
+        <div class="container">
+            <div class="row align-items-center g-5">
+                <div class="col-lg-5 reveal">
+                    <div class="cat-tag" style="background:rgba(16,185,129,0.08);color:#065f46;border:1px solid rgba(16,185,129,0.2);">
+                        ⚡ Automation
+                    </div>
+                    <h2 class="section-title-light">Remove the manual work<br>from your critical paths.</h2>
+                    <p class="section-sub" style="text-align:left;">We identify the repetitive, high-volume processes slowing your team down and replace them with reliable automated workflows that run without supervision.</p>
+                    <a href="contact.html?subject=Automation inquiry" class="btn-gold mt-4" style="display:inline-flex;background:#065f46;color:#fff;">
+                        Map Your Processes <i class="fas fa-arrow-right" style="font-size:0.75rem;"></i>
+                    </a>
+                </div>
+                <div class="col-lg-6 offset-lg-1 reveal reveal-d1">
+                    <div class="detail-card">
+                        <h3>What we deliver</h3>
+                        <ul>
+                            <li>RPA implementation for document-heavy back-office workflows</li>
+                            <li>Intelligent document processing with OCR and NLP extraction</li>
+                            <li>API integration between disconnected enterprise systems</li>
+                            <li>Event-driven workflow orchestration and monitoring</li>
+                            <li>Automated compliance reporting and audit trail generation</li>
+                            <li>Custom bots for data entry, validation, and notification routing</li>
+                        </ul>
+                        <div style="margin-top:20px;">
+                            <p style="font-size:0.72rem;font-weight:700;text-transform:uppercase;letter-spacing:0.1em;color:#9ca3af;margin-bottom:10px;">Tech stack</p>
+                            <span class="stack-tag">UiPath</span><span class="stack-tag">Power Automate</span><span class="stack-tag">n8n</span><span class="stack-tag">Zapier</span>
+                            <span class="stack-tag">Prefect</span><span class="stack-tag">Celery</span><span class="stack-tag">AWS Lambda</span><span class="stack-tag">Azure Logic Apps</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="section-white" id="section-consulting">
+        <div class="container">
+            <div class="row align-items-center g-5">
+                <div class="col-lg-5 reveal">
+                    <div class="cat-tag" style="background:rgba(139,92,246,0.08);color:#5b21b6;border:1px solid rgba(139,92,246,0.2);">
+                        🧭 Consulting
+                    </div>
+                    <h2 class="section-title-light">Strategy from engineers<br>who have shipped the work.</h2>
+                    <p class="section-sub" style="text-align:left;">Our consulting isn't theoretical. Every recommendation comes from practitioners who have built, scaled, and secured the systems they're advising on.</p>
+                    <a href="contact.html?subject=Consulting inquiry" class="btn-gold mt-4" style="display:inline-flex;background:#5b21b6;color:#fff;">
+                        Book a Session <i class="fas fa-arrow-right" style="font-size:0.75rem;"></i>
+                    </a>
+                </div>
+                <div class="col-lg-6 offset-lg-1 reveal reveal-d1">
+                    <div class="detail-card">
+                        <h3>What we deliver</h3>
+                        <ul>
+                            <li>Data strategy and platform roadmap development</li>
+                            <li>Technology vendor selection and RFP evaluation</li>
+                            <li>Data governance framework design and implementation</li>
+                            <li>Cloud migration planning and cost optimization audits</li>
+                            <li>Security posture assessment and remediation planning</li>
+                            <li>Interim CTO/CDO advisory for growth-stage organizations</li>
+                        </ul>
+                        <div style="margin-top:20px;">
+                            <p style="font-size:0.72rem;font-weight:700;text-transform:uppercase;letter-spacing:0.1em;color:#9ca3af;margin-bottom:10px;">Frameworks</p>
+                            <span class="stack-tag">DAMA-DMBOK</span><span class="stack-tag">TOGAF</span><span class="stack-tag">NIST CSF</span><span class="stack-tag">FedRAMP</span>
+                            <span class="stack-tag">CMMI</span><span class="stack-tag">ISO 27001</span><span class="stack-tag">SAFe Agile</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Process -->
+    <section class="section-light" id="our-process">
+        <div class="container">
+            <div class="row align-items-center g-5">
+                <div class="col-lg-5 reveal">
+                    <div class="section-eyebrow" style="color:#1e3c72;background:rgba(30,60,114,0.06);border-color:rgba(30,60,114,0.15);">
+                        <span style="background:#1e3c72;"></span>How We Work
+                    </div>
+                    <h2 class="section-title-light">A process built for<br>complex programs.</h2>
+                    <p class="section-sub" style="text-align:left;">We run structured discovery, iterative delivery, and rigorous quality gates — so nothing ships until it's production-ready.</p>
+                </div>
+                <div class="col-lg-6 offset-lg-1 reveal reveal-d1">
+                    <div style="background:#fff;border:1px solid #e8ecf4;border-radius:14px;padding:32px;">
+                        <div class="process-step">
+                            <div class="step-num">01</div>
+                            <div class="step-content">
+                                <h4>Discovery &amp; Scoping</h4>
+                                <p>We map your environment, constraints, and objectives before a single line of code is written.</p>
                             </div>
-                            
-                            <!-- Quick Stats -->
-                            <div class="row g-3 mt-4">
-                                <div class="col-md-4">
-                                    <div class="stat-item bg-white p-3 rounded shadow-sm text-center">
-                                        <h3 class="fw-bold text-primary">50+</h3>
-                                        <p class="mb-0 text-muted">Analytics Solutions Deployed</p>
-                                    </div>
-                                </div>
-                                <div class="col-md-4">
-                                    <div class="stat-item bg-white p-3 rounded shadow-sm text-center">
-                                        <h3 class="fw-bold text-primary">99.9%</h3>
-                                        <p class="mb-0 text-muted">Uptime Guarantee</p>
-                                    </div>
-                                </div>
-                                <div class="col-md-4">
-                                    <div class="stat-item bg-white p-3 rounded shadow-sm text-center">
-                                        <h3 class="fw-bold text-primary">24/7</h3>
-                                        <p class="mb-0 text-muted">Expert Support</p>
-                                    </div>
-                                </div>
+                        </div>
+                        <div class="process-step">
+                            <div class="step-num">02</div>
+                            <div class="step-content">
+                                <h4>Architecture &amp; Planning</h4>
+                                <p>Detailed technical design, delivery milestones, and risk identification — documented and agreed upfront.</p>
+                            </div>
+                        </div>
+                        <div class="process-step">
+                            <div class="step-num">03</div>
+                            <div class="step-content">
+                                <h4>Iterative Build</h4>
+                                <p>Agile sprints with working demos, test coverage targets, and continuous integration from day one.</p>
+                            </div>
+                        </div>
+                        <div class="process-step">
+                            <div class="step-num">04</div>
+                            <div class="step-content">
+                                <h4>QA &amp; Hardening</h4>
+                                <p>Load testing, security scanning, and UAT sign-off before any production promotion.</p>
+                            </div>
+                        </div>
+                        <div class="process-step" style="border-bottom:none;">
+                            <div class="step-num">05</div>
+                            <div class="step-content">
+                                <h4>Deployment &amp; Handoff</h4>
+                                <p>Zero-downtime deployment, runbooks, and knowledge transfer so your team owns what we build.</p>
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
-        </section>
+        </div>
+    </section>
 
-        <!-- Core Services (White text on dark background) -->
-        <section class="mvv-section py-5" style="background: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%); color: white;">
-            <div class="container">
-                <h2 class="section-title text-center text-white mb-5">Core Services</h2>
-                <div class="row g-4">
-                    <div class="col-md-6">
-                        <div class="mvv-item text-center h-100 p-4 rounded" style="background: rgba(255, 255, 255, 0.1); backdrop-filter: blur(10px); border: 1px solid rgba(255, 255, 255, 0.2);">
-                            <div class="mvv-icon text-center fs-1 mb-3 text-warning">📊</div>
-                            <h3 class="text-white">Data Analytics</h3>
-                            <p class="text-white mb-3">Transform raw data into actionable insights with our comprehensive analytics solutions and advanced statistical modeling.</p>
-                            <ul class="list-unstyled text-white">
-                                <li><span class="text-warning">✓</span> Statistical Analysis</li>
-                                <li><span class="text-warning">✓</span> Data Visualization</li>
-                                <li><span class="text-warning">✓</span> Performance Metrics</li>
-                            </ul>
-                        </div>
+    <!-- Industries -->
+    <section class="section-white">
+        <div class="container">
+            <div class="text-center mb-5 reveal">
+                <div class="section-eyebrow" style="color:#1e3c72;background:rgba(30,60,114,0.06);border-color:rgba(30,60,114,0.15);">
+                    <span style="background:#1e3c72;"></span>Who We Serve
+                </div>
+                <h2 class="section-title-light">Built for demanding environments.</h2>
+                <p class="section-sub" style="margin:0 auto;">Industries where the stakes are high and the margin for error is thin.</p>
+            </div>
+            <div class="row g-3">
+                <div class="col-md-6 col-lg-3 reveal reveal-d1">
+                    <div class="industry-card">
+                        <div class="industry-icon">🏛️</div>
+                        <h4>Government &amp; Federal</h4>
+                        <p>FISMA-compliant platforms, cleared staff, and experience with multi-year contract delivery at agency scale.</p>
                     </div>
-                    
-                    <div class="col-md-6">
-                        <div class="mvv-item text-center h-100 p-4 rounded" style="background: rgba(255, 255, 255, 0.1); backdrop-filter: blur(10px); border: 1px solid rgba(255, 255, 255, 0.2);">
-                            <div class="mvv-icon text-center fs-1 mb-3 text-warning">📉</div>
-                            <h3 class="text-white">Predictive Analytics</h3>
-                            <p class="text-white mb-3">Apply statistical forecasting and scoring methods to automate decisions and anticipate future trends.</p>
-                            <ul class="list-unstyled text-white">
-                                <li><span class="text-warning">✓</span> Predictive Models</li>
-                                <li><span class="text-warning">✓</span> Risk Scoring</li>
-                                <li><span class="text-warning">✓</span> Demand Forecasting</li>
-                            </ul>
-                        </div>
+                </div>
+                <div class="col-md-6 col-lg-3 reveal reveal-d1">
+                    <div class="industry-card">
+                        <div class="industry-icon">🏥</div>
+                        <h4>Healthcare</h4>
+                        <p>HIPAA-compliant analytics for patient outcomes, operational efficiency, and predictive health insights.</p>
                     </div>
-                    
-                    <div class="col-md-6">
-                        <div class="mvv-item text-center h-100 p-4 rounded" style="background: rgba(255, 255, 255, 0.1); backdrop-filter: blur(10px); border: 1px solid rgba(255, 255, 255, 0.2);">
-                            <div class="mvv-icon text-center fs-1 mb-3 text-warning">🎯</div>
-                            <h3 class="text-white">Business Intelligence</h3>
-                            <p class="text-white mb-3">Make data-driven decisions with our comprehensive BI solutions and real-time dashboard implementations.</p>
-                            <ul class="list-unstyled text-white">
-                                <li><span class="text-warning">✓</span> Interactive Dashboards</li>
-                                <li><span class="text-warning">✓</span> Real-time Reporting</li>
-                                <li><span class="text-warning">✓</span> KPI Monitoring</li>
-                            </ul>
-                        </div>
+                </div>
+                <div class="col-md-6 col-lg-3 reveal reveal-d2">
+                    <div class="industry-card">
+                        <div class="industry-icon">🏦</div>
+                        <h4>Financial Services</h4>
+                        <p>Risk management, fraud detection, and regulatory reporting for banks, credit unions, and fintechs.</p>
                     </div>
-                    
-                    <div class="col-md-6">
-                        <div class="mvv-item text-center h-100 p-4 rounded" style="background: rgba(255, 255, 255, 0.1); backdrop-filter: blur(10px); border: 1px solid rgba(255, 255, 255, 0.2);">
-                            <div class="mvv-icon text-center fs-1 mb-3 text-warning">⚙️</div>
-                            <h3 class="text-white">Data Engineering</h3>
-                            <p class="text-white mb-3">Build robust data pipelines and infrastructure to ensure reliable, scalable, and secure data processing.</p>
-                            <ul class="list-unstyled text-white">
-                                <li><span class="text-warning">✓</span> ETL Pipelines</li>
-                                <li><span class="text-warning">✓</span> Cloud Integration</li>
-                                <li><span class="text-warning">✓</span> Data Warehousing</li>
-                            </ul>
-                        </div>
+                </div>
+                <div class="col-md-6 col-lg-3 reveal reveal-d2">
+                    <div class="industry-card">
+                        <div class="industry-icon">🏭</div>
+                        <h4>Manufacturing</h4>
+                        <p>Predictive maintenance, quality control automation, and supply chain visibility solutions.</p>
                     </div>
                 </div>
             </div>
-        </section>
+        </div>
+    </section>
 
-        <!-- Industry Solutions -->
-        <section class="credentials-section py-5">
-            <div class="container">
-                <h2 class="section-title text-center mb-5">Industry Solutions</h2>
-                <div class="row g-4">
-                    <div class="col-md-6">
-                        <div class="credential-card card h-100 p-4 shadow-sm">
-                            <div class="credential-icon fs-1 text-center mb-3">🏥</div>
-                            <h3 class="text-center">Healthcare</h3>
-                            <p class="text-center">HIPAA-compliant analytics for patient outcomes, operational efficiency, and predictive health insights.</p>
-                            <div class="credential-details text-center">
-                                <span class="badge bg-primary me-2">EHR Integration</span>
-                                <span class="badge bg-secondary">HIPAA Compliant</span>
-                            </div>
-                        </div>
-                    </div>
-                    
-                    <div class="col-md-6">
-                        <div class="credential-card card h-100 p-4 shadow-sm">
-                            <div class="credential-icon fs-1 text-center mb-3">🏦</div>
-                            <h3 class="text-center">Financial Services</h3>
-                            <p class="text-center">Risk management, fraud detection, and algorithmic trading solutions for financial institutions.</p>
-                            <div class="credential-details text-center">
-                                <span class="badge bg-success me-2">Risk Analytics</span>
-                                <span class="badge bg-info">Fraud Detection</span>
-                            </div>
-                        </div>
-                    </div>
-                    
-                    <div class="col-md-6">
-                        <div class="credential-card card h-100 p-4 shadow-sm">
-                            <div class="credential-icon fs-1 text-center mb-3">🛒</div>
-                            <h3 class="text-center">Retail & E-commerce</h3>
-                            <p class="text-center">Customer segmentation, demand forecasting, and personalized recommendation engines.</p>
-                            <div class="credential-details text-center">
-                                <span class="badge bg-warning me-2">Personalization</span>
-                                <span class="badge bg-primary">Inventory Optimization</span>
-                            </div>
-                        </div>
-                    </div>
-                    
-                    <div class="col-md-6">
-                        <div class="credential-card card h-100 p-4 shadow-sm">
-                            <div class="credential-icon fs-1 text-center mb-3">🏭</div>
-                            <h3 class="text-center">Manufacturing</h3>
-                            <p class="text-center">Predictive maintenance, quality control, and supply chain optimization solutions.</p>
-                            <div class="credential-details text-center">
-                                <span class="badge bg-danger me-2">IoT Analytics</span>
-                                <span class="badge bg-success">Quality Control</span>
-                            </div>
-                        </div>
-                    </div>
-                </div>
+    <!-- CTA -->
+    <section class="cta-band">
+        <div class="container reveal">
+            <h2 style="font-size:clamp(1.8rem,3.5vw,2.5rem);font-weight:800;color:#fff;letter-spacing:-0.03em;margin-bottom:12px;">
+                Ready to scope your program?
+            </h2>
+            <p style="font-size:1rem;color:var(--text-muted-dark);max-width:420px;margin:0 auto 32px;line-height:1.75;">
+                Tell us what you're building. We'll respond within one business day with a direct technical assessment.
+            </p>
+            <div class="d-flex gap-3 justify-content-center flex-wrap">
+                <a href="contact.html" class="btn-gold">Get in Touch <i class="fas fa-arrow-right" style="font-size:0.75rem;"></i></a>
+                <a href="portfolio.html" class="btn-outline-gold">See Our Work</a>
             </div>
-        </section>
-
-        <!-- Process Timeline -->
-        <section class="timeline-section py-5 bg-light">
-            <div class="container">
-                <h2 class="section-title text-center mb-5">Our Proven Process</h2>
-                <div class="row justify-content-center">
-                    <div class="col-lg-8">
-                        <div class="timeline">
-                            <div class="timeline-item d-flex mb-4">
-                                <div class="timeline-marker bg-primary text-white rounded-circle d-flex align-items-center justify-content-center me-3 fw-bold" style="width: 60px; height: 60px; min-width: 60px;">1</div>
-                                <div class="timeline-content">
-                                    <h3>Discovery & Assessment</h3>
-                                    <p>We analyze your current data landscape, identify opportunities, and define project objectives.</p>
-                                </div>
-                            </div>
-                            <div class="timeline-item d-flex mb-4">
-                                <div class="timeline-marker bg-success text-white rounded-circle d-flex align-items-center justify-content-center me-3 fw-bold" style="width: 60px; height: 60px; min-width: 60px;">2</div>
-                                <div class="timeline-content">
-                                    <h3>Strategy & Planning</h3>
-                                    <p>Develop a comprehensive roadmap with timelines, deliverables, and success metrics.</p>
-                                </div>
-                            </div>
-                            <div class="timeline-item d-flex mb-4">
-                                <div class="timeline-marker bg-info text-white rounded-circle d-flex align-items-center justify-content-center me-3 fw-bold" style="width: 60px; height: 60px; min-width: 60px;">3</div>
-                                <div class="timeline-content">
-                                    <h3>Development & Implementation</h3>
-                                    <p>Build and deploy solutions using agile methodologies with regular progress updates.</p>
-                                </div>
-                            </div>
-                            <div class="timeline-item d-flex mb-4">
-                                <div class="timeline-marker bg-warning text-dark rounded-circle d-flex align-items-center justify-content-center me-3 fw-bold" style="width: 60px; height: 60px; min-width: 60px;">4</div>
-                                <div class="timeline-content">
-                                    <h3>Testing & Optimization</h3>
-                                    <p>Rigorous testing, performance tuning, and optimization to ensure optimal results.</p>
-                                </div>
-                            </div>
-                            <div class="timeline-item d-flex">
-                                <div class="timeline-marker bg-danger text-white rounded-circle d-flex align-items-center justify-content-center me-3 fw-bold" style="width: 60px; height: 60px; min-width: 60px;">5</div>
-                                <div class="timeline-content">
-                                    <h3>Deployment & Support</h3>
-                                    <p>Smooth deployment with comprehensive training and ongoing support for your team.</p>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </section>
-
-        <!-- Pricing Plans (White text on dark background) -->
-        <section class="pricing-section py-5" style="background: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%); color: white;">
-            <div class="container">
-                <h2 class="section-title text-center text-white mb-5">Flexible Pricing Options</h2>
-                <div class="row g-4 justify-content-center">
-                    <div class="col-lg-4">
-                        <div class="pricing-card text-center h-100 p-4 rounded" style="background: rgba(255, 255, 255, 0.1); backdrop-filter: blur(10px); border: 1px solid rgba(255, 255, 255, 0.2);">
-                            <div class="mvv-icon text-center fs-1 mb-3 text-warning">🎯</div>
-                            <h3 class="text-white">Starter Package</h3>
-                            <div class="pricing-amount text-center mb-3">
-                                <span class="text-warning h2">$2,500</span>
-                                <span class="text-white">/month</span>
-                            </div>
-                            <ul class="list-unstyled text-white mb-4">
-                                <li><span class="text-warning">✓</span> Basic Analytics Dashboard</li>
-                                <li><span class="text-warning">✓</span> Monthly Reporting</li>
-                                <li><span class="text-warning">✓</span> Email Support</li>
-                                <li><span class="text-warning">✓</span> 1 Data Source</li>
-                                <li><span class="text-warning">✓</span> 5 Custom Reports</li>
-                            </ul>
-                            <a href="contact.html" class="btn btn-outline-light">Get Started</a>
-                        </div>
-                    </div>
-
-                    <div class="col-lg-4">
-                        <div class="pricing-card text-center h-100 p-4 rounded position-relative" style="background: rgba(255, 255, 255, 0.15); backdrop-filter: blur(10px); border: 2px solid #ffc107;">
-                            <div class="badge bg-warning text-dark position-absolute top-0 start-50 translate-middle px-3 py-2">Most Popular</div>
-                            <div class="mvv-icon text-center fs-1 mb-3 text-warning mt-3">🚀</div>
-                            <h3 class="text-white">Professional</h3>
-                            <div class="pricing-amount text-center mb-3">
-                                <span class="text-warning h2">$7,500</span>
-                                <span class="text-white">/month</span>
-                            </div>
-                            <ul class="list-unstyled text-white mb-4">
-                                <li><span class="text-warning">✓</span> Advanced Analytics Platform</li>
-                                <li><span class="text-warning">✓</span> Real-time Dashboards</li>
-                                <li><span class="text-warning">✓</span> Phone & Email Support</li>
-                                <li><span class="text-warning">✓</span> 5 Data Sources</li>
-                                <li><span class="text-warning">✓</span> Unlimited Reports</li>
-                                <li><span class="text-warning">✓</span> Predictive Models</li>
-                            </ul>
-                            <a href="contact.html" class="btn btn-warning">Get Started</a>
-                        </div>
-                    </div>
-
-                    <div class="col-lg-4">
-                        <div class="pricing-card text-center h-100 p-4 rounded" style="background: rgba(255, 255, 255, 0.1); backdrop-filter: blur(10px); border: 1px solid rgba(255, 255, 255, 0.2);">
-                            <div class="mvv-icon text-center fs-1 mb-3 text-warning">⭐</div>
-                            <h3 class="text-white">Enterprise</h3>
-                            <div class="pricing-amount text-center mb-3">
-                                <span class="text-warning h2">$15,000</span>
-                                <span class="text-white">/month</span>
-                            </div>
-                            <ul class="list-unstyled text-white mb-4">
-                                <li><span class="text-warning">✓</span> Full Analytics Platform</li>
-                                <li><span class="text-warning">✓</span> Custom Integrations</li>
-                                <li><span class="text-warning">✓</span> Dedicated Support Team</li>
-                                <li><span class="text-warning">✓</span> Unlimited Data Sources</li>
-                                <li><span class="text-warning">✓</span> White-label Solutions</li>
-                                <li><span class="text-warning">✓</span> 24/7 Monitoring</li>
-                            </ul>
-                            <a href="contact.html" class="btn btn-outline-light">Contact Sales</a>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </section>
-
-        <!-- Call to Action -->
-        <section class="cta-section py-5" style="background: linear-gradient(135deg, #2a5298 0%, #1e3c72 100%);">
-            <div class="container">
-                <div class="cta-content text-center">
-                    <h2 class="text-white mb-3">Ready to Unlock Your Data's Potential?</h2>
-                    <p class="text-light mb-4">Let's discuss how our services can transform your business with data-driven insights.</p>
-                    <div class="cta-buttons">
-                        <a href="contact.html" class="btn btn-warning btn-lg me-3 px-4 py-2">
-                            <i class="fas fa-rocket me-2"></i>Schedule Consultation
-                        </a>
-                    </div>
-                </div>
-            </div>
-        </section>
-    </main>
+        </div>
+    </section>
 
     <!-- Footer -->
-    <footer class="footer bg-dark text-light py-5">
+    <footer class="site-footer">
         <div class="container">
-            <div class="row g-4">
-                <div class="col-lg-3">
-                    <h3 class="text-warning">KFSQUARE</h3>
-                    <p>Transforming businesses through practical data solutions and advanced analytics.</p>
-                    <div class="social-links">
-                        <a href="mailto:customersupport@kfsquare.com" class="text-light me-2" aria-label="Email">📧</a>
-                        <a href="tel:+14109347470" class="text-light me-2" aria-label="Phone">📱</a>
-                        <a href="#" class="text-light" aria-label="LinkedIn">💻</a>
+            <div class="row g-5">
+                <div class="col-lg-4">
+                    <div class="footer-brand"><span class="kf">KF</span><span class="sq">SQUARE</span></div>
+                    <p class="footer-desc">Secure software engineering, modern data platforms, and AI solutions for organizations where the work actually matters.</p>
+                    <div class="footer-social">
+                        <a href="mailto:customersupport@kfsquare.com" aria-label="Email"><i class="fas fa-envelope"></i></a>
+                        <a href="tel:+14109347470" aria-label="Phone"><i class="fas fa-phone"></i></a>
+                        <a href="#" aria-label="LinkedIn"><i class="fab fa-linkedin-in"></i></a>
                     </div>
                 </div>
-                <div class="col-lg-3">
-                    <h4>Services</h4>
-                    <ul class="list-unstyled">
-                        <li><a href="services.html" class="text-light text-decoration-none">Data Analytics</a></li>
-                        <li><a href="services.html" class="text-light text-decoration-none">Predictive Modeling</a></li>
-                        <li><a href="services.html" class="text-light text-decoration-none">Process Automation</a></li>
-                        <li><a href="services.html" class="text-light text-decoration-none">Business Intelligence</a></li>
-                    </ul>
+                <div class="col-lg-2 col-6">
+                    <p class="footer-heading">Services</p>
+                    <a href="#section-engineering" class="footer-link">Engineering</a>
+                    <a href="#section-analytics" class="footer-link">Analytics</a>
+                    <a href="#section-automation" class="footer-link">Automation</a>
+                    <a href="#section-consulting" class="footer-link">Consulting</a>
+                    <a href="services.html" class="footer-link">All Services</a>
+                </div>
+                <div class="col-lg-2 col-6">
+                    <p class="footer-heading">Company</p>
+                    <a href="about.html" class="footer-link">About</a>
+                    <a href="portfolio.html" class="footer-link">Portfolio</a>
+                    <a href="contact.html" class="footer-link">Contact</a>
+                    <a href="privacy.html" class="footer-link">Privacy Policy</a>
+                    <a href="terms.html" class="footer-link">Terms of Service</a>
                 </div>
                 <div class="col-lg-3">
-                    <h4>Company</h4>
-                    <ul class="list-unstyled">
-                        <li><a href="about.html" class="text-light text-decoration-none">About Us</a></li>
-                        <li><a href="portfolio.html" class="text-light text-decoration-none">Portfolio</a></li>
-                        <li><a href="contact.html" class="text-light text-decoration-none">Contact</a></li>
-                    </ul>
-                </div>
-                <div class="col-lg-3">
-                    <h4>Contact Info</h4>
-                    <div class="contact-info">
-                        <p>📞 410-934-7470</p>
-                        <p>📧 customersupport@kfsquare.com</p>
-                        <p>🏢 Small Business & Veteran Owned</p>
-                    </div>
+                    <p class="footer-heading">Contact</p>
+                    <p style="font-size:0.875rem;color:rgba(255,255,255,0.55);margin-bottom:6px;">📞 410-934-7470</p>
+                    <p style="font-size:0.875rem;color:rgba(255,255,255,0.55);margin-bottom:6px;">📧 customersupport@kfsquare.com</p>
+                    <p style="font-size:0.875rem;color:rgba(255,255,255,0.55);">🏢 Small Business &amp; Veteran Owned</p>
                 </div>
             </div>
-            <div class="footer-bottom text-center mt-4 pt-4 border-top border-secondary">
-                <p class="mb-0">&copy; 2024 KFSQUARE. All rights reserved. | <a href="privacy.html" class="text-warning">Privacy Policy</a> | <a href="terms.html" class="text-warning">Terms of Service</a></p>
+            <div class="footer-bottom d-flex flex-wrap justify-content-between align-items-center gap-2">
+                <span>&copy; 2026 KFSQUARE. All rights reserved.</span>
+                <span>
+                    <a href="privacy.html" class="footer-link d-inline" style="font-size:0.78rem;">Privacy</a> ·
+                    <a href="terms.html" class="footer-link d-inline" style="font-size:0.78rem;">Terms</a>
+                </span>
             </div>
         </div>
     </footer>
 
-    <!-- Bootstrap JS -->
+    <!-- Service detail drawer -->
+    <div class="svc-drawer-overlay" id="drawer-overlay" role="dialog" aria-modal="true" aria-label="Service details"></div>
+    <div class="svc-drawer" id="svc-drawer">
+        <button class="drawer-close" id="drawer-close" aria-label="Close"><i class="fas fa-times"></i></button>
+        <div id="drawer-content"></div>
+    </div>
+
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="services.js"></script>
     <script src="index.js"></script>
 </body>
 </html>

@@ -516,6 +516,7 @@ const publicFiles = new Set([
   'js/admin.js',
   'js/config.js',
   'js/contact.js',
+  'portfolio.js',
   'robots.txt',
   'services.js',
   'services.json',
