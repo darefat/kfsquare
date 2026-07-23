@@ -10,19 +10,19 @@
 
   var SERVICES = [
       {
-          id:         'software-engineering',
-          num:        '01',
-          icon:       '⚙️',
-          title:      'Software Engineering',
-          category:   'engineering',
-          featured:   false,
-          desc:       'Production-grade web, mobile, and API development. We build systems that survive high load, evolve cleanly, and stay secure.',
-          tags:       ['React', 'Node.js', 'Python', 'Go', 'PostgreSQL'],
-          anchor:     'section-engineering',
+          id:       'software-engineering',
+          num:      '01',
+          icon:     '⚙️',
+          title:    'Software Engineering',
+          category: 'engineering',
+          featured: false,
+          desc:     'Production-grade web, mobile, and API development. We build systems that survive high load, evolve cleanly, and stay secure.',
+          tags:     ['React', 'Node.js', 'Python', 'Go', 'PostgreSQL'],
+          anchor:   'section-engineering',
           detail: {
-              catLabel:  '⚙️ Engineering',
-              catStyle:  'background:rgba(30,60,114,0.15);color:#93c5fd;border:1px solid rgba(147,197,253,0.2);',
-              overview:  'We build full-stack applications, APIs, and microservices that work under real-world conditions. Every system we deliver is secure by design, tested under load, and documented for the engineers who maintain it after us.',
+              catLabel: '⚙️ Engineering',
+              catStyle: 'background:rgba(30,60,114,0.15);color:#93c5fd;border:1px solid rgba(147,197,253,0.2);',
+              overview: 'We build full-stack applications, APIs, and microservices that work under real-world conditions. Every system we deliver is secure by design, tested under load, and documented for the engineers who maintain it after us.',
               delivers: [
                   'Full-stack web and mobile application development',
                   'RESTful and GraphQL API design and implementation',
@@ -32,24 +32,24 @@
                   'CI/CD pipeline setup and developer experience optimization',
                   'Performance profiling and scalability hardening'
               ],
-              stack:     ['React', 'Vue', 'Node.js', 'Python', 'Java', 'Go', 'PostgreSQL', 'Redis', 'Docker', 'Kubernetes', 'Terraform', 'GitHub Actions'],
-              contact:   'Software Engineering'
+              stack:   ['React', 'Vue', 'Node.js', 'Python', 'Java', 'Go', 'PostgreSQL', 'Redis', 'Docker', 'Kubernetes', 'Terraform', 'GitHub Actions'],
+              contact: 'Software Engineering'
           }
       },
       {
-          id:         'data-engineering',
-          num:        '02',
-          icon:       '🔧',
-          title:      'Data Engineering',
-          category:   'engineering',
-          featured:   true,
-          desc:       'We design and build the pipelines, warehouses, and streaming infrastructure that make analytics reliable at scale.',
-          tags:       ['Spark', 'Airflow', 'dbt', 'Snowflake', 'Kafka'],
-          anchor:     'section-engineering',
+          id:       'data-engineering',
+          num:      '02',
+          icon:     '🔧',
+          title:    'Data Engineering',
+          category: 'engineering',
+          featured: true,
+          desc:     'We design and build the pipelines, warehouses, and streaming infrastructure that make analytics reliable at scale.',
+          tags:     ['Spark', 'Airflow', 'dbt', 'Snowflake', 'Kafka'],
+          anchor:   'section-engineering',
           detail: {
-              catLabel:  '⚙️ Engineering',
-              catStyle:  'background:rgba(30,60,114,0.15);color:#93c5fd;border:1px solid rgba(147,197,253,0.2);',
-              overview:  'Reliable analytics starts with reliable data. We build the ingestion, transformation, and storage layers that turn raw operational data into clean, queryable assets your analysts can trust.',
+              catLabel: '⚙️ Engineering',
+              catStyle: 'background:rgba(30,60,114,0.15);color:#93c5fd;border:1px solid rgba(147,197,253,0.2);',
+              overview: 'Reliable analytics starts with reliable data. We build the ingestion, transformation, and storage layers that turn raw operational data into clean, queryable assets your analysts can trust.',
               delivers: [
                   'Cloud data warehouse design and implementation',
                   'Batch and streaming ETL/ELT pipeline development',
@@ -59,24 +59,24 @@
                   'Metadata management and data lineage tracking',
                   'Cost optimization and warehouse performance tuning'
               ],
-              stack:     ['Apache Spark', 'Apache Airflow', 'Prefect', 'dbt', 'Snowflake', 'BigQuery', 'Redshift', 'Kafka', 'AWS Glue', 'Azure Data Factory', 'Delta Lake'],
-              contact:   'Data Engineering'
+              stack:   ['Apache Spark', 'Apache Airflow', 'Prefect', 'dbt', 'Snowflake', 'BigQuery', 'Redshift', 'Kafka', 'AWS Glue', 'Azure Data Factory', 'Delta Lake'],
+              contact: 'Data Engineering'
           }
       },
       {
-          id:         'ai-ml',
-          num:        '03',
-          icon:       '🤖',
-          title:      'AI & Machine Learning',
-          category:   'engineering',
-          featured:   true,
-          desc:       'Predictive models, NLP pipelines, and LLM-assisted systems built for production — not just proof-of-concept.',
-          tags:       ['PyTorch', 'scikit-learn', 'LangChain', 'OpenAI', 'MLflow'],
-          anchor:     'section-engineering',
+          id:       'ai-ml',
+          num:      '03',
+          icon:     '🤖',
+          title:    'AI & Machine Learning',
+          category: 'engineering',
+          featured: true,
+          desc:     'Predictive models, NLP pipelines, and LLM-assisted systems built for production — not just proof-of-concept.',
+          tags:     ['PyTorch', 'scikit-learn', 'LangChain', 'OpenAI', 'MLflow'],
+          anchor:   'section-engineering',
           detail: {
-              catLabel:  '⚙️ Engineering',
-              catStyle:  'background:rgba(30,60,114,0.15);color:#93c5fd;border:1px solid rgba(147,197,253,0.2);',
-              overview:  'We move AI from demo to deployment. That means building the training infrastructure, evaluation frameworks, and serving pipelines that keep models accurate and observable in production.',
+              catLabel: '⚙️ Engineering',
+              catStyle: 'background:rgba(30,60,114,0.15);color:#93c5fd;border:1px solid rgba(147,197,253,0.2);',
+              overview: 'We move AI from demo to deployment. That means building the training infrastructure, evaluation frameworks, and serving pipelines that keep models accurate and observable in production.',
               delivers: [
                   'Predictive modeling for churn, demand, risk, and anomaly detection',
                   'Natural language processing and document classification',
@@ -86,24 +86,24 @@
                   'Feature store design and training data management',
                   'Model explainability and bias auditing'
               ],
-              stack:     ['Python', 'PyTorch', 'scikit-learn', 'HuggingFace', 'LangChain', 'OpenAI API', 'MLflow', 'SageMaker', 'Vertex AI', 'Azure ML', 'Ray'],
-              contact:   'AI & ML'
+              stack:   ['Python', 'PyTorch', 'scikit-learn', 'HuggingFace', 'LangChain', 'OpenAI API', 'MLflow', 'SageMaker', 'Vertex AI', 'Azure ML', 'Ray'],
+              contact: 'AI & ML'
           }
       },
       {
-          id:         'cloud-devops',
-          num:        '04',
-          icon:       '☁️',
-          title:      'Cloud & DevOps',
-          category:   'automation',
-          featured:   false,
-          desc:       'Multi-cloud architecture, Infrastructure as Code, and automated delivery pipelines that cut deployment risk to near zero.',
-          tags:       ['AWS', 'Azure', 'GCP', 'Kubernetes', 'Terraform'],
-          anchor:     'section-automation',
+          id:       'cloud-devops',
+          num:      '04',
+          icon:     '☁️',
+          title:    'Cloud & DevOps',
+          category: 'automation',
+          featured: false,
+          desc:     'Multi-cloud architecture, Infrastructure as Code, and automated delivery pipelines that cut deployment risk to near zero.',
+          tags:     ['AWS', 'Azure', 'GCP', 'Kubernetes', 'Terraform'],
+          anchor:   'section-automation',
           detail: {
-              catLabel:  '⚡ Automation',
-              catStyle:  'background:rgba(16,185,129,0.12);color:#6ee7b7;border:1px solid rgba(110,231,183,0.2);',
-              overview:  'We design multi-cloud environments that are reproducible, observable, and secure. Automated deployments, environment parity, and cost controls are built in from the start — not retrofitted.',
+              catLabel: '⚡ Automation',
+              catStyle: 'background:rgba(16,185,129,0.12);color:#6ee7b7;border:1px solid rgba(110,231,183,0.2);',
+              overview: 'We design multi-cloud environments that are reproducible, observable, and secure. Automated deployments, environment parity, and cost controls are built in from the start — not retrofitted.',
               delivers: [
                   'Cloud architecture design on AWS, Azure, and GCP',
                   'Infrastructure as Code with Terraform and CDK',
@@ -113,24 +113,24 @@
                   'Disaster recovery planning and multi-region failover',
                   'Cloud cost optimization and FinOps reporting'
               ],
-              stack:     ['AWS', 'Azure', 'GCP', 'Kubernetes', 'Helm', 'Terraform', 'Pulumi', 'ArgoCD', 'Datadog', 'Prometheus', 'Grafana', 'GitHub Actions', 'GitLab CI'],
-              contact:   'Cloud & DevOps'
+              stack:   ['AWS', 'Azure', 'GCP', 'Kubernetes', 'Helm', 'Terraform', 'Pulumi', 'ArgoCD', 'Datadog', 'Prometheus', 'Grafana', 'GitHub Actions', 'GitLab CI'],
+              contact: 'Cloud & DevOps'
           }
       },
       {
-          id:         'analytics-bi',
-          num:        '05',
-          icon:       '📊',
-          title:      'Analytics & Business Intelligence',
-          category:   'analytics',
-          featured:   false,
-          desc:       'Executive dashboards, self-service BI portals, and embedded analytics that give your teams answers without writing SQL.',
-          tags:       ['Power BI', 'Tableau', 'Looker', 'dbt', 'Metabase'],
-          anchor:     'section-analytics',
+          id:       'analytics-bi',
+          num:      '05',
+          icon:     '📊',
+          title:    'Analytics & Business Intelligence',
+          category: 'analytics',
+          featured: false,
+          desc:     'Executive dashboards, self-service BI portals, and embedded analytics that give your teams answers without writing SQL.',
+          tags:     ['Power BI', 'Tableau', 'Looker', 'dbt', 'Metabase'],
+          anchor:   'section-analytics',
           detail: {
-              catLabel:  '📊 Analytics',
-              catStyle:  'background:rgba(255,193,7,0.12);color:#fbbf24;border:1px solid rgba(251,191,36,0.2);',
-              overview:  'We build analytics environments where every stakeholder can get answers at the speed they need them. From live operational dashboards to quarterly board reports, we deliver visibility that sticks.',
+              catLabel: '📊 Analytics',
+              catStyle: 'background:rgba(255,193,7,0.12);color:#fbbf24;border:1px solid rgba(251,191,36,0.2);',
+              overview: 'We build analytics environments where every stakeholder can get answers at the speed they need them. From live operational dashboards to quarterly board reports, we deliver visibility that sticks.',
               delivers: [
                   'Executive KPI dashboards and operational command centers',
                   'Self-service BI portals with row-level security',
@@ -140,24 +140,24 @@
                   'Ad hoc analysis enablement and data literacy training',
                   'Dashboard migration from legacy tools to modern platforms'
               ],
-              stack:     ['Power BI', 'Tableau', 'Looker', 'Metabase', 'Apache Superset', 'dbt Semantic Layer', 'Sigma', 'Hex', 'Google Sheets API'],
-              contact:   'Analytics & BI'
+              stack:   ['Power BI', 'Tableau', 'Looker', 'Metabase', 'Apache Superset', 'dbt Semantic Layer', 'Sigma', 'Hex', 'Google Sheets API'],
+              contact: 'Analytics & BI'
           }
       },
       {
-          id:         'process-automation',
-          num:        '06',
-          icon:       '🔄',
-          title:      'Process Automation',
-          category:   'automation',
-          featured:   false,
-          desc:       'RPA, intelligent document processing, and enterprise workflow integration that eliminates manual overhead from your critical paths.',
-          tags:       ['UiPath', 'Power Automate', 'n8n', 'AWS Lambda', 'OCR'],
-          anchor:     'section-automation',
+          id:       'process-automation',
+          num:      '06',
+          icon:     '🔄',
+          title:    'Process Automation',
+          category: 'automation',
+          featured: false,
+          desc:     'RPA, intelligent document processing, and enterprise workflow integration that eliminates manual overhead from your critical paths.',
+          tags:     ['UiPath', 'Power Automate', 'n8n', 'AWS Lambda', 'OCR'],
+          anchor:   'section-automation',
           detail: {
-              catLabel:  '⚡ Automation',
-              catStyle:  'background:rgba(16,185,129,0.12);color:#6ee7b7;border:1px solid rgba(110,231,183,0.2);',
-              overview:  'We identify the high-volume, repetitive work your team does manually and replace it with reliable automated systems. The result is fewer errors, faster cycle times, and staff freed up for higher-value work.',
+              catLabel: '⚡ Automation',
+              catStyle: 'background:rgba(16,185,129,0.12);color:#6ee7b7;border:1px solid rgba(110,231,183,0.2);',
+              overview: 'We identify the high-volume, repetitive work your team does manually and replace it with reliable automated systems. The result is fewer errors, faster cycle times, and staff freed up for higher-value work.',
               delivers: [
                   'Robotic process automation for document-heavy workflows',
                   'Intelligent document processing with OCR and NLP extraction',
@@ -167,24 +167,24 @@
                   'Custom notification and escalation routing systems',
                   'Process mining and automation opportunity assessments'
               ],
-              stack:     ['UiPath', 'Power Automate', 'n8n', 'Zapier', 'Prefect', 'Celery', 'AWS Lambda', 'Azure Logic Apps', 'Textract', 'Tesseract'],
-              contact:   'Process Automation'
+              stack:   ['UiPath', 'Power Automate', 'n8n', 'Zapier', 'Prefect', 'Celery', 'AWS Lambda', 'Azure Logic Apps', 'Textract', 'Tesseract'],
+              contact: 'Process Automation'
           }
       },
       {
-          id:         'cybersecurity',
-          num:        '07',
-          icon:       '🔒',
-          title:      'Cybersecurity',
-          category:   'engineering',
-          featured:   false,
-          desc:       'Security posture assessments, threat modeling, and compliance readiness for FISMA, FedRAMP, HIPAA, and SOC 2 environments.',
-          tags:       ['NIST CSF', 'FedRAMP', 'SAST', 'DAST', 'SIEM'],
-          anchor:     'section-engineering',
+          id:       'cybersecurity',
+          num:      '07',
+          icon:     '🔒',
+          title:    'Cybersecurity',
+          category: 'engineering',
+          featured: false,
+          desc:     'Security posture assessments, threat modeling, and compliance readiness for FISMA, FedRAMP, HIPAA, and SOC 2 environments.',
+          tags:     ['NIST CSF', 'FedRAMP', 'SAST', 'DAST', 'SIEM'],
+          anchor:   'section-engineering',
           detail: {
-              catLabel:  '⚙️ Engineering',
-              catStyle:  'background:rgba(30,60,114,0.15);color:#93c5fd;border:1px solid rgba(147,197,253,0.2);',
-              overview:  'Security is not a checkbox. We embed controls into your development lifecycle, assess your current posture honestly, and build the remediation roadmap your team can actually execute.',
+              catLabel: '⚙️ Engineering',
+              catStyle: 'background:rgba(30,60,114,0.15);color:#93c5fd;border:1px solid rgba(147,197,253,0.2);',
+              overview: 'Security is not a checkbox. We embed controls into your development lifecycle, assess your current posture honestly, and build the remediation roadmap your team can actually execute.',
               delivers: [
                   'Security posture assessment and gap analysis',
                   'Threat modeling and attack surface mapping',
@@ -194,24 +194,24 @@
                   'Penetration testing coordination and remediation planning',
                   'Secrets management and zero-trust architecture design'
               ],
-              stack:     ['NIST CSF', 'FedRAMP', 'AWS Security Hub', 'Azure Defender', 'Snyk', 'SonarQube', 'OWASP ZAP', 'HashiCorp Vault', 'CrowdStrike', 'Splunk'],
-              contact:   'Cybersecurity'
+              stack:   ['NIST CSF', 'FedRAMP', 'AWS Security Hub', 'Azure Defender', 'Snyk', 'SonarQube', 'OWASP ZAP', 'HashiCorp Vault', 'CrowdStrike', 'Splunk'],
+              contact: 'Cybersecurity'
           }
       },
       {
-          id:         'strategic-consulting',
-          num:        '08',
-          icon:       '🧭',
-          title:      'Strategic Consulting',
-          category:   'consulting',
-          featured:   false,
-          desc:       'Data strategy, platform roadmaps, vendor selection, and interim technical leadership from practitioners who have shipped the work.',
-          tags:       ['Data Strategy', 'Governance', 'Roadmapping', 'DAMA', 'TOGAF'],
-          anchor:     'section-consulting',
+          id:       'strategic-consulting',
+          num:      '08',
+          icon:     '🧭',
+          title:    'Strategic Consulting',
+          category: 'consulting',
+          featured: false,
+          desc:     'Data strategy, platform roadmaps, vendor selection, and interim technical leadership from practitioners who have shipped the work.',
+          tags:     ['Data Strategy', 'Governance', 'Roadmapping', 'DAMA', 'TOGAF'],
+          anchor:   'section-consulting',
           detail: {
-              catLabel:  '🧭 Consulting',
-              catStyle:  'background:rgba(139,92,246,0.12);color:#c4b5fd;border:1px solid rgba(196,181,253,0.2);',
-              overview:  'We advise organizations on the decisions that determine whether their data and engineering investments compound or collapse. Every recommendation comes from engineers who have built, scaled, and secured the systems they\'re advising on.',
+              catLabel: '🧭 Consulting',
+              catStyle: 'background:rgba(139,92,246,0.12);color:#c4b5fd;border:1px solid rgba(196,181,253,0.2);',
+              overview: 'We advise organizations on the decisions that determine whether their data and engineering investments compound or collapse. Every recommendation comes from engineers who have built, scaled, and secured the systems they\'re advising on.',
               delivers: [
                   'Data strategy and three-year platform roadmap development',
                   'Technology vendor evaluation and RFP scoring frameworks',
@@ -221,8 +221,8 @@
                   'Interim CTO and CDO advisory for growth-stage organizations',
                   'Team capability assessment and hiring plan development'
               ],
-              stack:     ['DAMA-DMBOK', 'TOGAF', 'NIST CSF', 'FedRAMP', 'CMMI', 'ISO 27001', 'SAFe Agile', 'OKR Frameworks'],
-              contact:   'Strategic Consulting'
+              stack:   ['DAMA-DMBOK', 'TOGAF', 'NIST CSF', 'FedRAMP', 'CMMI', 'ISO 27001', 'SAFe Agile', 'OKR Frameworks'],
+              contact: 'Strategic Consulting'
           }
       }
   ];
