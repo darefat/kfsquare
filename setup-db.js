@@ -37,7 +37,7 @@ async function setupDatabase() {
     console.log('🎉 Database setup completed successfully!');
     
   } catch (error) {
-    console.error('❌ Database setup failed:', error);
+    console.error('❌ Database setup failed:', error.message);
   } finally {
     await mongoose.disconnect();
   }

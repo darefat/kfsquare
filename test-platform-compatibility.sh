@@ -214,21 +214,15 @@ test_frontend_assets() {
             warn_test "HTML5 DOCTYPE not found"
         fi
         
-        if grep -q "chat-widget" index.html; then
-            pass_test "Customer support chat widget found in HTML"
+        if grep -q "id=\"contact-form\"" index.html; then
+            pass_test "Contact form found in HTML"
         else
-            fail_test "Customer support chat widget missing"
+            fail_test "Contact form missing"
         fi
     fi
     
     # Test CSS
     if [[ -f "styles.css" ]]; then
-        if grep -q "chat-widget" styles.css; then
-            pass_test "Chat widget styles found in CSS"
-        else
-            fail_test "Chat widget styles missing"
-        fi
-        
         if grep -q "@media" styles.css; then
             pass_test "Responsive design media queries found"
         else
@@ -238,10 +232,10 @@ test_frontend_assets() {
     
     # Test JavaScript
     if [[ -f "index.js" ]]; then
-        if grep -q "initChatAssistant" index.js; then
-            pass_test "Chat assistant functionality found in JS"
+        if grep -q "initializeNavigation" index.js; then
+            pass_test "Shared navigation functionality found in JS"
         else
-            fail_test "Chat assistant functionality missing"
+            fail_test "Shared navigation functionality missing"
         fi
     fi
 }

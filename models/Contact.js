@@ -1,6 +1,14 @@
+'use strict';
+
+/**
+ * Contact persistence model.
+ * Stores public inquiry content, CRM workflow fields, delivery state, and
+ * request metadata used for support and abuse investigation.
+ */
 const mongoose = require('mongoose');
 
-// Contact Schema
+// Public inquiry fields are validated again at the database boundary so
+// non-HTTP writers cannot bypass the API's validation rules.
 const contactSchema = new mongoose.Schema({
   name: {
     type: String,
@@ -13,8 +21,10 @@ const contactSchema = new mongoose.Schema({
     required: true,
     lowercase: true,
     validate: {
-      validator: function(v) {
-        return /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/.test(v);
+      validator(value) {
+        // Deliberately permissive: reject malformed addresses without
+        // excluding valid modern domains or common address characters.
+        return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(value);
       },
       message: 'Please enter a valid email'
     }
@@ -22,7 +32,7 @@ const contactSchema = new mongoose.Schema({
   message: {
     type: String,
     required: true,
-    maxLength: 1000
+    maxLength: 2000
   },
   phone: {
     type: String,
@@ -35,7 +45,7 @@ const contactSchema = new mongoose.Schema({
   },
   serviceInterest: {
     type: String,
-    enum: ['data-engineering', 'predictive-analytics', 'llm-integration', 
+    enum: ['data-engineering', 'predictive-analytics', 'process-automation',
            'business-intelligence', 'data-governance', 'strategic-consulting', 'other'],
     default: 'other'
   },
@@ -97,12 +107,15 @@ const contactSchema = new mongoose.Schema({
   toObject: { virtuals: true }
 });
 
-// Virtual for contact age (days since creation)
+// Compute age on read rather than persisting a value that immediately becomes
+// stale. Guard new unsaved records, which do not have createdAt yet.
 contactSchema.virtual('contactAge').get(function() {
-  return Math.floor((Date.now() - this.createdAt) / (1000 * 60 * 60 * 24));
+  if (!this.createdAt) return 0;
+  return Math.floor((Date.now() - this.createdAt.getTime()) / (1000 * 60 * 60 * 24));
 });
 
-// Index for efficient queries
+// These compound indexes match the admin dashboard's most common filters and
+// sorting patterns; the email/service indexes support direct lookup/reporting.
 contactSchema.index({ status: 1, createdAt: -1 });
 contactSchema.index({ email: 1 });
 contactSchema.index({ priority: -1, createdAt: -1 });

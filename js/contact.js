@@ -12,12 +12,21 @@
 
     document.addEventListener('DOMContentLoaded', function () {
 
-        const form      = document.getElementById('contact-form');
-        const submitBtn = document.getElementById('submit-btn');
-        const statusEl  = document.getElementById('form-status');
-        const textarea  = document.getElementById('message');
-
+        const form = document.getElementById('contact-form');
         if (!form) return;
+
+        const submitBtn = form.querySelector('#submit-btn');
+        const statusEl = form.querySelector('#form-status');
+        const textarea = form.querySelector('#message');
+        if (!submitBtn || !textarea) return;
+
+        // Resolve fields within this form so another component cannot supply a
+        // duplicate document-level ID and accidentally alter the payload.
+        const field = (name) => form.elements.namedItem(name);
+        const valueOf = (name) => {
+            const element = field(name);
+            return element && typeof element.value === 'string' ? element.value.trim() : '';
+        };
 
         // ── 1. Placeholder disappears on focus, restores when field is cleared ──
         form.querySelectorAll('input[placeholder], textarea[placeholder]').forEach(function (el) {
@@ -80,19 +89,19 @@
 
             // Map form fields to the API schema
             // server.js expects: name, email, message, phone, company, serviceInterest
-            const firstName = (document.getElementById('firstName').value || '').trim();
-            const lastName  = (document.getElementById('lastName').value  || '').trim();
+            const firstName = valueOf('firstName');
+            const lastName = valueOf('lastName');
 
+            // Send only fields accepted by the public API. Extra browser-only
+            // fields can cause strict backend/model validation to reject a lead.
             const payload = {
-                name:            [firstName, lastName].filter(Boolean).join(' '),
-                email:           (document.getElementById('email').value       || '').trim(),
-                phone:           (document.getElementById('phone').value       || '').trim(),
-                company:         (document.getElementById('company').value     || '').trim(),
-                serviceInterest: mapService(document.getElementById('service').value),
-                budget:          mapBudget(document.getElementById('budget').value),
-                industry:        (document.getElementById('industry').value    || ''),
-                message:         (textarea.value || '').trim(),
-                source:          'website'
+                name: [firstName, lastName].filter(Boolean).join(' '),
+                email: valueOf('email'),
+                phone: valueOf('phone'),
+                company: valueOf('company'),
+                serviceInterest: mapService(valueOf('service')),
+                message: valueOf('message'),
+                website: ''
             };
 
             // Loading state
@@ -192,26 +201,13 @@
         function mapService(val) {
             const map = {
                 'data-analytics':       'other',
-                'machine-learning':     'predictive-analytics',
-                'ai-integration':       'llm-integration',
+                'predictive-modeling':  'predictive-analytics',
+                'process-automation':   'process-automation',
                 'business-intelligence':'business-intelligence',
                 'data-engineering':     'data-engineering',
                 'consulting':           'strategic-consulting'
             };
             return map[val] || 'other';
-        }
-
-        // Map the form's budget values to the enum in models/Contact.js
-        function mapBudget(val) {
-            const map = {
-                'under-25k':  'under-10k',
-                '25k-50k':    '10k-50k',
-                '50k-100k':   '50k-100k',
-                '100k-250k':  '100k-500k',
-                '250k-500k':  '100k-500k',
-                'over-500k':  '500k+'
-            };
-            return map[val] || 'not-specified';
         }
 
     });

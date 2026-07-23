@@ -10,7 +10,6 @@
 #   1. Push this repo to GitHub (already done).
 #   2. On https://render.com -> New -> Blueprint -> pick this repo.
 #   3. Add the secret env vars below in the Render dashboard (NOT in git):
-#        DOTENV_PRIVATE_KEY_PRODUCTION  (from your local .env.keys)
 #        SESSION_SECRET, JWT_SECRET     (random strings)
 #        MONGODB_URI  (OPTIONAL - MongoDB Atlas string. If omitted, the contact
 #                      form still sends email; submissions just aren't saved.)
@@ -25,9 +24,8 @@ services:
     region: oregon
     branch: main
     buildCommand: npm ci
-    # start:secure runs dotenvx, which decrypts .env.production using
-    # DOTENV_PRIVATE_KEY_PRODUCTION (set as a Render secret env var).
-    startCommand: npm run start:secure
+    # Runtime secrets are injected directly by Render.
+    startCommand: npm start
     healthCheckPath: /api/health
     envVars:
       - key: NODE_ENV
@@ -35,8 +33,6 @@ services:
       - key: ALLOWED_ORIGINS
         value: https://kfsquare.com,https://www.kfsquare.com
       # Secrets — set these in the Render dashboard, leave unset here:
-      - key: DOTENV_PRIVATE_KEY_PRODUCTION
-        sync: false
       - key: MONGODB_URI
         sync: false
       - key: SESSION_SECRET

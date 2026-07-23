@@ -531,7 +531,7 @@ Edit `.env` and confirm these values are set correctly:
 
 | Variable | Required | Description |
 |---|---|---|
-| `MONGODB_URI` | YES | MongoDB Atlas SRV string, e.g. `mongodb+srv://user:pass@cluster.mongodb.net/kfsquare?retryWrites=true&w=majority` |
+| `MONGODB_URI` | YES | MongoDB connection string injected through the hosting provider's secret manager; never commit its value |
 | `MAILGUN_API_KEY` | YES | Mailgun private API key |
 | `MAILGUN_DOMAIN` | YES | Verified Mailgun sending domain |
 | `NODE_ENV` | YES | Set to `production` |

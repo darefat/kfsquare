@@ -157,7 +157,7 @@ router.post('/', [
   body('name').trim().isLength({ min: 2, max: 100 }).escape(),
   body('shortDescription').trim().isLength({ min: 10, max: 200 }).escape(),
   body('fullDescription').trim().isLength({ min: 20, max: 1000 }).escape(),
-  body('category').isIn(['foundation', 'analytics', 'ai', 'governance'])
+  body('category').isIn(['foundation', 'analytics', 'automation', 'governance'])
 ], async (req, res) => {
   try {
     const errors = validationResult(req);
@@ -200,7 +200,7 @@ router.put('/:id', [
   body('name').optional().trim().isLength({ min: 2, max: 100 }).escape(),
   body('shortDescription').optional().trim().isLength({ min: 10, max: 200 }).escape(),
   body('fullDescription').optional().trim().isLength({ min: 20, max: 1000 }).escape(),
-  body('category').optional().isIn(['foundation', 'analytics', 'ai', 'governance'])
+  body('category').optional().isIn(['foundation', 'analytics', 'automation', 'governance'])
 ], async (req, res) => {
   try {
     const errors = validationResult(req);

@@ -1,6 +1,7 @@
 const winston = require('winston');
 const DailyRotateFile = require('winston-daily-rotate-file');
 const path = require('path');
+const { redact, redactString } = require('../utils/redact');
 
 // Create logs directory if it doesn't exist
 const fs = require('fs');
@@ -15,16 +16,18 @@ const logFormat = winston.format.combine(
     format: 'YYYY-MM-DD HH:mm:ss'
   }),
   winston.format.errors({ stack: true }),
+  // Sanitize the complete Winston info object before any transport serializes it.
+  winston.format((info) => Object.assign(info, redact(info)))(),
   winston.format.json(),
   winston.format.printf(({ timestamp, level, message, stack, ...meta }) => {
-    let log = `${timestamp} [${level.toUpperCase()}]: ${message}`;
-    
+    let log = `${timestamp} [${level.toUpperCase()}]: ${redactString(message)}`;
+
     if (stack) {
-      log += `\nStack: ${stack}`;
+      log += `\nStack: ${redactString(stack)}`;
     }
-    
+
     if (Object.keys(meta).length > 0) {
-      log += `\nMeta: ${JSON.stringify(meta, null, 2)}`;
+      log += `\nMeta: ${JSON.stringify(redact(meta), null, 2)}`;
     }
     
     return log;
@@ -115,7 +118,8 @@ logger.requestLogger = (req, res, next) => {
     const duration = Date.now() - start;
     const logData = {
       method: req.method,
-      url: req.url,
+      // req.path excludes query parameters, which may contain credentials.
+      url: req.path,
       status: res.statusCode,
       duration: `${duration}ms`,
       ip: req.ip || req.connection.remoteAddress,
@@ -123,7 +127,7 @@ logger.requestLogger = (req, res, next) => {
       contentLength: res.get('Content-Length') || '0'
     };
 
-    const logMessage = `${req.method} ${req.url} ${res.statusCode} ${duration}ms - ${req.ip}`;
+    const logMessage = `${req.method} ${req.path} ${res.statusCode} ${duration}ms - ${req.ip}`;
     
     if (res.statusCode >= 400) {
       logger.error(logMessage, logData);
@@ -140,7 +144,8 @@ logger.security = {
   loginAttempt: (email, success, ip) => {
     logger.warn('Login attempt', {
       event: 'login_attempt',
-      email,
+      // Avoid writing account identifiers into persistent logs.
+      email: email ? '[REDACTED]' : '',
       success,
       ip,
       timestamp: new Date().toISOString()

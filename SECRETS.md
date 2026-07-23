@@ -1,52 +1,54 @@
-# Encrypted Secrets (dotenvx)
+# Secret Management
 
-Secrets like `MAILGUN_API_KEY` are stored **encrypted** in `.env.production` using
-[dotenvx](https://dotenvx.com/encryption) public-key encryption. That file is safe
-to commit to a public GitHub repo — it contains only ciphertext plus a public key.
+KFSQUARE does not store API keys, passwords, connection credentials, or private keys in the repository. Production secrets must be injected at runtime through the hosting provider's secret manager.
 
-## Files
+## Repository policy
 
-| File             | Committed? | Contents                                            |
-|------------------|-----------|-----------------------------------------------------|
-| `.env.production`| YES       | Encrypted values + `DOTENV_PUBLIC_KEY_PRODUCTION`   |
-| `.env.keys`      | NO (ignored) | `DOTENV_PRIVATE_KEY_PRODUCTION` — decryption key |
-| `.env`           | NO (ignored) | Local plaintext dev env                          |
+| File or location | Committed? | Purpose |
+|---|---:|---|
+| `.env.example` | Yes | Names and non-secret placeholders only |
+| `.env.compose.example` | Yes | Names and non-secret placeholders only |
+| `.env`, `.env.*` | No | Ignored local runtime configuration |
+| `.env.keys` | No | Ignored private key material |
+| Render dashboard | No | Production secret values |
 
-The private key in `.env.keys` NEVER goes in git. Store it in your password
-manager and set it as an environment variable / secret on your host.
+Never place a real secret in HTML, browser JavaScript, logs, documentation examples, Docker images, shell history, or Git commits. Public browser configuration may contain only non-secret values such as an API origin.
 
-## Running the server (decrypts at runtime)
+## Required production setup
 
-```bash
-npm run start:secure
-```
+Set sensitive variables directly in the hosting dashboard or deployment secret store. Common examples include:
 
-This runs `dotenvx run -f .env.production -- node server.js`. dotenvx finds the
-private key (from `.env.keys` locally, or the `DOTENV_PRIVATE_KEY_PRODUCTION`
-environment variable in production) and decrypts values into `process.env`.
+- `MONGODB_URI`
+- `MAILGUN_API_KEY`
+- `SESSION_SECRET`
+- `JWT_SECRET`
+- `ADMIN_PASSWORD`
 
-## Production / CI deployment
-
-Do NOT copy `.env.keys` to the server. Instead set the private key as a secret:
+Start the server normally after the platform injects those variables:
 
 ```bash
-export DOTENV_PRIVATE_KEY_PRODUCTION="<value from .env.keys>"
-npm run start:secure
+npm start
 ```
 
-## Adding / changing a secret
+## Local development
+
+Create an ignored `.env` file from the template, then supply local values without committing the file:
 
 ```bash
-# add or edit a value in plaintext, then re-encrypt:
-npx dotenvx set MAILGUN_DOMAIN mg.kfsquare.com -f .env.production
-# (dotenvx set encrypts automatically)
-
-# or edit the file then:
-npx dotenvx encrypt -f .env.production
+cp .env.example .env
+npm run dev
 ```
 
-## Reading a value (for debugging)
+Confirm ignore rules before working with a local secret file:
 
 ```bash
-npx dotenvx get MAILGUN_API_KEY -f .env.production
+git check-ignore .env .env.local .env.keys
 ```
+
+## If exposure is suspected
+
+1. Revoke and rotate the credential immediately.
+2. Remove it from the current tree and Git history.
+3. Update the hosting secret store.
+4. Review provider access logs.
+5. Run the repository secret scan before pushing again.

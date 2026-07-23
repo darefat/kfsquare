@@ -12,10 +12,8 @@ KFSQUARE is now production-ready with comprehensive logging, security, monitorin
    ```
 
 2. **Configure Environment**
-   ```bash
-   cp .env.production .env
-   # Edit .env with your production values
-   ```
+   - Inject production values through your hosting provider's secret manager.
+   - For local testing only, copy `.env.example` to the ignored `.env` file.
 
 3. **Install Dependencies**
    ```bash
@@ -80,7 +78,7 @@ KFSQUARE is now production-ready with comprehensive logging, security, monitorin
 
 ### Environment Variables
 
-Key production environment variables (see `.env.production` for complete list):
+Key production environment variables (see `.env.example` for variable names only):
 
 ```bash
 # Application
@@ -93,8 +91,8 @@ MONGODB_URI=mongodb://localhost:27017/kfsquare
 REDIS_URL=redis://localhost:6379
 
 # Security
-SESSION_SECRET=your-session-secret
-JWT_SECRET=your-jwt-secret
+SESSION_SECRET=<set-in-secret-manager>
+JWT_SECRET=<set-in-secret-manager>
 RATE_LIMIT_WINDOW=900000
 RATE_LIMIT_MAX=100
 

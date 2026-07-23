@@ -1,4 +1,5 @@
 const logger = require('./logger');
+const { redactString } = require('../utils/redact');
 
 /**
  * Production Error Handling Middleware
@@ -13,7 +14,7 @@ class ErrorHandler {
     
     logger.warn('404 Error - Route not found', {
       method: req.method,
-      url: req.originalUrl,
+      path: req.path,
       ip: req.ip,
       userAgent: req.get('User-Agent')
     });
@@ -72,16 +73,17 @@ class ErrorHandler {
 
     // Log the error
     const errorLog = {
-      error: err.message,
-      stack: err.stack,
+      error: redactString(err.message),
+      stack: redactString(err.stack || ''),
       status,
       method: req.method,
-      url: req.originalUrl,
+      // Never persist request bodies, query values, or full URLs; they may
+      // contain credentials supplied by clients or upstream integrations.
+      path: req.path,
       ip: req.ip,
       userAgent: req.get('User-Agent'),
-      body: req.body,
-      params: req.params,
-      query: req.query,
+      paramNames: Object.keys(req.params || {}),
+      queryNames: Object.keys(req.query || {}),
       timestamp: new Date().toISOString()
     };
 
@@ -101,11 +103,11 @@ class ErrorHandler {
 
     // Add debug info in development
     if (isDevelopment) {
-      response.stack = err.stack;
+      response.stack = redactString(err.stack || '');
       response.debug = {
-        originalError: err.message,
+        originalError: redactString(err.message),
         method: req.method,
-        url: req.originalUrl
+        path: req.path
       };
     }
 
@@ -134,11 +136,10 @@ class ErrorHandler {
    */
   static handleDuplicateError(err) {
     const field = Object.keys(err.keyValue)[0];
-    const value = Object.values(err.keyValue)[0];
     return {
       field,
-      value,
-      message: `${field} '${value}' already exists`
+      // Duplicate values may be emails, tokens, or external identifiers.
+      message: `${field} already exists`
     };
   }
 
@@ -157,8 +158,8 @@ class ErrorHandler {
   static handleUncaughtException() {
     process.on('uncaughtException', (err) => {
       logger.error('Uncaught Exception - Shutting down...', {
-        error: err.message,
-        stack: err.stack,
+        error: redactString(err.message),
+        stack: redactString(err.stack || ''),
         timestamp: new Date().toISOString()
       });
       
@@ -173,9 +174,8 @@ class ErrorHandler {
   static handleUnhandledRejection() {
     process.on('unhandledRejection', (reason, promise) => {
       logger.error('Unhandled Promise Rejection', {
-        reason: reason.message || reason,
-        stack: reason.stack,
-        promise,
+        reason: redactString(reason && reason.message ? reason.message : String(reason)),
+        stack: redactString(reason && reason.stack ? reason.stack : ''),
         timestamp: new Date().toISOString()
       });
       

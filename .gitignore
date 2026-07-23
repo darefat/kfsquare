@@ -19,11 +19,10 @@
 !.env.example
 !.env.compose.example
 
-# Keep the dotenvx ENCRYPTED env file (ciphertext + public key only, safe to commit).
-# Its private decryption key lives in .env.keys, which stays ignored below.
-!.env.production
+# Production values belong in the hosting provider's secret manager. Even
+# encrypted environment files stay untracked to avoid accidental key exposure.
 
-# NEVER commit the dotenvx private keys
+# NEVER commit private key files
 .env.keys
 
 # Dependencies

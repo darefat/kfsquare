@@ -53,7 +53,7 @@ kfsquare/
 ├── logs/                   # Application logs (auto-created)
 ├── uploads/                # File upload directory
 ├── backups/                # Database backups
-├── .env.production         # Production environment template
+├── .env.example            # Variable names and safe placeholders
 ├── ecosystem.config.js     # PM2 process configuration
 ├── Dockerfile              # Container configuration
 ├── docker-compose.yml      # Service orchestration
@@ -97,8 +97,9 @@ kfsquare/
 node scripts/init-production.js
 
 # 2. Configure environment
-cp .env.production .env
-# Edit .env with MongoDB URI, secrets, etc.
+# Inject secrets through the hosting provider. For local testing only:
+cp .env.example .env
+# Keep .env ignored and never commit it.
 
 # 3. Start server
 npm start

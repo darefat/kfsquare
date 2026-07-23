@@ -1,6 +1,14 @@
+'use strict';
+
+/**
+ * Service catalog model.
+ * Keeps marketing copy, commercial metadata, delivery expectations, and
+ * publication controls in one document for efficient catalog reads.
+ */
 const mongoose = require('mongoose');
 
-// Service Schema
+// Validation here protects data created outside HTTP routes as well as API
+// writes. Nested groups mirror the way pricing and timelines are displayed.
 const serviceSchema = new mongoose.Schema({
   name: {
     type: String,
@@ -20,7 +28,7 @@ const serviceSchema = new mongoose.Schema({
   },
   category: {
     type: String,
-    enum: ['foundation', 'analytics', 'ai', 'governance'],
+    enum: ['foundation', 'analytics', 'automation', 'governance'],
     required: true
   },
   subcategory: {
@@ -122,12 +130,13 @@ const serviceSchema = new mongoose.Schema({
   toObject: { virtuals: true }
 });
 
-// Virtual for service rating (based on popularity)
+// Convert the internal ten-point popularity score into a five-star display
+// value without storing duplicate derived data.
 serviceSchema.virtual('rating').get(function() {
   return Math.round((this.popularity / 2) * 10) / 10; // Convert to 5-star rating
 });
 
-// Index for efficient queries
+// Indexes match category listings, availability filters, and featured sorting.
 serviceSchema.index({ category: 1, displayOrder: 1 });
 serviceSchema.index({ availability: 1, isActive: 1 });
 serviceSchema.index({ isFeatured: -1, popularity: -1 });

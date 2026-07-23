@@ -386,12 +386,12 @@ NODE_ENV=development
 PORT=3000
 
 # Mail Provider Configuration (Optional)
-MAILGUN_API_KEY=your_mailgun_api_key_here
+MAILGUN_API_KEY=<set-locally-never-commit>
 MAILGUN_DOMAIN=mg.example.com
 RECIPIENT_EMAIL=customersupport@kfsquare.com
 
 # Security Configuration
-SESSION_SECRET=change_this_in_production
+SESSION_SECRET=<set-locally-never-commit>
 
 # Database Configuration (if applicable)
 # DATABASE_URL=your_database_url_here
@@ -504,7 +504,7 @@ EOF
     echo ""
     echo "🛠️  Development Tools:"
     echo "  • Hot reload: Supported in development mode"
-    echo "  • Customer Support Chat: Enhanced with file upload, voice messages"
+    echo "  • Contact Support: Validated consultation form with email delivery"
     echo "  • Cross-platform deployment ready"
     echo ""
     echo "📱 Platform-Specific Notes:"

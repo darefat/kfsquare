@@ -260,7 +260,7 @@ class DynamicContentRenderer {
     const categoryTitles = {
       foundation: 'Data Foundation',
       analytics: 'Analytics & Intelligence',
-      ai: 'AI & Innovation',
+      automation: 'Automation & Innovation',
       governance: 'Governance & Strategy'
     };
 
@@ -343,15 +343,13 @@ class DynamicContentRenderer {
     });
   }
 
-  // Show service modal (if exists)
+  // Route service interest to the consultation form with useful context.
   async showServiceModal(serviceId) {
     try {
       const response = await this.api.getService(serviceId);
       if (response.success) {
-        // Trigger chat or contact form with service context
-        if (typeof openChat === 'function') {
-          openChat(`I'm interested in your ${response.data.name} service`);
-        }
+        const subject = encodeURIComponent(`I'm interested in your ${response.data.name} service`);
+        window.location.assign(`contact.html?subject=${subject}`);
       }
     } catch (error) {
       console.error('Error loading service details:', error);
@@ -366,9 +364,12 @@ class DynamicContentRenderer {
         <div class="error-message">
           <div class="error-icon">⚠️</div>
           <p>${message}</p>
-          <button onclick="location.reload()" class="retry-btn">Retry</button>
+          <button type="button" class="retry-btn">Retry</button>
         </div>
       `;
+      container.querySelector('.retry-btn')?.addEventListener('click', () => {
+        window.location.reload();
+      });
     }
     this.hideLoading(containerId);
   }

@@ -1,10 +1,19 @@
 const mongoose = require('mongoose');
 const fs = require('fs');
 
+/**
+ * Owns MongoDB configuration and lifecycle management.
+ *
+ * Credentials may come from environment variables or mounted secret files.
+ * Connection targets are sanitized before logging so passwords never leak.
+ */
 class DatabaseConnection {
   constructor() {
-    this.isConnected = false;
+    // Keep state separate from isConnected(); using the same name for a boolean
+    // and method shadows the prototype method on each instance.
+    this.connected = false;
     this.connection = null;
+    this.listenersRegistered = false;
   }
 
   // Helper: read secret from env or file (e.g., Docker/K8s secret)
@@ -108,7 +117,8 @@ class DatabaseConnection {
   }
 
   async connect() {
-    if (this.isConnected) {
+    // Reuse the active connection instead of opening another pool.
+    if (this.connected) {
       console.log('📀 MongoDB already connected');
       return this.connection;
     }
@@ -122,7 +132,7 @@ class DatabaseConnection {
       const connection = await mongoose.connect(baseUri, options);
 
       this.connection = connection;
-      this.isConnected = true;
+      this.connected = true;
 
       const db = connection.connection.db;
       const hostInfo = `${connection.connection.host}:${connection.connection.port || ''}`;
@@ -130,31 +140,34 @@ class DatabaseConnection {
       console.log(`📊 Database: ${db.databaseName}`);
       console.log(`🌍 Host: ${hostInfo}`);
 
-      // Handle connection events
-      mongoose.connection.on('connected', () => {
-        console.log('📀 Mongoose connected to MongoDB');
-      });
+      // Register lifecycle listeners once. Reconnecting must not duplicate
+      // event handlers or process-level shutdown hooks.
+      if (!this.listenersRegistered) {
+        mongoose.connection.on('connected', () => {
+          console.log('📀 Mongoose connected to MongoDB');
+        });
 
-      mongoose.connection.on('error', (err) => {
-        console.error('❌ Mongoose connection error:', err.message);
-        this.isConnected = false;
-      });
+        mongoose.connection.on('error', (err) => {
+          console.error('❌ Mongoose connection error:', err.message);
+          this.connected = false;
+        });
 
-      mongoose.connection.on('disconnected', () => {
-        console.log('📴 Mongoose disconnected from MongoDB');
-        this.isConnected = false;
-      });
+        mongoose.connection.on('disconnected', () => {
+          console.log('📴 Mongoose disconnected from MongoDB');
+          this.connected = false;
+        });
 
-      // Graceful shutdown
-      process.on('SIGINT', () => {
-        this.disconnect();
-      });
+        process.once('SIGINT', () => {
+          this.disconnect();
+        });
+        this.listenersRegistered = true;
+      }
 
       return connection;
 
     } catch (error) {
       console.error('❌ MongoDB Connection Error:', error.message);
-      this.isConnected = false;
+      this.connected = false;
       
       if (process.env.NODE_ENV !== 'production') {
         console.log('⚠️  Running without database in development mode');
@@ -166,23 +179,25 @@ class DatabaseConnection {
   }
 
   async disconnect() {
-    if (this.isConnected) {
-      try {
-        await mongoose.connection.close();
-        console.log('✅ MongoDB connection closed gracefully');
-        this.isConnected = false;
-      } catch (error) {
-        console.error('❌ Error closing MongoDB connection:', error);
-      }
+    if (!this.connected) return;
+
+    try {
+      await mongoose.connection.close();
+      console.log('✅ MongoDB connection closed gracefully');
+      this.connected = false;
+      this.connection = null;
+    } catch (error) {
+      console.error('❌ Error closing MongoDB connection:', error.message);
     }
   }
 
+  // Expose connection state without allowing callers to mutate internals.
   getConnection() {
     return this.connection;
   }
 
   isConnected() {
-    return this.isConnected;
+    return this.connected;
   }
 }
 

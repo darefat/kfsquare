@@ -130,12 +130,11 @@ const checkEnvPermissions = (file) => {
 // Check environment configuration
 const checkEnvironment = () => {
     const envExists = checkFile('.env', 'Environment file (.env)');
-    const envExampleExists = checkFile('.env.example', 'Environment template (.env.example)');
-    const envProductionExists = checkFile('.env.production', 'Production environment template');
+    checkFile('.env.example', 'Environment template (.env.example)');
 
-    // Permissions check
+    // The local runtime file must remain owner-readable only. Production
+    // values should be injected by the deployment platform.
     checkEnvPermissions('.env');
-    checkEnvPermissions('.env.production');
     
     if (envExists) {
         try {

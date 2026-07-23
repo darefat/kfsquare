@@ -1,7 +1,7 @@
 // ---------------------------------------------------------------------------
 // PRODUCTION NOTE: All configuration is loaded from the .env file at startup.
 //   - Development: copy .env.local → .env  (local MongoDB, no Mailgun)
-//   - Production:  restore .env.production.bak → .env  (Atlas URI + Mailgun keys)
+//   - Production: inject secrets through the hosting provider at runtime
 // See DEPLOYMENT.md → "Contact Form: Local Testing & Production Deployment"
 // for the full step-by-step guide.
 //
@@ -22,6 +22,10 @@ const helmet = require('helmet');
 const cors = require('cors');
 const { body, validationResult } = require('express-validator');
 const path = require('path');
+
+// Route modules are loaded once during startup and mounted before static/404
+// handlers so Express can reach them in registration order.
+const adminRouter = require('./routes/admin');
 
 // ---------------------------------------------------------------------------
 // Startup environment validation
@@ -62,6 +66,7 @@ app.use(helmet({
     directives: {
       defaultSrc: ["'self'"],
       styleSrc: ["'self'", "'unsafe-inline'", "cdn.jsdelivr.net", "cdnjs.cloudflare.com"],
+      // Scripts must be external so inline injection cannot execute.
       scriptSrc: ["'self'", "cdn.jsdelivr.net"],
       imgSrc: ["'self'", "data:", "https:"],
       fontSrc: ["'self'", "cdnjs.cloudflare.com"],
@@ -116,7 +121,6 @@ const emailLimiter = rateLimit({
 });
 
 app.use(generalLimiter);
-app.use(express.static(path.join(__dirname)));
 
 // MongoDB connection with retry logic
 // PRODUCTION NOTE: Set MONGODB_URI in .env to your MongoDB Atlas SRV connection string:
@@ -142,15 +146,14 @@ const connectDB = async () => {
   }
 };
 
-// Contact model.
-// IMPORTANT: use the single shared model from models/Contact.js. Defining a
-// second mongoose.model('Contact', ...) here caused an OverwriteModelError crash
-// because routes/contacts.js also loads the shared model.
+// Use the shared model instead of redefining the Contact schema in this file.
+// Keeping one model definition prevents Mongoose OverwriteModelError failures
+// when server modules are imported more than once by tests or tooling.
 const Contact = require('./models/Contact');
 
 // Mailgun setup
 // PRODUCTION NOTE: Set these in .env to enable outbound email:
-//   MAILGUN_API_KEY=key-xxxxxxxxxxxxxxxxxxxxxxxxxxxx
+//   MAILGUN_API_KEY=<set-in-secret-manager>
 //   MAILGUN_DOMAIN=mg.kfsquare.com   (must be a verified sending domain in Mailgun)
 //   MAILGUN_BASE_URL=https://api.mailgun.net  (use https://api.eu.mailgun.net for EU region)
 //   RECIPIENT_EMAIL=customersupport@kfsquare.com  (defaults to this if not set)
@@ -180,7 +183,7 @@ app.post('/api/contacts', emailLimiter, [
   body('message').trim().isLength({ min: 10, max: 2000 }).escape().withMessage('Message must be between 10-2000 characters'),
   body('phone').optional().trim().isLength({ max: 20 }).escape(),
   body('company').optional().trim().isLength({ max: 100 }).escape(),
-  body('serviceInterest').optional().isIn(['data-engineering', 'predictive-analytics', 'llm-integration', 'business-intelligence', 'data-governance', 'strategic-consulting', 'other']),
+  body('serviceInterest').optional().isIn(['data-engineering', 'predictive-analytics', 'process-automation', 'business-intelligence', 'data-governance', 'strategic-consulting', 'other']),
   body('website').isEmpty().withMessage('Invalid submission detected') // Honeypot
 ], async (req, res) => {
   
@@ -201,7 +204,7 @@ app.post('/api/contacts', emailLimiter, [
   const serviceLabels = {
     'data-engineering':     'Data Engineering',
     'predictive-analytics': 'Predictive Analytics',
-    'llm-integration':      'AI & LLM Integration',
+    'process-automation':   'Process Automation',
     'business-intelligence':'Business Intelligence',
     'data-governance':      'Data Governance',
     'strategic-consulting': 'Strategic Consulting',
@@ -221,7 +224,9 @@ app.post('/api/contacts', emailLimiter, [
         serviceInterest: serviceInterest || 'other',
         source: 'website',
         status: 'new',
-        priority: serviceInterest === 'consulting' || serviceInterest === 'ai-ml' ? 'high' : 'medium',
+        priority: ['strategic-consulting', 'process-automation'].includes(serviceInterest)
+          ? 'high'
+          : 'medium',
         ipAddress: req.ip || req.connection.remoteAddress,
         userAgent: req.get('User-Agent')
       };
@@ -423,7 +428,7 @@ Reply directly to this email to respond to ${name}.
         
         console.log(`📧 Confirmation email sent to ${email}`);
       } catch (confirmError) {
-        console.error('Confirmation email error:', confirmError);
+        console.error('Confirmation email error:', confirmError.message);
         // Don't fail the request if confirmation email fails
       }
     }
@@ -442,9 +447,10 @@ Reply directly to this email to respond to ${name}.
   } catch (error) {
     console.error('❌ Contact form submission error:', error);
     
-    // Log detailed error for debugging
-    if (error.response && error.response.body) {
-      console.error("Mailgun Response Error:", error.response.body);
+    // Provider response bodies can echo authorization or request data, so log
+    // only non-sensitive status metadata.
+    if (error.response) {
+      console.error('Mail delivery failed with status:', error.response.status || 'unknown');
     }
     
     const showDetail = process.env.NODE_ENV === 'development' || process.env.DEBUG_ERRORS === 'true';
@@ -467,45 +473,81 @@ app.get('/api/health', (req, res) => {
 });
 
 // ---------------------------------------------------------------------------
-// Admin: list contacts stored in MongoDB
-// Usage:  GET /api/admin/contacts?status=new&limit=50&page=1
-// This endpoint is intentionally unauthenticated for local dev.
-// In production, protect it with an API key or move behind an admin login.
+// Admin routes
+// The API router performs its own Basic Auth check for every request. The HTML
+// dashboard uses the same environment-backed credentials before serving UI.
 // ---------------------------------------------------------------------------
-app.get('/api/admin/contacts', async (req, res) => {
-  if (!database.isConnected) {
-    return res.status(503).json({ success: false, message: 'Database not connected' });
+app.use('/api/admin', adminRouter);
+
+app.get('/admin', (req, res) => {
+  if (process.env.NODE_ENV === 'production' && process.env.ADMIN_ENABLED !== 'true') {
+    return res.status(403).json({ error: 'Admin panel disabled in production.' });
   }
 
-  try {
-    const { status, limit = 50, page = 1 } = req.query;
-    const filter = {};
-    if (status) filter.status = status;
+  const authHeader = req.get('authorization') || '';
+  const encodedCredentials = authHeader.startsWith('Basic ') ? authHeader.slice(6) : '';
+  const [username, ...passwordParts] = Buffer.from(encodedCredentials, 'base64')
+    .toString('utf8')
+    .split(':');
+  const password = passwordParts.join(':');
+  const credentialsConfigured = Boolean(
+    process.env.ADMIN_USERNAME && process.env.ADMIN_PASSWORD
+  );
 
-    const skip   = (parseInt(page) - 1) * parseInt(limit);
-    const contacts = await Contact
-      .find(filter)
-      .sort({ createdAt: -1 })
-      .skip(skip)
-      .limit(parseInt(limit))
-      .lean();
-
-    const count = await Contact.countDocuments(filter);
-
-    res.json({ success: true, count, page: parseInt(page), contacts });
-  } catch (err) {
-    console.error('Admin contacts error:', err);
-    res.status(500).json({ success: false, message: 'Failed to retrieve contacts' });
+  if (
+    credentialsConfigured &&
+    username === process.env.ADMIN_USERNAME &&
+    password === process.env.ADMIN_PASSWORD
+  ) {
+    return res.sendFile(path.join(__dirname, 'admin.html'));
   }
+
+  res.set('WWW-Authenticate', 'Basic realm="KFSQUARE Admin"');
+  return res.status(401).send('Credentials required — enter admin username and password.');
 });
 
-// Serve static files
+// Serve only intentional public assets. Mounting the repository root directly
+// would expose server source, deployment files, and configuration templates.
+const publicFiles = new Set([
+  'contact.js',
+  'favicon.ico',
+  'favicon.svg',
+  'index.js',
+  'js/admin.js',
+  'js/config.js',
+  'js/contact.js',
+  'robots.txt',
+  'services.js',
+  'services.json',
+  'sitemap.xml',
+  'styles.css'
+]);
+const staticAssets = express.static(path.join(__dirname), {
+  dotfiles: 'deny',
+  index: false
+});
+
+app.use((req, res, next) => {
+  const relativePath = req.path.replace(/^\/+/, '');
+  const isPublicAsset = relativePath.startsWith('assets/');
+
+  if (publicFiles.has(relativePath) || isPublicAsset) {
+    return staticAssets(req, res, next);
+  }
+  return next();
+});
+
 app.get('/', (req, res) => {
   res.sendFile(path.join(__dirname, 'index.html'));
 });
 
 app.get('*.html', (req, res) => {
   const filename = req.path.substring(1);
+
+  // admin.html is reachable only through the authenticated /admin route.
+  if (filename === 'admin.html') {
+    return res.status(404).json({ error: 'File not found' });
+  }
 
   // Resolve the full absolute path and prevent path traversal attacks
   const fullPath = path.resolve(__dirname, filename);
@@ -519,52 +561,22 @@ app.get('*.html', (req, res) => {
   });
 });
 
-// 404 handler
+// Unmatched requests reach this handler only after all valid routes.
 app.use((req, res) => {
   res.status(404).json({ error: 'Endpoint not found' });
 });
 
-// Error handler
+// Centralize unexpected middleware/route failures and avoid exposing details
+// outside development.
 app.use((error, req, res, next) => {
   console.error('Server error:', error);
-  res.status(500).json({ 
+  res.status(500).json({
     error: 'Internal server error',
     message: process.env.NODE_ENV === 'development' ? error.message : 'Something went wrong'
   });
 });
 
-// ─── ROUTES ─────────────────────────────────────────────────────────────────
-// Modular route handlers for better organization
-// ────────────────────────────────────────────────────────────────────────────
-const contactsRouter = require('./routes/contacts');
-const chatRouter     = require('./routes/chat');
-const adminRouter    = require('./routes/admin');
-
-// API routes
-app.use('/api/contacts', contactsRouter);
-app.use('/api/chat',     chatRouter);
-app.use('/api/admin',    adminRouter);
-
-// ─── Admin HTML dashboard (Basic Auth protected) ──────────────────────────────
-app.get('/admin', (req, res) => {
-    if (process.env.NODE_ENV === 'production' && process.env.ADMIN_ENABLED !== 'true') {
-        return res.status(403).json({ error: 'Admin panel disabled in production.' });
-    }
-    const authHeader = req.headers['authorization'] || '';
-    const base64     = authHeader.startsWith('Basic ') ? authHeader.slice(6) : '';
-    const decoded    = Buffer.from(base64, 'base64').toString('utf8');
-    const colonIdx   = decoded.indexOf(':');
-    const user       = decoded.slice(0, colonIdx);
-    const pass       = decoded.slice(colonIdx + 1);
-
-    if (user === process.env.ADMIN_USERNAME && pass === process.env.ADMIN_PASSWORD) {
-        return res.sendFile(path.join(__dirname, 'admin.html'));
-    }
-    res.set('WWW-Authenticate', 'Basic realm="KFSQUARE Admin"');
-    res.status(401).send('Credentials required — enter admin username and password.');
-});
-
-// Initialize database and start server
+// Initialize optional infrastructure before accepting traffic.
 const startServer = async () => {
   // Connect to database
   database.isConnected = await connectDB();
@@ -584,6 +596,9 @@ const startServer = async () => {
   }
 };
 
-startServer();
+// Importing the app in tests or tooling must not open network/database handles.
+if (require.main === module) {
+  startServer();
+}
 
 module.exports = app;

@@ -7,7 +7,6 @@
 
 const fs = require('fs');
 const path = require('path');
-const crypto = require('crypto');
 
 // Colors for console output
 const colors = {
@@ -26,11 +25,6 @@ const warning = (message) => console.log(`${colors.yellow}⚠️ ${message}${col
 const error = (message) => {
     console.error(`${colors.red}❌ ${message}${colors.reset}`);
     process.exit(1);
-};
-
-// Generate secure random secrets
-const generateSecret = (length = 64) => {
-    return crypto.randomBytes(length).toString('hex');
 };
 
 // NEW: Ensure sensitive files have strict permissions (0600)
@@ -64,9 +58,9 @@ APP_VERSION=1.0.0
 
 # Database Configuration
 # Avoid embedding plaintext credentials. Prefer SRV URI without password or separate fields with MONGODB_PASSWORD_FILE.
-# Example SRV (fill values, do not commit real secrets):
-# MONGODB_URI=mongodb+srv://<username>:<password>@<cluster-host>/<db-name>?retryWrites=true&w=majority
-# Or separate fields (recommended with container/orchestrator secrets):
+# Inject MONGODB_URI through your hosting provider's secret manager.
+# Do not place credential-bearing connection strings in generated files.
+# Or use separate fields with a mounted password file:
 # MONGODB_USE_SRV=true
 # MONGODB_HOSTS=cluster0.mongodb.net
 # MONGODB_DB=kfsquare
@@ -85,8 +79,8 @@ REDIS_PASSWORD=
 REDIS_DB=0
 
 # Security Configuration
-SESSION_SECRET=${generateSecret(64)}
-JWT_SECRET=${generateSecret(64)}
+SESSION_SECRET=<set-in-secret-manager>
+JWT_SECRET=<set-in-secret-manager>
 JWT_EXPIRE=7d
 BCRYPT_ROUNDS=12
 
@@ -106,7 +100,7 @@ LOG_COMPRESS=true
 # Security Headers
 TRUST_PROXY=true
 CORS_ORIGIN=https://yourdomain.com
-CSRF_SECRET=${generateSecret(32)}
+CSRF_SECRET=<set-in-secret-manager>
 
 # File Upload Configuration
 MAX_FILE_SIZE=10485760
@@ -126,7 +120,6 @@ NEW_RELIC_LICENSE_KEY=
 NEW_RELIC_APP_NAME=KFSQUARE
 
 # Feature Flags
-FEATURE_CHAT_ENABLED=true
 FEATURE_FILE_UPLOAD=true
 FEATURE_NOTIFICATIONS=true
 FEATURE_RATE_LIMITING=true
@@ -165,28 +158,19 @@ HEALTH_CHECK_PATH=/health
 HEALTH_CHECK_INTERVAL=30000
 `;
 
-    // Write .env.production with secure permissions
-    try {
-        fs.writeFileSync('.env.production', envTemplate, { mode: 0o600 });
-        success('Created .env.production template with 600 permissions');
-    } catch (e) {
-        error(`Failed to write .env.production: ${e.message}`);
-    }
-    
-    // Copy to .env if it doesn't exist, ensure strict permissions
+    // Write only to the ignored runtime file. Production platforms should
+    // inject these values directly instead of creating a file.
     if (!fs.existsSync('.env')) {
         try {
-            fs.copyFileSync('.env.production', '.env');
-            fs.chmodSync('.env', 0o600);
-            success('Created .env from production template (permissions set to 600)');
-            warning('Please update .env with your actual values before starting the application');
+            fs.writeFileSync('.env', envTemplate, { mode: 0o600 });
+            success('Created ignored .env template with 600 permissions');
+            warning('Set secret values locally or through your deployment secret manager');
         } catch (e) {
-            error(`Failed to create .env from template: ${e.message}`);
+            error(`Failed to create .env template: ${e.message}`);
         }
     } else {
-        // If .env exists, ensure it is secure
         ensureSecureFile('.env');
-        warning('.env already exists. Check .env.production for new configuration options');
+        warning('.env already exists; no values were overwritten');
     }
 };
 
@@ -499,8 +483,7 @@ ${colors.reset}`);
     try {
         createDirectories();
         createProductionEnv();
-        // Ensure file permissions are secure after creation
-        ensureSecureFile('.env.production');
+        // Ensure local runtime configuration remains owner-readable only.
         ensureSecureFile('.env');
         createDockerConfig();
         createMonitoringConfig();

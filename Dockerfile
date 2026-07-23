@@ -1,7 +1,7 @@
 # KFSQUARE Multi-Architecture Production Dockerfile
 # Supports AMD64, ARM64, and multi-stage builds for optimization
 
-# Node 20+ is required: undici (pulled in by dotenvx/mailgun) uses the global
+# Node 20+ is required: undici (pulled in by mailgun) uses the global
 # File API, which does not exist in Node 18 and crashes with
 # 'ReferenceError: File is not defined'.
 FROM --platform=$BUILDPLATFORM node:20-alpine as base
@@ -85,8 +85,7 @@ ENTRYPOINT ["/sbin/tini", "--"]
 
 # Start the server. Secrets are provided as plain environment variables by the
 # host (e.g. Render dashboard), which stores them securely and keeps them out of
-# git. This avoids dotenvx runtime decryption issues on the platform.
-# (For local encrypted-secret runs, use `npm run start:secure` instead.)
+# git. Local development uses an ignored .env file.
 CMD ["npm", "start"]
 
 # Metadata labels

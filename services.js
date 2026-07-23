@@ -1,5 +1,10 @@
-// Enhanced Core Services Section with Mobile-First Design and Interactions
+/**
+ * Services-page controller.
+ * Loads the static catalog, applies category filters, renders cards, manages
+ * the detail modal, and starts viewport-triggered counters.
+ */
 (function() {
+  'use strict';
   let allServices = [];
   let currentFilter = 'all';
   let isTouch = false;
@@ -10,18 +15,19 @@
   // Service category mapping
   const categoryMap = {
     'data-analytics': 'analytics',
-    'machine-learning': 'ai-ml',
+    'predictive-modeling': 'modeling',
     'business-intelligence': 'analytics',
     'data-engineering': 'engineering',
-    'ai-integration': 'ai-ml',
+    'process-automation': 'automation',
     'consulting': 'consulting'
   };
 
+  // Fetch at runtime so catalog copy can be updated without rebuilding JS.
   async function loadServices() {
     try {
-      const res = await fetch('services.json', { cache: 'no-store' });
-      if (!res.ok) throw new Error('Failed to load services');
-      const services = await res.json();
+      const response = await fetch('services.json', { cache: 'no-store' });
+      if (!response.ok) throw new Error(`Failed to load services (${response.status})`);
+      const services = await response.json();
       return services.map(service => ({
         ...service,
         category: categoryMap[service.id] || 'other'
@@ -32,6 +38,8 @@
     }
   }
 
+  // Replace the entire grid after each filter operation to keep card event
+  // behavior deterministic; modal clicks are delegated at document level.
   function renderServices(services, animate = true) {
     const servicesGrid = document.getElementById('services-grid');
     if (!servicesGrid) return;
@@ -41,7 +49,7 @@
         <div class="empty-state">
           <div class="empty-icon">🔍</div>
           <p>No services match your current filter.</p>
-          <button class="btn btn-primary" onclick="filterServices('all')">Show All Services</button>
+          <button class="btn btn-primary" type="button" data-reset-services>Show All Services</button>
         </div>`;
       return;
     }
@@ -175,6 +183,9 @@
     const modalBody = document.getElementById('modal-body');
     const modalContactBtn = document.getElementById('modal-contact-btn');
 
+    // Some pages may load this shared script without modal markup.
+    if (!modal || !modalTitle || !modalBody || !modalContactBtn) return;
+
     function openModal(serviceId) {
       const s = services.find(x => x.id === serviceId);
       if (!s) return;
@@ -258,6 +269,17 @@
 
   function initializeStatCounters() {
     const statNumbers = document.querySelectorAll('.stat-number');
+    if (statNumbers.length === 0) return;
+
+    // Browsers without IntersectionObserver should still see final values.
+    if (!('IntersectionObserver' in window)) {
+      statNumbers.forEach(stat => {
+        const target = Number.parseInt(stat.dataset.target, 10);
+        if (Number.isFinite(target)) stat.textContent = target.toLocaleString();
+      });
+      return;
+    }
+
     const observerOptions = {
       threshold: 0.5,
       rootMargin: '0px 0px -100px 0px'
@@ -267,10 +289,10 @@
       entries.forEach(entry => {
         if (entry.isIntersecting) {
           const target = entry.target;
-          const finalValue = parseInt(target.dataset.target);
-          const unit = target.parentElement.querySelector('.stat-unit');
-          
-          animateCounter(target, 0, finalValue, 2000, unit?.textContent || '');
+          const finalValue = Number.parseInt(target.dataset.target, 10);
+          if (Number.isFinite(finalValue)) {
+            animateCounter(target, 0, finalValue, 2000);
+          }
           observer.unobserve(target);
         }
       });
@@ -279,7 +301,7 @@
     statNumbers.forEach(stat => observer.observe(stat));
   }
 
-  function animateCounter(element, start, end, duration, unit) {
+  function animateCounter(element, start, end, duration) {
     const startTime = performance.now();
     const updateCounter = (currentTime) => {
       const elapsedTime = currentTime - startTime;
@@ -294,19 +316,6 @@
       }
     };
     requestAnimationFrame(updateCounter);
-  }
-
-  // Performance optimizations
-  function debounce(func, wait) {
-    let timeout;
-    return function executedFunction(...args) {
-      const later = () => {
-        clearTimeout(timeout);
-        func(...args);
-      };
-      clearTimeout(timeout);
-      timeout = setTimeout(later, wait);
-    };
   }
 
   // Initialize everything
@@ -340,15 +349,24 @@
           <div class="error-state">
             <div class="error-icon">⚠️</div>
             <p>Sorry, we're having trouble loading our services.</p>
-            <button class="btn btn-primary" onclick="location.reload()">Try Again</button>
+            <button class="btn btn-primary" type="button" data-reload-services>Try Again</button>
           </div>`;
       }
     }
   }
 
-  // Expose global function for filter buttons
-  window.filterServices = filterServices;
-  
-  // Start initialization
-  init();
+  // Empty/error-state controls are rendered dynamically, so delegate their
+  // events from the document instead of embedding inline JavaScript in HTML.
+  document.addEventListener('click', (event) => {
+    if (event.target.closest('[data-reset-services]')) filterServices('all');
+    if (event.target.closest('[data-reload-services]')) window.location.reload();
+  });
+
+  // Defer initialization until markup exists when the script is loaded in
+  // <head>; run immediately when loaded at the end of <body>.
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', init, { once: true });
+  } else {
+    init();
+  }
 })();

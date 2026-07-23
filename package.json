@@ -5,7 +5,7 @@
   "main": "server.js",
   "scripts": {
     "start": "cross-env NODE_ENV=production node server.js",
-    "start:secure": "cross-env NODE_ENV=production dotenvx run -f .env.production -- node server.js",
+    "start:secure": "cross-env NODE_ENV=production node server.js",
     "dev": "cross-env NODE_ENV=development node server.js",
     "dev:local": "cp .env.local .env.dev.bak 2>/dev/null; cross-env NODE_ENV=development $(grep -v '^#' .env.local | xargs) node server.js",
     "seed:local": "cross-env $(grep -v '^#' .env.local | grep '=' | xargs) node scripts/seed-local.js",
@@ -41,11 +41,11 @@
     "backup:db": "mongodump --uri $MONGODB_URI --out backups/$(date +%Y-%m-%d)",
     "restore:db": "mongorestore --uri $MONGODB_URI --drop backups/latest/",
     "seed": "cross-env NODE_ENV=production SEED_DATABASE=true node -e \"require('./utils/seeder').seedDatabase()\"",
-    "security:check": "npm audit --audit-level moderate",
+    "security:check": "npm run security:secrets && npm audit --audit-level moderate",
+    "security:secrets": "node scripts/secret-scan.js",
     "security:fix": "npm audit fix"
   },
   "dependencies": {
-    "@dotenvx/dotenvx": "^2.1.5",
     "bcryptjs": "^2.4.3",
     "compression": "^1.7.4",
     "connect-mongo": "^5.1.0",
@@ -78,7 +78,7 @@
   "keywords": [
     "data-analytics",
     "predictive-modeling",
-    "machine-learning",
+    "process-automation",
     "business-intelligence",
     "kfsquare"
   ],

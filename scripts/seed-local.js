@@ -28,7 +28,7 @@ const contactSchema = new mongoose.Schema({
   company:         { type: String, trim: true },
   serviceInterest: {
     type: String,
-    enum: ['data-engineering', 'predictive-analytics', 'llm-integration',
+    enum: ['data-engineering', 'predictive-analytics', 'process-automation',
            'business-intelligence', 'data-governance', 'strategic-consulting', 'other'],
     default: 'other'
   },
@@ -94,9 +94,9 @@ const testContacts = [
     email:           'david.lee@govagency.gov',
     phone:           '703-555-0303',
     company:         'US Federal Agency (SBIR)',
-    serviceInterest: 'llm-integration',
+    serviceInterest: 'process-automation',
     budget:          '100k-500k',
-    message:         'Interested in exploring LLM integration for document processing and knowledge management across our agency. Need DVBE-certified vendor.',
+    message:         'Interested in workflow automation for document processing and knowledge management across our agency. Need a DVBE-certified vendor.',
     source:          'referral',
     status:          'proposal',
     priority:        'high',
@@ -120,7 +120,8 @@ const testContacts = [
 // ── Main ───────────────────────────────────────────────────────────────────────
 async function seed() {
   try {
-    console.log(`Connecting to: ${MONGODB_URI}`);
+    // Never print a connection URI; it may contain database credentials.
+    console.log('Connecting to configured MongoDB instance...');
     await mongoose.connect(MONGODB_URI);
     console.log('MongoDB connected.');
 

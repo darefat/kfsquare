@@ -1,6 +1,14 @@
+'use strict';
+
+/**
+ * Portfolio project model.
+ * Captures publishable case-study content separately from private client
+ * identity fields and operational delivery details.
+ */
 const mongoose = require('mongoose');
 
-// Portfolio Project Schema
+// The schema groups related client, result, timeline, and testimonial data so
+// consumers can render each case study without additional joins.
 const portfolioSchema = new mongoose.Schema({
   title: {
     type: String,
@@ -46,7 +54,7 @@ const portfolioSchema = new mongoose.Schema({
   }],
   category: {
     type: String,
-    enum: ['analytics', 'ml-ai', 'data-engineering', 'visualization', 'consulting'],
+    enum: ['analytics', 'predictive-modeling', 'data-engineering', 'visualization', 'consulting'],
     required: true
   },
   tags: [{
@@ -130,14 +138,17 @@ const portfolioSchema = new mongoose.Schema({
   toObject: { virtuals: true }
 });
 
-// Virtual for project duration in human readable format
+// Format duration at read time and correctly singularize the unit.
 portfolioSchema.virtual('durationText').get(function() {
-  if (!this.timeline.duration) return '';
-  const { value, unit } = this.timeline.duration;
-  return `${value} ${unit}${value > 1 ? '' : ''}`;
+  const duration = this.timeline && this.timeline.duration;
+  if (!duration || !duration.value || !duration.unit) return '';
+
+  const singularUnit = duration.unit.replace(/s$/, '');
+  const unit = duration.value === 1 ? singularUnit : `${singularUnit}s`;
+  return `${duration.value} ${unit}`;
 });
 
-// Index for efficient queries
+// Indexes support public/category listings and featured-project ordering.
 portfolioSchema.index({ category: 1, displayOrder: 1 });
 portfolioSchema.index({ isFeatured: -1, createdAt: -1 });
 portfolioSchema.index({ status: 1, isPublic: 1 });

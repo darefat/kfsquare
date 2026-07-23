@@ -58,38 +58,25 @@ These files are **safe** to commit and provide templates:
 
 ### 1. Environment Variables
 ```bash
-# ❌ Never commit
-DATABASE_PASSWORD=mySecretPassword123
-JWT_SECRET=actualSecretKey
-
-# ✅ Use in .env.example
-DATABASE_PASSWORD=your_database_password_here
-JWT_SECRET=your_jwt_secret_here_change_this
+# Never commit assigned secret values.
+# In templates, use explicit deployment placeholders:
+DATABASE_PASSWORD=<set-in-secret-manager>
+JWT_SECRET=<set-in-secret-manager>
 ```
 
 ### 2. Docker Compose
 ```yaml
-# ❌ Never commit actual passwords
-environment:
-  - MONGO_ROOT_PASSWORD=RealPassword123
-
-# ✅ Use placeholders in templates
+# Reference a runtime-injected value; do not assign it in this file.
 environment:
   - MONGO_ROOT_PASSWORD=${MONGO_ROOT_PASSWORD}
 ```
 
 ### 3. Configuration Files
 ```json
-// ❌ config/production.json (ignored)
+// config/production.example.json (safe to commit)
 {
-  "apiKey": "real-api-key-12345",
-  "databaseUrl": "mongodb://user:pass@host"
-}
-
-// ✅ config/production.example.json (safe to commit)
-{
-  "apiKey": "your-api-key-here",
-  "databaseUrl": "mongodb://username:password@host"
+  "apiKey": "<set-in-secret-manager>",
+  "databaseUrl": "<set-in-secret-manager>"
 }
 ```
 

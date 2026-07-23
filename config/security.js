@@ -82,25 +82,6 @@ class SecurityConfig {
             retryAfter: parseInt(process.env.EMAIL_RATE_LIMIT_WINDOW || '60') * 60
           });
         }
-      }),
-
-      // Chat API rate limiting
-      chat: rateLimit({
-        store,
-        windowMs: 1 * 60 * 1000, // 1 minute
-        max: 30, // 30 messages per minute
-        message: {
-          error: 'Too many chat messages, please slow down.',
-          retryAfter: 60
-        },
-        handler: (req, res) => {
-          logger.security.rateLimit(req.ip, 'chat');
-          res.status(429).json({
-            error: 'Chat rate limit exceeded',
-            message: 'Too many messages sent, please wait a moment before sending more.',
-            retryAfter: 60
-          });
-        }
       })
     };
   }
@@ -172,68 +153,6 @@ class SecurityConfig {
         }
 
         next();
-      },
-
-      // Validate chat message
-      validateChatMessage: (req, res, next) => {
-        const { message } = req.body;
-
-        if (!message || typeof message !== 'string') {
-          return res.status(400).json({
-            success: false,
-            error: 'Message is required and must be a string'
-          });
-        }
-
-        // Sanitize and validate message
-        const sanitizedMessage = validator.escape(message.trim());
-        
-        if (sanitizedMessage.length === 0) {
-          return res.status(400).json({
-            success: false,
-            error: 'Message cannot be empty'
-          });
-        }
-
-        if (sanitizedMessage.length > 1000) {
-          return res.status(400).json({
-            success: false,
-            error: 'Message too long (maximum 1000 characters)'
-          });
-        }
-
-        req.body.message = sanitizedMessage;
-        next();
-      },
-
-      // Validate support ticket data
-      validateSupportTicket: (req, res, next) => {
-        const { subject, description, priority, category } = req.body;
-
-        if (!subject || !description) {
-          return res.status(400).json({
-            success: false,
-            error: 'Subject and description are required'
-          });
-        }
-
-        // Sanitize inputs
-        req.body.subject = validator.escape(subject.trim()).substring(0, 200);
-        req.body.description = validator.escape(description.trim()).substring(0, 5000);
-
-        // Validate priority
-        const validPriorities = ['low', 'medium', 'high', 'urgent'];
-        if (priority && !validPriorities.includes(priority)) {
-          req.body.priority = 'medium';
-        }
-
-        // Validate category
-        const validCategories = ['technical', 'billing', 'services', 'account', 'consultation'];
-        if (category && !validCategories.includes(category)) {
-          req.body.category = 'technical';
-        }
-
-        next();
       }
     };
   }
@@ -295,7 +214,7 @@ class SecurityConfig {
         logger.security.suspiciousActivity({
           type: 'blacklisted_ip_access',
           ip: clientIP,
-          url: req.url,
+          path: req.path,
           userAgent: req.get('User-Agent')
         });
 
@@ -335,10 +254,12 @@ class SecurityConfig {
         logger.security.suspiciousActivity({
           type: 'malicious_request_pattern',
           ip: req.ip,
-          url: req.url,
+          path: req.path,
           userAgent: req.get('User-Agent'),
           patterns: suspicious,
-          payload: { query: req.query, body: req.body }
+          // Record field names for diagnosis, never client-supplied values.
+          queryNames: Object.keys(req.query || {}),
+          bodyNames: Object.keys(req.body || {})
         });
 
         return res.status(400).json({
