@@ -227,62 +227,83 @@
       }
   ];
 
-  // ─── Category config ──────────────────────────────────────────────────────
+  // ─── Section anchor map ──────────────────────────────────────────────────
+  // Maps each filter button category to the id of the deep-dive section it
+  // should scroll to. "all" scrolls back to the grid itself.
 
-  var CATEGORIES = {
-      all:         { label: 'All Services',       desc: '' },
-      engineering: { label: 'Engineering',         desc: 'Platform and application delivery — from APIs to cloud infrastructure.' },
-      analytics:   { label: 'Analytics',           desc: 'Data pipelines, dashboards, and predictive models that inform decisions.' },
-      automation:  { label: 'Automation',          desc: 'Workflow automation and cloud delivery pipelines that remove manual overhead.' },
-      consulting:  { label: 'Consulting',          desc: 'Strategy and advisory from engineers who have delivered at scale.' }
+  var SECTION_MAP = {
+      all:         'services-section',
+      engineering: 'section-engineering',
+      analytics:   'section-analytics',
+      automation:  'section-automation',
+      consulting:  'section-consulting'
   };
 
-  // ─── State ────────────────────────────────────────────────────────────────
+  var CATEGORY_META = {
+      all:         { label: 'All Services',  desc: '' },
+      engineering: { label: 'Engineering',   desc: 'Platform and application delivery — from APIs to cloud infrastructure.' },
+      analytics:   { label: 'Analytics',     desc: 'Data pipelines, dashboards, and predictive models that inform decisions.' },
+      automation:  { label: 'Automation',    desc: 'Workflow automation and cloud delivery pipelines that remove manual overhead.' },
+      consulting:  { label: 'Consulting',    desc: 'Strategy and advisory from engineers who have delivered at scale.' }
+  };
 
+  var NAV_OFFSET  = 72;   // sticky nav height in px
   var activeCategory = 'all';
 
   // ─── DOM refs ─────────────────────────────────────────────────────────────
 
-  var grid      = document.getElementById('services-grid');
-  var filterBar = document.getElementById('filter-bar');
-  var catHead   = document.getElementById('category-heading');
-  var overlay   = document.getElementById('drawer-overlay');
-  var drawer    = document.getElementById('svc-drawer');
-  var drawerContent = document.getElementById('drawer-content');
-  var drawerClose   = document.getElementById('drawer-close');
+  var grid         = document.getElementById('services-grid');
+  var filterBar    = document.getElementById('filter-bar');
+  var catHead      = document.getElementById('category-heading');
+  var overlay      = document.getElementById('drawer-overlay');
+  var drawer       = document.getElementById('svc-drawer');
+  var drawerContent= document.getElementById('drawer-content');
+  var drawerClose  = document.getElementById('drawer-close');
 
-  // ─── Render grid ─────────────────────────────────────────────────────────
+  // ─── Scroll helper ────────────────────────────────────────────────────────
+
+  function scrollToId(id, delay) {
+      delay = delay || 0;
+      setTimeout(function () {
+          var el = document.getElementById(id);
+          if (!el) return;
+          var top = el.getBoundingClientRect().top + window.pageYOffset - NAV_OFFSET;
+          window.scrollTo({ top: top, behavior: 'smooth' });
+      }, delay);
+  }
+
+  // ─── Grid render ─────────────────────────────────────────────────────────
 
   function renderGrid(category) {
       if (!grid) return;
       grid.innerHTML = '';
 
-      var visible = category === 'all'
+      var list = category === 'all'
           ? SERVICES
           : SERVICES.filter(function (s) { return s.category === category; });
 
-      if (visible.length === 0) {
-          grid.innerHTML = '<div class="state-box"><div class="state-icon">🔍</div><p>No services found in this category.</p></div>';
+      if (list.length === 0) {
+          grid.innerHTML = '<div class="state-box"><div class="state-icon">🔍</div><p>No services in this category.</p></div>';
           return;
       }
 
-      visible.forEach(function (svc, idx) {
+      list.forEach(function (svc, idx) {
           var card = document.createElement('div');
-          card.className = 'svc-card' + (svc.featured ? ' featured' : '');
+          card.className  = 'svc-card' + (svc.featured ? ' featured' : '');
           card.setAttribute('role', 'listitem');
           card.setAttribute('tabindex', '0');
           card.setAttribute('data-id', svc.id);
           card.setAttribute('aria-label', 'View details for ' + svc.title);
 
-          var tagsHtml = svc.tags.map(function (t) { return '<span class="tech-tag">' + t + '</span>'; }).join(' ');
-          var badge    = svc.featured ? '<div class="svc-badge">Popular</div>' : '';
+          var tags  = svc.tags.map(function (t) { return '<span class="tech-tag">' + t + '</span>'; }).join(' ');
+          var badge = svc.featured ? '<div class="svc-badge">Popular</div>' : '';
 
           card.innerHTML = badge
               + '<div class="svc-num">' + svc.num + '</div>'
               + '<div class="svc-icon-wrap"><span style="font-size:1.25rem;">' + svc.icon + '</span></div>'
               + '<h3 class="svc-title">' + svc.title + '</h3>'
               + '<p class="svc-desc">' + svc.desc + '</p>'
-              + '<div style="margin-bottom:4px;">' + tagsHtml + '</div>'
+              + '<div style="margin-bottom:4px;">' + tags + '</div>'
               + '<div class="svc-link">View details <i class="fas fa-arrow-right"></i></div>';
 
           card.addEventListener('click', function () { openDrawer(svc.id); });
@@ -291,33 +312,39 @@
           });
 
           grid.appendChild(card);
-
-          // staggered reveal
-          setTimeout(function () { card.classList.add('visible'); }, idx * 60);
+          setTimeout(function () { card.classList.add('visible'); }, idx * 55);
       });
 
-      updateCategoryHeading(category, visible.length);
+      updateCategoryHeading(category);
   }
 
-  // ─── Category heading ────────────────────────────────────────────────────
+  // ─── Category heading ─────────────────────────────────────────────────────
 
-  function updateCategoryHeading(category, count) {
+  function updateCategoryHeading(category) {
       if (!catHead) return;
-      if (category === 'all') {
-          catHead.innerHTML = '';
-          return;
-      }
-      var cfg = CATEGORIES[category] || {};
-      catHead.innerHTML = '<div style="display:flex;align-items:flex-start;justify-content:space-between;flex-wrap:wrap;gap:12px;">'
+      if (category === 'all') { catHead.innerHTML = ''; return; }
+
+      var meta = CATEGORY_META[category] || {};
+      var sectionId = SECTION_MAP[category];
+
+      catHead.innerHTML =
+          '<div style="display:flex;align-items:flex-start;justify-content:space-between;flex-wrap:wrap;gap:12px;">'
           + '<div>'
-          + '<h2 style="font-size:1.3rem;font-weight:800;color:#fff;letter-spacing:-0.02em;margin:0 0 6px;">' + (cfg.label || category) + '</h2>'
-          + (cfg.desc ? '<p style="font-size:0.875rem;color:var(--text-muted-dark);margin:0;">' + cfg.desc + '</p>' : '')
+          + '<h2 style="font-size:1.3rem;font-weight:800;color:#fff;letter-spacing:-0.02em;margin:0 0 6px;">' + meta.label + '</h2>'
+          + (meta.desc ? '<p style="font-size:0.875rem;color:var(--text-muted-dark);margin:0;">' + meta.desc + '</p>' : '')
           + '</div>'
-          + '<a href="#section-' + category + '" style="font-size:0.8rem;font-weight:600;color:var(--gold);text-decoration:none;display:inline-flex;align-items:center;gap:6px;white-space:nowrap;margin-top:4px;">Full overview <i class="fas fa-arrow-down" style="font-size:0.65rem;"></i></a>'
+          + '<a href="#' + sectionId + '" class="cat-scroll-link" data-target="' + sectionId + '" '
+          + 'style="font-size:0.8rem;font-weight:600;color:var(--gold);text-decoration:none;display:inline-flex;align-items:center;gap:6px;white-space:nowrap;margin-top:4px;">'
+          + 'Full overview <i class="fas fa-arrow-down" style="font-size:0.65rem;"></i></a>'
           + '</div>';
+
+      catHead.querySelector('.cat-scroll-link').addEventListener('click', function (e) {
+          e.preventDefault();
+          scrollToId(this.getAttribute('data-target'));
+      });
   }
 
-  // ─── Filter buttons ──────────────────────────────────────────────────────
+  // ─── Filter buttons ───────────────────────────────────────────────────────
 
   function initFilters() {
       if (!filterBar) return;
@@ -325,10 +352,8 @@
       filterBar.querySelectorAll('.filter-btn').forEach(function (btn) {
           btn.addEventListener('click', function () {
               var cat = btn.getAttribute('data-category');
-              if (cat === activeCategory) return;
 
-              activeCategory = cat;
-
+              // Update active state regardless of whether category changed
               filterBar.querySelectorAll('.filter-btn').forEach(function (b) {
                   b.classList.remove('active');
                   b.setAttribute('aria-selected', 'false');
@@ -336,18 +361,17 @@
               btn.classList.add('active');
               btn.setAttribute('aria-selected', 'true');
 
-              renderGrid(cat);
-
-              if (cat !== 'all') {
-                  var target = document.getElementById('section-' + cat);
-                  if (target) {
-                      setTimeout(function () {
-                          var offset = 72;
-                          var top = target.getBoundingClientRect().top + window.pageYOffset - offset;
-                          window.scrollTo({ top: top, behavior: 'smooth' });
-                      }, 280);
-                  }
+              // Re-render grid only when category actually changes
+              if (cat !== activeCategory) {
+                  activeCategory = cat;
+                  renderGrid(cat);
               }
+
+              // ── Always scroll to the target section ──────────────────────
+              // "All Services" → top of the grid/filter bar
+              // Other buttons  → their named deep-dive section below the grid
+              var targetId = SECTION_MAP[cat] || 'services-section';
+              scrollToId(targetId, cat === 'all' ? 0 : 80);
           });
       });
   }
@@ -361,7 +385,7 @@
       }
       if (!svc || !drawerContent) return;
 
-      var d = svc.detail;
+      var d        = svc.detail;
       var stackHtml = (d.stack || []).map(function (t) {
           return '<span class="drawer-stack-tag">' + t + '</span>';
       }).join('');
@@ -369,44 +393,31 @@
           return '<li>' + item + '</li>';
       }).join('');
       var contactUrl = 'contact.html?subject=' + encodeURIComponent(d.contact + ' inquiry');
-      var anchorUrl  = '#section-' + svc.anchor.replace('section-', '');
+      var sectionId  = svc.anchor;
 
       drawerContent.innerHTML =
           '<div class="drawer-cat" style="' + d.catStyle + '">' + d.catLabel + '</div>'
           + '<div class="drawer-icon">' + svc.icon + '</div>'
           + '<div class="drawer-title">' + svc.title + '</div>'
           + '<p class="drawer-desc">' + d.overview + '</p>'
-
           + '<div class="drawer-section-label">What we deliver</div>'
           + '<ul class="drawer-list">' + listHtml + '</ul>'
-
           + '<div class="drawer-section-label">Tech stack</div>'
           + '<div class="drawer-stack">' + stackHtml + '</div>'
-
           + '<div class="drawer-cta">'
           + '<a href="' + contactUrl + '" class="drawer-btn-primary">Start a Conversation</a>'
-          + '<a href="' + anchorUrl + '" class="drawer-btn-secondary" id="drawer-anchor-link">Full Overview</a>'
+          + '<a href="#' + sectionId + '" class="drawer-btn-secondary" id="drawer-anchor-link">Full Overview</a>'
           + '</div>';
 
-      var anchorLink = drawerContent.querySelector('#drawer-anchor-link');
-      if (anchorLink) {
-          anchorLink.addEventListener('click', function (e) {
-              e.preventDefault();
-              closeDrawer();
-              var target = document.getElementById('section-' + svc.anchor.replace('section-', ''));
-              if (target) {
-                  setTimeout(function () {
-                      var top = target.getBoundingClientRect().top + window.pageYOffset - 72;
-                      window.scrollTo({ top: top, behavior: 'smooth' });
-                  }, 320);
-              }
-          });
-      }
+      drawerContent.querySelector('#drawer-anchor-link').addEventListener('click', function (e) {
+          e.preventDefault();
+          closeDrawer();
+          scrollToId(sectionId, 340);
+      });
 
       overlay.classList.add('open');
       drawer.classList.add('open');
       document.body.style.overflow = 'hidden';
-      drawer.focus();
   }
 
   function closeDrawer() {
@@ -420,11 +431,11 @@
       overlay.addEventListener('click', closeDrawer);
       drawerClose.addEventListener('click', closeDrawer);
       document.addEventListener('keydown', function (e) {
-          if (e.key === 'Escape' && drawer.classList.contains('open')) closeDrawer();
+          if (e.key === 'Escape' && drawer && drawer.classList.contains('open')) closeDrawer();
       });
   }
 
-  // ─── Counters ────────────────────────────────────────────────────────────
+  // ─── Counters ─────────────────────────────────────────────────────────────
 
   function animateCounter(el) {
       var target   = parseInt(el.getAttribute('data-count'), 10);
@@ -434,10 +445,10 @@
 
       function step(ts) {
           if (!start) start = ts;
-          var progress = Math.min((ts - start) / duration, 1);
-          var eased    = 1 - Math.pow(1 - progress, 3);
-          el.textContent = Math.floor(eased * target) + suffix;
-          if (progress < 1) requestAnimationFrame(step);
+          var p = Math.min((ts - start) / duration, 1);
+          var e = 1 - Math.pow(1 - p, 3);
+          el.textContent = Math.floor(e * target) + suffix;
+          if (p < 1) requestAnimationFrame(step);
           else el.textContent = target + suffix;
       }
       requestAnimationFrame(step);
@@ -473,7 +484,7 @@
       document.querySelectorAll('.reveal').forEach(function (el) { obs.observe(el); });
   }
 
-  // ─── Nav toggle ──────────────────────────────────────────────────────────
+  // ─── Nav toggle ───────────────────────────────────────────────────────────
 
   function initNav() {
       var toggle = document.getElementById('nav-toggle');
@@ -482,23 +493,46 @@
       toggle.addEventListener('click', function () { links.classList.toggle('open'); });
   }
 
-  // ─── Hash routing ────────────────────────────────────────────────────────
+  // ─── Hash routing ─────────────────────────────────────────────────────────
+  // Allows services.html#analytics to auto-activate the Analytics filter
 
   function handleHash() {
-      var hash = window.location.hash;
-      if (!hash) return;
+      var hash = (window.location.hash || '').replace('#', '');
+      var catMap = { engineering: 1, analytics: 1, automation: 1, consulting: 1 };
+      if (!catMap[hash]) return;
 
-      var catMap = {
-          '#engineering': 'engineering',
-          '#analytics':   'analytics',
-          '#automation':  'automation',
-          '#consulting':  'consulting'
-      };
+      activeCategory = hash;
+      renderGrid(hash);
 
-      if (catMap[hash]) {
-          var cat = catMap[hash];
-          activeCategory = cat;
-          renderGrid(cat);
+      var btn = filterBar && filterBar.querySelector('[data-category="' + hash + '"]');
+      if (btn) {
+          filterBar.querySelectorAll('.filter-btn').forEach(function (b) {
+              b.classList.remove('active');
+              b.setAttribute('aria-selected', 'false');
+          });
+          btn.classList.add('active');
+          btn.setAttribute('aria-selected', 'true');
+      }
 
-          var btn = filterBar && filterBar.querySelector('[data-category="' + cat + '"]');
-          if
+      scrollToId(SECTION_MAP[hash] || 'services-section', 400);
+  }
+
+  // ─── Init ─────────────────────────────────────────────────────────────────
+
+  function init() {
+      renderGrid('all');
+      initFilters();
+      initDrawer();
+      initReveal();
+      initCounters();
+      initNav();
+      handleHash();
+  }
+
+  if (document.readyState === 'loading') {
+      document.addEventListener('DOMContentLoaded', init, { once: true });
+  } else {
+      init();
+  }
+
+}());
