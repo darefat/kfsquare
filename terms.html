@@ -1,0 +1,234 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Terms of Service - KFSQUARE</title>
+    <meta name="description" content="KFSQUARE Terms of Service — the rules and conditions governing use of our website and services.">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="styles.css">
+    <link rel="icon" href="favicon.ico" type="image/x-icon">
+    <style>
+        :root {
+            --navy: #0d1a35;
+            --gold: #ffc107;
+            --gold-border: rgba(255,193,7,0.25);
+            --text-muted-dark: rgba(255,255,255,0.55);
+        }
+        * { box-sizing: border-box; }
+        body { background: #fff; color: #0d1a35; font-family: 'Inter', system-ui, sans-serif; margin: 0; }
+
+        /* Nav */
+        .site-nav {
+            position: sticky; top: 0; z-index: 1000;
+            background: rgba(13,26,53,0.97);
+            backdrop-filter: blur(12px);
+            border-bottom: 1px solid rgba(255,255,255,0.07);
+            padding: 0;
+        }
+        .site-nav .container { display: flex; align-items: center; justify-content: space-between; height: 64px; }
+        .nav-brand { font-size: 1.2rem; font-weight: 800; text-decoration: none; letter-spacing: -0.02em; }
+        .nav-brand .kf { color: var(--gold); }
+        .nav-brand .sq { color: #fff; }
+        .nav-links { display: flex; align-items: center; gap: 8px; list-style: none; margin: 0; padding: 0; }
+        .nav-links a { color: rgba(255,255,255,0.7); text-decoration: none; font-size: 0.875rem; font-weight: 500; padding: 6px 14px; border-radius: 6px; transition: color 0.2s, background 0.2s; }
+        .nav-links a:hover, .nav-links a.active { color: #fff; background: rgba(255,255,255,0.07); }
+        .nav-cta { background: var(--gold) !important; color: #0d1a35 !important; font-weight: 700 !important; }
+        .nav-cta:hover { background: #e6ac00 !important; }
+        .nav-toggle { display: none; background: none; border: 1px solid rgba(255,255,255,0.2); border-radius: 6px; padding: 6px 10px; color: #fff; cursor: pointer; }
+        @media (max-width: 768px) {
+            .nav-toggle { display: block; }
+            .nav-links { display: none; flex-direction: column; position: absolute; top: 64px; left: 0; right: 0; background: rgba(13,26,53,0.98); padding: 16px; gap: 4px; }
+            .nav-links.open { display: flex; }
+        }
+
+        /* Hero */
+        .policy-hero {
+            background: var(--navy); padding: 80px 0 64px;
+            border-bottom: 1px solid rgba(255,193,7,0.1);
+        }
+
+        /* Content */
+        .policy-body { padding: 72px 0 96px; }
+        .policy-body h2 { font-size: 1.25rem; font-weight: 800; color: #0d1a35; margin: 40px 0 12px; padding-top: 8px; border-top: 1px solid #e8ecf4; }
+        .policy-body h2:first-of-type { border-top: none; margin-top: 0; }
+        .policy-body p, .policy-body li { font-size: 0.95rem; color: #4a5568; line-height: 1.85; }
+        .policy-body ul { padding-left: 1.4rem; margin-bottom: 1rem; }
+        .policy-body a { color: #1e3c72; text-decoration: underline; }
+        .policy-body a:hover { color: var(--gold); }
+        .policy-meta { font-size: 0.8rem; color: rgba(255,255,255,0.4); margin-top: 4px; }
+
+        /* Footer */
+        .site-footer { background: #060e1e; border-top: 1px solid rgba(255,255,255,0.07); padding: 64px 0 32px; }
+        .footer-brand { font-size: 1.3rem; font-weight: 800; letter-spacing: -0.02em; margin-bottom: 12px; }
+        .footer-brand .kf { color: var(--gold); }
+        .footer-brand .sq { color: #fff; }
+        .footer-desc { font-size: 0.875rem; color: rgba(255,255,255,0.45); line-height: 1.75; max-width: 240px; }
+        .footer-heading { font-size: 0.72rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.1em; color: rgba(255,255,255,0.3); margin-bottom: 16px; }
+        .footer-link { display: block; color: rgba(255,255,255,0.55); font-size: 0.875rem; text-decoration: none; padding: 4px 0; transition: color 0.2s; }
+        .footer-link:hover { color: #fff; }
+        .footer-social { display: flex; gap: 10px; margin-top: 20px; }
+        .footer-social a { width: 36px; height: 36px; border-radius: 8px; border: 1px solid rgba(255,255,255,0.1); display: flex; align-items: center; justify-content: center; color: rgba(255,255,255,0.5); font-size: 0.8rem; text-decoration: none; transition: all 0.2s; }
+        .footer-social a:hover { border-color: var(--gold); color: var(--gold); }
+        .footer-bottom { border-top: 1px solid rgba(255,255,255,0.07); margin-top: 48px; padding-top: 24px; font-size: 0.78rem; color: rgba(255,255,255,0.3); }
+    </style>
+</head>
+<body>
+
+    <!-- Navigation -->
+    <nav class="site-nav">
+        <div class="container">
+            <a href="index.html" class="nav-brand"><span class="kf">KF</span><span class="sq">SQUARE</span></a>
+            <button class="nav-toggle" aria-label="Toggle menu" id="nav-toggle">
+                <i class="fas fa-bars"></i>
+            </button>
+            <ul class="nav-links" id="nav-links">
+                <li><a href="index.html">Home</a></li>
+                <li><a href="about.html">About</a></li>
+                <li><a href="services.html">Services</a></li>
+                <li><a href="portfolio.html">Portfolio</a></li>
+                <li><a href="contact.html" class="nav-cta">Let's Talk</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <!-- Hero -->
+    <section class="policy-hero">
+        <div class="container">
+            <p class="policy-meta">Last updated: July 22, 2026</p>
+            <h1 style="font-size:clamp(2rem,4vw,2.8rem);font-weight:900;color:#fff;letter-spacing:-0.04em;line-height:1.1;margin:12px 0 16px;">
+                Terms of Service
+            </h1>
+            <p style="font-size:1rem;color:var(--text-muted-dark);max-width:560px;line-height:1.8;margin:0;">
+                Please read these terms carefully before using the KFSQUARE website or engaging our services.
+            </p>
+        </div>
+    </section>
+
+    <!-- Body -->
+    <section class="policy-body">
+        <div class="container">
+            <div class="row justify-content-center">
+                <div class="col-lg-8">
+
+                    <h2>1. Acceptance of Terms</h2>
+                    <p>By accessing or using the KFSQUARE website (kfsquare.com) or engaging KFSQUARE LLC for professional services, you agree to be bound by these Terms of Service ("Terms"). If you do not agree, please discontinue use immediately. These Terms apply to all visitors, clients, and users of our site.</p>
+
+                    <h2>2. About KFSQUARE</h2>
+                    <p>KFSQUARE LLC is a veteran-owned small business providing software engineering, data engineering, AI/ML, cloud infrastructure, analytics, and related technology consulting services. We are headquartered in the United States.</p>
+
+                    <h2>3. Use of This Website</h2>
+                    <p>You agree to use this website only for lawful purposes and in a manner that does not infringe the rights of others. You must not:</p>
+                    <ul>
+                        <li>Use automated tools to scrape, crawl, or harvest content from this site without written permission.</li>
+                        <li>Attempt to gain unauthorized access to any part of the site or its underlying infrastructure.</li>
+                        <li>Transmit malware, spam, or any content that is harmful, defamatory, or illegal.</li>
+                        <li>Misrepresent your identity or affiliation when submitting inquiries or communications.</li>
+                        <li>Use the site in any way that could damage, disable, or impair its performance.</li>
+                    </ul>
+
+                    <h2>4. Professional Services Engagements</h2>
+                    <p>The information on this website is for general informational purposes only and does not constitute a binding offer of services. All professional engagements are governed by a separate written agreement (e.g., Statement of Work, Master Services Agreement, or contract) executed between KFSQUARE LLC and the client. In the event of any conflict between these Terms and a signed engagement agreement, the engagement agreement controls.</p>
+
+                    <h2>5. Intellectual Property</h2>
+                    <p>All content on this website — including text, graphics, logos, icons, images, and code — is the property of KFSQUARE LLC or its content suppliers and is protected by applicable U.S. and international intellectual property laws.</p>
+                    <ul>
+                        <li>You may view and print pages for personal, non-commercial reference only.</li>
+                        <li>You may not reproduce, distribute, publicly display, or create derivative works from any site content without prior written consent from KFSQUARE LLC.</li>
+                        <li>Any deliverables produced under a client engagement are governed by the intellectual property provisions in the applicable engagement agreement.</li>
+                    </ul>
+
+                    <h2>6. Confidentiality of Inquiries</h2>
+                    <p>Information you submit via our contact form or direct communications is treated as confidential business information. We will not disclose project details, technical requirements, or organizational information shared during a pre-engagement inquiry to third parties, except as required by law or with your explicit consent.</p>
+
+                    <h2>7. No Warranties</h2>
+                    <p>This website and all content therein are provided "as is" and "as available" without warranties of any kind, express or implied, including but not limited to implied warranties of merchantability, fitness for a particular purpose, or non-infringement. KFSQUARE LLC does not warrant that the site will be error-free, uninterrupted, or free of viruses or other harmful components.</p>
+
+                    <h2>8. Limitation of Liability</h2>
+                    <p>To the maximum extent permitted by applicable law, KFSQUARE LLC and its principals, employees, and agents shall not be liable for any indirect, incidental, special, consequential, or punitive damages arising out of or related to your use of, or inability to use, this website — even if KFSQUARE has been advised of the possibility of such damages. Our total aggregate liability for any claim arising from this website shall not exceed one hundred U.S. dollars ($100.00).</p>
+                    <p>Liability for professional services is governed solely by the applicable engagement agreement and its stated limitations.</p>
+
+                    <h2>9. Third-Party Links</h2>
+                    <p>This site may contain links to third-party websites for convenience or reference. KFSQUARE LLC does not endorse, control, or assume responsibility for the content, privacy practices, or accuracy of any third-party site. Accessing linked sites is at your own risk.</p>
+
+                    <h2>10. Privacy</h2>
+                    <p>Your use of this website is also governed by our <a href="privacy.html">Privacy Policy</a>, which is incorporated into these Terms by reference. By using this site, you consent to the data practices described in the Privacy Policy.</p>
+
+                    <h2>11. Governing Law & Dispute Resolution</h2>
+                    <p>These Terms are governed by and construed in accordance with the laws of the State of Maryland, United States, without regard to conflict of law principles. Any disputes arising out of or relating to these Terms or use of this website shall be resolved exclusively in the state or federal courts located in Maryland, and you consent to personal jurisdiction in such courts.</p>
+
+                    <h2>12. Changes to These Terms</h2>
+                    <p>We reserve the right to update these Terms at any time. Material changes will be reflected by updating the "Last updated" date at the top of this page. Your continued use of the website following any changes constitutes acceptance of the revised Terms. We encourage you to review this page periodically.</p>
+
+                    <h2>13. Severability</h2>
+                    <p>If any provision of these Terms is found to be invalid or unenforceable by a court of competent jurisdiction, the remaining provisions shall continue in full force and effect.</p>
+
+                    <h2>14. Contact Us</h2>
+                    <p>For questions about these Terms or to report a concern, please contact:</p>
+                    <ul>
+                        <li>📧 <a href="mailto:customersupport@kfsquare.com">customersupport@kfsquare.com</a></li>
+                        <li>📞 410-934-7470</li>
+                        <li>🏢 KFSQUARE LLC — Small Business & Veteran Owned</li>
+                    </ul>
+
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="site-footer">
+        <div class="container">
+            <div class="row g-5">
+                <div class="col-lg-4">
+                    <div class="footer-brand"><span class="kf">KF</span><span class="sq">SQUARE</span></div>
+                    <p class="footer-desc">Secure software engineering, modern data platforms, and AI solutions for organizations where the work actually matters.</p>
+                    <div class="footer-social">
+                        <a href="mailto:customersupport@kfsquare.com" aria-label="Email"><i class="fas fa-envelope"></i></a>
+                        <a href="tel:+14109347470" aria-label="Phone"><i class="fas fa-phone"></i></a>
+                        <a href="#" aria-label="LinkedIn"><i class="fab fa-linkedin-in"></i></a>
+                    </div>
+                </div>
+                <div class="col-lg-2 col-6">
+                    <p class="footer-heading">Services</p>
+                    <a href="services.html#software-engineering" class="footer-link">Software Engineering</a>
+                    <a href="services.html#data-engineering" class="footer-link">Data Engineering</a>
+                    <a href="services.html#ai-ml" class="footer-link">AI & ML</a>
+                    <a href="services.html#cloud-devops" class="footer-link">Cloud & DevOps</a>
+                    <a href="services.html#analytics-bi" class="footer-link">Analytics & BI</a>
+                    <a href="services.html#cybersecurity" class="footer-link">Cybersecurity</a>
+                </div>
+                <div class="col-lg-2 col-6">
+                    <p class="footer-heading">Company</p>
+                    <a href="about.html" class="footer-link">About</a>
+                    <a href="portfolio.html" class="footer-link">Portfolio</a>
+                    <a href="contact.html" class="footer-link">Contact</a>
+                    <a href="privacy.html" class="footer-link">Privacy Policy</a>
+                    <a href="terms.html" class="footer-link">Terms of Service</a>
+                </div>
+                <div class="col-lg-3">
+                    <p class="footer-heading">Contact</p>
+                    <p style="font-size:0.875rem;color:rgba(255,255,255,0.55);margin-bottom:6px;">📞 410-934-7470</p>
+                    <p style="font-size:0.875rem;color:rgba(255,255,255,0.55);margin-bottom:6px;">📧 customersupport@kfsquare.com</p>
+                    <p style="font-size:0.875rem;color:rgba(255,255,255,0.55);">🏢 Small Business &amp; Veteran Owned</p>
+                </div>
+            </div>
+            <div class="footer-bottom d-flex flex-wrap justify-content-between align-items-center gap-2">
+                <span>&copy; 2026 KFSQUARE. All rights reserved.</span>
+                <span>
+                    <a href="privacy.html" class="footer-link d-inline" style="font-size:0.78rem;">Privacy Policy</a> ·
+                    <a href="terms.html" class="footer-link d-inline" style="font-size:0.78rem;">Terms of Service</a>
+                </span>
+            </div>
+        </div>
+    </footer>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        document.getElementById('nav-toggle').addEventListener('click', function() {
+            document.getElementById('nav-links').classList.toggle('open');
+        });
+    </script>
+</body>
+</html>
